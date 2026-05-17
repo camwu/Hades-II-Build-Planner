@@ -15,6 +15,10 @@
   --color-hades-border: #1a1a25;
   --color-hades-border-light: #2a2a3a;
   --color-hades-text: #d1d1e0;
+
+  --color-hades-infusion: #ED4AF1;
+  --color-hades-duo: #C5F24D;
+  --color-hades-legendary: #FD8D00;
 }
 
 @layer base {
@@ -35,5 +39,5 @@
 }
 
 body {
-  @apply bg-hades-bg text-hades-text antialiased;
+  @apply bg-hades-bg text-hades-text antialiased overflow-hidden;
 }
