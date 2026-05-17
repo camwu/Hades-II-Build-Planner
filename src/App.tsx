@@ -69,6 +69,7 @@ export default function App() {
   const [isSlotTypeOpen, setIsSlotTypeOpen] = useState(true);
   const [isGodFilterOpen, setIsGodFilterOpen] = useState(true);
   const [isElementFilterOpen, setIsElementFilterOpen] = useState(true);
+  const [showPurgeConfirm, setShowPurgeConfirm] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -124,6 +125,11 @@ export default function App() {
   };
 
   const purgeBuild = () => {
+    if (!showPurgeConfirm) {
+      setShowPurgeConfirm(true);
+      setTimeout(() => setShowPurgeConfirm(false), 3000);
+      return;
+    }
     setCoreBuild({
       Attack: null,
       Special: null,
@@ -132,6 +138,7 @@ export default function App() {
       Magick: null,
     });
     setAdditionalBoons([]);
+    setShowPurgeConfirm(false);
   };
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -373,10 +380,14 @@ export default function App() {
                 </h2>
                 <button 
                   onClick={purgeBuild}
-                  className="text-xs font-mono uppercase tracking-widest text-hades-red hover:text-red-300 transition-colors flex items-center gap-2 px-3 py-1.5 rounded bg-hades-red/5 border border-hades-red/10 hover:border-hades-red/30"
+                  className={`text-xs font-mono uppercase tracking-widest transition-all duration-200 flex items-center gap-2 px-3 py-1.5 rounded border ${
+                    showPurgeConfirm 
+                      ? 'bg-hades-red text-white border-white/20 animate-pulse' 
+                      : 'text-hades-red hover:text-red-300 bg-hades-red/5 border-hades-red/10 hover:border-hades-red/30'
+                  }`}
                 >
-                  <Trash2 className="w-4 h-4" />
-                  Purge Build
+                  <Trash2 className={`w-4 h-4 ${showPurgeConfirm ? 'animate-bounce' : ''}`} />
+                  {showPurgeConfirm ? 'Confirm Purge?' : 'Purge Build'}
                 </button>
               </div>
 
