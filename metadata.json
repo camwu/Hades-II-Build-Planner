@@ -1,0 +1,6 @@
+{
+  "name": "Hades II Build Planner",
+  "description": "Plan your Melinoë builds with boons, weapons, and arcana.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
