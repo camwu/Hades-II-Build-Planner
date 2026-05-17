@@ -442,6 +442,8 @@ export default function App() {
                       <DraggableBoonListItem 
                         key={boon.id} 
                         boon={boon} 
+                        onClick={() => activeSlot && selectBoon(boon, activeSlot)}
+                        isSelectable={!!activeSlot}
                       />
                     ))}
                     {filteredBoons.length === 0 && (
@@ -508,7 +510,7 @@ export default function App() {
                     <div className="h-px flex-1 bg-white/5"></div>
                   </div>
                   
-                  <div className="flex flex-col gap-8">
+                  <div className="flex flex-col gap-6">
                     {CORE_SLOTS.map((slot) => (
                       <CoreSlotRow 
                         key={slot.type}
@@ -712,7 +714,7 @@ function SimpleBoonCard({ boon }: any) {
   );
 }
 
-function DraggableBoonListItem({ boon }: any) {
+function DraggableBoonListItem({ boon, onClick, isSelectable }: any) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: boon.id,
   });
@@ -729,12 +731,15 @@ function DraggableBoonListItem({ boon }: any) {
       style={style}
       {...listeners}
       {...attributes}
-      whileHover={{ x: 5 }}
-      whileTap={{ x: 2 }}
-      className={`p-4 rounded-xl border transition-all cursor-grab active:cursor-grabbing group relative ${
+      onClick={onClick}
+      whileHover={{ x: isSelectable ? 8 : 5 }}
+      whileTap={{ scale: 0.98 }}
+      className={`p-4 rounded-xl border transition-all group relative ${
         isDragging 
           ? 'opacity-0' 
-          : 'border-hades-border bg-hades-bg-main hover:bg-hades-bg-light hover:border-hades-accent/30'
+          : isSelectable
+            ? 'border-hades-accent/30 bg-hades-bg-main hover:bg-hades-bg-light hover:border-hades-accent ring-1 ring-transparent hover:ring-hades-accent/20 cursor-pointer'
+            : 'border-hades-border bg-hades-bg-main hover:bg-hades-bg-light hover:border-hades-accent/30 cursor-grab active:cursor-grabbing'
       }`}
     >
       <div className="flex items-start gap-4 mb-2 pb-2 border-b border-hades-border/30">
@@ -844,17 +849,11 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
   };
 
   return (
-    <div className={`group flex flex-col gap-2 ${shouldDim ? 'opacity-20 grayscale brightness-50 pointer-events-none scale-95' : ''}`}>
-      <div className="flex items-center justify-between px-1">
-        <span className={`text-xs font-mono tracking-[0.3em] uppercase font-bold transition-colors ${isActive ? 'text-hades-accent' : 'text-gray-500 group-hover:text-gray-300'}`}>
-          {slot.name}
-        </span>
-      </div>
-      
+    <div className={`group flex flex-col ${shouldDim ? 'opacity-20 grayscale brightness-50 pointer-events-none scale-95' : ''}`}>
       <div 
         ref={setNodeRef}
         onClick={onClick}
-        className={`relative flex items-center gap-5 p-5 rounded-xl border-2 transition-all duration-300 cursor-pointer ${
+        className={`relative flex items-center gap-5 p-5 h-[136px] rounded-xl border-2 transition-all duration-300 cursor-pointer ${
           shouldHighlight 
             ? 'bg-hades-accent/20 border-hades-accent border-solid shadow-[0_0_30px_rgba(255,189,1,0.2)] scale-[1.02]' 
             : boon 
@@ -877,6 +876,9 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
               animate={{ x: 0, opacity: 1 }}
               className="flex flex-col h-full"
             >
+              <div className="text-[10px] font-mono tracking-[0.22em] text-hades-text/40 uppercase mb-1.5 font-bold">
+                {slot.name}
+              </div>
               <div className="flex items-center justify-between mb-1">
                 <h4 
                   className={`text-lg font-black uppercase tracking-wider ${getBoonColor(boon.type)}`}
@@ -901,7 +903,7 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
               <Plus className={`w-6 h-6 transition-transform duration-500 ${isActive ? 'rotate-90 text-hades-accent scale-125' : 'text-gray-800'}`} />
               <div className="flex flex-col">
                 <span className={`text-[13px] font-mono uppercase tracking-widest ${isActive ? 'text-hades-accent font-bold' : 'text-gray-600'}`}>
-                  {isActive ? 'Awaiting Selection' : 'Slot Empty'}
+                  {isActive ? 'Awaiting Selection' : <><span className="font-bold text-gray-400">{slot.name}</span> Slot Empty</>}
                 </span>
                 <span className="text-[11px] text-gray-600 font-medium tracking-tight">
                   Click to select {['Attack', 'Infusion'].includes(slot.name) ? 'an' : 'a'} {slot.name} Boon
@@ -1190,7 +1192,7 @@ function GodIcon({ god, className }: { god: string; className?: string }) {
     <img 
       src={symbol}
       alt={god}
-      className={`${className} object-contain opacity-80 group-hover:opacity-100 transition-opacity`}
+      className={`${className} object-contain`}
       referrerPolicy="no-referrer"
     />
   );
