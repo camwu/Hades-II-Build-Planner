@@ -10,6 +10,7 @@ export interface Boon {
   gods: string[];
   element: ElementType | null;
   effect: string;
+  icon?: string;
 }
 
 export type BoonType = 

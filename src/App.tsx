@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Zap, 
@@ -71,6 +71,19 @@ export default function App() {
   const [isElementFilterOpen, setIsElementFilterOpen] = useState(true);
   const [showPurgeConfirm, setShowPurgeConfirm] = useState(false);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveSlot(null);
+        setSelectedGod(null);
+        setSelectedElement(null);
+        setSelectedType(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -107,6 +120,10 @@ export default function App() {
       setCoreBuild(prev => ({ ...prev, [slotId]: boon }));
     }
     setActiveSlot(null);
+  };
+
+  const toggleActiveSlot = (slotId: string) => {
+    setActiveSlot(prev => prev === slotId ? null : slotId);
   };
 
   const removeBoon = (slotId: string, index?: number) => {
@@ -240,24 +257,18 @@ export default function App() {
                     />
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <SidebarCollapsibleSection 
                       title="Slot Type" 
                       isOpen={isSlotTypeOpen} 
                       setIsOpen={setIsSlotTypeOpen}
                     >
                       <div className="flex flex-wrap gap-2">
-                        <button 
-                          onClick={() => setSelectedType(null)}
-                          className={`h-9 px-3 text-xs uppercase font-mono tracking-wider rounded-lg border transition-all inline-flex items-center justify-center ${!selectedType ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent' : 'bg-hades-bg-main border-hades-border-light text-hades-text/60 hover:border-hades-text/30'}`}
-                        >
-                          All
-                        </button>
                         {CORE_SLOTS.map(slot => (
                           <button 
                             key={slot.type}
                             onClick={() => setSelectedType(slot.type === selectedType ? null : slot.type)}
-                            className={`h-9 px-3 text-xs uppercase font-mono tracking-wider flex items-center gap-2 rounded-lg border transition-all ${selectedType === slot.type ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent' : 'bg-hades-bg-main border-hades-border-light text-hades-text/60 hover:border-hades-text/30'}`}
+                            className={`h-9 px-3 text-xs uppercase font-mono tracking-wider flex items-center gap-2 rounded-lg border transition-all ${selectedType === slot.type ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent shadow-[0_0_15px_-3px_rgba(255,189,1,0.2)]' : 'bg-hades-bg-dark/60 border-hades-border-light text-hades-text/60 hover:bg-hades-bg-dark hover:border-hades-text/30 hover:text-hades-text'}`}
                           >
                             {typeof slot.icon === 'string' ? (
                               <img 
@@ -276,7 +287,7 @@ export default function App() {
                           <button 
                             key={type}
                             onClick={() => setSelectedType(type === selectedType ? null : type)}
-                            className={`h-9 px-3 text-xs uppercase font-mono tracking-wider rounded-lg border transition-all inline-flex items-center justify-center ${selectedType === type ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent' : 'bg-hades-bg-main border-hades-border-light text-hades-text/60 hover:border-hades-text/30'}`}
+                            className={`h-9 px-3 text-xs uppercase font-mono tracking-wider rounded-lg border transition-all inline-flex items-center justify-center ${selectedType === type ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent shadow-[0_0_15px_-3px_rgba(255,189,1,0.2)]' : 'bg-hades-bg-dark/60 border-hades-border-light text-hades-text/60 hover:bg-hades-bg-dark hover:border-hades-text/30 hover:text-hades-text'}`}
                           >
                             {type}
                           </button>
@@ -295,17 +306,11 @@ export default function App() {
                       setIsOpen={setIsGodFilterOpen}
                     >
                       <div className="flex flex-wrap gap-2">
-                        <button 
-                          onClick={() => setSelectedGod(null)}
-                          className={`h-9 px-3 text-xs uppercase font-mono tracking-wider rounded-lg border transition-all inline-flex items-center justify-center ${!selectedGod ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent' : 'bg-hades-bg-main border-hades-border-light text-hades-text/60 hover:border-hades-text/30'}`}
-                        >
-                          All
-                        </button>
                         {gods.map(god => (
                           <button 
                             key={god}
                             onClick={() => setSelectedGod(god === selectedGod ? null : god)}
-                            className={`h-9 px-3 text-xs uppercase font-mono tracking-wider rounded-lg border transition-all flex items-center gap-2 ${selectedGod === god ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent' : 'bg-hades-bg-main border-hades-border-light text-hades-text/60 hover:border-hades-text/30'}`}
+                            className={`h-9 px-3 text-xs uppercase font-mono tracking-wider rounded-lg border transition-all flex items-center gap-2 ${selectedGod === god ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent shadow-[0_0_15px_-3px_rgba(255,189,1,0.2)]' : 'bg-hades-bg-dark/60 border-hades-border-light text-hades-text/60 hover:bg-hades-bg-dark hover:border-hades-text/30 hover:text-hades-text'}`}
                           >
                             <GodIcon god={god} className="w-4 h-4 filter brightness-110" />
                             {god}
@@ -332,7 +337,7 @@ export default function App() {
                             className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-all duration-300 relative group overflow-hidden ${
                               selectedElement === el 
                                 ? 'bg-hades-accent/30 border-hades-accent text-hades-accent shadow-[0_0_20px_-3px_rgba(255,189,1,0.4)] ring-1 ring-hades-accent/20 scale-110 z-10' 
-                                : 'bg-hades-bg-main border-hades-border-light text-hades-text/40 hover:border-hades-text hover:bg-hades-bg-light hover:scale-105'
+                                : 'bg-hades-bg-dark/60 border-hades-border-light text-hades-text/40 hover:border-hades-text hover:bg-hades-bg-dark hover:scale-105'
                             }`}
                             title={el}
                           >
@@ -405,7 +410,7 @@ export default function App() {
                       icon={slot.icon}
                       boon={coreBuild[slot.type]}
                       isActive={activeSlot === slot.type}
-                      onClick={() => setActiveSlot(slot.type)}
+                      onClick={() => toggleActiveSlot(slot.type)}
                       onRemove={() => removeBoon(slot.type)}
                       draggedBoon={draggedBoon}
                       isValid={draggedBoon ? isValidForSlot(draggedBoon, slot.type) : true}
@@ -434,7 +439,7 @@ export default function App() {
                     icon={Plus}
                     boon={null}
                     isActive={activeSlot === 'Support'}
-                    onClick={() => setActiveSlot('Support')}
+                    onClick={() => toggleActiveSlot('Support')}
                     onRemove={() => {}}
                     draggedBoon={draggedBoon}
                     isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Support') : true}
@@ -462,7 +467,7 @@ export default function App() {
                     icon={Plus}
                     boon={null}
                     isActive={activeSlot === 'LegendaryDuo'}
-                    onClick={() => setActiveSlot('LegendaryDuo')}
+                    onClick={() => toggleActiveSlot('LegendaryDuo')}
                     onRemove={() => {}}
                     draggedBoon={draggedBoon}
                     isValid={draggedBoon ? isValidForSlot(draggedBoon, 'LegendaryDuo') : true}
@@ -490,7 +495,7 @@ export default function App() {
                     icon={Plus}
                     boon={null}
                     isActive={activeSlot === 'Infusion'}
-                    onClick={() => setActiveSlot('Infusion')}
+                    onClick={() => toggleActiveSlot('Infusion')}
                     onRemove={() => {}}
                     draggedBoon={draggedBoon}
                     isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Infusion') : true}
@@ -525,17 +530,35 @@ function SimpleBoonCard({ boon }: any) {
   const godColor = GOD_COLORS[boon.gods[0]] || 'text-gray-200';
   return (
     <div className="p-4 rounded-xl border border-hades-accent/50 bg-hades-bg-light shadow-2xl">
-      <div className="flex items-center justify-between mb-2">
-        <h4 className={`text-sm font-bold tracking-wide uppercase italic ${godColor}`}>
-          {boon.name}
-        </h4>
-        <div className="flex items-center gap-2">
-          {boon.element && <ElementIcon element={boon.element} className={`w-4 h-4 ${ELEMENT_COLORS[boon.element]}`} />}
+      <div className="flex items-start gap-3 mb-2">
+        {boon.icon ? (
+          <div className="w-12 h-12 rounded-lg bg-hades-bg-dark border border-hades-border flex-shrink-0 p-1">
+            <img 
+              src={boon.icon} 
+              alt={boon.name} 
+              className="w-full h-full object-contain" 
+              referrerPolicy="no-referrer" 
+            />
+          </div>
+        ) : (
+          <div className="w-12 h-12 rounded-lg bg-hades-bg-dark border border-hades-border flex-shrink-0 flex items-center justify-center p-1">
+            <GodIcon god={boon.gods[0]} className="w-8 h-8 opacity-20" />
+          </div>
+        )}
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-1">
+            <h4 className={`text-sm font-bold tracking-wide uppercase italic ${godColor}`}>
+              {boon.name}
+            </h4>
+            <div className="flex items-center gap-2">
+              {boon.element && <ElementIcon element={boon.element} className={`w-4 h-4 ${ELEMENT_COLORS[boon.element]}`} />}
+            </div>
+          </div>
+          <p className="text-[11px] text-gray-300 leading-relaxed font-light line-clamp-2">
+            {boon.effect}
+          </p>
         </div>
       </div>
-      <p className="text-[11px] text-gray-300 leading-relaxed font-light line-clamp-2">
-        {boon.effect}
-      </p>
     </div>
   );
 }
@@ -565,21 +588,46 @@ function DraggableBoonListItem({ boon }: any) {
           : 'border-hades-border bg-hades-bg-main hover:bg-hades-bg-light hover:border-hades-accent/30'
       }`}
     >
-      <div className="flex items-center justify-between mb-2 pb-2 border-b border-hades-border/50">
-        <h4 className={`text-sm font-bold tracking-wide uppercase italic ${godColor}`}>
-          {boon.name}
-        </h4>
-        <div className="flex items-center gap-2">
-          {boon.element && <ElementIcon element={boon.element} className={`w-4 h-4 ${ELEMENT_COLORS[boon.element]}`} />}
-          <div className="flex items-center gap-2 px-2 py-1 rounded bg-hades-bg-dark/50 border border-hades-border-light group-hover:bg-hades-bg-dark transition-colors">
-            <GodIcon god={boon.gods[0]} className="w-4 h-4" />
-            <span className="text-[11px] font-mono tracking-tighter uppercase text-gray-400 group-hover:text-gray-200 transition-colors">
-              {boon.gods.join(' + ')}
-            </span>
+      <div className="flex items-start gap-4 mb-2 pb-2 border-b border-hades-border/50">
+        <div className="relative">
+          {boon.icon ? (
+            <div className="w-12 h-12 rounded-lg bg-hades-bg-dark border border-hades-border p-1 group-hover:border-hades-accent/30 transition-colors">
+              <img 
+                src={boon.icon} 
+                alt={boon.name} 
+                className="w-full h-full object-contain" 
+                referrerPolicy="no-referrer" 
+              />
+            </div>
+          ) : (
+            <div className="w-12 h-12 rounded-lg bg-hades-bg-dark border border-hades-border flex items-center justify-center p-1 group-hover:border-hades-accent/30 transition-colors">
+              <GodIcon god={boon.gods[0]} className="w-8 h-8 opacity-20" />
+            </div>
+          )}
+          {boon.element && (
+            <div className="absolute -bottom-1 -right-1 bg-hades-bg-dark rounded-full p-0.5 border border-hades-border">
+              <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
+            </div>
+          )}
+        </div>
+        
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-1">
+            <h4 className={`text-sm font-bold tracking-wide uppercase italic truncate ${godColor}`}>
+              {boon.name}
+            </h4>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 px-1.5 py-0.5 rounded bg-hades-bg-dark/50 border border-hades-border-light group-hover:bg-hades-bg-dark transition-colors">
+              <GodIcon god={boon.gods[0]} className="w-3 h-3" />
+              <span className="text-[9px] font-mono tracking-tighter uppercase text-gray-400 group-hover:text-gray-200 transition-colors">
+                {boon.gods.join(' + ')}
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <p className="text-[11px] text-gray-300 leading-relaxed font-light line-clamp-2 mt-2">
+      <p className="text-[11px] text-gray-300 leading-relaxed font-light line-clamp-2">
         {boon.effect}
       </p>
       <div className="mt-2 flex items-center justify-between">
@@ -653,26 +701,44 @@ function DroppableSlotCard({ id, slot, name, icon, boon, isActive, onClick, onRe
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex-1"
+            className="flex-1 flex flex-col"
           >
-            <h3 className={`text-lg font-bold mb-1 ${GOD_COLORS[boon.gods[0]] || 'text-gray-200'}`}>
-              {boon.name}
-            </h3>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="flex items-center gap-2 px-2 py-1 rounded bg-hades-bg-main border border-hades-border-light">
-                <GodIcon god={boon.gods[0]} className="w-4 h-4" />
-                <span className="text-[11px] text-gray-400 uppercase tracking-tighter">
-                  {boon.gods.join(' + ')}
-                </span>
-              </div>
-              {boon.element && (
-                <div className="flex items-center gap-1">
-                  <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
-                  <span className={`text-[10px] uppercase font-mono ${ELEMENT_COLORS[boon.element]}`}>{boon.element}</span>
+            <div className="flex items-start gap-4 mb-3">
+              {boon.icon ? (
+                <div className="w-16 h-16 rounded-xl bg-hades-bg-main border border-hades-border p-1.5 flex-shrink-0 shadow-lg">
+                  <img 
+                    src={boon.icon} 
+                    alt={boon.name} 
+                    className="w-full h-full object-contain" 
+                    referrerPolicy="no-referrer" 
+                  />
+                </div>
+              ) : (
+                <div className="w-16 h-16 rounded-xl bg-hades-bg-main border border-hades-border flex items-center justify-center p-1.5 flex-shrink-0 shadow-lg">
+                  <GodIcon god={boon.gods[0]} className="w-10 h-10 opacity-20" />
                 </div>
               )}
+              <div className="flex-1 min-w-0">
+                <h3 className={`text-lg font-bold mb-1 leading-tight ${GOD_COLORS[boon.gods[0]] || 'text-gray-200'}`}>
+                  {boon.name}
+                </h3>
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex items-center gap-2 px-2 py-0.5 rounded bg-hades-bg-main border border-hades-border-light">
+                    <GodIcon god={boon.gods[0]} className="w-3.5 h-3.5" />
+                    <span className="text-[10px] text-gray-400 uppercase tracking-tighter">
+                      {boon.gods.join(' + ')}
+                    </span>
+                  </div>
+                  {boon.element && (
+                    <div className="flex items-center gap-1 bg-hades-bg-main px-2 py-0.5 rounded border border-hades-border-light">
+                      <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
+                      <span className={`text-[10px] uppercase font-mono ${ELEMENT_COLORS[boon.element]}`}>{boon.element}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-            <p className="text-xs text-gray-300 line-clamp-2 italic leading-relaxed">
+            <p className="text-xs text-gray-300 italic leading-relaxed line-clamp-3">
               {boon.effect}
             </p>
           </motion.div>
@@ -761,19 +827,29 @@ function SidebarCollapsibleSection({
   children: React.ReactNode; 
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`flex flex-col rounded-xl border transition-all duration-300 ${
+      isOpen 
+        ? 'bg-hades-bg-main border-hades-border/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]' 
+        : 'bg-transparent border-transparent hover:bg-hades-bg-main/20 hover:border-hades-border/30'
+    }`}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full group focus:outline-none"
+        className="flex items-center justify-between w-full group focus:outline-none p-3"
       >
-        <span className="text-[10px] uppercase font-mono tracking-widest text-hades-text/60 font-bold group-hover:text-hades-text transition-colors">
-          {title}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className={`text-[10px] uppercase font-mono tracking-[0.2em] transition-colors ${
+            isOpen ? 'text-hades-accent font-bold' : 'text-hades-text/50 font-medium group-hover:text-hades-text/80'
+          }`}>
+            {title}
+          </span>
+        </div>
         <motion.div
           animate={{ rotate: isOpen ? 0 : -90 }}
-          className="text-hades-text/30 group-hover:text-hades-accent transition-colors"
+          className={`transition-colors ${
+            isOpen ? 'text-hades-accent' : 'text-hades-text/20 group-hover:text-hades-text/40'
+          }`}
         >
-          <ChevronDown className="w-3 h-3" />
+          <ChevronDown className="w-3.5 h-3.5" />
         </motion.div>
       </button>
       <AnimatePresence initial={false}>
@@ -782,10 +858,10 @@ function SidebarCollapsibleSection({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
             className="overflow-hidden"
           >
-            <div className="pt-2">
+            <div className="px-3 pb-3 pt-1">
               {children}
             </div>
           </motion.div>
@@ -840,26 +916,44 @@ function BoonDisplayCard({ boon, onRemove }: any) {
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex-1"
+          className="flex-1 flex flex-col"
         >
-          <h3 className={`text-lg font-bold mb-1 ${GOD_COLORS[boon.gods[0]] || 'text-gray-200'}`}>
-            {boon.name}
-          </h3>
-          <div className="flex items-center gap-2 mb-2">
-            <div className="flex items-center gap-2 px-2 py-1 rounded bg-hades-bg-main border border-hades-border-light">
-              <GodIcon god={boon.gods[0]} className="w-4 h-4" />
-              <span className="text-[11px] text-gray-400 uppercase tracking-tighter">
-                {boon.gods.join(' + ')}
-              </span>
-            </div>
-            {boon.element && (
-              <div className="flex items-center gap-1">
-                <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
-                <span className={`text-[10px] uppercase font-mono ${ELEMENT_COLORS[boon.element]}`}>{boon.element}</span>
+          <div className="flex items-start gap-4 mb-3">
+            {boon.icon ? (
+              <div className="w-16 h-16 rounded-xl bg-hades-bg-main border border-hades-border p-1.5 flex-shrink-0 shadow-lg">
+                <img 
+                  src={boon.icon} 
+                  alt={boon.name} 
+                  className="w-full h-full object-contain" 
+                  referrerPolicy="no-referrer" 
+                />
+              </div>
+            ) : (
+              <div className="w-16 h-16 rounded-xl bg-hades-bg-main border border-hades-border flex items-center justify-center p-1.5 flex-shrink-0 shadow-lg">
+                <GodIcon god={boon.gods[0]} className="w-10 h-10 opacity-20" />
               </div>
             )}
+            <div className="flex-1 min-w-0">
+              <h3 className={`text-lg font-bold mb-1 leading-tight ${GOD_COLORS[boon.gods[0]] || 'text-gray-200'}`}>
+                {boon.name}
+              </h3>
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-2 px-2 py-0.5 rounded bg-hades-bg-main border border-hades-border-light">
+                  <GodIcon god={boon.gods[0]} className="w-3.5 h-3.5" />
+                  <span className="text-[10px] text-gray-400 uppercase tracking-tighter">
+                    {boon.gods.join(' + ')}
+                  </span>
+                </div>
+                {boon.element && (
+                  <div className="flex items-center gap-1 bg-hades-bg-main px-2 py-0.5 rounded border border-hades-border-light">
+                    <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
+                    <span className={`text-[10px] uppercase font-mono ${ELEMENT_COLORS[boon.element]}`}>{boon.element}</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-          <p className="text-xs text-gray-200 line-clamp-3 italic leading-relaxed">
+          <p className="text-xs text-gray-200 italic leading-relaxed line-clamp-4">
             {boon.effect}
           </p>
         </motion.div>
