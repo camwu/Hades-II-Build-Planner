@@ -378,7 +378,7 @@ export default function App() {
 
           {/* Right: Build View */}
           <section className="flex-1 overflow-y-auto p-8 custom-scrollbar relative">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-7xl mx-auto">
               <div className="flex items-center justify-between mb-12">
                 <h2 className="text-2xl font-light tracking-[0.2em] text-gray-300 flex items-center gap-3 uppercase">
                   Current <span className="font-bold text-hades-accent">Build</span>
@@ -396,115 +396,123 @@ export default function App() {
                 </button>
               </div>
 
-              <CollapsibleSection
-                title={<>Core <span className="text-hades-accent/80">Boons</span></>}
-                icon={Swords}
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {CORE_SLOTS.map((slot) => (
-                    <DroppableSlotCard 
-                      key={slot.type}
-                      id={slot.type}
-                      slot={slot.type}
-                      name={slot.name}
-                      icon={slot.icon}
-                      boon={coreBuild[slot.type]}
-                      isActive={activeSlot === slot.type}
-                      onClick={() => toggleActiveSlot(slot.type)}
-                      onRemove={() => removeBoon(slot.type)}
-                      draggedBoon={draggedBoon}
-                      isValid={draggedBoon ? isValidForSlot(draggedBoon, slot.type) : true}
-                    />
-                  ))}
-                </div>
-              </CollapsibleSection>
+              <div className="flex flex-col lg:flex-row gap-12 items-start">
+                {/* Left Side: Core Boon Slots (One Column) */}
+                <aside className="w-full lg:w-[320px] lg:sticky lg:top-0 space-y-6">
+                  <div className="flex items-center gap-4 mb-8">
+                    <Swords className="w-6 h-6 text-hades-accent" />
+                    <h3 className="text-base font-mono uppercase tracking-[0.3em] text-gray-300 font-bold">
+                      Core <span className="text-hades-accent/80">Slots</span>
+                    </h3>
+                    <div className="h-px flex-1 bg-hades-accent/20"></div>
+                  </div>
+                  
+                  <div className="flex flex-col gap-8">
+                    {CORE_SLOTS.map((slot) => (
+                      <CoreSlotRow 
+                        key={slot.type}
+                        slot={slot}
+                        boon={coreBuild[slot.type]}
+                        isActive={activeSlot === slot.type}
+                        onClick={() => toggleActiveSlot(slot.type)}
+                        onRemove={() => removeBoon(slot.type)}
+                        draggedBoon={draggedBoon}
+                        isValid={draggedBoon ? isValidForSlot(draggedBoon, slot.type) : true}
+                      />
+                    ))}
+                  </div>
+                </aside>
 
-              <CollapsibleSection
-                title={<>Support <span className="text-hades-accent/80">Boons</span></>}
-                icon={Shield}
-                count={additionalBoons.filter(b => b.type === 'Non-Core').length}
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {additionalBoons.map((boon, idx) => boon.type === 'Non-Core' && (
-                    <BoonDisplayCard 
-                      key={`${boon.id}-${idx}`}
-                      boon={boon} 
-                      onRemove={() => removeAdditionalBoon(boon, idx)}
-                    />
-                  ))}
-                  <DroppableSlotCard 
-                    id="Support"
-                    slot="Support"
-                    name="Support Slot"
-                    icon={Plus}
-                    boon={null}
-                    isActive={activeSlot === 'Support'}
-                    onClick={() => toggleActiveSlot('Support')}
-                    onRemove={() => {}}
-                    draggedBoon={draggedBoon}
-                    isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Support') : true}
-                  />
-                </div>
-              </CollapsibleSection>
+                {/* Right Side: All Other Boons */}
+                <div className="flex-1 w-full flex flex-col gap-12">
+                  <CollapsibleSection
+                    title={<>Support <span className="text-hades-accent/80">Boons</span></>}
+                    icon={Shield}
+                    count={additionalBoons.filter(b => b.type === 'Non-Core').length}
+                  >
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                      {additionalBoons.map((boon, idx) => boon.type === 'Non-Core' && (
+                        <BoonDisplayCard 
+                          key={`${boon.id}-${idx}`}
+                          boon={boon} 
+                          onRemove={() => removeAdditionalBoon(boon, idx)}
+                        />
+                      ))}
+                      <DroppableSlotCard 
+                        id="Support"
+                        slot="Support"
+                        name="Support Slot"
+                        icon={Plus}
+                        boon={null}
+                        isActive={activeSlot === 'Support'}
+                        onClick={() => toggleActiveSlot('Support')}
+                        onRemove={() => {}}
+                        draggedBoon={draggedBoon}
+                        isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Support') : true}
+                      />
+                    </div>
+                  </CollapsibleSection>
 
-              <CollapsibleSection
-                title={<>Legendary & Duo <span className="text-hades-accent/80">Boons</span></>}
-                icon={Sparkles}
-                count={additionalBoons.filter(b => b.type === 'Legendary' || b.type === 'Duo').length}
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {additionalBoons.map((boon, idx) => (boon.type === 'Legendary' || boon.type === 'Duo') && (
-                    <BoonDisplayCard 
-                      key={`${boon.id}-${idx}`}
-                      boon={boon} 
-                      onRemove={() => removeAdditionalBoon(boon, idx)}
-                    />
-                  ))}
-                  <DroppableSlotCard 
-                    id="LegendaryDuo"
-                    slot="LegendaryDuo"
-                    name="Legendary/Duo Slot"
-                    icon={Plus}
-                    boon={null}
-                    isActive={activeSlot === 'LegendaryDuo'}
-                    onClick={() => toggleActiveSlot('LegendaryDuo')}
-                    onRemove={() => {}}
-                    draggedBoon={draggedBoon}
-                    isValid={draggedBoon ? isValidForSlot(draggedBoon, 'LegendaryDuo') : true}
-                  />
-                </div>
-              </CollapsibleSection>
+                  <CollapsibleSection
+                    title={<>Legendary & Duo <span className="text-hades-accent/80">Boons</span></>}
+                    icon={Sparkles}
+                    count={additionalBoons.filter(b => b.type === 'Legendary' || b.type === 'Duo').length}
+                  >
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                      {additionalBoons.map((boon, idx) => (boon.type === 'Legendary' || boon.type === 'Duo') && (
+                        <BoonDisplayCard 
+                          key={`${boon.id}-${idx}`}
+                          boon={boon} 
+                          onRemove={() => removeAdditionalBoon(boon, idx)}
+                        />
+                      ))}
+                      <DroppableSlotCard 
+                        id="LegendaryDuo"
+                        slot="LegendaryDuo"
+                        name="Legendary/Duo Slot"
+                        icon={Plus}
+                        boon={null}
+                        isActive={activeSlot === 'LegendaryDuo'}
+                        onClick={() => toggleActiveSlot('LegendaryDuo')}
+                        onRemove={() => {}}
+                        draggedBoon={draggedBoon}
+                        isValid={draggedBoon ? isValidForSlot(draggedBoon, 'LegendaryDuo') : true}
+                      />
+                    </div>
+                  </CollapsibleSection>
 
-              <CollapsibleSection
-                title={<>Infusion <span className="text-hades-accent/80">Boons</span></>}
-                icon={Zap}
-                count={additionalBoons.filter(b => b.type === 'Infusion').length}
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {additionalBoons.map((boon, idx) => boon.type === 'Infusion' && (
-                    <BoonDisplayCard 
-                      key={`${boon.id}-${idx}`}
-                      boon={boon} 
-                      onRemove={() => removeAdditionalBoon(boon, idx)}
-                    />
-                  ))}
-                  <DroppableSlotCard 
-                    id="Infusion"
-                    slot="Infusion"
-                    name="Infusion Slot"
-                    icon={Plus}
-                    boon={null}
-                    isActive={activeSlot === 'Infusion'}
-                    onClick={() => toggleActiveSlot('Infusion')}
-                    onRemove={() => {}}
-                    draggedBoon={draggedBoon}
-                    isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Infusion') : true}
-                  />
+                  <CollapsibleSection
+                    title={<>Infusion <span className="text-hades-accent/80">Boons</span></>}
+                    icon={Zap}
+                    count={additionalBoons.filter(b => b.type === 'Infusion').length}
+                  >
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                      {additionalBoons.map((boon, idx) => boon.type === 'Infusion' && (
+                        <BoonDisplayCard 
+                          key={`${boon.id}-${idx}`}
+                          boon={boon} 
+                          onRemove={() => removeAdditionalBoon(boon, idx)}
+                        />
+                      ))}
+                      <DroppableSlotCard 
+                        id="Infusion"
+                        slot="Infusion"
+                        name="Infusion Slot"
+                        icon={Plus}
+                        boon={null}
+                        isActive={activeSlot === 'Infusion'}
+                        onClick={() => toggleActiveSlot('Infusion')}
+                        onRemove={() => {}}
+                        draggedBoon={draggedBoon}
+                        isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Infusion') : true}
+                      />
+                    </div>
+                  </CollapsibleSection>
+
+                  {/* Elements Summary at the bottom of the right section */}
+                  <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
                 </div>
-              </CollapsibleSection>
-              
-              {/* Elements Summary */}
-              <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
+              </div>
             </div>
           </section>
         </main>
@@ -634,6 +642,132 @@ function DraggableBoonListItem({ boon }: any) {
          <span className="text-[8px] font-mono text-hades-accent/50 uppercase tracking-widest">{boon.type}</span>
       </div>
     </motion.div>
+  );
+}
+
+function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isValid }: any) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: slot.type,
+  });
+
+  const shouldHighlight = isOver && draggedBoon && isValid;
+  const shouldDim = draggedBoon && !isValid;
+
+  const renderSlotIcon = () => {
+    if (boon) {
+      return (
+        <>
+          <motion.img 
+            key={boon.id}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            src={boon.icon} 
+            alt={boon.name} 
+            className="absolute inset-0 w-full h-full object-cover" 
+            referrerPolicy="no-referrer" 
+          />
+          {/* Overlapping Icons like the game */}
+          <div className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark border border-white/20 shadow-xl flex items-center justify-center p-1 z-20">
+            <GodIcon god={boon.gods[0]} className="w-full h-full" />
+          </div>
+          {boon.element && (
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-hades-bg-dark border border-white/10 shadow-xl flex items-center justify-center p-1 z-20">
+              <ElementIcon element={boon.element} className="w-full h-full" />
+            </div>
+          )}
+        </>
+      );
+    }
+    
+    if (typeof slot.icon === 'string') {
+      return (
+        <img 
+          src={slot.icon} 
+          alt={slot.name} 
+          className="absolute inset-0 w-full h-full object-cover filter brightness-110 contrast-125 opacity-60 group-hover:opacity-90 transition-all duration-300" 
+          referrerPolicy="no-referrer" 
+        />
+      );
+    }
+    const IconComponent = slot.icon;
+    return (
+      <div className="absolute inset-0 flex items-center justify-center p-4">
+        <IconComponent className="w-full h-full opacity-50 group-hover:opacity-80 transition-all duration-300 text-gray-400" />
+      </div>
+    );
+  };
+
+  return (
+    <div className={`group flex flex-col gap-2 ${shouldDim ? 'opacity-20 grayscale brightness-50 pointer-events-none scale-95' : ''}`}>
+      <div className="flex items-center justify-between px-1">
+        <span className={`text-[11px] font-mono tracking-[0.3em] uppercase font-bold transition-colors ${isActive ? 'text-hades-accent' : 'text-gray-500 group-hover:text-gray-300'}`}>
+          {slot.name}
+        </span>
+        {boon && (
+          <span className="text-[10px] font-bold text-hades-accent/40 font-mono tracking-tighter">LV.1</span>
+        )}
+      </div>
+      
+      <div 
+        ref={setNodeRef}
+        onClick={onClick}
+        className={`relative flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
+          shouldHighlight 
+            ? 'bg-hades-accent/20 border-hades-accent border-solid shadow-[0_0_30px_rgba(255,189,1,0.2)] scale-[1.02]' 
+            : boon 
+              ? 'bg-hades-panel border-hades-border ring-1 ring-white/5 shadow-2xl' 
+              : isActive
+                ? 'bg-hades-accent/5 border-hades-accent/50 border-solid translate-x-1'
+                : 'bg-hades-bg-dark border-hades-border-light hover:border-hades-accent/40 border-solid hover:bg-hades-bg-dark/60'
+        }`}
+      >
+        {/* Icon Container */}
+        <div className={`relative w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden ${boon ? 'ring-1 ring-white/10' : ''}`}>
+          {renderSlotIcon()}
+        </div>
+
+        {/* Content Area */}
+        <div className="flex-1 min-w-0 py-1">
+          {boon ? (
+            <motion.div 
+              initial={{ x: -10, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              className="flex flex-col h-full"
+            >
+              <div className="flex items-center justify-between mb-1">
+                <h4 className={`text-sm font-black uppercase italic tracking-wider ${GOD_COLORS[boon.gods[0]] || 'text-gray-200'}`}>
+                  {boon.name}
+                </h4>
+                <div className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] opacity-80">
+                  {boon.gods[0]}
+                </div>
+              </div>
+              <p className="text-[11px] text-gray-400 leading-snug pr-8 line-clamp-2 font-medium">
+                {boon.effect}
+              </p>
+              
+              <button 
+                onClick={(e) => { e.stopPropagation(); onRemove(); }}
+                className="absolute right-2 top-2 p-1.5 hover:text-hades-red text-gray-600 hover:bg-hades-red/10 rounded transition-all"
+                title="Remove Boon"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            </motion.div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <Plus className={`w-5 h-5 transition-transform duration-500 ${isActive ? 'rotate-90 text-hades-accent scale-125' : 'text-gray-800'}`} />
+              <div className="flex flex-col">
+                <span className={`text-[10px] font-mono uppercase tracking-widest ${isActive ? 'text-hades-accent font-bold' : 'text-gray-600'}`}>
+                  {isActive ? 'Awaiting Selection' : 'Slot Empty'}
+                </span>
+                <span className="text-[9px] text-gray-700 font-medium">Click to choose a {slot.name} Boon</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
