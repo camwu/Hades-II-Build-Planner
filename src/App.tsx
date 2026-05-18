@@ -84,6 +84,15 @@ const getBoonColor = (type: BoonType | string) => {
   }
 };
 
+const getBoonBorderColor = (type: BoonType | string) => {
+  switch (type) {
+    case 'Infusion': return 'border-hades-infusion/70';
+    case 'Duo': return 'border-hades-duo/70';
+    case 'Legendary': return 'border-hades-legendary/70';
+    default: return 'border-[#26262f]';
+  }
+};
+
 export default function App() {
   const [coreBuild, setCoreBuild] = useState<Record<string, Boon | null>>({
     Attack: null,
@@ -631,84 +640,19 @@ export default function App() {
                 </aside>
 
                 {/* Right Side: Reorganized Sections */}
-                <div className="flex-1 w-full flex flex-col gap-16 lg:pl-8 lg:border-l lg:border-white/5">
-                  {/* Section 1: Support Boons */}
+                <div className="flex-1 w-full lg:pl-16 lg:border-l lg:border-white/5">
                   <div className="w-full">
-                    <div className="flex items-center gap-4 mb-6">
-                      <Shield className="w-5 h-5 text-hades-accent" />
-                      <h3 className="text-sm font-mono uppercase text-gray-400 font-bold tracking-widest italic">
-                        Support <span className="text-hades-accent/70 not-italic">Boons</span>
-                      </h3>
-                      <div className="h-px flex-1 bg-white/5"></div>
-                    </div>
-                    <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
-                      {additionalBoons.map((boon, idx) => boon.type === 'Non-Core' && (
-                        <BoonDisplayCard 
-                          key={`${boon.id}-${idx}`}
-                          boon={boon} 
-                          onRemove={() => removeAdditionalBoon(boon, idx)}
-                        />
-                      ))}
-                      <DroppableSlotCard 
-                        id="Support"
-                        slot="Support"
-                        name="Support Slot"
-                        icon={Plus}
-                        boon={null}
-                        isActive={activeSlot === 'Support'}
-                        onClick={() => toggleActiveSlot('Support')}
-                        onRemove={() => {}}
-                        draggedBoon={draggedBoon}
-                        isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Support') : true}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Section 2: Legendary & Duo */}
-                  <div className="w-full">
-                    <div className="flex items-center gap-4 mb-6">
+                    {/* Header for Non-Core Boons - Aligned with Core header rhythm */}
+                    <div className="flex flex-col items-start gap-2 mb-8 w-full" title="Non-Core Boons">
                       <Sparkles className="w-5 h-5 text-hades-accent" />
-                      <h3 className="text-sm font-mono uppercase text-gray-400 font-bold tracking-widest italic">
-                        Legendary & Duo <span className="text-hades-accent/70 not-italic">Boons</span>
+                      <h3 className="text-[10px] font-mono uppercase text-hades-accent font-black tracking-[0.2em]">
+                        NON-CORE
                       </h3>
-                      <div className="h-px flex-1 bg-white/5"></div>
-                    </div>
-                    <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
-                      {additionalBoons.map((boon, idx) => (boon.type === 'Legendary' || boon.type === 'Duo') && (
-                        <BoonDisplayCard 
-                          key={`${boon.id}-${idx}`}
-                          boon={boon} 
-                          onRemove={() => removeAdditionalBoon(boon, idx)}
-                        />
-                      ))}
-                      <DroppableSlotCard 
-                        id="LegendaryDuo"
-                        slot="LegendaryDuo"
-                        name="Legendary/Duo Slot"
-                        icon={Plus}
-                        boon={null}
-                        isActive={activeSlot === 'LegendaryDuo'}
-                        onClick={() => toggleActiveSlot('LegendaryDuo')}
-                        onRemove={() => {}}
-                        draggedBoon={draggedBoon}
-                        isValid={draggedBoon ? isValidForSlot(draggedBoon, 'LegendaryDuo') : true}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Section 3: Infusion & Elemental summary */}
-                  <div className="w-full">
-                    <div className="flex items-center gap-4 mb-6">
-                      <Zap className="w-5 h-5 text-hades-accent" />
-                      <h3 className="text-sm font-mono uppercase text-gray-400 font-bold tracking-widest italic whitespace-nowrap">
-                        Infusion <span className="text-hades-accent/70 not-italic">Boons</span>
-                      </h3>
-                      <div className="h-px flex-1 bg-white/5"></div>
                     </div>
 
-                    {/* Integrated Elemental Grid */}
-                    <div className="flex flex-col gap-8">
-                      <div className="bg-hades-bg-dark/40 rounded-2xl p-6 border border-white/5">
+                    <div className="flex flex-col gap-12">
+                      {/* Integrated Elemental Grid (Info Panel) */}
+                      <div className="bg-hades-bg-dark/20 rounded-2xl p-6 border border-white/5">
                         <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                           <Droplets className="w-3 h-3" />
                           Elemental Resonance
@@ -716,19 +660,49 @@ export default function App() {
                         <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
                       </div>
 
-                      <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
-                        {additionalBoons.map((boon, idx) => boon.type === 'Infusion' && (
+                      {/* Unified Boons Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-x-8 gap-y-3">
+                        {/* Selected Boons */}
+                        {additionalBoons.map((boon, idx) => (
                           <BoonDisplayCard 
                             key={`${boon.id}-${idx}`}
                             boon={boon} 
                             onRemove={() => removeAdditionalBoon(boon, idx)}
                           />
                         ))}
+
+                        {/* Slots - Arranged to potentially occupy the grid starts */}
+                        <DroppableSlotCard 
+                          id="Support"
+                          slot="Support"
+                          name="Support Slot"
+                          icon={Shield}
+                          boon={null}
+                          isActive={activeSlot === 'Support'}
+                          onClick={() => toggleActiveSlot('Support')}
+                          onRemove={() => {}}
+                          draggedBoon={draggedBoon}
+                          isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Support') : true}
+                        />
+                        
+                        <DroppableSlotCard 
+                          id="LegendaryDuo"
+                          slot="LegendaryDuo"
+                          name="Leg./Duo Slot"
+                          icon={Sparkles}
+                          boon={null}
+                          isActive={activeSlot === 'LegendaryDuo'}
+                          onClick={() => toggleActiveSlot('LegendaryDuo')}
+                          onRemove={() => {}}
+                          draggedBoon={draggedBoon}
+                          isValid={draggedBoon ? isValidForSlot(draggedBoon, 'LegendaryDuo') : true}
+                        />
+
                         <DroppableSlotCard 
                           id="Infusion"
                           slot="Infusion"
                           name="Infusion Slot"
-                          icon={Plus}
+                          icon={Zap}
                           boon={null}
                           isActive={activeSlot === 'Infusion'}
                           onClick={() => toggleActiveSlot('Infusion')}
@@ -740,6 +714,7 @@ export default function App() {
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </section>
@@ -779,43 +754,51 @@ export default function App() {
 }
 
 function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; isOverlay?: boolean }) {
+  const borderColor = isOverlay ? 'border-hades-accent' : getBoonBorderColor(boon.type);
+  const rarityGlow = boon.type === 'Legendary' ? 'shadow-[0_0_15px_rgba(255,180,0,0.4)]' : 
+                    boon.type === 'Duo' ? 'shadow-[0_0_15px_rgba(150,255,100,0.4)]' : '';
+  
   return (
-    <div className={`p-4 rounded-xl border transition-all duration-75 transform-gpu ${
-      isOverlay 
-        ? 'border-hades-accent shadow-2xl bg-hades-bg-light scale-[1.02]' 
-        : 'border-hades-border bg-hades-bg-main'
+    <div className={`p-3 rounded-xl transition-all duration-75 transform-gpu ${
+      isOverlay ? 'bg-hades-bg-light shadow-2xl scale-[1.02] z-50' : 'bg-hades-bg-dark/40 border border-white/[0.03]'
     }`}>
-      <div className="flex items-start gap-4 mb-2 pb-2 border-b border-hades-border/30 transform-gpu">
-        <div className="relative">
+      <div className="flex items-start gap-4 transform-gpu">
+        <div className={`relative w-14 h-14 flex-shrink-0 rounded-lg transition-all duration-100 ${rarityGlow} ${
+          isOverlay ? 'bg-white' : 'bg-hades-bg-dark'
+        }`}>
           {boon.icon ? (
-            <div className="w-14 h-14 rounded-lg bg-hades-bg-dark border border-hades-border p-1 group-hover:border-hades-accent/30 transition-colors duration-100">
+            <div className="w-full h-full relative overflow-hidden rounded-lg">
               <img 
                 src={boon.icon} 
                 alt={boon.name} 
-                className="w-full h-full object-contain" 
+                className="w-full h-full object-cover scale-[1.12]" 
                 referrerPolicy="no-referrer" 
               />
+              {/* Tight frame for all boons */}
+              <div className={`absolute inset-0 border-2 ${borderColor} rounded-lg pointer-events-none z-10`} />
             </div>
           ) : (
-            <div className="w-14 h-14 rounded-lg bg-hades-bg-dark border border-hades-border flex items-center justify-center p-1 group-hover:border-hades-accent/30 transition-colors duration-100">
-              <GodIcon god={boon.gods[0]} className="w-10 h-10 opacity-20" />
+            <div className="w-full h-full flex items-center justify-center p-1 border-2 border-[#26262f] rounded-lg opacity-40">
+              <GodIcon god={boon.gods[0]} className="w-10 h-10" />
             </div>
           )}
           {boon.element && (
-            <div className="absolute -bottom-1 -right-1 bg-hades-bg-dark rounded-full p-0.5 border border-hades-border shadow-lg transition-colors duration-100">
-              <ElementIcon element={boon.element} className={`w-3.5 h-3.5 ${ELEMENT_COLORS[boon.element]}`} />
+            <div className="absolute -bottom-1 -right-1 bg-hades-bg-dark rounded-full p-0.5 border border-hades-border shadow-lg z-20">
+              <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
             </div>
           )}
         </div>
         
-        <div className="flex-1 min-w-0">
-          <h4 className={`text-sm font-bold uppercase truncate mb-1 ${getBoonColor(boon.type)}`}>
-            {boon.name}
-          </h4>
-          <div className="flex items-center gap-4">
+        <div className="flex-1 min-w-0 py-0.5">
+          <div className="flex items-center justify-between mb-0.5">
+            <h4 className={`text-sm font-bold uppercase truncate ${getBoonColor(boon.type)}`}>
+              {boon.name}
+            </h4>
+          </div>
+          <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <GodIcon god={boon.gods[0]} className="w-3 h-3" />
-              <span className="text-[10px] font-mono text-gray-400 uppercase leading-none">
+              <span className="text-[10px] font-mono text-gray-500 uppercase leading-none">
                 {boon.gods[0]}
               </span>
             </div>
@@ -827,7 +810,7 @@ function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; isOverlay
           </div>
         </div>
       </div>
-      <p className="text-[11px] text-gray-300 leading-relaxed font-light line-clamp-2 min-h-[2.4em]">
+      <p className="text-[11px] text-gray-400 leading-relaxed font-light line-clamp-2 mt-2">
         {boon.effect}
       </p>
     </div>
@@ -883,29 +866,32 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
 
   const renderSlotIcon = () => {
     if (boon) {
+      const rarityGlow = boon.type === 'Legendary' ? 'shadow-[0_0_20px_rgba(255,180,0,0.5)]' : 
+                        boon.type === 'Duo' ? 'shadow-[0_0_20px_rgba(150,255,100,0.5)]' : '';
+      
       return (
-        <>
-          <div className="absolute inset-0">
-            <motion.img 
-              key={boon.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              src={boon.icon} 
-              alt={boon.name} 
-              className="w-full h-full object-contain" 
-              referrerPolicy="no-referrer" 
-            />
-          </div>
-          {/* Overlapping Icons like the game - scaled up slightly and adjusted for visibility */}
-          <div className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 group-hover:border-white/20 transition-colors">
-            <GodIcon god={boon.gods[0]} className="w-full h-full transition-all group-hover:brightness-125" />
+        <div className={`absolute inset-0 rounded-2xl overflow-hidden ${rarityGlow}`}>
+          <motion.img 
+            key={boon.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            src={boon.icon} 
+            alt={boon.name} 
+            className="w-full h-full object-cover scale-[1.1]" 
+            referrerPolicy="no-referrer" 
+          />
+          {/* Overlapping Icons */}
+          <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
+            <GodIcon god={boon.gods[0]} className="w-full h-full" />
           </div>
           {boon.element && (
-            <div className="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 group-hover:border-white/10 transition-colors">
-              <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]} transition-all group-hover:brightness-125`} />
+            <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
+              <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
             </div>
           )}
-        </>
+          {/* Rarity Border - Tightly matched to frame */}
+          <div className={`absolute inset-0 border-2 ${getBoonBorderColor(boon.type)} rounded-2xl pointer-events-none z-10`} />
+        </div>
       );
     }
     
@@ -914,14 +900,14 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
         <img 
           src={slot.icon} 
           alt={slot.name} 
-          className="absolute inset-0 w-full h-full object-cover filter brightness-110 contrast-125 opacity-70 group-hover:opacity-100 transition-all duration-200" 
+          className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-200" 
           referrerPolicy="no-referrer" 
         />
       );
     }
     const IconComponent = slot.icon;
     return (
-      <div className="absolute inset-0 flex items-center justify-center p-5">
+      <div className="absolute inset-0 flex items-center justify-center p-5 border-2 border-[#26262f] rounded-2xl">
         <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
       </div>
     );
@@ -940,20 +926,12 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
           onClick={onClick}
           initial={false}
           animate={{ 
-            width: isExpanded ? '380px' : '88px',
-            height: isExpanded ? 'auto' : '88px'
+            width: isExpanded ? '380px' : '84px',
+            height: isExpanded ? 'auto' : '84px'
           }}
           transition={{ duration: 0.1, ease: "easeOut" }}
-          className={`relative flex items-start gap-4 p-1 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-            shouldHighlight 
-              ? 'bg-hades-accent/20 border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
-              : isPotentialTarget
-                ? 'bg-hades-accent/10 border-hades-accent/40 border-dashed shadow-[0_0_25px_rgba(16,185,129,0.25)] animate-pulse z-40'
-                : isActive
-                  ? 'bg-hades-accent/5 border-hades-accent border-solid z-50'
-                  : isExpanded
-                    ? 'bg-hades-bg-dark/60 border-white/10 shadow-2xl'
-                    : 'bg-transparent border-transparent shadow-none'
+          className={`relative flex items-start gap-4 cursor-pointer transition-all duration-300 ${
+            isExpanded ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
           }`}
         >
           {/* Background masking for unfurled state */}
@@ -964,14 +942,23 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.1 }}
-                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-xl z-[-1]" 
+                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5" 
               />
             )}
           </AnimatePresence>
-
-          {/* Icon Container - Size match */}
-          <div className="relative w-[80px] h-[80px] flex-shrink-0 flex items-center justify-center">
-            {renderSlotIcon()}
+          
+          <div className={`relative w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center rounded-2xl transition-all duration-300 ${
+            shouldHighlight 
+              ? 'bg-hades-accent/20 border-2 border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
+              : isPotentialTarget
+                ? 'bg-hades-accent/10 border-2 border-hades-accent/40 border-dashed animate-pulse z-40'
+                : isActive
+                  ? 'bg-hades-accent/5 border-2 border-hades-accent border-solid z-50'
+                  : 'border-0'
+          }`}>
+            <div className="w-full h-full relative">
+              {renderSlotIcon()}
+            </div>
           </div>
 
           {/* Content Area - Uses a fixed width inner container to prevent reflow during expansion */}
@@ -1043,13 +1030,17 @@ function DroppableSlotCard({ id, slot, name, icon, isActive, onClick, draggedBoo
         <img 
           src={icon} 
           alt={name} 
-          className="w-8 h-8 object-contain filter brightness-125 contrast-125" 
+          className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-200" 
           referrerPolicy="no-referrer" 
         />
       );
     }
     const IconComponent = icon;
-    return <IconComponent className="w-8 h-8 opacity-30 group-hover:opacity-50 transition-opacity text-gray-500" />;
+    return (
+      <div className="absolute inset-0 flex items-center justify-center p-5 border-2 border-[#26262f] rounded-2xl">
+        <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
+      </div>
+    );
   };
 
   return (
@@ -1065,20 +1056,12 @@ function DroppableSlotCard({ id, slot, name, icon, isActive, onClick, draggedBoo
           onClick={onClick}
           initial={false}
           animate={{ 
-            width: isExpanded ? '380px' : '88px',
-            height: isExpanded ? 'auto' : '88px'
+            width: isExpanded ? '380px' : '84px',
+            height: isExpanded ? 'auto' : '84px'
           }}
           transition={{ duration: 0.1, ease: "easeOut" }}
-          className={`relative flex items-start gap-4 p-1 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-            shouldHighlight 
-              ? 'bg-hades-accent/20 border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
-              : isPotentialTarget
-                ? 'bg-hades-accent/10 border-hades-accent/40 border-dashed shadow-[0_0_25px_rgba(16,185,129,0.25)] animate-pulse z-40'
-                : isActive 
-                  ? 'bg-hades-accent/5 border-hades-accent border-solid z-50' 
-                  : isExpanded
-                    ? 'bg-hades-bg-dark/60 border-white/10 shadow-2xl'
-                    : 'bg-transparent border-transparent shadow-none'
+          className={`relative flex items-start gap-4 cursor-pointer transition-all duration-300 ${
+            isExpanded ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
           }`}
         >
           {/* Background masking for unfurled state */}
@@ -1089,13 +1072,23 @@ function DroppableSlotCard({ id, slot, name, icon, isActive, onClick, draggedBoo
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.1 }}
-                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-xl z-[-1]" 
+                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5" 
               />
             )}
           </AnimatePresence>
 
-          <div className="relative w-[80px] h-[80px] flex-shrink-0 flex items-center justify-center">
-            {renderIcon()}
+          <div className={`relative w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center rounded-2xl transition-all duration-300 ${
+             shouldHighlight 
+               ? 'bg-hades-accent/20 border-2 border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
+               : isPotentialTarget
+                 ? 'bg-hades-accent/10 border-2 border-hades-accent/40 border-dashed animate-pulse z-40'
+                 : isActive 
+                   ? 'bg-hades-accent/5 border-2 border-hades-accent border-solid z-50' 
+                   : 'border-0'
+          }`}>
+            <div className="w-full h-full relative">
+              {renderIcon()}
+            </div>
           </div>
 
           <div className="overflow-hidden flex-1">
@@ -1297,6 +1290,8 @@ function GodIcon({ god, className }: { god: string; className?: string }) {
 
 function BoonDisplayCard({ boon, onRemove }: any) {
   const [isHovered, setIsHovered] = useState(false);
+  const rarityGlow = boon.type === 'Legendary' ? 'shadow-[0_0_20px_rgba(255,180,0,0.5)]' : 
+                    boon.type === 'Duo' ? 'shadow-[0_0_20px_rgba(150,255,100,0.5)]' : '';
 
   return (
     <div className="h-[88px] w-full relative">
@@ -1309,14 +1304,12 @@ function BoonDisplayCard({ boon, onRemove }: any) {
         <motion.div 
           initial={false}
           animate={{ 
-            width: isHovered ? '440px' : '88px',
-            height: isHovered ? 'auto' : '88px'
+            width: isHovered ? '440px' : '84px',
+            height: isHovered ? 'auto' : '84px'
           }}
           transition={{ duration: 0.1, ease: "easeOut" }}
-          className={`relative flex items-start w-full gap-4 p-1 rounded-xl border-2 transition-all duration-300 ${
-            isHovered 
-              ? 'bg-hades-bg-dark/60 border-hades-accent/30 shadow-2xl' 
-              : 'bg-transparent border-transparent shadow-none'
+          className={`relative flex items-start w-full gap-4 transition-all duration-300 ${
+            isHovered ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
           }`}
         >
           {/* Background masking for hovered state */}
@@ -1327,30 +1320,32 @@ function BoonDisplayCard({ boon, onRemove }: any) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.1 }}
-                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-xl z-[-1]" 
+                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5 shadow-2xl" 
               />
             )}
           </AnimatePresence>
 
-          {/* Icon Container - No overflow-hidden to let built-in art border shine */}
-          <div className="relative w-[80px] h-[80px] flex-shrink-0">
-            <div className="w-full h-full">
+          {/* Icon Container */}
+          <div className={`relative w-[84px] h-[84px] flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-300 ${rarityGlow} border-0`}>
+            <div className="w-full h-full relative">
               <img 
                 src={boon.icon} 
                 alt={boon.name} 
-                className="w-full h-full object-contain" 
+                className="w-full h-full object-cover scale-[1.1]" 
                 referrerPolicy="no-referrer" 
               />
-            </div>
-            {/* Overlapping icons - relative to the slightly smaller artwork container */}
-            <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 group-hover:border-white/20 transition-colors">
-              <GodIcon god={boon.gods[0]} className="w-full h-full transition-all group-hover:brightness-125" />
-            </div>
-            {boon.element && (
-              <div className="absolute -bottom-2 -right-2 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 group-hover:border-white/10 transition-colors">
-                <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]} transition-all group-hover:brightness-125`} />
+              {/* Overlapping icons */}
+              <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
+                <GodIcon god={boon.gods[0]} className="w-full h-full" />
               </div>
-            )}
+              {boon.element && (
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
+                  <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
+                </div>
+              )}
+              {/* Rarity Border */}
+              <div className={`absolute inset-0 border-2 ${getBoonBorderColor(boon.type)} rounded-2xl pointer-events-none z-10`} />
+            </div>
           </div>
 
           <div className="overflow-hidden flex-1">
