@@ -1,13 +1,5 @@
 import React from 'react';
-
-const KEYWORDS = [
-  // Slots
-  'Attack', 'Special', 'Cast', 'Sprint', 'Magick', 'Dash',
-  // Gods
-  'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Selene', 'Chaos', 'Hermes', 'Hades',
-  // Status Curses
-  'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn'
-];
+import { BOON_KEYWORDS } from '../constants';
 
 interface FormattedBoonEffectProps {
   text: string;
@@ -19,7 +11,7 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
 
   // Simplified regex: one capturing group for the keyword. 
   // Non-capturing inner group (?:) prevents duplication in split result.
-  const regex = new RegExp(`(\\b(?:${KEYWORDS.join('|')})\\b)`, 'g');
+  const regex = new RegExp(`(\\b(?:${BOON_KEYWORDS.join('|')})\\b)`, 'g');
   
   const parts = text.split(regex);
   
@@ -27,7 +19,7 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
     <span className={className}>
       {parts.map((part, i) => {
         // Only treat as keyword if it exactly matches one in our list
-        const isKeyword = KEYWORDS.includes(part);
+        const isKeyword = BOON_KEYWORDS.includes(part);
         
         if (isKeyword) {
           return (

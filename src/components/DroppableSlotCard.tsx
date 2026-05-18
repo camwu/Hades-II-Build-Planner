@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useDroppable } from '@dnd-kit/core';
 import { Boon } from '../types';
+import { 
+  BOON_ICON_ROUNDING, 
+  BOON_BORDER_WIDTH,
+  SLOT_COLLAPSED_WIDTH,
+  SLOT_EXPANDED_WIDTH 
+} from '../constants';
 
 interface DroppableSlotCardProps {
   id: string;
@@ -38,7 +44,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
     }
     const IconComponent = icon;
     return (
-      <div className="absolute inset-0 flex items-center justify-center p-5 border-[3px] border-[#26262f] rounded-[28%]">
+      <div className={`absolute inset-0 flex items-center justify-center p-5 ${BOON_BORDER_WIDTH} border-[#26262f] ${BOON_ICON_ROUNDING}`}>
         <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
       </div>
     );
@@ -57,8 +63,8 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
           onClick={onClick}
           initial={false}
           animate={{ 
-            width: isExpanded ? '440px' : '84px',
-            height: isExpanded ? 'auto' : '84px'
+            width: isExpanded ? SLOT_EXPANDED_WIDTH : SLOT_COLLAPSED_WIDTH,
+            height: isExpanded ? 'auto' : SLOT_COLLAPSED_WIDTH
           }}
           transition={{ duration: 0.1, ease: "easeOut" }}
           className={`relative flex items-start gap-4 cursor-pointer transition-all duration-300 ${
@@ -78,16 +84,16 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
             )}
           </AnimatePresence>
 
-          <div className={`relative w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center rounded-[28%] transition-all duration-300 ${
+          <div className={`relative w-[${SLOT_COLLAPSED_WIDTH}] h-[${SLOT_COLLAPSED_WIDTH}] flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
              shouldHighlight 
-               ? 'bg-hades-accent/20 border-[3px] border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
+               ? `bg-hades-accent/20 ${BOON_BORDER_WIDTH} border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50` 
                : isPotentialTarget
-                 ? 'bg-hades-accent/10 border-[3px] border-hades-accent/40 border-dashed animate-pulse z-40'
+                 ? `bg-hades-accent/10 ${BOON_BORDER_WIDTH} border-hades-accent/40 border-dashed animate-pulse z-40`
                  : isActive 
-                   ? 'bg-hades-accent/5 border-[3px] border-hades-accent border-solid z-50' 
+                   ? `bg-hades-accent/5 ${BOON_BORDER_WIDTH} border-hades-accent border-solid z-50` 
                    : 'border-0'
           }`}>
-            <div className="w-full h-full relative rounded-[28%] overflow-hidden">
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden`}>
               {renderIcon()}
             </div>
           </div>

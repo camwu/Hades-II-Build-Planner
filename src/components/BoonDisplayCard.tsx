@@ -5,6 +5,12 @@ import { Boon, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedBoonEffect } from './FormattedBoonEffect';
+import { 
+  BOON_ICON_ROUNDING, 
+  BOON_BORDER_WIDTH,
+  SLOT_COLLAPSED_WIDTH,
+  SLOT_EXPANDED_WIDTH 
+} from '../constants';
 
 interface BoonDisplayCardProps {
   boon: Boon;
@@ -28,8 +34,8 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
         <motion.div 
           initial={false}
           animate={{ 
-            width: isHovered ? '440px' : '84px',
-            height: isHovered ? 'auto' : '84px'
+            width: isHovered ? SLOT_EXPANDED_WIDTH : SLOT_COLLAPSED_WIDTH,
+            height: isHovered ? 'auto' : SLOT_COLLAPSED_WIDTH
           }}
           transition={{ duration: 0.1, ease: "easeOut" }}
           className={`relative flex items-start w-full gap-4 transition-all duration-300 ${
@@ -50,8 +56,8 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
           </AnimatePresence>
 
           {/* Icon Container */}
-          <div className={`relative w-[84px] h-[84px] flex-shrink-0 transition-all duration-300 border-0`}>
-            <div className={`w-full h-full relative rounded-[28%] ${rarityGlow}`}>
+          <div className={`relative w-[${SLOT_COLLAPSED_WIDTH}] h-[${SLOT_COLLAPSED_WIDTH}] flex-shrink-0 transition-all duration-300 border-0`}>
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} ${rarityGlow}`}>
               <img 
                 src={boon.icon} 
                 alt={boon.name} 
@@ -68,7 +74,7 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
                 </div>
               )}
               {/* Rarity Border */}
-              <div className={`absolute inset-0 border-[3px] ${getBoonBorderColor(boon.type)} rounded-[28%] pointer-events-none z-10`} />
+              <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} ${getBoonBorderColor(boon.type)} ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
             </div>
           </div>
 

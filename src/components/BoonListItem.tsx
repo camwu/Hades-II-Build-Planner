@@ -5,6 +5,7 @@ import { Boon, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedBoonEffect } from './FormattedBoonEffect';
+import { BOON_ICON_ROUNDING, BOON_BORDER_WIDTH } from '../constants';
 
 export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; isOverlay?: boolean }) {
   const borderColor = isOverlay ? 'border-hades-accent' : getBoonBorderColor(boon.type);
@@ -17,20 +18,20 @@ export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; is
     }`}>
       <div className="flex items-start gap-4 transform-gpu">
         <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 ${
-          isOverlay ? 'bg-white rounded-[28%]' : 'bg-hades-bg-dark rounded-[28%]'
+          isOverlay ? `bg-white ${BOON_ICON_ROUNDING}` : `bg-hades-bg-dark ${BOON_ICON_ROUNDING}`
         }`}>
           {boon.icon ? (
-            <div className={`w-full h-full relative rounded-[28%] ${rarityGlow}`}>
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} ${rarityGlow}`}>
               <img 
                 src={boon.icon} 
                 alt={boon.name} 
                 className="w-full h-full object-contain" 
                 referrerPolicy="no-referrer" 
               />
-              <div className={`absolute inset-0 border-[3px] ${borderColor} rounded-[28%] pointer-events-none z-10`} />
+              <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} ${borderColor} ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
             </div>
           ) : (
-            <div className="w-full h-full flex items-center justify-center p-1 border-[3px] border-[#26262f] rounded-[28%] opacity-40">
+            <div className={`w-full h-full flex items-center justify-center p-1 ${BOON_BORDER_WIDTH} border-[#26262f] ${BOON_ICON_ROUNDING} opacity-40`}>
               <GodIcon god={boon.gods[0]} className="w-10 h-10" />
             </div>
           )}

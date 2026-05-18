@@ -32,7 +32,12 @@ import {
 } from '@dnd-kit/core';
 import { BOONS } from './data/boonsData';
 import { Boon, BoonType, ElementType, ALL_ELEMENTS } from './types';
-import { SLOT_PRIORITY, CORE_SLOTS } from './constants';
+import { 
+  SLOT_PRIORITY, 
+  CORE_SLOTS, 
+  SIDEBAR_WIDTH, 
+  SLOT_EXPANDED_WIDTH 
+} from './constants';
 import { isValidForSlot, getBoonColor } from './utils/boonUtils';
 import { GodIcon, ElementIcon } from './components/Icons';
 import { StaticBoonListItem, DraggableBoonListItem } from './components/BoonListItem';
@@ -276,7 +281,7 @@ export default function App() {
           <motion.aside 
             initial={false}
             animate={{ 
-              width: isPanelCollapsed ? 0 : 450,
+              width: isPanelCollapsed ? 0 : SIDEBAR_WIDTH,
             }}
             transition={{ type: 'spring', damping: 30, stiffness: 350 }}
             className="border-r border-hades-border bg-hades-panel flex flex-col z-30 relative flex-shrink-0"
@@ -299,7 +304,7 @@ export default function App() {
               </button>
 
             <div 
-              className={`w-[450px] h-full flex flex-col overflow-hidden will-change-transform ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
+              className={`w-[${SIDEBAR_WIDTH}px] h-full flex flex-col overflow-hidden will-change-transform ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
             >
                 <div className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}>
                   <div className="flex flex-col gap-4">
@@ -660,7 +665,7 @@ export default function App() {
 
         <DragOverlay>
           {draggedBoon ? (
-            <div className="w-[380px] pointer-events-none opacity-90 backdrop-blur-sm cursor-grabbing">
+            <div style={{ width: SLOT_EXPANDED_WIDTH }} className="pointer-events-none opacity-90 backdrop-blur-sm cursor-grabbing">
               <StaticBoonListItem boon={draggedBoon} isOverlay />
             </div>
           ) : null}

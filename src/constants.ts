@@ -12,6 +12,22 @@ export const SLOT_PRIORITY: Record<string, number> = {
   'Duo': 9,
 };
 
+export const BOON_ICON_ROUNDING = 'rounded-[28%]';
+export const BOON_BORDER_WIDTH = 'border-[3px]';
+
+export const SIDEBAR_WIDTH = 450;
+export const SLOT_COLLAPSED_WIDTH = '84px';
+export const SLOT_EXPANDED_WIDTH = '440px';
+
+export const BOON_KEYWORDS = [
+  // Slots
+  'Attack', 'Special', 'Cast', 'Sprint', 'Magick', 'Dash',
+  // Gods
+  'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Selene', 'Chaos', 'Hermes', 'Hades',
+  // Status Curses
+  'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn'
+];
+
 export const CORE_SLOTS: { type: BoonType; name: string; icon: string }[] = [
   { type: 'Attack', name: 'Attack', icon: '/assets/slots/SlotIcon_Attack.webp' },
   { type: 'Special', name: 'Special', icon: '/assets/slots/SlotIcon_Special.webp' },
