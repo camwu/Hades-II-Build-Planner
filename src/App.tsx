@@ -13,6 +13,8 @@ import {
   Mountain, 
   Search, 
   Trash2, 
+  X,
+  Filter,
   Plus, 
   Swords, 
   Shield, 
@@ -40,6 +42,19 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { BOONS } from './data/boonsData';
 import { Boon, BoonType, GOD_COLORS, ELEMENT_COLORS, ElementType, GOD_SYMBOLS, ALL_ELEMENTS } from './types';
+
+// Slot priority for sorting
+const SLOT_PRIORITY: Record<string, number> = {
+  'Attack': 1,
+  'Special': 2,
+  'Cast': 3,
+  'Sprint': 4,
+  'Magick': 5,
+  'Non-Core': 6,
+  'Infusion': 7,
+  'Legendary': 8,
+  'Duo': 9,
+};
 
 // Slot definitions
 const CORE_SLOTS: { type: BoonType; name: string; icon: any }[] = [
@@ -98,16 +113,20 @@ export default function App() {
   const [draggedBoon, setDraggedBoon] = useState<Boon | null>(null);
 
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isSlotTypeOpen, setIsSlotTypeOpen] = useState(true);
+  const [isSlotTypeOpen, setIsSlotTypeOpen] = useState(false);
 
   const handleSidebarScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrolled = e.currentTarget.scrollTop > 40;
-    if (scrolled !== isScrolled) {
-      setIsScrolled(scrolled);
+    // Scroll state no longer affects layout to prevent flickering, 
+    // but we can keep it for subtle header styling if needed
+    const scrollPos = e.currentTarget.scrollTop;
+    if (!isScrolled && scrollPos > 20) {
+      setIsScrolled(true);
+    } else if (isScrolled && scrollPos < 10) {
+      setIsScrolled(false);
     }
   };
-  const [isGodFilterOpen, setIsGodFilterOpen] = useState(true);
-  const [isElementFilterOpen, setIsElementFilterOpen] = useState(true);
+  const [isGodFilterOpen, setIsGodFilterOpen] = useState(false);
+  const [isElementFilterOpen, setIsElementFilterOpen] = useState(false);
   const [showPurgeConfirm, setShowPurgeConfirm] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -166,6 +185,15 @@ export default function App() {
         : (!selectedType || boon.type === selectedType);
       
       return matchesSearch && matchesGod && matchesElement && matchesType;
+    }).sort((a, b) => {
+      const priorityA = SLOT_PRIORITY[a.type] || 99;
+      const priorityB = SLOT_PRIORITY[b.type] || 99;
+      
+      if (priorityA !== priorityB) {
+        return priorityA - priorityB;
+      }
+      
+      return a.name.localeCompare(b.name);
     });
   }, [searchTerm, selectedGod, selectedElement, selectedType, activeSlot]);
 
@@ -256,7 +284,7 @@ export default function App() {
                 referrerPolicy="no-referrer"
               />
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-gray-300 uppercase italic">
+            <h1 className="text-xl font-bold text-gray-300 uppercase italic">
               Hades II <span className="text-hades-accent not-italic ml-2">Build Planner</span>
             </h1>
           </div>
@@ -277,9 +305,9 @@ export default function App() {
               {/* Toggle Button - High contrast background and accent border */}
               <button 
                 onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
-                className={`absolute top-24 z-50 w-6 h-10 flex items-center justify-center transition-all duration-200 group border shadow-2xl ${
+                className={`absolute top-[76px] -translate-y-1/2 z-50 w-6 h-10 flex items-center justify-center transition-all duration-200 group border shadow-2xl ${
                   isPanelCollapsed 
-                    ? 'left-6 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light' 
+                    ? 'left-4 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light' 
                     : '-right-3 rounded bg-hades-bg-dark border-hades-border-light hover:border-hades-accent hover:bg-hades-bg-light'
                 }`}
                 title={isPanelCollapsed ? "Expand Library" : "Collapse Library"}
@@ -292,151 +320,207 @@ export default function App() {
               </button>
 
               <div 
-                onScroll={handleSidebarScroll}
-                className={`w-[450px] h-full flex flex-col overflow-y-auto custom-scrollbar transition-opacity duration-300 ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
+                className={`w-[450px] h-full flex flex-col overflow-hidden transition-opacity duration-200 ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
               >
-                <div className={`p-6 border-b border-hades-border flex flex-col transition-all duration-300 bg-hades-panel z-20 sticky top-0 ${isScrolled ? 'shadow-2xl py-3 border-hades-accent/30 bg-hades-panel/95 backdrop-blur-md gap-3' : 'gap-5'}`}>
-                  <div className="relative">
-                    <Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-hades-text transition-opacity duration-300 ${isScrolled ? 'opacity-20' : 'opacity-30'}`} />
-                    <input 
-                      ref={searchInputRef}
-                      type="text" 
-                      placeholder="Press / to search boons..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg transition-all duration-300 text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 ${isScrolled ? 'py-1.5 pl-9 pr-3 text-xs' : 'py-2.5 pl-10 pr-4 text-sm'}`}
-                    />
+                <div className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 transition-shadow duration-200 ${isScrolled ? 'shadow-2xl' : ''}`}>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-xs uppercase font-mono text-hades-accent font-bold flex items-center gap-2">
+                        <Filter className="w-3.5 h-3.5" />
+                        Filters
+                      </h2>
+                    </div>
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-hades-text opacity-30" />
+                      <input 
+                        ref={searchInputRef}
+                        type="text" 
+                        placeholder="Press / to search boons..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg py-2.5 pl-10 pr-4 text-sm text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 transition-colors"
+                      />
+                    </div>
                   </div>
 
-                  <div className={`grid transition-all duration-300 ease-in-out ${isScrolled ? 'grid-cols-3 gap-2 translate-y-0 opacity-100' : 'grid-cols-1 gap-3 opacity-100 translate-y-0'}`}>
-                    <SidebarCollapsibleSection 
-                      title="Slot" 
-                      isOpen={isScrolled ? false : isSlotTypeOpen} 
+                  <div className="grid grid-cols-3 gap-3">
+                    <SidebarFilterDropdown 
+                      title={
+                        <div className="flex items-center gap-2">
+                          <Layers className="w-3.5 h-3.5 opacity-50" />
+                          <span>Slot</span>
+                        </div>
+                      }
+                      isOpen={isSlotTypeOpen} 
                       setIsOpen={setIsSlotTypeOpen}
                       summary={selectedType ? selectedType : activeSlot}
-                      isCompact={isScrolled}
+                      icon={activeSlot ? (() => {
+                        const s = CORE_SLOTS.find(item => item.type === activeSlot);
+                        if (!s) return null;
+                        if (typeof s.icon === 'string') return <img src={s.icon} className="w-3.5 h-3.5 object-contain filter brightness-125" />;
+                        return <s.icon className="w-3.5 h-3.5" />;
+                      })() : null}
                     >
-                      <div className="flex flex-wrap gap-2">
-                        {CORE_SLOTS.map(slot => {
-                          const isSlotActive = activeSlot === slot.type;
-                          const isTypeSelected = selectedType === slot.type;
-                          const isActive = isSlotActive || isTypeSelected;
-                          return (
-                            <button 
-                              key={slot.type}
-                              onClick={() => {
-                                if (isSlotActive) {
-                                  setActiveSlot(null);
-                                } else {
-                                  setSelectedType(isTypeSelected ? null : slot.type);
-                                  setActiveSlot(null);
-                                }
-                              }}
-                              className={`h-9 px-3 text-xs uppercase font-mono tracking-wider flex items-center gap-2 rounded-lg border transition-all ${isActive ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent shadow-[0_0_15px_-3px_rgba(255,189,1,0.2)]' : 'bg-hades-bg-dark/60 border-hades-border-light text-hades-text/60 hover:bg-hades-bg-dark hover:border-hades-border-light hover:text-hades-text'}`}
-                            >
-                              {typeof slot.icon === 'string' ? (
-                                <img 
-                                  src={slot.icon} 
-                                  className="w-4 h-4 object-contain filter brightness-125 contrast-125" 
-                                  alt="" 
-                                  referrerPolicy="no-referrer" 
-                                />
-                              ) : (
-                                <slot.icon className="w-4 h-4" />
-                              )}
-                              {slot.name}
-                            </button>
-                          );
-                        })}
-                        {(['Non-Core', 'Duo', 'Legendary', 'Infusion'] as BoonType[]).map(type => {
-                          const isSlotActive = (type === 'Non-Core' && activeSlot === 'Support') || 
-                                             ((type === 'Duo' || type === 'Legendary') && activeSlot === 'LegendaryDuo') ||
-                                             (type === 'Infusion' && activeSlot === 'Infusion');
-                          const isTypeSelected = selectedType === type;
-                          const isActive = isSlotActive || isTypeSelected;
-                          return (
-                            <button 
-                              key={type}
-                              onClick={() => {
-                                if (isSlotActive) {
-                                  setActiveSlot(null);
-                                } else {
-                                  setSelectedType(isTypeSelected ? null : type);
-                                  setActiveSlot(null);
-                                }
-                              }}
-                              className={`h-9 px-3 text-xs uppercase font-mono tracking-wider rounded-lg border transition-all inline-flex items-center justify-center ${isActive ? 'bg-hades-accent/20 border-hades-accent/50 text-hades-accent shadow-[0_0_15px_-3px_rgba(255,189,1,0.2)]' : 'bg-hades-bg-dark/60 border-hades-border-light text-hades-text/60 hover:bg-hades-bg-dark hover:border-hades-border-light hover:text-hades-text'}`}
-                            >
-                              {type}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </SidebarCollapsibleSection>
+                      <button
+                        onClick={() => {
+                          setSelectedType(null);
+                          setActiveSlot(null);
+                          setIsSlotTypeOpen(false);
+                        }}
+                        className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${!selectedType && !activeSlot ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
+                      >
+                        <div className="w-6 h-6 flex items-center justify-center border border-white/10 rounded bg-white/5">
+                          <Layers className="w-3 h-3 opacity-40" />
+                        </div>
+                        Any Slot
+                      </button>
+                      
+                      {CORE_SLOTS.map(slot => {
+                        const isSlotActive = activeSlot === slot.type;
+                        const isTypeSelected = selectedType === slot.type;
+                        const isActive = isSlotActive || isTypeSelected;
+                        return (
+                          <button 
+                            key={slot.type}
+                            onClick={() => {
+                              if (isSlotActive) {
+                                setActiveSlot(null);
+                              } else {
+                                setSelectedType(isTypeSelected ? null : slot.type);
+                                setActiveSlot(null);
+                              }
+                              setIsSlotTypeOpen(false);
+                            }}
+                            className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${isActive ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
+                          >
+                            {typeof slot.icon === 'string' ? (
+                              <img 
+                                src={slot.icon} 
+                                className="w-6 h-6 object-contain filter brightness-125" 
+                                alt="" 
+                                referrerPolicy="no-referrer" 
+                              />
+                            ) : (
+                              <slot.icon className="w-6 h-6" />
+                            )}
+                            {slot.name}
+                          </button>
+                        );
+                      })}
+                      {(['Non-Core', 'Infusion', 'Legendary', 'Duo'] as BoonType[]).map(type => {
+                        const isSlotActive = (type === 'Non-Core' && activeSlot === 'Support') || 
+                                           ((type === 'Duo' || type === 'Legendary') && activeSlot === 'LegendaryDuo') ||
+                                           (type === 'Infusion' && activeSlot === 'Infusion');
+                        const isTypeSelected = selectedType === type;
+                        const isActive = isSlotActive || isTypeSelected;
+                        return (
+                          <button 
+                            key={type}
+                            onClick={() => {
+                              if (isSlotActive) {
+                                setActiveSlot(null);
+                              } else {
+                                setSelectedType(isTypeSelected ? null : type);
+                                setActiveSlot(null);
+                              }
+                              setIsSlotTypeOpen(false);
+                            }}
+                            className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${isActive ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
+                          >
+                            <div className="w-6 h-6" />
+                            {type}
+                          </button>
+                        );
+                      })}
+                    </SidebarFilterDropdown>
 
-                    <SidebarCollapsibleSection 
+                    <SidebarFilterDropdown 
                       title={
                         <div className="flex items-center gap-2">
                           <img src="/assets/ui/Icon-Olympian.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
                           <span>God</span>
                         </div>
                       } 
-                      isOpen={isScrolled ? false : isGodFilterOpen} 
+                      isOpen={isGodFilterOpen} 
                       setIsOpen={setIsGodFilterOpen}
                       summary={selectedGod}
-                      isCompact={isScrolled}
+                      icon={selectedGod ? <GodIcon god={selectedGod} className="w-4 h-4 filter brightness-125" /> : null}
                     >
-                      <div className="flex flex-wrap gap-2.5">
-                        {gods.map(god => (
-                          <button 
-                            key={god}
-                            onClick={() => setSelectedGod(god === selectedGod ? null : god)}
-                            className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-all duration-300 relative group overflow-hidden ${
-                              selectedGod === god 
-                                ? 'bg-hades-accent/40 border-hades-accent text-hades-accent ring-1 ring-hades-accent/20 z-10' 
-                                : 'bg-hades-bg-dark/60 border-hades-border-light text-hades-text/60 hover:border-hades-text/80 hover:bg-hades-bg-dark'
-                            }`}
-                            title={god}
-                          >
-                            <GodIcon god={god} className="w-6 h-6 relative z-10 filter brightness-150 transition-transform group-hover:scale-110" />
-                          </button>
-                        ))}
-                      </div>
-                    </SidebarCollapsibleSection>
+                      <button
+                        onClick={() => {
+                          setSelectedGod(null);
+                          setIsGodFilterOpen(false);
+                        }}
+                        className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${!selectedGod ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
+                      >
+                        <div className="w-6 h-6 flex items-center justify-center border border-white/10 rounded bg-white/5">
+                          <Layers className="w-3 h-3 opacity-40" />
+                        </div>
+                        Any God
+                      </button>
+                      {gods.map(god => (
+                        <button 
+                          key={god}
+                          onClick={() => {
+                            setSelectedGod(god === selectedGod ? null : god);
+                            setIsGodFilterOpen(false);
+                          }}
+                          className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${selectedGod === god ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
+                        >
+                          <GodIcon god={god} className="w-6 h-6 filter brightness-150" />
+                          {god}
+                        </button>
+                      ))}
+                    </SidebarFilterDropdown>
 
-                    <SidebarCollapsibleSection 
+                    <SidebarFilterDropdown 
                       title={
                         <div className="flex items-center gap-2">
                           <img src="/assets/ui/ElementalEssence.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
                           <span>Element</span>
                         </div>
                       } 
-                      isOpen={isScrolled ? false : isElementFilterOpen} 
+                      isOpen={isElementFilterOpen} 
                       setIsOpen={setIsElementFilterOpen}
                       summary={selectedElement}
-                      isCompact={isScrolled}
+                      icon={selectedElement ? <ElementIcon element={selectedElement} className="w-4 h-4" /> : null}
                     >
-                      <div className="flex gap-2.5">
-                        {ALL_ELEMENTS.map(el => (
-                          <button
-                            key={el}
-                            onClick={() => setSelectedElement(el === selectedElement ? null : el)}
-                            className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-all duration-300 relative group overflow-hidden ${
-                              selectedElement === el 
-                                ? 'bg-hades-accent/40 border-hades-accent text-hades-accent ring-1 ring-hades-accent/20 z-10' 
-                                : 'bg-hades-bg-dark/60 border-hades-border-light text-hades-text/60 hover:border-hades-text/80 hover:bg-hades-bg-dark'
-                            }`}
-                            title={el}
-                          >
-                            <ElementIcon element={el} className="w-6 h-6 relative z-10 filter brightness-150 transition-transform group-hover:scale-110" />
-                          </button>
-                        ))}
-                      </div>
-                    </SidebarCollapsibleSection>
+                      <button
+                        onClick={() => {
+                          setSelectedElement(null);
+                          setIsElementFilterOpen(false);
+                        }}
+                        className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${!selectedElement ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
+                      >
+                        <div className="w-6 h-6 flex items-center justify-center border border-white/10 rounded bg-white/5">
+                          <Layers className="w-3 h-3 opacity-40" />
+                        </div>
+                        Any Element
+                      </button>
+                      {ALL_ELEMENTS.map(el => (
+                        <button
+                          key={el}
+                          onClick={() => {
+                            setSelectedElement(el === selectedElement ? null : el);
+                            setIsElementFilterOpen(false);
+                          }}
+                          className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${selectedElement === el ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
+                        >
+                          <ElementIcon element={el} className="w-6 h-6" />
+                          {el}
+                        </button>
+                      ))}
+                    </SidebarFilterDropdown>
                   </div>
                 </div>
 
-                <div className="p-4">
+                {/* Fixed spacer area that doesn't disappear on scroll */}
+                <div className="h-6 flex-shrink-0" />
+
+                <div 
+                  onScroll={handleSidebarScroll}
+                  className="flex-1 overflow-y-auto custom-scrollbar px-5 pb-8"
+                >
                   <div className="space-y-3">
                     {filteredBoons.map(boon => (
                       <DraggableBoonListItem 
@@ -447,7 +531,7 @@ export default function App() {
                       />
                     ))}
                     {filteredBoons.length === 0 && (
-                      <div className="text-center py-12 text-gray-400 font-mono text-xs uppercase tracking-widest border border-dashed border-hades-border rounded-xl">
+                      <div className="text-center py-12 text-gray-400 font-mono text-xs uppercase tracking-tight text-gray-400">
                         No matches found
                       </div>
                     )}
@@ -471,12 +555,12 @@ export default function App() {
                         onChange={(e) => setBuildName(e.target.value)}
                         onBlur={() => setIsEditingName(false)}
                         onKeyDown={(e) => e.key === 'Enter' && setIsEditingName(false)}
-                        className="text-2xl font-light tracking-[0.2em] bg-transparent border-b border-hades-accent outline-none text-white w-full max-w-md uppercase"
+                        className="text-2xl font-light bg-transparent border-b border-hades-accent outline-none text-white w-full max-w-md uppercase"
                       />
                     ) : (
                       <h2 
                         onClick={() => setIsEditingName(true)}
-                        className="text-2xl font-light tracking-[0.2em] text-gray-300 flex items-center gap-3 uppercase cursor-pointer hover:text-hades-accent transition-colors"
+                        className="text-2xl font-light text-gray-300 flex items-center gap-3 uppercase cursor-pointer hover:text-hades-accent transition-colors"
                       >
                         {buildName || 'Untitled Build'}
                         <Edit2 className="w-4 h-4 opacity-0 group-hover:opacity-50 transition-opacity" />
@@ -486,7 +570,7 @@ export default function App() {
                 </div>
                 <button 
                   onClick={purgeBuild}
-                  className={`text-xs font-mono uppercase tracking-widest transition-all duration-200 flex items-center gap-2 px-3 py-1.5 rounded border ${
+                  className={`text-xs font-mono uppercase transition-all duration-200 flex items-center gap-2 px-3 py-1.5 rounded border ${
                     showPurgeConfirm 
                       ? 'bg-hades-red text-white border-white/20 animate-pulse' 
                       : 'text-hades-red hover:text-red-300 bg-hades-red/5 border-hades-red/10 hover:border-hades-red/30'
@@ -504,7 +588,7 @@ export default function App() {
                 <aside className="w-full lg:w-[380px] lg:sticky lg:top-0 space-y-6">
                   <div className="flex items-center gap-4 mb-8">
                     <Swords className="w-6 h-6 text-hades-accent" />
-                    <h3 className="text-base font-mono uppercase tracking-[0.3em] text-gray-300 font-bold">
+                    <h3 className="text-base font-mono uppercase tracking-tight text-gray-300 font-bold">
                       CORE <span className="text-hades-accent/80">BOONS</span>
                     </h3>
                     <div className="h-px flex-1 bg-white/5"></div>
@@ -532,7 +616,7 @@ export default function App() {
                   <div className="w-full min-h-[416px]">
                     <div className="flex items-center gap-4 mb-10">
                       <Shield className="w-6 h-6 text-hades-accent" />
-                      <h3 className="text-base font-mono uppercase tracking-[0.3em] text-gray-300 font-bold">
+                      <h3 className="text-base font-mono uppercase text-gray-300 font-bold">
                         Support <span className="text-hades-accent">Boons</span>
                       </h3>
                       <div className="h-px flex-1 bg-white/5"></div>
@@ -564,7 +648,7 @@ export default function App() {
                   <div className="w-full min-h-[144px]">
                     <div className="flex items-center gap-4 mb-10">
                       <Sparkles className="w-6 h-6 text-hades-accent" />
-                      <h3 className="text-base font-mono uppercase tracking-[0.3em] text-white font-bold">
+                      <h3 className="text-base font-mono uppercase font-bold">
                         Legendary & Duo <span className="text-hades-accent">Boons</span>
                       </h3>
                       <div className="h-px flex-1 bg-white/5"></div>
@@ -598,7 +682,7 @@ export default function App() {
                     <div className="flex-1">
                       <div className="flex items-center gap-4 mb-10">
                         <Zap className="w-6 h-6 text-hades-accent" />
-                        <h3 className="text-base font-mono uppercase tracking-[0.3em] text-white font-bold whitespace-nowrap">
+                        <h3 className="text-base font-mono uppercase text-white font-bold whitespace-nowrap">
                           Infusion <span className="text-hades-accent">Boons</span>
                         </h3>
                         <div className="h-px flex-1 bg-white/5"></div>
@@ -630,7 +714,7 @@ export default function App() {
                     <div className="flex-1">
                       <div className="flex items-center gap-4 mb-10">
                         <Layers className="w-6 h-6 text-hades-accent" />
-                        <h3 className="text-base font-mono uppercase tracking-[0.3em] text-white font-bold whitespace-nowrap">
+                        <h3 className="text-base font-mono uppercase text-white font-bold whitespace-nowrap">
                           Elemental <span className="text-hades-accent">Infusions</span>
                         </h3>
                         <div className="h-px flex-1 bg-white/5"></div>
@@ -654,7 +738,7 @@ export default function App() {
 
         {/* Footer */}
         <footer className="py-3 bg-hades-bg-dark border-t border-hades-border px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-6 text-[9px] font-mono text-gray-400 uppercase tracking-[0.2em] flex-shrink-0">
+          <div className="flex items-center gap-6 text-[9px] font-mono text-gray-400 uppercase flex items-center gap-6">
             <a 
               href="https://github.com" 
               target="_blank" 
@@ -668,7 +752,7 @@ export default function App() {
             <span>Updated: May 17, 2026</span>
           </div>
           
-          <p className="max-w-[700px] text-center md:text-right text-[8px] text-gray-500 leading-[1.6] font-sans uppercase tracking-widest opacity-40">
+          <p className="max-w-[700px] text-center md:text-right text-[8px] text-gray-500 leading-[1.6] font-sans uppercase opacity-40">
             Hades II Build Planner is an unofficial, fan-developed project that is not affiliated with or endorsed by Supergiant Games. Hades II, its characters, and all art assets are owned by Supergiant Games.
           </p>
         </footer>
@@ -698,7 +782,7 @@ function SimpleBoonCard({ boon }: any) {
         )}
         <div className="flex-1">
           <div className="flex items-center justify-between mb-1">
-            <h4 className={`text-sm font-bold tracking-wide uppercase italic ${godColor}`}>
+            <h4 className={`text-sm font-bold uppercase italic ${godColor}`}>
               {boon.name}
             </h4>
             <div className="flex items-center gap-2">
@@ -766,20 +850,20 @@ function DraggableBoonListItem({ boon, onClick, isSelectable }: any) {
         </div>
         
         <div className="flex-1 min-w-0">
-          <h4 className={`text-sm font-bold tracking-wide uppercase truncate mb-1 ${getBoonColor(boon.type)}`}>
+          <h4 className={`text-sm font-bold uppercase truncate mb-1 ${getBoonColor(boon.type)}`}>
             {boon.name}
           </h4>
           <div className="flex items-center gap-4">
             {/* God Label */}
             <div className="flex items-center gap-1.5">
               <GodIcon god={boon.gods[0]} className="w-3 h-3" />
-              <span className="text-[10px] font-mono text-gray-400 uppercase tracking-tight leading-none">
+              <span className="text-[10px] font-mono text-gray-400 uppercase leading-none">
                 {boon.gods[0]}
               </span>
             </div>
             {/* Slot Label */}
             <div className="flex items-center gap-1">
-              <span className="text-[10px] font-mono text-hades-accent/70 uppercase tracking-[0.1em] leading-none font-bold">
+              <span className="text-[10px] font-mono text-hades-accent/70 uppercase leading-none font-bold">
                 {boon.type}
               </span>
             </div>
@@ -835,7 +919,7 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
         <img 
           src={slot.icon} 
           alt={slot.name} 
-          className="absolute inset-0 w-full h-full object-cover filter brightness-110 contrast-125 opacity-60 group-hover:opacity-90 transition-all duration-300" 
+          className="absolute inset-0 w-full h-full object-cover filter brightness-110 contrast-125 opacity-60 group-hover:opacity-90 transition-all duration-200" 
           referrerPolicy="no-referrer" 
         />
       );
@@ -843,7 +927,7 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
     const IconComponent = slot.icon;
     return (
       <div className="absolute inset-0 flex items-center justify-center p-3.5">
-        <IconComponent className="w-full h-full opacity-50 group-hover:opacity-80 transition-all duration-300 text-gray-400" />
+        <IconComponent className="w-full h-full opacity-50 group-hover:opacity-80 transition-all duration-200 text-gray-400" />
       </div>
     );
   };
@@ -853,7 +937,7 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
       <div 
         ref={setNodeRef}
         onClick={onClick}
-        className={`relative flex items-center gap-5 p-5 h-[136px] rounded-xl border-2 transition-all duration-300 cursor-pointer ${
+        className={`relative flex items-center gap-5 p-5 h-[136px] rounded-xl border-2 transition-all duration-200 cursor-pointer ${
           shouldHighlight 
             ? 'bg-hades-accent/20 border-hades-accent border-solid shadow-[0_0_30px_rgba(255,189,1,0.2)] scale-[1.02]' 
             : boon 
@@ -874,9 +958,10 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
             <motion.div 
               initial={{ x: -10, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.2 }}
               className="flex flex-col h-full"
             >
-              <div className="text-[10px] font-mono tracking-[0.22em] text-hades-text/40 uppercase mb-1.5 font-bold">
+              <div className="text-[10px] font-mono text-hades-text/40 uppercase mb-1.5 font-bold">
                 {slot.name}
               </div>
               <div className="flex items-center justify-between mb-1">
@@ -902,10 +987,10 @@ function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isV
             <div className="flex items-center gap-4">
               <Plus className={`w-6 h-6 transition-transform duration-500 ${isActive ? 'rotate-90 text-hades-accent scale-125' : 'text-gray-800'}`} />
               <div className="flex flex-col">
-                <span className={`text-[13px] font-mono uppercase tracking-widest ${isActive ? 'text-hades-accent font-bold' : 'text-gray-600'}`}>
+                <span className={`text-[13px] font-mono uppercase ${isActive ? 'text-hades-accent font-bold' : 'text-gray-600'}`}>
                   {isActive ? 'Awaiting Selection' : <><span className="font-bold text-gray-400">{slot.name}</span> Slot Empty</>}
                 </span>
-                <span className="text-[11px] text-gray-600 font-medium tracking-tight">
+                <span className="text-[11px] text-gray-600 font-medium">
                   Click to select {['Attack', 'Infusion'].includes(slot.name) ? 'an' : 'a'} {slot.name} Boon
                 </span>
               </div>
@@ -944,7 +1029,7 @@ function DroppableSlotCard({ id, slot, name, icon, boon, isActive, onClick, onRe
     <div 
       ref={setNodeRef}
       onClick={onClick}
-      className={`group relative p-6 rounded-2xl border transition-all duration-300 cursor-pointer ${
+      className={`group relative p-6 rounded-2xl border transition-all duration-200 cursor-pointer ${
         shouldDim ? 'opacity-20 grayscale border-hades-border brightness-50 pointer-events-none scale-95' : ''
       } ${
         shouldHighlight 
@@ -962,7 +1047,7 @@ function DroppableSlotCard({ id, slot, name, icon, boon, isActive, onClick, onRe
             <div className={`p-2 rounded-lg ${isActive ? 'bg-hades-accent text-hades-bg-dark' : 'bg-hades-bg-main text-hades-text/40'}`}>
               {renderIcon()}
             </div>
-            <span className={`text-[10px] font-mono tracking-widest uppercase ${isActive ? 'text-hades-accent' : 'text-hades-text/40'}`}>
+            <span className={`text-[10px] font-mono uppercase ${isActive ? 'text-hades-accent' : 'text-hades-text/40'}`}>
               {name}
             </span>
           </div>
@@ -1036,7 +1121,7 @@ function DroppableSlotCard({ id, slot, name, icon, boon, isActive, onClick, onRe
         ) : (
           <div className={`flex-1 flex flex-col items-center justify-center border border-dashed border-hades-border-light rounded-xl transition-colors ${shouldHighlight ? 'bg-hades-accent/20 border-hades-accent' : 'bg-hades-bg-main group-hover:bg-hades-accent/5'}`}>
             <Plus className={`w-6 h-6 transition-colors ${shouldHighlight ? 'text-hades-accent scale-125' : 'text-gray-700 group-hover:text-hades-accent'}`} />
-            <span className={`text-[10px] font-mono mt-2 uppercase tracking-tight transition-colors ${shouldHighlight ? 'text-hades-accent font-bold' : 'text-gray-400'}`}>
+            <span className={`text-[10px] font-mono mt-2 uppercase transition-colors ${shouldHighlight ? 'text-hades-accent font-bold' : 'text-gray-400'}`}>
               {shouldHighlight ? 'Drop Here' : 'Add from Library or Drag & Drop'}
             </span>
           </div>
@@ -1068,7 +1153,7 @@ function CollapsibleSection({
         className="w-full flex items-center gap-4 mb-8 group focus:outline-none"
       >
         <Icon className={`w-6 h-6 transition-colors ${isOpen ? 'text-hades-accent' : 'text-gray-500 group-hover:text-hades-accent/70'}`} />
-        <h3 className="text-base font-mono uppercase tracking-[0.3em] text-gray-300 font-bold text-left">
+        <h3 className="text-base font-mono uppercase text-gray-300 font-bold text-left">
           {title}
         </h3>
         <div className="h-px flex-1 bg-hades-accent/20"></div>
@@ -1080,6 +1165,7 @@ function CollapsibleSection({
           )}
           <motion.div
             animate={{ rotate: isOpen ? 0 : -90 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="text-hades-accent/40 group-hover:text-hades-accent transition-colors"
           >
             <ChevronDown className="w-5 h-5" />
@@ -1093,7 +1179,7 @@ function CollapsibleSection({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
             <div className="pb-4">
@@ -1106,68 +1192,90 @@ function CollapsibleSection({
   );
 }
 
-function SidebarCollapsibleSection({ 
+function SidebarFilterDropdown({ 
   title, 
   isOpen, 
   setIsOpen, 
   children,
   summary,
-  isCompact = false
+  icon
 }: { 
   title: React.ReactNode; 
   isOpen: boolean; 
-  setIsOpen: (open: boolean) => void; 
+  setIsOpen: (val: boolean) => void; 
   children: React.ReactNode;
   summary?: string | null;
-  isCompact?: boolean;
+  icon?: React.ReactNode;
 }) {
+  const hasValue = summary && summary !== 'Any';
+  
   return (
-    <div className={`flex flex-col rounded-xl border transition-all duration-300 ${
-      isOpen 
-        ? 'bg-hades-bg-main border-hades-border/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]' 
-        : isCompact
-          ? 'bg-hades-bg-dark border-hades-border/20'
-          : 'bg-transparent border-transparent hover:bg-hades-bg-main/20 hover:border-hades-border/30'
-    }`}>
-      <button 
-        onClick={() => !isCompact && setIsOpen(!isOpen)}
-        className={`flex items-center justify-between w-full group focus:outline-none transition-all duration-300 ${isCompact ? 'p-2 cursor-default' : 'p-3'}`}
-      >
-        <div className={`flex flex-col gap-0.5 items-start ${isCompact ? 'overflow-hidden' : ''}`}>
-          <span className={`uppercase font-mono tracking-[0.2em] transition-all duration-300 ${
-            isCompact ? 'text-[8px] text-hades-text/40' : 'text-[11px] ' + (isOpen ? 'text-hades-accent font-bold' : 'text-hades-text/50 font-medium group-hover:text-hades-text/80')
-          }`}>
-            {title}
-          </span>
-          {isCompact && (
-            <span className="text-[10px] text-hades-accent font-bold truncate max-w-full font-mono uppercase tracking-wider">
-              {summary || 'Any'}
+    <div className="relative">
+      <div className={`flex flex-col rounded-xl border transition-all duration-200 ${
+        isOpen 
+          ? 'bg-hades-bg-main border-white/20 shadow-[inset_0_1px_2px_rgba(255,255,255,0.05),0_10px_20px_-5px_rgba(0,0,0,0.5)]' 
+          : hasValue 
+            ? 'bg-white/5 border-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)]'
+            : 'bg-hades-bg-dark border-hades-border-light hover:border-hades-border hover:bg-hades-bg-light'
+      }`}>
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center justify-between w-full group focus:outline-none transition-all duration-200 p-2.5 min-h-[52px]"
+        >
+          <div className="flex flex-col gap-1 items-start overflow-hidden">
+            <span className={`uppercase font-mono transition-all duration-200 text-xs ${
+              isOpen || hasValue ? 'text-white/80 font-bold' : 'text-hades-text/50 font-semibold'
+            }`}>
+              {title}
             </span>
-          )}
-        </div>
-        {!isCompact && (
+            <div className={`flex items-center gap-2 text-xs font-bold truncate max-w-full font-mono uppercase transition-all duration-200 ${
+              hasValue ? 'text-hades-accent' : 'text-gray-400 opacity-60'
+            }`}>
+              <div className={`w-5 h-5 rounded flex items-center justify-center transition-colors ${
+                hasValue ? 'bg-white/10' : 'bg-black/20 text-white/10'
+              }`}>
+                {hasValue && icon ? (
+                  <div className="w-4 h-4 flex items-center justify-center">{icon}</div>
+                ) : (
+                  <Layers className="w-3 h-3 opacity-40" />
+                )}
+              </div>
+              <span>{isOpen ? 'Select...' : (summary || 'Any')}</span>
+            </div>
+          </div>
           <motion.div
             animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="text-hades-text/30 group-hover:text-hades-accent transition-colors"
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className={`${isOpen || hasValue ? 'text-white/80' : 'text-gray-500'} group-hover:text-white transition-colors`}
           >
             <ChevronDown className="w-4 h-4" />
           </motion.div>
-        )}
-      </button>
-      <AnimatePresence initial={false}>
+        </button>
+      </div>
+
+      <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="px-3 pb-3 pt-1">
-              {children}
-            </div>
-          </motion.div>
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="fixed inset-0 z-[60]" 
+              onClick={() => setIsOpen(false)} 
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              className="absolute top-full left-0 right-[-100%] sm:right-0 mt-2 bg-hades-bg-main border border-hades-border shadow-2xl rounded-xl z-[70] overflow-hidden"
+            >
+              <div className="p-1.5 flex flex-col max-h-[300px] overflow-y-auto custom-scrollbar gap-1">
+                {children}
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>
@@ -1214,6 +1322,7 @@ function BoonDisplayCard({ boon, onRemove }: any) {
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
           className="flex-1 flex flex-col"
         >
           <div className="flex items-start gap-4 mb-3">
@@ -1237,8 +1346,8 @@ function BoonDisplayCard({ boon, onRemove }: any) {
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <h3 
-                className={`text-xl font-bold mb-1 leading-tight tracking-wide uppercase ${getBoonColor(boon.type)}`}
+                <h3 
+                className={`text-xl font-bold mb-1 leading-tight uppercase ${getBoonColor(boon.type)}`}
               >
                 {boon.name}
               </h3>
@@ -1252,7 +1361,7 @@ function BoonDisplayCard({ boon, onRemove }: any) {
                 </div>
                 {/* Slot Label */}
                 <div className="flex items-center gap-1">
-                  <span className="text-xs font-mono text-hades-accent/70 uppercase tracking-[0.15em] leading-none font-bold">
+                  <span className="text-xs font-mono text-hades-accent/70 uppercase leading-none font-bold">
                     {boon.type}
                   </span>
                 </div>
@@ -1289,7 +1398,7 @@ function ElementSummary({ coreBuild, additionalBoons }: { coreBuild: Record<stri
   return (
     <div className="p-6 rounded-2xl bg-hades-panel border border-hades-border flex items-center gap-8">
       <div className="flex flex-col w-full">
-        <span className="text-xs font-mono text-gray-400 uppercase tracking-widest mb-4">Element Balance</span>
+        <span className="text-xs font-mono text-gray-400 uppercase mb-4">Element Balance</span>
         <div className="flex items-center justify-between lg:justify-start lg:gap-12">
           {ALL_ELEMENTS.map((el) => {
             const count = counts[el];
@@ -1300,7 +1409,7 @@ function ElementSummary({ coreBuild, additionalBoons }: { coreBuild: Record<stri
                 </div>
                 <div>
                   <div className={`text-2xl font-bold font-mono transition-colors duration-500 ${count > 0 ? 'text-gray-100' : 'text-gray-600'}`}>{count}</div>
-                  <div className="text-[11px] font-mono uppercase tracking-tight text-gray-400">{el}</div>
+                  <div className="text-[11px] font-mono uppercase text-gray-400">{el}</div>
                 </div>
               </div>
             );
