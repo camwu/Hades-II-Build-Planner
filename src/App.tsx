@@ -546,7 +546,7 @@ export default function App() {
             <div className="max-w-7xl mx-auto">
               <div className="flex items-center justify-between mb-12">
                 <div className="flex flex-col gap-2 group">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 h-10">
                     {isEditingName ? (
                       <input
                         ref={nameInputRef}
@@ -555,12 +555,13 @@ export default function App() {
                         onChange={(e) => setBuildName(e.target.value)}
                         onBlur={() => setIsEditingName(false)}
                         onKeyDown={(e) => e.key === 'Enter' && setIsEditingName(false)}
-                        className="text-2xl font-light bg-transparent border-b border-hades-accent outline-none text-white w-full max-w-md uppercase"
+                        className="text-2xl font-light bg-transparent border-b border-hades-accent outline-none text-white w-full max-w-md uppercase py-0"
+                        autoFocus
                       />
                     ) : (
                       <h2 
                         onClick={() => setIsEditingName(true)}
-                        className="text-2xl font-light text-gray-300 flex items-center gap-3 uppercase cursor-pointer hover:text-hades-accent transition-colors"
+                        className="text-2xl font-light text-gray-300 flex items-center gap-3 uppercase cursor-pointer hover:text-hades-accent transition-colors h-full"
                       >
                         {buildName || 'Untitled Build'}
                         <Edit2 className="w-4 h-4 opacity-0 group-hover:opacity-50 transition-opacity" />
