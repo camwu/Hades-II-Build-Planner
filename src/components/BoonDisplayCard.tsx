@@ -4,6 +4,7 @@ import { Trash2 } from 'lucide-react';
 import { Boon, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
+import { FormattedBoonEffect } from './FormattedBoonEffect';
 
 interface BoonDisplayCardProps {
   boon: Boon;
@@ -85,7 +86,7 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
                   {boon.name}
                 </h4>
                 <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal mt-1">
-                  {boon.effect}
+                  <FormattedBoonEffect text={boon.effect} />
                 </p>
                 
                 <button 

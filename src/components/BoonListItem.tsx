@@ -4,6 +4,7 @@ import { useDraggable } from '@dnd-kit/core';
 import { Boon, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
+import { FormattedBoonEffect } from './FormattedBoonEffect';
 
 export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; isOverlay?: boolean }) {
   const borderColor = isOverlay ? 'border-hades-accent' : getBoonBorderColor(boon.type);
@@ -62,7 +63,7 @@ export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; is
         </div>
       </div>
       <p className="text-[11px] text-gray-400 leading-relaxed font-light line-clamp-2 mt-2">
-        {boon.effect}
+        <FormattedBoonEffect text={boon.effect} />
       </p>
     </div>
   );

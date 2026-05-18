@@ -5,6 +5,7 @@ import { Plus, Trash2 } from 'lucide-react';
 import { Boon, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
+import { FormattedBoonEffect } from './FormattedBoonEffect';
 
 interface CoreSlotRowProps {
   slot: { type: string; name: string; icon: any };
@@ -91,7 +92,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
           onClick={onClick}
           initial={false}
           animate={{ 
-            width: isExpanded ? '380px' : '84px',
+            width: isExpanded ? '440px' : '84px',
             height: isExpanded ? 'auto' : '84px'
           }}
           transition={{ duration: 0.1, ease: "easeOut" }}
@@ -127,7 +128,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
           </div>
 
           <div className="overflow-hidden flex-1">
-            <div className="w-[300px] h-full flex flex-col justify-center pr-4 py-3">
+            <div className="w-[340px] h-full flex flex-col justify-center pr-4 py-3">
               {boon ? (
                 <motion.div 
                   initial={false}
@@ -141,7 +142,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
                     {boon.name}
                   </h4>
                   <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal mt-1">
-                    {boon.effect}
+                    <FormattedBoonEffect text={boon.effect} />
                   </p>
                   
                   <button 

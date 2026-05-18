@@ -515,7 +515,7 @@ export default function App() {
             </motion.aside>
 
           {/* Right: Build View */}
-          <section className="flex-1 overflow-y-auto p-8 custom-scrollbar relative">
+          <section className="flex-1 overflow-auto p-8 custom-scrollbar relative">
             <div className="max-w-7xl mx-auto">
               <div className="flex items-center justify-between mb-12">
                 <div className="flex flex-col gap-2 group">

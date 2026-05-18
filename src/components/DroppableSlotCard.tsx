@@ -57,7 +57,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
           onClick={onClick}
           initial={false}
           animate={{ 
-            width: isExpanded ? '380px' : '84px',
+            width: isExpanded ? '440px' : '84px',
             height: isExpanded ? 'auto' : '84px'
           }}
           transition={{ duration: 0.1, ease: "easeOut" }}
@@ -93,7 +93,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
           </div>
 
           <div className="overflow-hidden flex-1">
-            <div className="w-[280px] h-full flex flex-col justify-center pr-4 py-3">
+            <div className="w-[340px] h-full flex flex-col justify-center pr-4 py-3">
               <motion.div 
                 initial={false}
                 animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
