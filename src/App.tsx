@@ -304,7 +304,8 @@ export default function App() {
               </button>
 
             <div 
-              className={`w-[${SIDEBAR_WIDTH}px] h-full flex flex-col overflow-hidden will-change-transform ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
+              style={{ width: SIDEBAR_WIDTH }}
+              className={`h-full flex flex-col overflow-hidden will-change-transform ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
             >
                 <div className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}>
                   <div className="flex flex-col gap-4">

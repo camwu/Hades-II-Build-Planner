@@ -84,7 +84,9 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
             )}
           </AnimatePresence>
 
-          <div className={`relative w-[${SLOT_COLLAPSED_WIDTH}] h-[${SLOT_COLLAPSED_WIDTH}] flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
+          <div 
+            style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
+            className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
              shouldHighlight 
                ? `bg-hades-accent/20 ${BOON_BORDER_WIDTH} border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50` 
                : isPotentialTarget

@@ -56,7 +56,10 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
           </AnimatePresence>
 
           {/* Icon Container */}
-          <div className={`relative w-[${SLOT_COLLAPSED_WIDTH}] h-[${SLOT_COLLAPSED_WIDTH}] flex-shrink-0 transition-all duration-300 border-0`}>
+          <div 
+            style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
+            className="relative flex-shrink-0 transition-all duration-300 border-0"
+          >
             <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} ${rarityGlow}`}>
               <img 
                 src={boon.icon} 
