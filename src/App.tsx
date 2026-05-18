@@ -8,30 +8,21 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Zap, 
   Droplets, 
-  Cloud, 
-  Flame, 
-  Mountain, 
   Search, 
   Trash2, 
-  X,
   Filter,
   Plus, 
   Swords, 
   Shield, 
-  Wind, 
   Sparkles,
-  Info,
   Layers,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
   Edit2,
   Github
 } from 'lucide-react';
 import { 
   DndContext, 
-  useDraggable, 
-  useDroppable, 
   DragOverlay,
   useSensor,
   useSensors,
@@ -39,59 +30,17 @@ import {
   DragStartEvent,
   DragEndEvent
 } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
 import { BOONS } from './data/boonsData';
-import { Boon, BoonType, GOD_COLORS, ELEMENT_COLORS, ElementType, GOD_SYMBOLS, ALL_ELEMENTS } from './types';
-
-// Slot priority for sorting
-const SLOT_PRIORITY: Record<string, number> = {
-  'Attack': 1,
-  'Special': 2,
-  'Cast': 3,
-  'Sprint': 4,
-  'Magick': 5,
-  'Non-Core': 6,
-  'Infusion': 7,
-  'Legendary': 8,
-  'Duo': 9,
-};
-
-// Slot definitions
-const CORE_SLOTS: { type: BoonType; name: string; icon: any }[] = [
-  { type: 'Attack', name: 'Attack', icon: '/assets/slots/SlotIcon_Attack.webp' },
-  { type: 'Special', name: 'Special', icon: '/assets/slots/SlotIcon_Special.webp' },
-  { type: 'Cast', name: 'Cast', icon: '/assets/slots/SlotIcon_Cast.webp' },
-  { type: 'Sprint', name: 'Sprint', icon: '/assets/slots/SlotIcon_Dash.webp' },
-  { type: 'Magick', name: 'Magick', icon: '/assets/slots/SlotIcon_Magick.webp' },
-];
-
-const isValidForSlot = (boon: Boon, slot: string) => {
-  if (['Attack', 'Special', 'Cast', 'Sprint', 'Magick'].includes(slot)) {
-    return boon.type === slot;
-  }
-  if (slot === 'Support') return boon.type === 'Non-Core';
-  if (slot === 'LegendaryDuo') return boon.type === 'Legendary' || boon.type === 'Duo';
-  if (slot === 'Infusion') return boon.type === 'Infusion';
-  return false;
-};
-
-const getBoonColor = (type: BoonType | string) => {
-  switch (type) {
-    case 'Infusion': return 'text-hades-infusion';
-    case 'Duo': return 'text-hades-duo';
-    case 'Legendary': return 'text-hades-legendary';
-    default: return 'text-gray-200';
-  }
-};
-
-const getBoonBorderColor = (type: BoonType | string) => {
-  switch (type) {
-    case 'Infusion': return 'border-hades-infusion/70';
-    case 'Duo': return 'border-hades-duo/70';
-    case 'Legendary': return 'border-hades-legendary/70';
-    default: return 'border-[#26262f]';
-  }
-};
+import { Boon, BoonType, ElementType, ALL_ELEMENTS } from './types';
+import { SLOT_PRIORITY, CORE_SLOTS } from './constants';
+import { isValidForSlot, getBoonColor } from './utils/boonUtils';
+import { GodIcon, ElementIcon } from './components/Icons';
+import { StaticBoonListItem, DraggableBoonListItem } from './components/BoonListItem';
+import { CoreSlotRow } from './components/CoreSlotRow';
+import { BoonDisplayCard } from './components/BoonDisplayCard';
+import { DroppableSlotCard } from './components/DroppableSlotCard';
+import { ElementSummary } from './components/ElementSummary';
+import { SidebarFilterDropdown } from './components/SidebarFilterDropdown';
 
 export default function App() {
   const [coreBuild, setCoreBuild] = useState<Record<string, Boon | null>>({
@@ -387,8 +336,7 @@ export default function App() {
                       icon={activeSlot ? (() => {
                         const s = CORE_SLOTS.find(item => item.type === activeSlot);
                         if (!s) return null;
-                        if (typeof s.icon === 'string') return <img src={s.icon} className="w-3.5 h-3.5 object-contain filter brightness-125" />;
-                        return <s.icon className="w-3.5 h-3.5" />;
+                        return <img src={s.icon} className="w-3.5 h-3.5 object-contain filter brightness-125" />;
                       })() : null}
                     >
                       <button
@@ -423,16 +371,12 @@ export default function App() {
                             }}
                             className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${isActive ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
                           >
-                            {typeof slot.icon === 'string' ? (
-                              <img 
-                                src={slot.icon} 
-                                className="w-6 h-6 object-contain filter brightness-125" 
-                                alt="" 
-                                referrerPolicy="no-referrer" 
-                              />
-                            ) : (
-                              <slot.icon className="w-6 h-6" />
-                            )}
+                            <img 
+                              src={slot.icon} 
+                              className="w-6 h-6 object-contain filter brightness-125" 
+                              alt="" 
+                              referrerPolicy="no-referrer" 
+                            />
                             {slot.name}
                           </button>
                         );
@@ -677,10 +621,8 @@ export default function App() {
                           slot="Support"
                           name="Support Slot"
                           icon={Shield}
-                          boon={null}
                           isActive={activeSlot === 'Support'}
                           onClick={() => toggleActiveSlot('Support')}
-                          onRemove={() => {}}
                           draggedBoon={draggedBoon}
                           isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Support') : true}
                         />
@@ -690,10 +632,8 @@ export default function App() {
                           slot="LegendaryDuo"
                           name="Leg./Duo Slot"
                           icon={Sparkles}
-                          boon={null}
                           isActive={activeSlot === 'LegendaryDuo'}
                           onClick={() => toggleActiveSlot('LegendaryDuo')}
-                          onRemove={() => {}}
                           draggedBoon={draggedBoon}
                           isValid={draggedBoon ? isValidForSlot(draggedBoon, 'LegendaryDuo') : true}
                         />
@@ -703,10 +643,8 @@ export default function App() {
                           slot="Infusion"
                           name="Infusion Slot"
                           icon={Zap}
-                          boon={null}
                           isActive={activeSlot === 'Infusion'}
                           onClick={() => toggleActiveSlot('Infusion')}
-                          onRemove={() => {}}
                           draggedBoon={draggedBoon}
                           isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Infusion') : true}
                         />
@@ -753,669 +691,4 @@ export default function App() {
   );
 }
 
-function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; isOverlay?: boolean }) {
-  const borderColor = isOverlay ? 'border-hades-accent' : getBoonBorderColor(boon.type);
-  const rarityGlow = boon.type === 'Legendary' ? 'shadow-[0_0_15px_rgba(255,180,0,0.4)]' : 
-                    boon.type === 'Duo' ? 'shadow-[0_0_15px_rgba(150,255,100,0.4)]' : '';
-  
-  return (
-    <div className={`p-3 rounded-xl transition-all duration-75 transform-gpu ${
-      isOverlay ? 'bg-hades-bg-light shadow-2xl scale-[1.02] z-50' : 'bg-hades-bg-dark/40 border border-white/[0.03]'
-    }`}>
-      <div className="flex items-start gap-4 transform-gpu">
-        <div className={`relative w-14 h-14 flex-shrink-0 rounded-lg transition-all duration-100 ${rarityGlow} ${
-          isOverlay ? 'bg-white' : 'bg-hades-bg-dark'
-        }`}>
-          {boon.icon ? (
-            <div className="w-full h-full relative overflow-hidden rounded-lg">
-              <img 
-                src={boon.icon} 
-                alt={boon.name} 
-                className="w-full h-full object-cover scale-[1.12]" 
-                referrerPolicy="no-referrer" 
-              />
-              {/* Tight frame for all boons */}
-              <div className={`absolute inset-0 border-2 ${borderColor} rounded-lg pointer-events-none z-10`} />
-            </div>
-          ) : (
-            <div className="w-full h-full flex items-center justify-center p-1 border-2 border-[#26262f] rounded-lg opacity-40">
-              <GodIcon god={boon.gods[0]} className="w-10 h-10" />
-            </div>
-          )}
-          {boon.element && (
-            <div className="absolute -bottom-1 -right-1 bg-hades-bg-dark rounded-full p-0.5 border border-hades-border shadow-lg z-20">
-              <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
-            </div>
-          )}
-        </div>
-        
-        <div className="flex-1 min-w-0 py-0.5">
-          <div className="flex items-center justify-between mb-0.5">
-            <h4 className={`text-sm font-bold uppercase truncate ${getBoonColor(boon.type)}`}>
-              {boon.name}
-            </h4>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5">
-              <GodIcon god={boon.gods[0]} className="w-3 h-3" />
-              <span className="text-[10px] font-mono text-gray-500 uppercase leading-none">
-                {boon.gods[0]}
-              </span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-[10px] font-mono text-hades-accent/70 uppercase leading-none font-bold">
-                {boon.type}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p className="text-[11px] text-gray-400 leading-relaxed font-light line-clamp-2 mt-2">
-        {boon.effect}
-      </p>
-    </div>
-  );
-}
-
-function DraggableBoonListItem({ boon, onClick, isSelectable }: any) {
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-    id: boon.id,
-  });
-  
-  return (
-    <motion.div 
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      onClick={onClick}
-      whileHover={{ x: 6 }}
-      whileTap={{ scale: 0.98, x: 2 }}
-      transition={{ 
-        type: 'tween', 
-        ease: "easeOut",
-        duration: 0.1
-      }}
-      className={`relative group transition-all duration-75 transform-gpu backface-hidden ${
-        isDragging 
-          ? 'opacity-20 pointer-events-none' 
-          : isSelectable
-            ? 'cursor-pointer'
-            : 'cursor-grab active:cursor-grabbing'
-      }`}
-    >
-      <StaticBoonListItem boon={boon} />
-      {/* Selection indicator only for selectable items */}
-      {isSelectable && (
-        <div className="absolute inset-0 rounded-xl border-2 border-hades-accent/30 group-hover:border-hades-accent pointer-events-none transition-colors duration-75" />
-      )}
-    </motion.div>
-  );
-}
-
-function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isValid }: any) {
-  const { setNodeRef, isOver } = useDroppable({
-    id: slot.type,
-  });
-
-  const [isHovered, setIsHovered] = useState(false);
-
-  const isPotentialTarget = draggedBoon && isValid;
-  const shouldHighlight = isOver && isPotentialTarget;
-  const shouldDim = draggedBoon && !isValid;
-  const isExpanded = isActive || isOver || isHovered;
-
-  const renderSlotIcon = () => {
-    if (boon) {
-      const rarityGlow = boon.type === 'Legendary' ? 'shadow-[0_0_20px_rgba(255,180,0,0.5)]' : 
-                        boon.type === 'Duo' ? 'shadow-[0_0_20px_rgba(150,255,100,0.5)]' : '';
-      
-      return (
-        <div className={`absolute inset-0 rounded-2xl overflow-hidden ${rarityGlow}`}>
-          <motion.img 
-            key={boon.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            src={boon.icon} 
-            alt={boon.name} 
-            className="w-full h-full object-cover scale-[1.1]" 
-            referrerPolicy="no-referrer" 
-          />
-          {/* Overlapping Icons */}
-          <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
-            <GodIcon god={boon.gods[0]} className="w-full h-full" />
-          </div>
-          {boon.element && (
-            <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
-              <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
-            </div>
-          )}
-          {/* Rarity Border - Tightly matched to frame */}
-          <div className={`absolute inset-0 border-2 ${getBoonBorderColor(boon.type)} rounded-2xl pointer-events-none z-10`} />
-        </div>
-      );
-    }
-    
-    if (typeof slot.icon === 'string') {
-      return (
-        <img 
-          src={slot.icon} 
-          alt={slot.name} 
-          className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-200" 
-          referrerPolicy="no-referrer" 
-        />
-      );
-    }
-    const IconComponent = slot.icon;
-    return (
-      <div className="absolute inset-0 flex items-center justify-center p-5 border-2 border-[#26262f] rounded-2xl">
-        <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
-      </div>
-    );
-  };
-
-  return (
-    <div className="h-[88px] w-full relative">
-      <div 
-        className={`group flex flex-col items-start absolute top-0 left-0 transition-opacity duration-100 ${shouldDim ? 'opacity-20 grayscale brightness-50 pointer-events-none' : ''}`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{ zIndex: isExpanded ? 50 : 10 }}
-      >
-        <motion.div 
-          ref={setNodeRef}
-          onClick={onClick}
-          initial={false}
-          animate={{ 
-            width: isExpanded ? '380px' : '84px',
-            height: isExpanded ? 'auto' : '84px'
-          }}
-          transition={{ duration: 0.1, ease: "easeOut" }}
-          className={`relative flex items-start gap-4 cursor-pointer transition-all duration-300 ${
-            isExpanded ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
-          }`}
-        >
-          {/* Background masking for unfurled state */}
-          <AnimatePresence>
-            {isExpanded && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
-                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5" 
-              />
-            )}
-          </AnimatePresence>
-          
-          <div className={`relative w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center rounded-2xl transition-all duration-300 ${
-            shouldHighlight 
-              ? 'bg-hades-accent/20 border-2 border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
-              : isPotentialTarget
-                ? 'bg-hades-accent/10 border-2 border-hades-accent/40 border-dashed animate-pulse z-40'
-                : isActive
-                  ? 'bg-hades-accent/5 border-2 border-hades-accent border-solid z-50'
-                  : 'border-0'
-          }`}>
-            <div className="w-full h-full relative">
-              {renderSlotIcon()}
-            </div>
-          </div>
-
-          {/* Content Area - Uses a fixed width inner container to prevent reflow during expansion */}
-          <div className="overflow-hidden flex-1">
-            <div className="w-[300px] h-full flex flex-col justify-center pr-4 py-3">
-              {boon ? (
-                <motion.div 
-                  initial={false}
-                  animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
-                  className="relative"
-                >
-                  <div className="text-[9px] font-mono text-hades-text/40 uppercase mb-0.5 font-bold">
-                    {slot.name}
-                  </div>
-                  <h4 className={`text-sm font-black uppercase tracking-wider leading-tight ${getBoonColor(boon.type)}`}>
-                    {boon.name}
-                  </h4>
-                  <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal mt-1">
-                    {boon.effect}
-                  </p>
-                  
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); onRemove(); }}
-                    className="absolute right-0 top-0 p-1 hover:text-hades-red text-gray-700 hover:bg-hades-red/10 rounded transition-all"
-                    title="Remove Boon"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </motion.div>
-              ) : (
-                <motion.div 
-                  initial={false}
-                  animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
-                  className="flex items-center gap-3"
-                >
-                  <Plus className={`w-5 h-5 ${isActive ? 'text-hades-accent scale-110' : 'text-gray-800 opacity-40'}`} />
-                  <div className="flex flex-col">
-                    <span className={`text-[10px] font-mono uppercase font-bold ${isActive ? 'text-hades-accent' : 'text-hades-accent/40'}`}>
-                      {slot.name}
-                    </span>
-                    <span className="text-[9px] font-mono text-gray-700 uppercase">
-                      Empty Slot
-                    </span>
-                  </div>
-                </motion.div>
-              )}
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
-function DroppableSlotCard({ id, slot, name, icon, isActive, onClick, draggedBoon, isValid }: any) {
-  const { setNodeRef, isOver } = useDroppable({
-    id: id,
-  });
-
-  const [isHovered, setIsHovered] = useState(false);
-  const isPotentialTarget = draggedBoon && isValid;
-  const shouldHighlight = isOver && isPotentialTarget;
-  const shouldDim = draggedBoon && !isValid;
-  const isExpanded = isActive || isOver || isHovered;
-
-  const renderIcon = () => {
-    if (typeof icon === 'string') {
-      return (
-        <img 
-          src={icon} 
-          alt={name} 
-          className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-200" 
-          referrerPolicy="no-referrer" 
-        />
-      );
-    }
-    const IconComponent = icon;
-    return (
-      <div className="absolute inset-0 flex items-center justify-center p-5 border-2 border-[#26262f] rounded-2xl">
-        <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
-      </div>
-    );
-  };
-
-  return (
-    <div className="h-[88px] w-full relative">
-      <div 
-        className={`group flex flex-col absolute top-0 left-0 transition-opacity duration-100 ${shouldDim ? 'opacity-20 grayscale brightness-50 pointer-events-none' : ''}`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{ zIndex: isExpanded ? 50 : 10 }}
-      >
-        <motion.div 
-          ref={setNodeRef}
-          onClick={onClick}
-          initial={false}
-          animate={{ 
-            width: isExpanded ? '380px' : '84px',
-            height: isExpanded ? 'auto' : '84px'
-          }}
-          transition={{ duration: 0.1, ease: "easeOut" }}
-          className={`relative flex items-start gap-4 cursor-pointer transition-all duration-300 ${
-            isExpanded ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
-          }`}
-        >
-          {/* Background masking for unfurled state */}
-          <AnimatePresence>
-            {isExpanded && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
-                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5" 
-              />
-            )}
-          </AnimatePresence>
-
-          <div className={`relative w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center rounded-2xl transition-all duration-300 ${
-             shouldHighlight 
-               ? 'bg-hades-accent/20 border-2 border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
-               : isPotentialTarget
-                 ? 'bg-hades-accent/10 border-2 border-hades-accent/40 border-dashed animate-pulse z-40'
-                 : isActive 
-                   ? 'bg-hades-accent/5 border-2 border-hades-accent border-solid z-50' 
-                   : 'border-0'
-          }`}>
-            <div className="w-full h-full relative">
-              {renderIcon()}
-            </div>
-          </div>
-
-          <div className="overflow-hidden flex-1">
-            <div className="w-[280px] h-full flex flex-col justify-center pr-4 py-3">
-              <motion.div 
-                initial={false}
-                animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
-                className="flex flex-col"
-              >
-                <span className={`text-[11px] font-mono uppercase ${isActive || isHovered || isOver ? 'text-hades-accent font-bold' : 'text-gray-600'}`}>
-                  {isActive ? 'Awaiting Selection' : name}
-                </span>
-                <span className="text-[9px] font-mono text-gray-700 uppercase">
-                  Empty Slot
-                </span>
-              </motion.div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
-function CollapsibleSection({ 
-  title, 
-  icon: Icon, 
-  children, 
-  count,
-  defaultOpen = true 
-}: { 
-  title: React.ReactNode; 
-  icon: any; 
-  children: React.ReactNode; 
-  count?: number;
-  defaultOpen?: boolean;
-}) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-  
-  return (
-    <div className="mb-12">
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center gap-4 mb-8 group focus:outline-none"
-      >
-        <Icon className={`w-6 h-6 transition-colors ${isOpen ? 'text-hades-accent' : 'text-gray-500 group-hover:text-hades-accent/70'}`} />
-        <h3 className="text-base font-mono uppercase text-gray-300 font-bold text-left">
-          {title}
-        </h3>
-        <div className="h-px flex-1 bg-hades-accent/20"></div>
-        <div className="flex items-center gap-4">
-          {count !== undefined && count > 0 && (
-            <span className="text-[10px] font-mono text-gray-400 bg-hades-bg-main px-2 py-0.5 rounded-full border border-hades-border">
-              {count}
-            </span>
-          )}
-          <motion.div
-            animate={{ rotate: isOpen ? 0 : -90 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="text-hades-accent/40 group-hover:text-hades-accent transition-colors"
-          >
-            <ChevronDown className="w-5 h-5" />
-          </motion.div>
-        </div>
-      </button>
-      
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="pb-4">
-              {children}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function SidebarFilterDropdown({ 
-  title, 
-  isOpen, 
-  setIsOpen, 
-  children,
-  summary,
-  icon
-}: { 
-  title: React.ReactNode; 
-  isOpen: boolean; 
-  setIsOpen: (val: boolean) => void; 
-  children: React.ReactNode;
-  summary?: string | null;
-  icon?: React.ReactNode;
-}) {
-  const hasValue = summary && summary !== 'Any';
-  
-  return (
-    <div className="relative">
-      <div className={`flex flex-col rounded-xl border transition-all duration-200 ${
-        isOpen 
-          ? 'bg-hades-bg-main border-white/20 shadow-[inset_0_1px_2px_rgba(255,255,255,0.05),0_10px_20px_-5px_rgba(0,0,0,0.5)]' 
-          : hasValue 
-            ? 'bg-white/5 border-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)]'
-            : 'bg-hades-bg-dark border-hades-border-light hover:border-hades-border hover:bg-hades-bg-light'
-      }`}>
-        <button 
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center justify-between w-full group focus:outline-none transition-all duration-200 p-2.5 min-h-[52px]"
-        >
-          <div className="flex flex-col gap-1 items-start overflow-hidden">
-            <span className={`uppercase font-mono transition-all duration-200 text-xs ${
-              isOpen || hasValue ? 'text-white/80 font-bold' : 'text-hades-text/50 font-semibold'
-            }`}>
-              {title}
-            </span>
-            <div className={`flex items-center gap-2 text-xs font-bold truncate max-w-full font-mono uppercase transition-all duration-200 ${
-              hasValue ? 'text-hades-accent' : 'text-gray-400 opacity-60'
-            }`}>
-              <div className={`w-5 h-5 rounded flex items-center justify-center transition-colors ${
-                hasValue ? 'bg-white/10' : 'bg-black/20 text-white/10'
-              }`}>
-                {hasValue && icon ? (
-                  <div className="w-4 h-4 flex items-center justify-center">{icon}</div>
-                ) : (
-                  <Layers className="w-3 h-3 opacity-40" />
-                )}
-              </div>
-              <span>{isOpen ? 'Select...' : (summary || 'Any')}</span>
-            </div>
-          </div>
-          <motion.div
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className={`${isOpen || hasValue ? 'text-white/80' : 'text-gray-500'} group-hover:text-white transition-colors`}
-          >
-            <ChevronDown className="w-4 h-4" />
-          </motion.div>
-        </button>
-      </div>
-
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="fixed inset-0 z-[60]" 
-              onClick={() => setIsOpen(false)} 
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute top-full left-0 right-[-100%] sm:right-0 mt-2 bg-hades-bg-main border border-hades-border shadow-2xl rounded-xl z-[70] overflow-hidden"
-            >
-              <div className="p-1.5 flex flex-col max-h-[300px] overflow-y-auto custom-scrollbar gap-1">
-                {children}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function ElementIcon({ element, className }: { element: ElementType; className?: string }) {
-  return (
-    <img 
-      src={`/assets/elements/Element_${element}.webp`}
-      alt={element}
-      className={`${className} object-contain`}
-      referrerPolicy="no-referrer"
-    />
-  );
-}
-
-function GodIcon({ god, className }: { god: string; className?: string }) {
-  const symbol = GOD_SYMBOLS[god];
-  if (!symbol) return null;
-  return (
-    <img 
-      src={symbol}
-      alt={god}
-      className={`${className} object-contain`}
-      referrerPolicy="no-referrer"
-    />
-  );
-}
-
-function BoonDisplayCard({ boon, onRemove }: any) {
-  const [isHovered, setIsHovered] = useState(false);
-  const rarityGlow = boon.type === 'Legendary' ? 'shadow-[0_0_20px_rgba(255,180,0,0.5)]' : 
-                    boon.type === 'Duo' ? 'shadow-[0_0_20px_rgba(150,255,100,0.5)]' : '';
-
-  return (
-    <div className="h-[88px] w-full relative">
-      <div 
-        className="group absolute top-0 left-0 w-full transition-opacity duration-200"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{ zIndex: isHovered ? 50 : 10 }}
-      >
-        <motion.div 
-          initial={false}
-          animate={{ 
-            width: isHovered ? '440px' : '84px',
-            height: isHovered ? 'auto' : '84px'
-          }}
-          transition={{ duration: 0.1, ease: "easeOut" }}
-          className={`relative flex items-start w-full gap-4 transition-all duration-300 ${
-            isHovered ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
-          }`}
-        >
-          {/* Background masking for hovered state */}
-          <AnimatePresence>
-            {isHovered && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
-                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5 shadow-2xl" 
-              />
-            )}
-          </AnimatePresence>
-
-          {/* Icon Container */}
-          <div className={`relative w-[84px] h-[84px] flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-300 ${rarityGlow} border-0`}>
-            <div className="w-full h-full relative">
-              <img 
-                src={boon.icon} 
-                alt={boon.name} 
-                className="w-full h-full object-cover scale-[1.1]" 
-                referrerPolicy="no-referrer" 
-              />
-              {/* Overlapping icons */}
-              <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
-                <GodIcon god={boon.gods[0]} className="w-full h-full" />
-              </div>
-              {boon.element && (
-                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
-                  <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
-                </div>
-              )}
-              {/* Rarity Border */}
-              <div className={`absolute inset-0 border-2 ${getBoonBorderColor(boon.type)} rounded-2xl pointer-events-none z-10`} />
-            </div>
-          </div>
-
-          <div className="overflow-hidden flex-1">
-            <div className="w-[340px] h-full flex flex-col justify-center pr-4 py-3">
-              <motion.div 
-                initial={false}
-                animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -10 }}
-                className="relative"
-              >
-                <div className="text-[9px] font-mono text-hades-text/40 uppercase mb-0.5 font-bold">
-                  {boon.type}
-                </div>
-                <h4 className={`text-sm font-black uppercase tracking-wider leading-tight ${getBoonColor(boon.type)}`}>
-                  {boon.name}
-                </h4>
-                <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal mt-1">
-                  {boon.effect}
-                </p>
-                
-                <button 
-                  onClick={(e) => { e.stopPropagation(); onRemove(); }}
-                  className="absolute right-0 top-0 p-1 hover:text-hades-red text-gray-700 hover:bg-hades-red/10 rounded transition-all"
-                  title="Remove Boon"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </motion.div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
-function ElementSummary({ coreBuild, additionalBoons }: { coreBuild: Record<string, Boon | null>; additionalBoons: Boon[] }) {
-  const counts = useMemo(() => {
-    const summary = {} as Record<ElementType, number>;
-    ALL_ELEMENTS.forEach(el => summary[el] = 0);
-    
-    // Core
-    Object.values(coreBuild).forEach(b => {
-      if (b?.element) summary[b.element]++;
-    });
-
-    // Additional
-    additionalBoons.forEach(b => {
-      if (b?.element) summary[b.element]++;
-    });
-
-    return summary;
-  }, [coreBuild, additionalBoons]);
-
-  return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-3 p-4 rounded-xl bg-hades-panel/40 border border-hades-border/40">
-      {ALL_ELEMENTS.map((el) => {
-        const count = counts[el];
-        return (
-          <div key={el} className="flex items-center gap-2.5">
-            <div className={`p-1.5 rounded bg-hades-bg-main border border-hades-border/50 transition-all duration-300 ${count > 0 ? `${ELEMENT_COLORS[el]} shadow-[0_0_10px_-2px_currentColor]` : 'text-gray-600 opacity-40'}`}>
-              <ElementIcon element={el} className="w-4 h-4" />
-            </div>
-            <div className="flex flex-col -space-y-1">
-              <div className={`text-base font-bold font-mono transition-colors duration-300 ${count > 0 ? 'text-gray-100' : 'text-gray-600'}`}>{count}</div>
-              <div className="text-[9px] font-mono uppercase text-gray-500 tracking-tighter">{el}</div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
