@@ -36,27 +36,27 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
                         boon.type === 'Duo' ? 'shadow-[0_0_20px_rgba(150,255,100,0.5)]' : '';
       
       return (
-        <div className={`absolute inset-0 rounded-2xl overflow-hidden ${rarityGlow}`}>
+        <div className={`absolute inset-0 rounded-[28%] ${rarityGlow}`}>
           <motion.img 
             key={boon.id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             src={boon.icon} 
             alt={boon.name} 
-            className="w-full h-full object-cover scale-[1.1]" 
+            className="w-full h-full object-contain relative z-10" 
             referrerPolicy="no-referrer" 
           />
           {/* Overlapping Icons */}
-          <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
+          <div className="absolute top-0 -right-0.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
             <GodIcon god={boon.gods[0]} className="w-full h-full" />
           </div>
           {boon.element && (
-            <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
+            <div className="absolute bottom-0 -right-0.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
               <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
             </div>
           )}
           {/* Rarity Border - Tightly matched to frame */}
-          <div className={`absolute inset-0 border-2 ${getBoonBorderColor(boon.type)} rounded-2xl pointer-events-none z-10`} />
+          <div className={`absolute inset-0 border-[3px] ${getBoonBorderColor(boon.type)} rounded-[28%] pointer-events-none z-10`} />
         </div>
       );
     }
@@ -73,7 +73,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
     }
     const IconComponent = slot.icon;
     return (
-      <div className="absolute inset-0 flex items-center justify-center p-5 border-2 border-[#26262f] rounded-2xl">
+      <div className="absolute inset-0 flex items-center justify-center p-5 border-[3px] border-[#26262f] rounded-[28%]">
         <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
       </div>
     );
@@ -113,16 +113,16 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
             )}
           </AnimatePresence>
           
-          <div className={`relative w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center rounded-2xl transition-all duration-300 ${
+          <div className={`relative w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center rounded-[28%] transition-all duration-300 ${
             shouldHighlight 
-              ? 'bg-hades-accent/20 border-2 border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
+              ? 'bg-hades-accent/20 border-[3px] border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
               : isPotentialTarget
-                ? 'bg-hades-accent/10 border-2 border-hades-accent/40 border-dashed animate-pulse z-40'
+                ? 'bg-hades-accent/10 border-[3px] border-hades-accent/40 border-dashed animate-pulse z-40'
                 : isActive
-                  ? 'bg-hades-accent/5 border-2 border-hades-accent border-solid z-50'
+                  ? 'bg-hades-accent/5 border-[3px] border-hades-accent border-solid z-50'
                   : 'border-0'
           }`}>
-            <div className="w-full h-full relative">
+            <div className="w-full h-full relative rounded-[28%]">
               {renderSlotIcon()}
             </div>
           </div>

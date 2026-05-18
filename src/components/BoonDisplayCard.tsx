@@ -50,25 +50,25 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
           </AnimatePresence>
 
           {/* Icon Container */}
-          <div className={`relative w-[84px] h-[84px] flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-300 ${rarityGlow} border-0`}>
-            <div className="w-full h-full relative">
+          <div className={`relative w-[84px] h-[84px] flex-shrink-0 transition-all duration-300 border-0`}>
+            <div className={`w-full h-full relative rounded-[28%] ${rarityGlow}`}>
               <img 
                 src={boon.icon} 
                 alt={boon.name} 
-                className="w-full h-full object-cover scale-[1.1]" 
+                className="w-full h-full object-contain relative z-10" 
                 referrerPolicy="no-referrer" 
               />
               {/* Overlapping icons */}
-              <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
+              <div className="absolute top-0 -right-0.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
                 <GodIcon god={boon.gods[0]} className="w-full h-full" />
               </div>
               {boon.element && (
-                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
+                <div className="absolute bottom-0 -right-0.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
                   <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
                 </div>
               )}
               {/* Rarity Border */}
-              <div className={`absolute inset-0 border-2 ${getBoonBorderColor(boon.type)} rounded-2xl pointer-events-none z-10`} />
+              <div className={`absolute inset-0 border-[3px] ${getBoonBorderColor(boon.type)} rounded-[28%] pointer-events-none z-10`} />
             </div>
           </div>
 

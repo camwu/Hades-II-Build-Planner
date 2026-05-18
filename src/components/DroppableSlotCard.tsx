@@ -38,7 +38,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
     }
     const IconComponent = icon;
     return (
-      <div className="absolute inset-0 flex items-center justify-center p-5 border-2 border-[#26262f] rounded-2xl">
+      <div className="absolute inset-0 flex items-center justify-center p-5 border-[3px] border-[#26262f] rounded-[28%]">
         <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
       </div>
     );
@@ -78,16 +78,16 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
             )}
           </AnimatePresence>
 
-          <div className={`relative w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center rounded-2xl transition-all duration-300 ${
+          <div className={`relative w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center rounded-[28%] transition-all duration-300 ${
              shouldHighlight 
-               ? 'bg-hades-accent/20 border-2 border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
+               ? 'bg-hades-accent/20 border-[3px] border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50' 
                : isPotentialTarget
-                 ? 'bg-hades-accent/10 border-2 border-hades-accent/40 border-dashed animate-pulse z-40'
+                 ? 'bg-hades-accent/10 border-[3px] border-hades-accent/40 border-dashed animate-pulse z-40'
                  : isActive 
-                   ? 'bg-hades-accent/5 border-2 border-hades-accent border-solid z-50' 
+                   ? 'bg-hades-accent/5 border-[3px] border-hades-accent border-solid z-50' 
                    : 'border-0'
           }`}>
-            <div className="w-full h-full relative">
+            <div className="w-full h-full relative rounded-[28%] overflow-hidden">
               {renderIcon()}
             </div>
           </div>

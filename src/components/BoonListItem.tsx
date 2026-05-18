@@ -16,26 +16,26 @@ export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; is
       isOverlay ? 'bg-hades-bg-light shadow-2xl scale-[1.02] z-50' : 'bg-hades-bg-dark/40 border border-white/[0.03]'
     }`}>
       <div className="flex items-start gap-4 transform-gpu">
-        <div className={`relative w-14 h-14 flex-shrink-0 rounded-lg transition-all duration-100 ${rarityGlow} ${
-          isOverlay ? 'bg-white' : 'bg-hades-bg-dark'
+        <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 ${
+          isOverlay ? 'bg-white rounded-[28%]' : 'bg-hades-bg-dark rounded-[28%]'
         }`}>
           {boon.icon ? (
-            <div className="w-full h-full relative overflow-hidden rounded-lg">
+            <div className={`w-full h-full relative rounded-[28%] ${rarityGlow}`}>
               <img 
                 src={boon.icon} 
                 alt={boon.name} 
-                className="w-full h-full object-cover scale-[1.12]" 
+                className="w-full h-full object-contain" 
                 referrerPolicy="no-referrer" 
               />
-              <div className={`absolute inset-0 border-2 ${borderColor} rounded-lg pointer-events-none z-10`} />
+              <div className={`absolute inset-0 border-[3px] ${borderColor} rounded-[28%] pointer-events-none z-10`} />
             </div>
           ) : (
-            <div className="w-full h-full flex items-center justify-center p-1 border-2 border-[#26262f] rounded-lg opacity-40">
+            <div className="w-full h-full flex items-center justify-center p-1 border-[3px] border-[#26262f] rounded-[28%] opacity-40">
               <GodIcon god={boon.gods[0]} className="w-10 h-10" />
             </div>
           )}
           {boon.element && (
-            <div className="absolute -bottom-1 -right-1 bg-hades-bg-dark rounded-full p-0.5 border border-hades-border shadow-lg z-20">
+            <div className="absolute -bottom-0.5 -right-0.5 bg-hades-bg-dark rounded-full p-0.5 border border-hades-border shadow-lg z-20">
               <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
             </div>
           )}
