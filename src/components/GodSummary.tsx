@@ -36,8 +36,10 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
   if (godData.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/40 border border-white/5">
-      {godData.map(([god, count]) => {
+    <div className="flex flex-col gap-2">
+      <span className="text-[10px] font-mono uppercase tracking-widest text-hades-accent/60 font-bold ml-1">God Pool</span>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/40 border border-white/5">
+        {godData.map(([god, count]) => {
         const godColor = GOD_COLORS[god] || 'text-gray-400';
         return (
           <div key={god} className="flex items-center gap-2">
@@ -50,6 +52,7 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
           </div>
         );
       })}
+      </div>
     </div>
   );
 }

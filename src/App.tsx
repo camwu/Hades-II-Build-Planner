@@ -692,7 +692,7 @@ export default function App() {
               </div>
 
               {/* Elemental & God Tracker */}
-              <div className="mb-8 flex items-center gap-4 w-fit">
+              <div className="mb-8 flex items-start gap-4 w-fit">
                 <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
                 <GodSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
               </div>

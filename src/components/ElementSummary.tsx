@@ -27,8 +27,10 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
   }, [coreBuild, additionalBoons]);
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/40 border border-white/5">
-      {ALL_ELEMENTS.map((el) => {
+    <div className="flex flex-col gap-2">
+      <span className="text-[10px] font-mono uppercase tracking-widest text-hades-accent/60 font-bold ml-1">Elemental Infusions</span>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/40 border border-white/5">
+        {ALL_ELEMENTS.map((el) => {
         const count = counts[el];
         return (
           <div key={el} className="flex items-center gap-2">
@@ -45,6 +47,7 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
           </div>
         );
       })}
+      </div>
     </div>
   );
 }
