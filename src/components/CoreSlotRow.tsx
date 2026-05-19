@@ -166,17 +166,14 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
                 <motion.div 
                   initial={false}
                   animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
-                  className="flex items-center gap-3"
+                  className="relative"
                 >
-                  <Plus className={`w-5 h-5 ${isActive ? 'text-hades-accent' : 'text-gray-800 opacity-40'}`} />
-                  <div className="flex flex-col">
-                    <span className={`text-[10px] font-mono uppercase font-bold ${isActive ? 'text-hades-accent' : 'text-hades-accent/40'}`}>
-                      {slot.name}
-                    </span>
-                    <span className="text-[9px] font-mono text-gray-700 uppercase">
-                      Empty Slot
-                    </span>
+                  <div className="text-sm font-black uppercase tracking-wider leading-tight text-hades-accent mb-1">
+                    {slot.name}
                   </div>
+                  <p className="text-[12px] text-white/40 leading-normal font-normal mt-1">
+                    Click to select boon or drag and drop from sidebar
+                  </p>
                 </motion.div>
               )}
             </div>

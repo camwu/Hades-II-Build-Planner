@@ -107,14 +107,14 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
               <motion.div 
                 initial={false}
                 animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
-                className="flex flex-col"
+                className="relative"
               >
-                <span className={`text-[11px] font-mono uppercase ${isActive || isHovered || isOver ? 'text-hades-accent font-bold' : 'text-gray-600'}`}>
-                  {isActive ? 'Awaiting Selection' : name}
-                </span>
-                <span className="text-[9px] font-mono text-gray-700 uppercase">
-                  Empty Slot
-                </span>
+                <div className="text-sm font-black uppercase tracking-wider leading-tight text-hades-accent mb-1">
+                  {name}
+                </div>
+                <p className="text-[12px] text-white/40 leading-normal font-normal mt-1">
+                  Click to select boon or drag and drop from sidebar
+                </p>
               </motion.div>
             </div>
           </div>
