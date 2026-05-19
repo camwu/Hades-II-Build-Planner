@@ -12,13 +12,47 @@ import {
   SLOT_EXPANDED_WIDTH 
 } from '../constants';
 
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
 interface BoonDisplayCardProps {
   boon: Boon;
   onRemove: () => void;
-  key?: any;
+  isSorting?: boolean;
+  key?: string | number;
 }
 
-export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
+export function SortableBoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ 
+    id: boon.id,
+    data: {
+      type: 'sortable',
+      boon
+    }
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.3 : 1,
+    zIndex: isDragging ? 100 : undefined
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <BoonDisplayCard boon={boon} onRemove={onRemove} isSorting={true} />
+    </div>
+  );
+}
+
+export function BoonDisplayCard({ boon, onRemove, isSorting }: BoonDisplayCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const rarityGlow = '';
 

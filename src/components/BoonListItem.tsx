@@ -78,8 +78,8 @@ export function DraggableBoonListItem({ boon, onClick, isSelectable }: { boon: B
       {...listeners}
       {...attributes}
       onClick={onClick}
-      whileHover={{ scale: 1 }}
-      whileTap={{ scale: 1 }}
+      whileHover={{ x: 6 }}
+      whileTap={{ scale: 0.98 }}
       transition={{ 
         type: 'tween', 
         ease: "easeOut",

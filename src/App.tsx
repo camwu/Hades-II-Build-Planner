@@ -27,8 +27,17 @@ import {
   useSensors,
   PointerSensor,
   DragStartEvent,
-  DragEndEvent
+  DragEndEvent,
+  closestCenter,
+  MeasuringStrategy
 } from '@dnd-kit/core';
+import { 
+  SortableContext, 
+  arrayMove, 
+  rectSortingStrategy,
+  useSortable
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { BOONS } from './data/boonsData';
 import { Boon, BoonType, ElementType, ALL_ELEMENTS } from './types';
 import { 
@@ -41,7 +50,7 @@ import { isValidForSlot, getBoonColor } from './utils/boonUtils';
 import { GodIcon, ElementIcon } from './components/Icons';
 import { StaticBoonListItem, DraggableBoonListItem } from './components/BoonListItem';
 import { CoreSlotRow } from './components/CoreSlotRow';
-import { BoonDisplayCard } from './components/BoonDisplayCard';
+import { BoonDisplayCard, SortableBoonDisplayCard } from './components/BoonDisplayCard';
 import { DroppableSlotCard } from './components/DroppableSlotCard';
 import { ElementSummary } from './components/ElementSummary';
 import { GodSummary } from './components/GodSummary';
@@ -330,12 +339,32 @@ export default function App() {
     const { over, active } = event;
     setDraggedBoon(null);
 
-    if (over && active) {
+    if (!over) return;
+
+    // Handle sorting first
+    if (active.data.current?.type === 'sortable' && over.data.current?.type === 'sortable') {
+      if (active.id !== over.id) {
+        setAdditionalBoons((items) => {
+          const oldIndex = items.findIndex(b => b.id === active.id);
+          const newIndex = items.findIndex(b => b.id === over.id);
+          return arrayMove(items, oldIndex, newIndex);
+        });
+      }
+      return;
+    }
+
+    // Handle dropping new boons
+    if (active) {
       const boon = BOONS.find(b => b.id === active.id);
-      const slotId = over.id as string;
+      let targetSlotId = over.id as string;
+
+      // If we're hovering over an existing sortable item, we treat it as being over the 'NonCore' slot
+      if (over.data.current?.type === 'sortable') {
+        targetSlotId = 'NonCore';
+      }
       
-      if (boon && isValidForSlot(boon, slotId) && !selectedBoonIds.has(boon.id)) {
-        selectBoon(boon, slotId);
+      if (boon && isValidForSlot(boon, targetSlotId) && !selectedBoonIds.has(boon.id)) {
+        selectBoon(boon, targetSlotId);
       }
     }
   };
@@ -554,14 +583,18 @@ export default function App() {
                       {/* Unified Boons Grid */}
                       <div className="grid grid-flow-col grid-rows-5 gap-x-3 gap-y-3 auto-cols-max items-start">
                         {/* Selected Boons */}
-                        {additionalBoons.map((boon, idx) => (
-                          <div key={`${boon.id}-${idx}`}>
-                            <BoonDisplayCard 
+                        <SortableContext 
+                          items={additionalBoons.map(b => b.id)} 
+                          strategy={rectSortingStrategy}
+                        >
+                          {additionalBoons.map((boon, idx) => (
+                            <SortableBoonDisplayCard 
+                              key={boon.id}
                               boon={boon} 
                               onRemove={() => removeAdditionalBoon(boon, idx)}
                             />
-                          </div>
-                        ))}
+                          ))}
+                        </SortableContext>
 
                         {/* Unified Non-Core Slot */}
                         <div>

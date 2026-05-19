@@ -92,6 +92,8 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
       >
         <motion.div 
           ref={setNodeRef}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           onClick={onClick}
           initial={false}
           animate={{ 
@@ -120,8 +122,6 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
           
           <div 
             style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
             className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
             shouldHighlight 
               ? 'bg-white/10 ring-[3px] ring-white/40 shadow-[0_0_40px_rgba(255,255,255,0.4)] z-50' 
