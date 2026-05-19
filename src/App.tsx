@@ -357,7 +357,7 @@ export default function App() {
       onDragStart={handleDragStart} 
       onDragEnd={handleDragEnd}
     >
-      <div className="h-screen bg-hades-bg text-hades-text font-sans selection:bg-hades-accent/30 overflow-hidden flex flex-col">
+      <div className="h-screen bg-hades-bg text-hades-text font-sans overflow-hidden flex flex-col">
         {/* Header */}
         <header className="fixed top-0 left-0 right-0 h-16 border-b border-hades-border bg-hades-bg-dark/80 backdrop-blur-md z-50 px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
