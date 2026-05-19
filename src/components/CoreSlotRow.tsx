@@ -38,11 +38,10 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
 
   const renderSlotIcon = () => {
     if (boon) {
-      const rarityGlow = boon.type === 'Legendary' ? 'shadow-[0_0_20px_rgba(255,180,0,0.5)]' : 
-                        boon.type === 'Duo' ? 'shadow-[0_0_20px_rgba(150,255,100,0.5)]' : '';
+      const rarityGlow = '';
       
       return (
-        <div className={`absolute inset-0 ${BOON_ICON_ROUNDING} ${rarityGlow}`}>
+        <div className={`absolute inset-0 ${BOON_ICON_ROUNDING}`}>
           <motion.img 
             key={boon.id}
             initial={{ opacity: 0 }}
@@ -102,6 +101,8 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
             height: isExpanded ? 'auto' : SLOT_COLLAPSED_WIDTH
           }}
           transition={{ duration: 0.1, ease: "easeOut" }}
+          whileHover={{ scale: 1 }}
+          whileTap={{ scale: 1 }}
           className={`relative flex items-start gap-4 cursor-pointer transition-all duration-300 ${
             isExpanded ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
           }`}
@@ -123,27 +124,27 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
             style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
             className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
             shouldHighlight 
-              ? `bg-hades-accent/20 ${BOON_BORDER_WIDTH} border-hades-accent border-solid shadow-[0_0_40px_rgba(16,185,129,0.4)] z-50` 
+              ? `bg-white/10 ${BOON_BORDER_WIDTH} border-white/40 border-solid shadow-[0_0_40px_rgba(255,255,255,0.4)] z-50` 
               : isPotentialTarget
-                ? `bg-hades-accent/10 ${BOON_BORDER_WIDTH} border-hades-accent/40 border-dashed animate-pulse z-40`
+                ? `bg-white/5 ${BOON_BORDER_WIDTH} border-white/20 border-dashed animate-pulse z-40`
                 : isActive
-                  ? `bg-hades-accent/5 ${BOON_BORDER_WIDTH} border-hades-accent border-solid z-50`
-                  : 'border-0'
+                  ? `bg-white/5 ${BOON_BORDER_WIDTH} border-white/40 border-solid z-50`
+                  : `${BOON_BORDER_WIDTH} border-transparent`
           }`}>
             <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
               {renderSlotIcon()}
             </div>
           </div>
 
-          <div className="overflow-hidden flex-1">
-            <div className="w-[340px] h-full flex flex-col justify-center pr-4 py-3">
+          <div className="flex-1">
+            <div className="w-[340px] flex flex-col justify-center pr-4 py-3 min-h-[84px]">
               {boon ? (
                 <motion.div 
                   initial={false}
                   animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
                   className="relative"
                 >
-                  <div className="text-[9px] font-mono text-hades-text/40 uppercase mb-0.5 font-bold">
+                  <div className="text-[9px] font-mono text-hades-accent uppercase mb-0.5 font-bold">
                     {slot.name}
                   </div>
                   <h4 className={`text-sm font-black uppercase tracking-wider leading-tight ${getBoonColor(boon.type)}`}>
@@ -167,7 +168,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
                   animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
                   className="flex items-center gap-3"
                 >
-                  <Plus className={`w-5 h-5 ${isActive ? 'text-hades-accent scale-110' : 'text-gray-800 opacity-40'}`} />
+                  <Plus className={`w-5 h-5 ${isActive ? 'text-hades-accent' : 'text-gray-800 opacity-40'}`} />
                   <div className="flex flex-col">
                     <span className={`text-[10px] font-mono uppercase font-bold ${isActive ? 'text-hades-accent' : 'text-hades-accent/40'}`}>
                       {slot.name}

@@ -9,17 +9,53 @@ interface FormattedBoonEffectProps {
 export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProps) {
   if (!text) return null;
 
-  // Simplified regex: one capturing group for the keyword. 
-  // Non-capturing inner group (?:) prevents duplication in split result.
-  const regex = new RegExp(`(\\b(?:${BOON_KEYWORDS.join('|')})\\b)`, 'g');
+  // Patterns for text highlighting
+  const timePattern = `\\(\\s*every\\s+[^)]+\\)`;
+  const rangePattern = `[+-]?[\\d.%]+(?:\\s*[A-Za-z.]+)?(?:\\s*/\\s*[+-]?[\\d.%]+(?:\\s*[A-Za-z.]+)?)+`;
+  const keywordPattern = `\\b(?:${BOON_KEYWORDS.join('|')})(?:s|es)?\\b|Ω`;
+  
+  // Combine patterns into a single capturing group for split
+  const regex = new RegExp(`(${timePattern}|${rangePattern}|${keywordPattern})`, 'g');
   
   const parts = text.split(regex);
   
+  const rarityColors = [
+    '#d1d1e0', // Common
+    '#008aff', // Rare
+    '#9d12ff', // Epic
+    '#f86059', // Heroic
+  ];
+
+  const renderRange = (part: string, key: string | number) => {
+    const rangeParts = part.split(/(\/)/);
+    return (
+      <strong key={key} className="font-bold">
+        {rangeParts.map((subPart, j) => {
+          if (subPart === '/') return <span key={j}>{subPart}</span>;
+          
+          const rarityIndex = Math.floor(j / 2);
+          const color = rarityColors[rarityIndex];
+          
+          return (
+            <span key={j} style={color ? { color } : undefined}>
+              {subPart}
+            </span>
+          );
+        })}
+      </strong>
+    );
+  };
+  
   return (
-    <span className={className}>
+    <span className={`${className} whitespace-pre-wrap`}>
       {parts.map((part, i) => {
-        // Only treat as keyword if it exactly matches one in our list
-        const isKeyword = BOON_KEYWORDS.includes(part);
+        if (!part) return null;
+
+        const isTime = part.startsWith('(') && part.toLowerCase().includes('every');
+        const isKeyword = part === 'Ω' || BOON_KEYWORDS.some(k => 
+          part === k || part === k + 's' || part === k + 'es'
+        );
+        const isRange = part.includes('/') && /\d/.test(part);
         
         if (isKeyword) {
           return (
@@ -27,6 +63,28 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
               {part}
             </strong>
           );
+        }
+
+        if (isTime) {
+          // Italicize the whole thing, but check for ranges inside
+          const rangeRegex = new RegExp(rangePattern, 'g');
+          const innerParts = part.split(rangeRegex);
+          const innerMatches = part.match(rangeRegex);
+
+          return (
+            <i key={i} className="italic text-gray-400/80">
+              {innerParts.map((sub, idx) => (
+                <React.Fragment key={idx}>
+                  {sub}
+                  {innerMatches && innerMatches[idx] && renderRange(innerMatches[idx], `inner-${idx}`)}
+                </React.Fragment>
+              ))}
+            </i>
+          );
+        }
+
+        if (isRange) {
+          return renderRange(part, i);
         }
         
         return part;

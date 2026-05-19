@@ -8,20 +8,17 @@ import { FormattedBoonEffect } from './FormattedBoonEffect';
 import { BOON_ICON_ROUNDING, BOON_BORDER_WIDTH } from '../constants';
 
 export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; isOverlay?: boolean }) {
-  const borderColor = isOverlay ? 'border-hades-accent' : getBoonBorderColor(boon.type);
-  const rarityGlow = boon.type === 'Legendary' ? 'shadow-[0_0_15px_rgba(255,180,0,0.4)]' : 
-                    boon.type === 'Duo' ? 'shadow-[0_0_15px_rgba(150,255,100,0.4)]' : '';
+  const borderColor = getBoonBorderColor(boon.type);
+  const rarityGlow = '';
   
   return (
     <div className={`p-3 rounded-xl transition-all duration-75 transform-gpu ${
-      isOverlay ? 'bg-hades-bg-light shadow-2xl scale-[1.02] z-50' : 'bg-hades-bg-dark/40 border border-white/[0.03]'
+      isOverlay ? 'bg-hades-bg-light shadow-2xl z-50' : 'bg-hades-bg-dark/40 border border-white/[0.03]'
     }`}>
       <div className="flex items-start gap-4 transform-gpu">
-        <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 ${
-          isOverlay ? `bg-white ${BOON_ICON_ROUNDING}` : `bg-hades-bg-dark ${BOON_ICON_ROUNDING}`
-        }`}>
+        <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
           {boon.icon ? (
-            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} ${rarityGlow}`}>
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
               <img 
                 src={boon.icon} 
                 alt={boon.name} 
@@ -63,7 +60,7 @@ export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; is
           </div>
         </div>
       </div>
-      <p className="text-[11px] text-gray-400 leading-relaxed font-light line-clamp-2 mt-2">
+      <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
         <FormattedBoonEffect text={boon.effect} />
       </p>
     </div>
@@ -81,8 +78,8 @@ export function DraggableBoonListItem({ boon, onClick, isSelectable }: { boon: B
       {...listeners}
       {...attributes}
       onClick={onClick}
-      whileHover={{ x: 6 }}
-      whileTap={{ scale: 0.98, x: 2 }}
+      whileHover={{ scale: 1 }}
+      whileTap={{ scale: 1 }}
       transition={{ 
         type: 'tween', 
         ease: "easeOut",

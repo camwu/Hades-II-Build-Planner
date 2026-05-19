@@ -20,8 +20,7 @@ interface BoonDisplayCardProps {
 
 export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const rarityGlow = boon.type === 'Legendary' ? 'shadow-[0_0_20px_rgba(255,180,0,0.5)]' : 
-                    boon.type === 'Duo' ? 'shadow-[0_0_20px_rgba(150,255,100,0.5)]' : '';
+  const rarityGlow = '';
 
   return (
     <div className="h-[88px] w-full relative">
@@ -38,6 +37,8 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
             height: isHovered ? 'auto' : SLOT_COLLAPSED_WIDTH
           }}
           transition={{ duration: 0.1, ease: "easeOut" }}
+          whileHover={{ scale: 1 }}
+          whileTap={{ scale: 1 }}
           className={`relative flex items-start w-full gap-4 transition-all duration-300 ${
             isHovered ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
           }`}
@@ -54,13 +55,13 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
               />
             )}
           </AnimatePresence>
-
+ 
           {/* Icon Container */}
           <div 
             style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
             className="relative flex-shrink-0 transition-all duration-300 border-0"
           >
-            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} ${rarityGlow}`}>
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
               <img 
                 src={boon.icon} 
                 alt={boon.name} 
@@ -81,8 +82,8 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
             </div>
           </div>
 
-          <div className="overflow-hidden flex-1">
-            <div className="w-[340px] h-full flex flex-col justify-center pr-4 py-3">
+          <div className="flex-1">
+            <div className="w-[340px] flex flex-col justify-center pr-4 py-3 min-h-[84px]">
               <motion.div 
                 initial={false}
                 animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -10 }}

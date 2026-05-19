@@ -7,7 +7,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Zeus"],
     element: "Air",
-    effect: "While you have at least 5, you can never deal less damage than the limit. Min Damage per Hit: 50",
+    effect: "While you have at least 5, you can never deal less damage than the limit. \n ▸ Min Damage per Hit: 50",
     icon: "/assets/boons/zeus/Air_Quality.webp"
   },
   {
@@ -16,7 +16,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Hera"],
     element: "Aether",
-    effect: "Gain Earth, Water, Air, and Fire Elements, and 1 Infusion Boon for each. Essences Gained per Element: +1",
+    effect: "Gain Earth, Water, Air, and Fire Elements, and 1 Infusion Boon for each. \n ▸ Essences Gained per Element: +1",
     icon: "/assets/boons/hera/All_Together.webp"
   },
   {
@@ -25,7 +25,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Hephaestus"],
     element: "Earth",
-    effect: "Your Casts deal damage 3 times in succession to foes in the binding circle. Cast Damage (every 1 Sec.): 60/70/80/90",
+    effect: "Your Casts deal damage 3 times in succession to foes in the binding circle. \n ▸ Cast Damage (every 1 Sec.): 60/70/80/90",
     icon: "/assets/boons/hephaestus/Anvil_Ring.webp"
   },
   {
@@ -34,7 +34,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Damage from Moves immediately activates Blitz effects and makes them stronger. Omega-Blitz Bonus Damage: +30%/+40%/+50%/+60%",
+    effect: "Damage from Moves immediately activates Blitz effects and makes them stronger. \n ▸ Omega-Blitz Bonus Damage: +30%/+40%/+50%/+60%",
     icon: "/assets/boons/zeus/Arc_Flash.webp"
   },
   {
@@ -43,7 +43,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Water",
-    effect: "Your Casts also create a Gust at the binding circle. Gust Area Damage (every 0.25 Sec.): 4/8/12/16. Gust counts as Olympian Damage",
+    effect: "Your Casts also create a Gust at the binding circle. \n ▸ Gust Area Damage (every 0.25 Sec.): 4/8/12/16. \n ▸ Gust counts as Olympian Damage",
     icon: "/assets/boons/demeter/Arctic_Gale.webp"
   },
   {
@@ -52,7 +52,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Demeter"],
     element: "Water",
-    effect: "Your Casts inflict Freeze and repeatedly deal damage to foes in the binding circle. Cast Damage (every 0.5 Sec.): 10/15/20/25",
+    effect: "Your Casts inflict Freeze and repeatedly deal damage to foes in the binding circle. \n ▸ Cast Damage (every 0.5 Sec.): 10/15/20/25",
     icon: "/assets/boons/demeter/Arctic_Ring.webp"
   },
   {
@@ -61,7 +61,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Poseidon", "Ares"],
     element: "Aether",
-    effect: "Your splash effects from Poseidon may hit 2 times (and take the color of the River Styx). Double Splash Chance: 25% Splash counts as Olympian Damage",
+    effect: "Your splash effects from Poseidon may hit 2 times (and take the color of the River Styx). \n ▸ Double Splash Chance: 25%. \n ▸ Splash counts as Olympian Damage",
     icon: "/assets/boons/duo/Arterial_Spray.webp"
   },
   {
@@ -70,7 +70,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Apollo"],
     element: "Fire",
-    effect: "Foes with Daze take more damage if struck from behind. Backstab Damage: +50%/+75%/+100%/+125%",
+    effect: "Foes with Daze take more damage if struck from behind. \n ▸ Backstab Damage: +50%/+75%/+100%/+125%",
     icon: "/assets/boons/apollo/Back_Burner.webp"
   },
   {
@@ -79,7 +79,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Poseidon", "Apollo"],
     element: "Aether",
-    effect: "Your Sprint creates a watery globe behind you, which surges ahead once you stop. Max Blast Damage (after 2 Sec.): 300 Beach Ball counts as Olympian Damage",
+    effect: "Your Sprint creates a watery globe behind you, which surges ahead once you stop. \n ▸ Max Blast Damage (after 2 Sec.): 300. \n ▸ Beach Ball counts as Olympian Damage",
     icon: "/assets/boons/duo/Beach_Ball.webp"
   },
   {
@@ -88,7 +88,7 @@ export const BOONS: Boon[] = [
     type: "Sprint",
     gods: ["Apollo"],
     element: "Fire",
-    effect: "Your Sprint is faster and inflicts Daze on surrounding foes. Sprint Speed: +15%+20%/+25%/+30%",
+    effect: "Your Sprint is faster and inflicts Daze on surrounding foes. \n ▸ Sprint Speed: +15%+20%/+25%/+30%",
     icon: "/assets/boons/apollo/Blinding_Rush.webp"
   },
   {
@@ -97,7 +97,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Ares"],
     element: "Earth",
-    effect: "While you have less than 40 Life, your Attacks and Specials restore Life. Life Restore per Hit: 1/2/3/4.",
+    effect: "While you have less than 40 Life, your Attacks and Specials restore Life. \n ▸ Life Restore per Hit: 1/2/3/4.",
     icon: "/assets/boons/ares/Blood_Spree.webp"
   },
   {
@@ -106,7 +106,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Hera"],
     element: "Water",
-    effect: "Whenever you run out of Magick, Prime until the next Location to restore all Magick. Magick Primed: 20/18/16/14",
+    effect: "Whenever you run out of Magick, Prime until the next Location to restore all Magick. \n ▸ Magick Primed: 20/18/16/14",
     icon: "/assets/boons/hera/Born_Gain.webp"
   },
   {
@@ -115,7 +115,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hera", "Hephaestus"],
     element: "Aether",
-    effect: "Automatically use Magick to resist up to 30% of any damage. Magic Cost per Damage Point: 10 Magick",
+    effect: "Automatically use Magick to resist up to 30% of any damage. \n ▸ Magic Cost per Damage Point: 10 Magick",
     icon: "/assets/boons/duo/Brave_Face.webp"
   },
   {
@@ -124,7 +124,7 @@ export const BOONS: Boon[] = [
     type: "Sprint",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Whenever you Sprint, hit the first foe you run into with a blast that knocks foes away. Impact Blast Damage: 80/100/120/140",
+    effect: "Whenever you Sprint, hit the first foe you run into with a blast that knocks foes away. \n ▸ Impact Blast Damage: 80/100/120/140",
     icon: "/assets/boons/poseidon/Breaker_Rush.webp"
   },
   {
@@ -133,7 +133,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hera"],
     element: "Water",
-    effect: "Make 1 random Boon become Heroic and give it Lv. Bonus Lv.:+1/+2/+3/+4",
+    effect: "Make 1 random Boon become Heroic and give it Lv. \n ▸ Bonus Lv.:+1/+2/+3/+4",
     icon: "/assets/boons/hera/Bridal_Glow.webp"
   },
   {
@@ -142,7 +142,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Aphrodite"],
     element: "Water",
-    effect: "Your Weak effects are more potent. Weak Damage Reduction: +10%/+12%/+14%/+16%",
+    effect: "Your Weak effects are more potent. \n ▸ Weak Damage Reduction: +10%/+12%/+14%/+16%",
     icon: "/assets/boons/aphrodite/Broken_Resolve.webp"
   },
   {
@@ -151,7 +151,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Any Minor Finds and Gold Crowns are worth more, and you receive Gold, Health, and Bones now. Reward Value: +50%/+75%/+100%/+125%",
+    effect: "Any Minor Finds and Gold Crowns are worth more, and you receive Gold, Health, and Bones now. \n ▸ Reward Value: +50%/+75%/+100%/+125%",
     icon: "/assets/boons/poseidon/Buried_Treasure.webp"
   },
   {
@@ -160,7 +160,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Aphrodite", "Hestia"],
     element: "Aether",
-    effect: "While foes are Weak, any Scorch they have does not diminish as it deals damage. Scorch Duration on Weak Foes: \u221E",
+    effect: "While foes are Weak, any Scorch they have does not diminish as it deals damage. \n ▸ Scorch Duration on Weak Foes: \u221E",
     icon: "/assets/boons/duo/Burning_Desire.webp"
   },
   {
@@ -169,7 +169,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Whenever your Attack or Special deal damage, restore Magick. Magick Restored per Strike: 4/6/8/10 Magick",
+    effect: "Whenever your Attack or Special deal damage, restore Magick. \n ▸ Magick Restored per Strike: 4/6/8/10 Magick",
     icon: "/assets/boons/hestia/Cardio_Gain.webp"
   },
   {
@@ -178,7 +178,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Aphrodite", "Ares"],
     element: "Aether",
-    effect: "Whenever you collect a Plasma, create a Heartthrob. Chance of Heartthrob: 35%. Heartthrob counts as Olympian Damage",
+    effect: "Whenever you collect a Plasma, create a Heartthrob. \n ▸ Chance of Heartthrob: 35%. \n ▸ Heartthrob counts as Olympian Damage",
     icon: "/assets/boons/duo/Carnal_Pleasure.webp"
   },
   {
@@ -187,7 +187,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hephaestus", "Hestia"],
     element: "Aether",
-    effect: "If you use your blast effects from Hephaestus just after they recharge, they fire 2 times. Double Blast Timing: 1 Sec. Blast counts as Olympian Damage",
+    effect: "If you use your blast effects from Hephaestus just after they recharge, they fire 2 times. \n ▸ Double Blast Timing: 1 Sec. \n ▸ Blast counts as Olympian Damage",
     icon: "/assets/boons/duo/Chain_Reaction.webp"
   },
   {
@@ -196,7 +196,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hera", "Demeter"],
     element: "Aether",
-    effect: "Your Keepsakes are stronger this night (if possible). Bonus Keepsake Ranks: +1",
+    effect: "Your Keepsakes are stronger this night (if possible). \n ▸ Bonus Keepsake Ranks: +1",
     icon: "/assets/boons/duo/Cherished_Heirloom.webp"
   },
   {
@@ -205,7 +205,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hephaestus", "Ares"],
     element: "Aether",
-    effect: "Your falling blades from Ares fall immediately and deal more damage. Blade Bonus Damage: +25. Falling Blades count as Olympian Damage",
+    effect: "Your falling blades from Ares fall immediately and deal more damage. \n ▸ Blade Bonus Damage: +25. \n ▸ Falling Blades count as Olympian Damage",
     icon: "/assets/boons/duo/Coffin_Nail.webp"
   },
   {
@@ -214,7 +214,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Water",
-    effect: "Your Freeze effects last longer. Freeze Duration: +2 Sec./+3 Sec./+4 Sec./+5 Sec.",
+    effect: "Your Freeze effects last longer. \n ▸ Freeze Duration: +2 Sec./+3 Sec./+4 Sec./+5 Sec.",
     icon: "/assets/boons/demeter/Cold_Storage.webp"
   },
   {
@@ -223,7 +223,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Your \u03a9 Special also launches a fireball, but uses +10. Fireball Blast Damage: 100/150/200/250 Fireball counts as Olympian Damage",
+    effect: "Your \u03a9 Special also launches a fireball, but uses +10. \n ▸ Fireball Blast Damage: 100/150/200/250. \n ▸ Fireball counts as Olympian Damage",
     icon: "/assets/boons/hestia/Controlled_Burn.webp"
   },
   {
@@ -241,7 +241,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Your \u03a9 Moves also cause a falling blade to appear over each foe stroke, but use +5 Magick. Blade Damage: 90/120/150/180. Falling Blade counts as Olympian Damage",
+    effect: "Your \u03a9 Moves also cause a falling blade to appear over each foe stroke, but use +5 Magick. \n ▸ Blade Damage: 90/120/150/180. \n ▸ Falling Blade counts as Olympian Damage",
     icon: "/assets/boons/ares/Cut_Above.webp"
   },
   {
@@ -250,7 +250,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Apollo", "Ares"],
     element: null,
-    effect: "Your falling blades from Ares drop +1 time in succession and deal damage in a larger area. Blade Area of Effect: +50%. Falling Blades count as Olympian Damage",
+    effect: "Your falling blades from Ares drop +1 time in succession and deal damage in a larger area. \n ▸ Blade Area of Effect: +50%. \n ▸ Falling Blades count as Olympian Damage",
     icon: "/assets/boons/duo/Cutting_Edge.webp"
   },
   {
@@ -259,7 +259,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Apollo"],
     element: "Fire",
-    effect: "Your attacks may inflict Daze. Daze Chance: +10%/+15%/+20%/+25%",
+    effect: "Your attacks may inflict Daze. \n ▸ Daze Chance: +10%/+15%/+20%/+25%",
     icon: "/assets/boons/apollo/Dazzling_Display.webp"
   },
   {
@@ -268,7 +268,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Zeus"],
     element: "Air",
-    effect: "After you take damage, your foe is struck by lightning, and again 50% of the time. Bolt Damage: 100 (up to: 2/3/4/5 times)",
+    effect: "After you take damage, your foe is struck by lightning, and again 50% of the time. \n ▸ Bolt Damage: 100 (up to: 2/3/4/5 times)",
     icon: "/assets/boons/zeus/Divine_Vengeance.webp"
   },
   {
@@ -277,7 +277,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Your lightning bolt effects may strike 2 more times. Bonus Bolt Chance: +10%/15%/20%/25%",
+    effect: "Your lightning bolt effects may strike 2 more times. \n ▸ Bonus Bolt Chance: +10%/15%/20%/25%",
     icon: "/assets/boons/zeus/Double_Strike.webp"
   },
   {
@@ -286,7 +286,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hera"],
     element: "Air",
-    effect: "Whenever Hitch-afflicted foes are slain, damage all other Hitch-afflicted foes. Hitch Death Damage: 40/60/80/100",
+    effect: "Whenever Hitch-afflicted foes are slain, damage all other Hitch-afflicted foes. \n ▸ Hitch Death Damage: 40/60/80/100",
     icon: "/assets/boons/hera/Dying_Wish.webp"
   },
   {
@@ -295,7 +295,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hera", "Aphrodite"],
     element: "Aether",
-    effect: "As long as multiple foes are in an Encounter, automatically inflict Charm on 1 of them. Min Foe for Auto-Charm: 2",
+    effect: "As long as multiple foes are in an Encounter, automatically inflict Charm on 1 of them. \n ▸ Min Foe for Auto-Charm: 2",
     icon: "/assets/boons/duo/Ecstatic_Obsession.webp"
   },
   {
@@ -304,7 +304,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Your chain-lightning deals more damage and bounces up to +3 times. Chain-Lightning Damage: +20%/+30%/+40%/+50%",
+    effect: "Your chain-lightning deals more damage and bounces up to +3 times. \n ▸ Chain-Lightning Damage: +20%/+30%/+40%/+50%",
     icon: "/assets/boons/zeus/Electric_Overload.webp"
   },
   {
@@ -313,7 +313,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Hera"],
     element: "Air",
-    effect: "Your Casts inflict Hitch and immediately deal damage based on foes in the binding circle. Damage per Foe: 20/30/40/50",
+    effect: "Your Casts inflict Hitch and immediately deal damage based on foes in the binding circle. \n ▸ Damage per Foe: 20/30/40/50",
     icon: "/assets/boons/hera/Engagement_Ring.webp"
   },
   {
@@ -322,7 +322,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Apollo"],
     element: "Fire",
-    effect: "Your \u03a9 Attack and \u03a9 Special fire 2 times, but use more Magick. Omega Move Cost: +30 Magick",
+    effect: "Your \u03a9 Attack and \u03a9 Special fire 2 times, but use more Magick. \n ▸ Omega Move Cost: +30 Magick",
     icon: "/assets/boons/apollo/Exceptional_Talent.webp"
   },
   {
@@ -331,7 +331,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hera"],
     element: "Fire",
-    effect: "Your damaging effects from Olympians are stronger for each Boon-giver you have. Bonus Effect Damage per God(dess): +3%/+4%/+5%/+6%",
+    effect: "Your damaging effects from Olympians are stronger for each Boon-giver you have. \n ▸ Bonus Effect Damage per God(dess): +3%/+4%/+5%/+6%",
     icon: "/assets/boons/hera/Extended_Family.webp"
   },
   {
@@ -340,7 +340,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Apollo"],
     element: "Air",
-    effect: "Your Attack has a chance to hit 2 times. Double Strike Chance: +5%/+8%/+10%/+13%",
+    effect: "Your Attack has a chance to hit 2 times. \n ▸ Double Strike Chance: +5%/+8%/+10%/+13%",
     icon: "/assets/boons/apollo/Extra_Dose.webp"
   },
   {
@@ -349,7 +349,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hera"],
     element: "Earth",
-    effect: "Your Moves create a fissure that deals damage in a long line, but use +15 Magick. Rift Damage: 120/150/180/210",
+    effect: "Your Moves create a fissure that deals damage in a long line, but use +15 Magick. \n ▸ Rift Damage: 120/150/180/210",
     icon: "/assets/boons/hera/Fine_Line.webp"
   },
   {
@@ -358,7 +358,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Your Casts destroy many foes' ranged shots, and inflict Scorch on the attacking foes. Scorch Damage (every 3 Sec.): 400",
+    effect: "Your Casts destroy many foes' ranged shots, and inflict Scorch on the attacking foes. \n ▸ Scorch Damage (every 3 Sec.): 400",
     icon: "/assets/boons/hestia/Fire_Away.webp"
   },
   {
@@ -367,7 +367,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Your Specials inflict Scorch. Scorch Damage: 35/53/70/88",
+    effect: "Your Specials inflict Scorch. \n ▸ Scorch Damage: 35/53/70/88",
     icon: "/assets/boons/hestia/Flame_Flourish.webp"
   },
   {
@@ -376,7 +376,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Your Attacks inflict Scorch. Scorch Damage: 30/45/60/75",
+    effect: "Your Attacks inflict Scorch. \n ▸ Scorch Damage: 30/45/60/75",
     icon: "/assets/boons/hestia/Flame_Strike.webp"
   },
   {
@@ -385,7 +385,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Your foes perish in a blast that damages any surrounding foes. Blast Damage When Slain: 60/90/120/150 Flash Fry counts as Olympian Damage",
+    effect: "Your foes perish in a blast that damages any surrounding foes. \n ▸ Blast Damage When Slain: 60/90/120/150. \n ▸ Flash Fry counts as Olympian Damage",
     icon: "/assets/boons/hestia/Flash_Fry.webp"
   },
   {
@@ -394,7 +394,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Your \u03a9 Moves make you briefly restore any Magick you use, repeatable after 8 Sec. Magick Flood Duration: 4 Sec./5 Sec./6 Sec./7 Sec.",
+    effect: "Your \u03a9 Moves make you briefly restore any Magick you use, repeatable after 8 Sec. \n ▸ Magick Flood Duration: 4 Sec./5 Sec./6 Sec./7 Sec.",
     icon: "/assets/boons/poseidon/Flood_Gain.webp"
   },
   {
@@ -403,7 +403,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Aphrodite"],
     element: "Water",
-    effect: "Your Specials deal more damage to nearby foes. Close-Up Damage: +100%/+150%/+200%/+250%",
+    effect: "Your Specials deal more damage to nearby foes. \n ▸ Close-Up Damage: +100%/+150%/+200%/+250%",
     icon: "/assets/boons/aphrodite/Flutter_Flourish.webp"
   },
   {
@@ -412,7 +412,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Aphrodite"],
     element: "Water",
-    effect: "Your Attacks deal more damage to nearby foes. Close-Up Damage: +80%/+100%/+120%/+140%",
+    effect: "Your Attacks deal more damage to nearby foes. \n ▸ Close-Up Damage: +80%/+100%/+120%/+140%",
     icon: "/assets/boons/aphrodite/Flutter_Strike.webp"
   },
   {
@@ -430,7 +430,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Demeter", "Hestia"],
     element: null,
-    effect: "Whenever you inflict Freeze, on a foe with Scorch, deal damage and remove Scorch. Damage from Scorch: 200%",
+    effect: "Whenever you inflict Freeze, on a foe with Scorch, deal damage and remove Scorch. \n ▸ Damage from Scorch: 200%",
     icon: "/assets/boons/duo/Freezer_Burn.webp"
   },
   {
@@ -439,7 +439,7 @@ export const BOONS: Boon[] = [
     type: "Sprint",
     gods: ["Demeter"],
     element: "Water",
-    effect: "Your Sprint forms a Gust around you that lingers after you stop. Gust Area Damage (every 0.25 Sec.): 4/6/8/10. Gust counts as Olympian Damage",
+    effect: "Your Sprint forms a Gust around you that lingers after you stop. \n ▸ Gust Area Damage (every 0.25 Sec.): 4/6/8/10. \n ▸ Gust counts as Olympian Damage",
     icon: "/assets/boons/demeter/Frigid_Rush.webp"
   },
   {
@@ -448,7 +448,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Demeter"],
     element: null,
-    effect: "While you have at least 6 water boons, whenever you would take at least 20 damage, take less. Heavy Damage Reduction: -10",
+    effect: "While you have at least 6 water boons, whenever you would take at least 20 damage, take less. \n ▸ Heavy Damage Reduction: -10",
     icon: "/assets/boons/demeter/Frosty_Veneer.webp"
   },
   {
@@ -457,7 +457,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hephaestus"],
     element: "Fire",
-    effect: "Your blast effects from Hephaestus also inflict Glow on foes. Glow Bonus Damage: +15%/+18%/+20%/+24%",
+    effect: "Your blast effects from Hephaestus also inflict Glow on foes. \n ▸ Glow Bonus Damage: +15%/+18%/+20%/+24%",
     icon: "/assets/boons/hephaestus/Furnace_Blast.webp"
   },
   {
@@ -466,7 +466,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Your \u03a9 Cast gains Power and knocks foes away. Omega Cast Power: +150/+200/+250/+300",
+    effect: "Your \u03a9 Cast gains Power and knocks foes away. \n ▸ Omega Cast Power: +150/+200/+250/+300",
     icon: "/assets/boons/poseidon/Geyser_Spout.webp"
   },
   {
@@ -475,7 +475,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Aphrodite"],
     element: "Air",
-    effect: "You automatically inflict Weak on nearby foes and gradually restore Magick near them. Magick Restoration (every 1 Sec.): 6/8/10/12",
+    effect: "You automatically inflict Weak on nearby foes and gradually restore Magick near them. \n ▸ Magick Restoration (every 1 Sec.): 6/8/10/12",
     icon: "/assets/boons/aphrodite/Glamour_Gain.webp"
   },
   {
@@ -484,7 +484,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Zeus", "Apollo"],
     element: "Aether",
-    effect: "You can Channel +30 Magick into your Cast to repeatedly strike foes with lightning bolts. Bolt Damage (every 0.13 Sec.): 20",
+    effect: "You can Channel +30 Magick into your Cast to repeatedly strike foes with lightning bolts. \n ▸ Bolt Damage (every 0.13 Sec.): 20",
     icon: "/assets/boons/duo/Glorious_Disaster.webp"
   },
   {
@@ -493,7 +493,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Hold Cast to aim a fireball that explodes on impact. The binding circle forms there. Fireball Blast Damage: 60/90/120/150 Fireball from Glowing Coal counts as Olympian Damage",
+    effect: "Hold Cast to aim a fireball that explodes on impact. \n ▸ The binding circle forms there. \n ▸ Fireball Blast Damage: 60/90/120/150. \n ▸ Fireball from Glowing Coal counts as Olympian Damage",
     icon: "/assets/boons/hestia/Glowing_Coal.webp"
   },
   {
@@ -502,7 +502,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hephaestus"],
     element: "Fire",
-    effect: "Your blast effects from Hephaestus deal more damage and are 50% larger. Bonus Blast Damage: +75/+100/+125/+150. Blast counts as Olympian Damage",
+    effect: "Your blast effects from Hephaestus deal more damage and are 50% larger. \n ▸ Bonus Blast Damage: +75/+100/+125/+150. \n ▸ Blast counts as Olympian Damage",
     icon: "/assets/boons/hephaestus/Grand_Caldera.webp"
   },
   {
@@ -511,7 +511,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Foes with Wounds may suffer 200% damage when struck. Double Damage Chance: +10%/+15%/+20%/+25%. Wounds: Curse: Your strike has +50 Power when inflicting this. Can be re-applied after 3 Sec.",
+    effect: "Foes with Wounds may suffer 200% damage when struck. \n ▸ Double Damage Chance: +10%/+15%/+20%/+25%. \n ▸ Wounds: Curse: Your strike has +50 Power when inflicting this. \n ▸ Can be re-applied after 3 Sec.",
     icon: "/assets/boons/ares/Grievous_Blow.webp"
   },
   {
@@ -520,7 +520,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Striking foes with your Weapon may spill Plasma, which also restores 15 Magick. Chance of Plasma: 10%/12%/14%/16%.",
+    effect: "Striking foes with your Weapon may spill Plasma, which also restores 15 Magick. \n ▸ Chance of Plasma: 10%/12%/14%/16%.",
     icon: "/assets/boons/ares/Grisly_Gain.webp"
   },
   {
@@ -529,7 +529,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Zeus", "Demeter"],
     element: "Aether",
-    effect: "Your Freeze effects also cause lightning bolts to repeatedly strike afflicted foes. Lightning Damage (every 0.5 Sec.): 30",
+    effect: "Your Freeze effects also cause lightning bolts to repeatedly strike afflicted foes. \n ▸ Lightning Damage (every 0.5 Sec.): 30",
     icon: "/assets/boons/duo/Hail_Storm.webp"
   },
   {
@@ -538,7 +538,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Aphrodite"],
     element: "Water",
-    effect: "Whenever you exit a Location, restore 100% Health if you have not lost too much. Min Life for Full Recovery: 80%/70%/60%/50%",
+    effect: "Whenever you exit a Location, restore 100% Health if you have not lost too much. \n ▸ Min Life for Full Recovery: 80%/70%/60%/50%",
     icon: "/assets/boons/aphrodite/Healthy_Rebound.webp"
   },
   {
@@ -547,7 +547,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Aphrodite"],
     element: "Water",
-    effect: "Whenever you use 40 Magick, create a Heartthrob. Heartthrob Area Damage: 80/100/120/140.",
+    effect: "Whenever you use 40 Magick, create a Heartthrob. \n ▸ Heartthrob Area Damage: 80/100/120/140.",
     icon: "/assets/boons/aphrodite/Heart_Breaker.webp"
   },
   {
@@ -556,7 +556,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Demeter", "Aphrodite"],
     element: null,
-    effect: "You deal more damage with your Weapon the more Max Health you have. Bonus Damage per 50 Life: +10%",
+    effect: "You deal more damage with your Weapon the more Max Health you have. \n ▸ Bonus Damage per 50 Life: +10%",
     icon: "/assets/boons/duo/Hearty_Appetite.webp"
   },
   {
@@ -565,7 +565,7 @@ export const BOONS: Boon[] = [
     type: "Sprint",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Your Sprint leaves a cinder trail, and any damage you take from burning is reduced to 1. Trail Damage (every 0.25 Sec.): 10/15/20/25",
+    effect: "Your Sprint leaves a cinder trail, and any damage you take from burning is reduced to 1. \n ▸ Trail Damage (every 0.25 Sec.): 10/15/20/25",
     icon: "/assets/boons/hestia/Heat_Rush.webp"
   },
   {
@@ -574,7 +574,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Your Specials inflict Blitz. Blitz Damage: 100/130/160/190",
+    effect: "Your Specials inflict Blitz. \n ▸ Blitz Damage: 100/130/160/190",
     icon: "/assets/boons/zeus/Heaven_Flourish.webp"
   },
   {
@@ -583,7 +583,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Your Attacks inflict Blitz. Blitz Damage: 80/120/160/200",
+    effect: "Your Attacks inflict Blitz. \n ▸ Blitz Damage: 80/120/160/200",
     icon: "/assets/boons/zeus/Heaven_Strike.webp"
   },
   {
@@ -592,7 +592,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hephaestus"],
     element: "Earth",
-    effect: "Your Weapon deals more damage based on 20% of your Armor and you gain some now. Armor Gained: +50/+75/+100/+125",
+    effect: "Your Weapon deals more damage based on 20% of your Armor and you gain some now. \n ▸ Armor Gained: +50/+75/+100/+125",
     icon: "/assets/boons/hephaestus/Heavy_Metal.webp"
   },
   {
@@ -601,7 +601,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Zeus", "Ares"],
     element: "Aether",
-    effect: "Inflicting Wounds occasionally also inflicts all your 'after you take damage' effects. Recharge Time per Foe: 6 Sec.",
+    effect: "Inflicting Wounds occasionally also inflicts all your 'after you take damage' effects. \n ▸ Recharge Time per Foe: 6 Sec.",
     icon: "/assets/boons/duo/Heinous_Affront.webp"
   },
   {
@@ -610,7 +610,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hera"],
     element: "Water",
-    effect: "Your Hitch effects deal more damage and last +5 Sec. Hitch Damage: +10%/+15%/+20%/+25%",
+    effect: "Your Hitch effects deal more damage and last +5 Sec. \n ▸ Hitch Damage: +10%/+15%/+20%/+25%",
     icon: "/assets/boons/hera/Hereditary_Bane.webp"
   },
   {
@@ -619,7 +619,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Hit surrounding foes with a powerful splash as they start to strike, but you Prime 30 Magick. Splash Damage: 40/60/80/100",
+    effect: "Hit surrounding foes with a powerful splash as they start to strike, but you Prime 30 Magick. \n ▸ Splash Damage: 40/60/80/100",
     icon: "/assets/boons/poseidon/High_Surf.webp"
   },
   {
@@ -628,7 +628,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Whenever you inflict Scorch on a foe for the first time, inflict more. First-Time Scorch Damage: +80/+120/+160/+200",
+    effect: "Whenever you inflict Scorch on a foe for the first time, inflict more. \n ▸ First-Time Scorch Damage: +80/+120/+160/+200",
     icon: "/assets/boons/hestia/Highly_Flammable.webp"
   },
   {
@@ -637,7 +637,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Demeter", "Ares"],
     element: null,
-    effect: "Your \u03a9 Cast is stronger and follows you, even as you start to Channel it. Omega Cast Damage: +100%",
+    effect: "Your \u03a9 Cast is stronger and follows you, even as you start to Channel it. \n ▸ Omega Cast Damage: +100%",
     icon: "/assets/boons/duo/Hostile_Environment.webp"
   },
   {
@@ -646,7 +646,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Gain a chance to Dodge, which is doubled against Scorch-afflicted foes. Bonus Dodge Chance: +4%/+5%/+6%/+7%",
+    effect: "Gain a chance to Dodge, which is doubled against Scorch-afflicted foes. \n ▸ Bonus Dodge Chance: +4%/+5%/+6%/+7%",
     icon: "/assets/boons/hestia/Hot_Pot.webp"
   },
   {
@@ -655,7 +655,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "At the start of each Encounter, your Attacks and Specials are stronger for 10 Sec.. Initial Damage Bonus: +100%+133%/+133%/+166%/+200%",
+    effect: "At the start of each Encounter, your Attacks and Specials are stronger for 10 Sec. \n ▸ Initial Damage Bonus: +100%+133%/+133%/+166%/+200%",
     icon: "/assets/boons/poseidon/Hydraulic_Might.webp"
   },
   {
@@ -664,7 +664,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Demeter"],
     element: "Water",
-    effect: "Your Specials deal more damage and inflict Freeze. Special Damage: +40%/+60%/+80%/+100%",
+    effect: "Your Specials deal more damage and inflict Freeze. \n ▸ Special Damage: +40%/+60%/+80%/+100%",
     icon: "/assets/boons/demeter/Ice_Flourish.webp"
   },
   {
@@ -673,7 +673,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Demeter"],
     element: "Water",
-    effect: "Your Attacks deal more damage and inflict Freeze. Attack Damage: +30%/+45%/+60%/+75%",
+    effect: "Your Attacks deal more damage and inflict Freeze. \n ▸ Attack Damage: +30%/+45%/+60%/+75%",
     icon: "/assets/boons/demeter/Ice_Strike.webp"
   },
   {
@@ -682,7 +682,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hera", "Hestia"],
     element: "Aether",
-    effect: "Whenever you restore Magick during Encounters, damage all Hitch-afflicted foes. Damage from Magick Restored: 500% (every 0.2 Sec.)",
+    effect: "Whenever you restore Magick during Encounters, damage all Hitch-afflicted foes. \n ▸ Damage from Magick Restored: 500% (every 0.2 Sec.)",
     icon: "/assets/boons/duo/Incandescent_Aura.webp"
   },
   {
@@ -691,7 +691,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Zeus"],
     element: "Air",
-    effect: "In each Encounter, an Aether Font appears in the area and restores all when used. Reappearance Time: 10/9/8/7 Sec.",
+    effect: "In each Encounter, an Aether Font appears in the area and restores all when used. \n ▸ Reappearance Time: 10/9/8/7 Sec.",
     icon: "/assets/boons/zeus/Ionic_Gain.webp"
   },
   {
@@ -700,7 +700,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Poseidon", "Aphrodite"],
     element: "Aether",
-    effect: "You take less damage from nearby foes. Boons of Aphrodite treat all foes as nearby. Damage Resistance: +15%",
+    effect: "You take less damage from nearby foes. \n ▸ Boons of Aphrodite treat all foes as nearby. \n ▸ Damage Resistance: +15%",
     icon: "/assets/boons/duo/Island_Getaway.webp"
   },
   {
@@ -709,7 +709,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Zeus", "Poseidon"],
     element: "Aether",
-    effect: "Your lightning deals more damage to Froth-afflicted foes. Bonus Lightning Damage: +30%",
+    effect: "Your lightning deals more damage to Froth-afflicted foes. \n ▸ Bonus Lightning Damage: +30%",
     icon: "/assets/boons/duo/Killer_Current.webp"
   },
   {
@@ -718,7 +718,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Your splash effects from Poseidon are larger and deal bonus damage to Guardians. Splash Damage vs. Guardians: +200%",
+    effect: "Your splash effects from Poseidon are larger and deal bonus damage to Guardians. \n ▸ Splash Damage vs. Guardians: +200%",
     icon: "/assets/boons/poseidon/King_Tide.webp"
   },
   {
@@ -727,7 +727,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Zeus", "Hera"],
     element: "Aether",
-    effect: "Give up all your Boons of Hera. For each, raise Lv. for all your Boons of Zeus. Bonus Lv. per Hera Boon: +4",
+    effect: "Give up all your Boons of Hera. \n ▸ For each, raise Lv. for all your Boons of Zeus. \n ▸ Bonus Lv. per Hera Boon: +4",
     icon: "/assets/boons/duo/King's_Ransom.webp"
   },
   {
@@ -736,7 +736,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Apollo"],
     element: "Fire",
-    effect: "After you take damage, your foe takes damage and you inflict Daze on all foes in the vicinity. Revenge Damage: 50/75/100/125.",
+    effect: "After you take damage, your foe takes damage and you inflict Daze on all foes in the vicinity. \n ▸ Revenge Damage: 50/75/100/125.",
     icon: "/assets/boons/apollo/Light_Smite.webp"
   },
   {
@@ -745,7 +745,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Hold Cast to aim where the binding circle appears. Foes within are struck by lightning. Bolt Damage: 50/70/90/110",
+    effect: "Hold Cast to aim where the binding circle appears. \n ▸ Foes within are struck by lightning. \n ▸ Bolt Damage: 50/70/90/110",
     icon: "/assets/boons/zeus/Lightning_Lance.webp"
   },
   {
@@ -754,7 +754,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "Your \u03a9 Cast deals more damage. If you are in the binding circle, the bonus is doubled. Omega Cast Bonus Damage: +20%/+30%/+40%/+50%",
+    effect: "Your \u03a9 Cast deals more damage. \n ▸ If you are in the binding circle, the bonus is doubled. \n ▸ Omega Cast Bonus Damage: +20%/+30%/+40%/+50%",
     icon: "/assets/boons/demeter/Local_Climate.webp"
   },
   {
@@ -763,7 +763,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Aphrodite", "Hephaestus"],
     element: "Aether",
-    effect: "Your blast effects from Hephaestus also create a Heartthrob. Heartthrob Area Damage: 120.",
+    effect: "Your blast effects from Hephaestus also create a Heartthrob. \n ▸ Heartthrob Area Damage: 120.",
     icon: "/assets/boons/duo/Love_Handles.webp"
   },
   {
@@ -772,7 +772,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Apollo"],
     element: "Air",
-    effect: "Whenever your Casts expire, restore magick. Magick Restored: 40/60/80/100",
+    effect: "Whenever your Casts expire, restore magick. \n ▸ Magick Restored: 40/60/80/100",
     icon: "/assets/boons/apollo/Lucid_Gain.webp"
   },
   {
@@ -790,7 +790,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Zeus", "Hephaestus"],
     element: "Aether",
-    effect: "Your chain-lightning can bounce off of you and deals increasing damage to foes. Damage per Bounce: +15%",
+    effect: "Your chain-lightning can bounce off of you and deals increasing damage to foes. \n ▸ Damage per Bounce: +15%",
     icon: "/assets/boons/duo/Master_Conductor.webp"
   },
   {
@@ -799,7 +799,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Your \u03a9 Cast also creates a Blade Rift in the binding circle. Rift Damage (every 1 Sec.): 30/40/50/60.",
+    effect: "Your \u03a9 Cast also creates a Blade Rift in the binding circle. \n ▸ Rift Damage (every 1 Sec.): 30/40/50/60.",
     icon: "/assets/boons/ares/Meat_Grinder.webp"
   },
   {
@@ -808,7 +808,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hephaestus"],
     element: "Fire",
-    effect: "Your Attacks and Specials deal bonus damage to Armor. Damage vs. Armor: +20%/+30%/+40%/+50%",
+    effect: "Your Attacks and Specials deal bonus damage to Armor. \n ▸ Damage vs. Armor: +20%/+30%/+40%/+50%",
     icon: "/assets/boons/hephaestus/Molten_Touch.webp"
   },
   {
@@ -817,7 +817,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Gain a chance to deal 200% damage that increases the less Life you have remaining. Chance per Missing Life Point: 0.1%/0.12%/0.14%/0.16%.",
+    effect: "Gain a chance to deal 200% damage that increases the less Life you have remaining. \n ▸ Chance per Missing Life Point: 0.1%/0.12%/0.14%/0.16%.",
     icon: "/assets/boons/ares/Mutual_Destruction.webp"
   },
   {
@@ -826,7 +826,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Poseidon", "Demeter"],
     element: "Aether",
-    effect: "Your Boon(s) in the leftmost column gain increased Lv. spread across however many you got. Total Bonus Lv. for Main Boon(s): +8",
+    effect: "Your Boon(s) in the leftmost column gain increased Lv. spread across however many you got. \n ▸ Total Bonus Lv. for Main Boon(s): +8",
     icon: "/assets/boons/duo/Natural_Selection.webp"
   },
   {
@@ -835,7 +835,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Aphrodite"],
     element: "Air",
-    effect: "Whenever you inflict Weak, also randomly inflict Curses from other Olympians. Bonus Random Curses: 3.",
+    effect: "Whenever you inflict Weak, also randomly inflict Curses from other Olympians. \n ▸ Bonus Random Curses: 3.",
     icon: "/assets/boons/aphrodite/Nervous_Wreck.webp"
   },
   {
@@ -844,7 +844,7 @@ export const BOONS: Boon[] = [
     type: "Sprint",
     gods: ["Hera"],
     element: "Fire",
-    effect: "Your Sprint inflicts Hitch on surrounding foes, and deals damage when it does. Damage with Hitch: 60/90/120/150",
+    effect: "Your Sprint inflicts Hitch on surrounding foes, and deals damage when it does. \n ▸ Damage with Hitch: 60/90/120/150",
     icon: "/assets/boons/hera/Nexus_Rush.webp"
   },
   {
@@ -853,7 +853,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Apollo"],
     element: "Air",
-    effect: "Your Specials deal more damage in a larger area. Special Damage: +60%/+80%/+100%/+120%",
+    effect: "Your Specials deal more damage in a larger area. \n ▸ Special Damage: +60%/+80%/+100%/+120%",
     icon: "/assets/boons/apollo/Nova_Flourish.webp"
   },
   {
@@ -862,7 +862,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Apollo"],
     element: "Air",
-    effect: "Your Attacks deal more damage in a larger area. Attack Damage: +40%/+50%/+60%/+70%",
+    effect: "Your Attacks deal more damage in a larger area. \n ▸ Attack Damage: +40%/+50%/+60%/+70%",
     icon: "/assets/boons/apollo/Nova_Strike.webp"
   },
   {
@@ -871,7 +871,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Your \u03a9 Moves also launch a wide wave ahead that knocks foes away, but use +5 Magick. Wave Damage: 40/60/80/100",
+    effect: "Your \u03a9 Moves also launch a wide wave ahead that knocks foes away, but use +5 Magick. \n ▸ Wave Damage: 40/60/80/100",
     icon: "/assets/boons/poseidon/Ocean_Swell.webp"
   },
   {
@@ -880,7 +880,7 @@ export const BOONS: Boon[] = [
     type: "Sprint",
     gods: ["Aphrodite"],
     element: "Air",
-    effect: "Rushing damages surrounding foes and inflicts Weak, and again once you stop. Blast Damage: 20/30/40/50.",
+    effect: "Rushing damages surrounding foes and inflicts Weak, and again once you stop. \n ▸ Blast Damage: 20/30/40/50.",
     icon: "/assets/boons/aphrodite/Passion_Rush.webp"
   },
   {
@@ -889,7 +889,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Apollo"],
     element: "Air",
-    effect: "You deal more damage until you take damage. If you take no more for 15 Sec., regain this. No-Hit Bonus Damage: +10%/+15%/+20%/+25%",
+    effect: "You deal more damage until you take damage. \n ▸ If you take no more for 15 Sec., regain this. \n ▸ No-Hit Bonus Damage: +10%/+15%/+20%/+25%",
     icon: "/assets/boons/apollo/Perfect_Image.webp"
   },
   {
@@ -898,7 +898,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "Whenever you gather resources from a Location, restore Health. Receive 1 Mystery Seed now. Life Restored from Gathering: 10%/12%/14%/16%",
+    effect: "Whenever you gather resources from a Location, restore Health. \n ▸ Receive 1 Mystery Seed now. \n ▸ Life Restored from Gathering: 10%/12%/14%/16%",
     icon: "/assets/boons/demeter/Plentiful_Forage.webp"
   },
   {
@@ -907,7 +907,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Whenever you use, a random surrounding foe is struck by lightning. Bolt Damage: 30/40/50/60",
+    effect: "Whenever you use Magick, a random surrounding foe is struck by lightning. \n ▸ Bolt Damage: 30/40/50/60",
     icon: "/assets/boons/zeus/Power_Surge.webp"
   },
   {
@@ -916,7 +916,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Hephaestus"],
     element: "Earth",
-    effect: "Your Aspect of the Nocturnal Arms is even stronger. Aspect Bonus Ranks: +1",
+    effect: "Your Aspect of the Nocturnal Arms is even stronger. \n ▸ Aspect Bonus Ranks: +1",
     icon: "/assets/boons/hephaestus/Premium_Service.webp"
   },
   {
@@ -925,7 +925,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Whenever foes with Wounds take damage, they may spill Plasma. Chance of Plasma: +10%/+15%/+20%/+25%.",
+    effect: "Whenever foes with Wounds take damage, they may spill Plasma. \n ▸ Chance of Plasma: +10%/+15%/+20%/+25%.",
     icon: "/assets/boons/ares/Profuse_Bleeding.webp"
   },
   {
@@ -934,7 +934,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Apollo"],
     element: "Fire",
-    effect: "After your \u03a9 Cast expires, rapidly deal damage in the area for 2 Sec. Omega Cast Damage (every 0.13 Sec.): 10/12/14/16.",
+    effect: "After your \u03a9 Cast expires, rapidly deal damage in the area for 2 Sec. \n ▸ Omega Cast Damage (every 0.13 Sec.): 10/12/14/16.",
     icon: "/assets/boons/apollo/Prominence_Flare.webp"
   },
   {
@@ -943,7 +943,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Hera"],
     element: null,
-    effect: "While you have at least 2 Elements, all your Common Boons gain Rarity. Rarity Gained: Rare",
+    effect: "While you have at least 2 Elements, all your Common Boons gain Rarity. \n ▸ Rarity Gained: Rare",
     icon: "/assets/boons/hera/Proper_Upbringing.webp"
   },
   {
@@ -952,7 +952,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Your Scorch effects deal damage faster. Scorch Damage Rate: +50%/+75%/+100%/+125%",
+    effect: "Your Scorch effects deal damage faster. \n ▸ Scorch Damage Rate: +50%/+75%/+100%/+125%",
     icon: "/assets/boons/hestia/Pyro_Technique.webp"
   },
   {
@@ -961,7 +961,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hera", "Zeus"],
     element: "Aether",
-    effect: "Give up all your Boons of Zeus. For each, raise up the level for your Boons of Hera. Boons Lv. per Zeus Boon: +4",
+    effect: "Give up all your Boons of Zeus. \n ▸ For each, raise up the level for your Boons of Hera. \n ▸ Boons Lv. per Zeus Boon: +4",
     icon: "/assets/boons/duo/Queen's_Ransom.webp"
   },
   {
@@ -970,7 +970,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Ares"],
     element: null,
-    effect: "While you have at least 8 Earth Boons, any of your damaging effects from Olympians are stronger. Olympian Bonus Damage: +50%.",
+    effect: "While you have at least 8 Earth Boons, any of your damaging effects from Olympians are stronger. \n ▸ Olympian Bonus Damage: +50%.",
     icon: "/assets/boons/ares/Rallying_Cry.webp"
   },
   {
@@ -979,7 +979,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Aphrodite"],
     element: "Air",
-    effect: "Your Casts inflict Weak, and damage foes while dragging them toward the center. Cast Damage (every 0.85 Sec.): 10/15/20/25.",
+    effect: "Your Casts inflict Weak, and damage foes while dragging them toward the center. \n ▸ Cast Damage (every 0.85 Sec.): 10/15/20/25.",
     icon: "/assets/boons/aphrodite/Rapture_Ring.webp"
   },
   {
@@ -988,7 +988,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hera", "Poseidon"],
     element: "Aether",
-    effect: "Your effects from Fine Line (Hera) and Ocean Swell (Poseidon) have a chance to fire twice. Bonus Fire Chance: +30%",
+    effect: "Your effects from Fine Line (Hera) and Ocean Swell (Poseidon) have a chance to fire twice. \n ▸ Bonus Fire Chance: +30%",
     icon: "/assets/boons/duo/Ripple_Effect.webp"
   },
   {
@@ -997,7 +997,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Zeus", "Aphrodite"],
     element: "Aether",
-    effect: "Whenever you Sprint into foes with Blitz, the effect strikes right away for more damage. Bonus Blitz Damage: +80%",
+    effect: "Whenever you Sprint into foes with Blitz, the effect strikes right away for more damage. \n ▸ Bonus Blitz Damage: +80%",
     icon: "/assets/boons/duo/Romantic_Spark.webp"
   },
   {
@@ -1006,7 +1006,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hera"],
     element: "Air",
-    effect: "Your Casts damage any foes as they join the Encounter, wherever they appear. On-Spawn Damage: 60/80/100/120",
+    effect: "Your Casts damage any foes as they join the Encounter, wherever they appear. \n ▸ On-Spawn Damage: 60/80/100/120",
     icon: "/assets/boons/hera/Rousing_Reception.webp"
   },
   {
@@ -1015,7 +1015,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Apollo", "Hephaestus"],
     element: null,
-    effect: "Your blast effects from Hephaestus clear Daze and deal more damage if they do. Bonus Blast Damage: 220.",
+    effect: "Your blast effects from Hephaestus clear Daze and deal more damage if they do. \n ▸ Bonus Blast Damage: 220.",
     icon: "/assets/boons/duo/Rude_Awakening.webp"
   },
   {
@@ -1024,7 +1024,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Any Plasma spilled has improved potency and is drawn to you automatically. Bonus Move & Strike Speed: +100%.",
+    effect: "Any Plasma spilled has improved potency and is drawn to you automatically. \n ▸ Bonus Move & Strike Speed: +100%.",
     icon: "/assets/boons/ares/Sanguinary_Savor.webp"
   },
   {
@@ -1033,7 +1033,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Poseidon", "Hestia"],
     element: "Aether",
-    effect: "If foes with Froth are struck by your fire effects from Hestia, they are engulfed in Steam. Steam Damage (every 0.2 Sec.): 20",
+    effect: "If foes with Froth are struck by your fire effects from Hestia, they are engulfed in Steam. \n ▸ Steam Damage (every 0.2 Sec.): 20",
     icon: "/assets/boons/duo/Scalding_Vapor.webp"
   },
   {
@@ -1042,7 +1042,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Whenever you claim rewards other than Boons, Daedalus Hammer, or rare resources, a copy may appear. Double Reward Chance: 25%/30%/35%/40%",
+    effect: "Whenever you claim rewards other than Boons, Daedalus Hammer, or rare resources, a copy may appear. \n ▸ Double Reward Chance: 25%/30%/35%/40%",
     icon: "/assets/boons/poseidon/Sea_Star.webp"
   },
   {
@@ -1051,7 +1051,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Aphrodite"],
     element: "Air",
-    effect: "Your Attacks gain Power, but you Prime 20 Magick. Bonus Power: +5/+7/+9/+11",
+    effect: "Your Attacks gain Power, but you Prime 20 Magick. \n ▸ Bonus Power: +5/+7/+9/+11",
     icon: "/assets/boons/aphrodite/Secret_Crush.webp"
   },
   {
@@ -1060,7 +1060,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hephaestus"],
     element: "Earth",
-    effect: "At the start of each Encounter, you gain that Armor lasts for 7 Sec. Temporary Starting Armor: 75/100/125/150",
+    effect: "At the start of each Encounter, you gain Armor that lasts for 7 Sec. \n ▸ Temporary Starting Armor: 75/100/125/150",
     icon: "/assets/boons/hephaestus/Security_System.webp"
   },
   {
@@ -1078,7 +1078,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Apollo"],
     element: null,
-    effect: "While you have at least 3 fire boons, whenever you take damage, restore some Health. Damage Recovered (over 5 Sec.): 30%",
+    effect: "While you have at least 3 fire boons, whenever you take damage, restore some Health. \n ▸ Damage Recovered (over 5 Sec.): 30%",
     icon: "/assets/boons/apollo/Self_Healing.webp"
   },
   {
@@ -1087,7 +1087,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Aphrodite"],
     element: "Air",
-    effect: "You deal more damage. While you have at least 80% Health, the bonus is doubled. Bonus Damage: +5%/+7%/+9%/+11%",
+    effect: "You deal more damage. \n ▸ While you have at least 80% Health, the bonus is doubled. \n ▸ Bonus Damage: +5%/+7%/+9%/+11%",
     icon: "/assets/boons/aphrodite/Shameless_Attitude.webp"
   },
   {
@@ -1096,7 +1096,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Whenever you first deal damage to susceptible foes, you may destroy them outright. Instant Destruction Chance: 25%",
+    effect: "Whenever you first deal damage to susceptible foes, you may destroy them outright. \n ▸ Instant Destruction Chance: 25%",
     icon: "/assets/boons/zeus/Shocking_Loss.webp"
   },
   {
@@ -1105,7 +1105,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Your splash effects from Poseidon also inflict Froth, and Froth deals more damage. Froth Damage: +20%/+50%/+80%/+110%",
+    effect: "Your splash effects from Poseidon also inflict Froth, and Froth deals more damage. \n ▸ Froth Damage: +20%/+50%/+80%/+110%",
     icon: "/assets/boons/poseidon/Slippery_Slope.webp"
   },
   {
@@ -1114,7 +1114,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Hestia"],
     element: null,
-    effect: "Your Attacks and Specials gain Power the more Fire Boons you have. Power per Fire Boon: +2",
+    effect: "Your Attacks and Specials gain Power the more Fire Boons you have. \n ▸ Power per Fire Boon: +2",
     icon: "/assets/boons/hestia/Slow_Cooker.webp"
   },
   {
@@ -1123,7 +1123,7 @@ export const BOONS: Boon[] = [
     type: "Sprint",
     gods: ["Hephaestus"],
     element: "Fire",
-    effect: "If a foe is near after you Dash, you can cause a blast that deals 100 damage in the area. Blast Recharge Time: 10 Sec./9 Sec./8 Sec./7 Sec.",
+    effect: "If a foe is near after you Dash, you can cause a blast that deals 100 damage in the area. \n ▸ Blast Recharge Time: 10 Sec./9 Sec./8 Sec./7 Sec.",
     icon: "/assets/boons/hephaestus/Smithy_Rush.webp"
   },
   {
@@ -1132,7 +1132,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "Your Casts repeatedly inflict Scorch on foes in the binding circle. Scorch Damage (every 1 Sec.): 40/60/80/100",
+    effect: "Your Casts repeatedly inflict Scorch on foes in the binding circle. \n ▸ Scorch Damage (every 1 Sec.): 40/60/80/100",
     icon: "/assets/boons/hestia/Smolder_Ring.webp"
   },
   {
@@ -1141,7 +1141,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "Gain a barrier that stops 1 instance of damage in each Location, but you Prime Magick. Magick Primed: 25/20/15/10",
+    effect: "Gain a barrier that stops 1 instance of damage in each Location, but you Prime Magick. \n ▸ Magick Primed: 25/20/15/10",
     icon: "/assets/boons/demeter/Snow_Queen.webp"
   },
   {
@@ -1150,7 +1150,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hestia"],
     element: "Fire",
-    effect: "You deal more damage to foes that are nowhere near other foes. Damage to Isolated Foes: +15%/+18%/+21%/+24%",
+    effect: "You deal more damage to foes that are nowhere near other foes. \n ▸ Damage to Isolated Foes: +15%/+18%/+21%/+24%",
     icon: "/assets/boons/hestia/Snuffed_Candle.webp"
   },
   {
@@ -1159,7 +1159,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Apollo"],
     element: "Fire",
-    effect: "Your Casts inflict Daze, and deal a burst of damage before they expire. Cast Damage: 60/90/120/150.",
+    effect: "Your Casts inflict Daze, and deal a burst of damage before they expire. \n ▸ Cast Damage: 60/90/120/150.",
     icon: "/assets/boons/apollo/Solar_Ring.webp"
   },
   {
@@ -1168,7 +1168,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Aphrodite"],
     element: "Air",
-    effect: "Gain Max Health and Max Magick now and for the-rest of this night. Bonus Life & Magick Gain: +15%/+20%/+25%/+30%",
+    effect: "Gain Max Health and Max Magick now and for the-rest of this night. \n ▸ Bonus Life & Magick Gain: +15%/+20%/+25%/+30%",
     icon: "/assets/boons/aphrodite/Spiritual_Affirmation.webp"
   },
   {
@@ -1177,7 +1177,7 @@ export const BOONS: Boon[] = [
     type: "Sprint",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Your Dash creates a row of falling blades along your path. Blades Damage: 30/45/60/75.",
+    effect: "Your Dash creates a row of falling blades along your path. \n ▸ Blades Damage: 30/45/60/75.",
     icon: "/assets/boons/ares/Stabbing_Rush.webp"
   },
   {
@@ -1186,7 +1186,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Your strikes emit chain-lightning that bounces up to 4 times, but you Prime 50. Chain-Lightning Damage: 10/15/20/25",
+    effect: "Your strikes emit chain-lightning that bounces up to 4 times, but you Prime 50. \n ▸ Chain-Lightning Damage: 10/15/20/25",
     icon: "/assets/boons/zeus/Static_Shock.webp"
   },
   {
@@ -1195,7 +1195,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "Whenever you clear enough Encounters, a random Boon you have gains Rarity. Encounters per Rarity Upgrade: 6/5/4/3",
+    effect: "Whenever you clear enough Encounters, a random Boon you have gains Rarity. \n ▸ Encounters per Rarity Upgrade: 6/5/4/3",
     icon: "/assets/boons/demeter/Steady_Growth.webp"
   },
   {
@@ -1204,7 +1204,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Your Casts cause lightning bolts to repeatedly strike 1 foe at a time in the binding circle. Bolt Damage (every 0.35 Sec.): 20/25/30/35",
+    effect: "Your Casts cause lightning bolts to repeatedly strike 1 foe at a time in the binding circle. \n ▸ Bolt Damage (every 0.35 Sec.): 20/25/30/35",
     icon: "/assets/boons/zeus/Storm_Ring.webp"
   },
   {
@@ -1213,7 +1213,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hera", "Apollo"],
     element: "Aether",
-    effect: "In each Encounter, the first foe you slay returns to fight for you. Servant Damage: +200%",
+    effect: "In each Encounter, the first foe you slay returns to fight for you. \n ▸ Servant Damage: +200%",
     icon: "/assets/boons/duo/Sun_Worshiper.webp"
   },
   {
@@ -1222,7 +1222,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Apollo", "Aphrodite"],
     element: "Aether",
-    effect: "Whenever you create Heartthrobs, create more. Bonus Heartthrobs: +2.",
+    effect: "Whenever you create Heartthrobs, create more. \n ▸ Bonus Heartthrobs: +2.",
     icon: "/assets/boons/duo/Sunny_Disposition.webp"
   },
   {
@@ -1231,7 +1231,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Apollo"],
     element: "Air",
-    effect: "Your Casts expand in size until they expire. Max Cast Size: 40%/50%/60%/70%",
+    effect: "Your Casts expand in size until they expire. \n ▸ Max Cast Size: 40%/50%/60%/70%",
     icon: "/assets/boons/apollo/Super_Nova.webp"
   },
   {
@@ -1240,7 +1240,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Aphrodite"],
     element: "Water",
-    effect: "Weak-afflicted foes take more damage. Damage vs. Weak: +10%/+15%/+20%/+25%",
+    effect: "Weak-afflicted foes take more damage. \n ▸ Damage vs. Weak: +10%/+15%/+20%/+25%",
     icon: "/assets/boons/aphrodite/Sweet_Surrender.webp"
   },
   {
@@ -1249,7 +1249,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Your Casts create a falling blade over each foe in the binding circle. Blade Damage: 100/140/180/220.",
+    effect: "Your Casts create a falling blade over each foe in the binding circle. \n ▸ Blade Damage: 100/140/180/220.",
     icon: "/assets/boons/ares/Sword_Ring.webp"
   },
   {
@@ -1258,7 +1258,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Hera"],
     element: "Earth",
-    effect: "Your Specials deal more damage and inflict Hitch. Special Damage: +60%/+70%/+80%/+90%",
+    effect: "Your Specials deal more damage and inflict Hitch. \n ▸ Special Damage: +60%/+70%/+80%/+90%",
     icon: "/assets/boons/hera/Sworn_Flourish.webp"
   },
   {
@@ -1267,7 +1267,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Hera"],
     element: "Earth",
-    effect: "Your Attacks deal more damage and inflict Hitch. Attack Damage: +50%/+60%/+70%/+80%",
+    effect: "Your Attacks deal more damage and inflict Hitch. \n ▸ Attack Damage: +50%/+60%/+70%/+80%",
     icon: "/assets/boons/hera/Sworn_Strike.webp"
   },
   {
@@ -1276,7 +1276,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Zeus", "Hestia"],
     element: "Aether",
-    effect: "Your Blitz effects also inflict Scorch whenever they deal damage. Scorch Damage: 160",
+    effect: "Your Blitz effects also inflict Scorch whenever they deal damage. \n ▸ Scorch Damage: 160",
     icon: "/assets/boons/duo/Thermal_Dynamics.webp"
   },
   {
@@ -1285,7 +1285,7 @@ export const BOONS: Boon[] = [
     type: "Sprint",
     gods: ["Zeus"],
     element: "Air",
-    effect: "Dashing causes surrounding foes to be struck by lightning bolts. Bolt Damage (every 0.35 Sec.): 20/25/30/35",
+    effect: "Dashing causes surrounding foes to be struck by lightning bolts. \n ▸ Bolt Damage (every 0.35 Sec.): 20/25/30/35",
     icon: "/assets/boons/zeus/Thunder_Rush.webp"
   },
   {
@@ -1294,7 +1294,7 @@ export const BOONS: Boon[] = [
     type: "Cast",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Your Casts also immediately hit foes with a powerful splash that inflicts Froth. Splash Damage: 80/120/160/200",
+    effect: "Your Casts also immediately hit foes with a powerful splash that inflicts Froth. \n ▸ Splash Damage: 80/120/160/200",
     icon: "/assets/boons/poseidon/Tidal_Ring.webp"
   },
   {
@@ -1303,7 +1303,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Hephaestus"],
     element: "Earth",
-    effect: "Whenever you take damage, shrug some of it off and restore 150 Magick. Damage per Hit: -1/-2/-3/-4",
+    effect: "Whenever you take damage, shrug some of it off and restore 150 Magick. \n ▸ Damage per Hit: -1/-2/-3/-4",
     icon: "/assets/boons/hephaestus/Tough_Gain.webp"
   },
   {
@@ -1312,7 +1312,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "After remaining inactive for 0.5 Sec., rapidly restores Magick until you act. Magick Restoration (every 1 Sec.): 50%/75%/100%/125%",
+    effect: "After remaining inactive for 0.5 Sec., rapidly restores Magick until you act. \n ▸ Magick Restoration (every 1 Sec.): 50%/75%/100%/125%",
     icon: "/assets/boons/demeter/Tranquil_Gain.webp"
   },
   {
@@ -1321,7 +1321,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Demeter", "Apollo"],
     element: null,
-    effect: "While standing in a Gust, you randomly fire gales every 0.3 Sec. Gale Damage (every 0.5 Sec.): 70.",
+    effect: "While standing in a Gust, you randomly fire gales every 0.3 Sec. \n ▸ Gale Damage (every 0.5 Sec.): 70.",
     icon: "/assets/boons/duo/Tropical_Cyclone.webp"
   },
   {
@@ -1330,7 +1330,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hephaestus"],
     element: "Earth",
-    effect: "Whenever you enter a Location, gain Armor for that Location, but you Prime 30 Magick. Starting Armor: +10/+15/+20/+25",
+    effect: "Whenever you enter a Location, gain Armor for that Location, but you Prime 30 Magick. \n ▸ Starting Armor: +10/+15/+20/+25",
     icon: "/assets/boons/hephaestus/Trusty_Shield.webp"
   },
   {
@@ -1339,7 +1339,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hephaestus"],
     element: "Earth",
-    effect: "Gain bonus Max Health based on your Magick limit. Max Life from Magick: +20%/+30%/+40%/+50%",
+    effect: "Gain bonus Max Health based on your Magick limit. \n ▸ Max Life from Magick: +20%/+30%/+40%/+50%",
     icon: "/assets/boons/hephaestus/Uncanny_Fortitude.webp"
   },
   {
@@ -1348,7 +1348,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Hera"],
     element: "Fire",
-    effect: "While none of your other Boons are Common, deal more damage. Common-Less Bonus Damage: +10%/+15%/+20%/+25%",
+    effect: "While none of your other Boons are Common, deal more damage. \n ▸ Common-Less Bonus Damage: +10%/+15%/+20%/+25%",
     icon: "/assets/boons/hera/Uncommon_Grace.webp"
   },
   {
@@ -1357,7 +1357,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hera", "Ares"],
     element: "Aether",
-    effect: "Whenever you exit a Location, keep some of your Plasma bonuses. Max Plasma Retained: 20",
+    effect: "Whenever you exit a Location, keep some of your Plasma bonuses. \n ▸ Max Plasma Retained: 20",
     icon: "/assets/boons/duo/Universal_Donor.webp"
   },
   {
@@ -1366,7 +1366,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Your Specials deal more damage and inflict Wounds. Special Damage: +30%/+40%/+50%/+60%.",
+    effect: "Your Specials deal more damage and inflict Wounds. \n ▸ Special Damage: +30%/+40%/+50%/+60%.",
     icon: "/assets/boons/ares/Vicious_Flourish.webp"
   },
   {
@@ -1375,7 +1375,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Your Attacks deal more damage and inflict Wounds. Attack Damage: +20%/+30%/+40%/+50%.",
+    effect: "Your Attacks deal more damage and inflict Wounds. \n ▸ Attack Damage: +20%/+30%/+40%/+50%.",
     icon: "/assets/boons/ares/Vicious_Strike.webp"
   },
   {
@@ -1384,7 +1384,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Ares"],
     element: "Earth",
-    effect: "After you take damage or a foe is slain, spill Plasma, sometimes twice. Plasma Bonus Chance: 25%/35%/45%/55%.",
+    effect: "After you take damage or a foe is slain, spill Plasma, sometimes twice. \n ▸ Plasma Bonus Chance: 25%/35%/45%/55%.",
     icon: "/assets/boons/ares/Visceral_Impact.webp"
   },
   {
@@ -1393,7 +1393,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Hephaestus"],
     element: "Fire",
-    effect: "Your Specials can cause a blast that deals 400 damage in the area. Blast Recharge Time: 15 Sec./13 Sec./11 Sec./9 Sec.",
+    effect: "Your Specials can cause a blast that deals 400 damage in the area. \n ▸ Blast Recharge Time: 15 Sec./13 Sec./11 Sec./9 Sec.",
     icon: "/assets/boons/hephaestus/Volcanic_Flourish.webp"
   },
   {
@@ -1402,7 +1402,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Hephaestus"],
     element: "Fire",
-    effect: "Your Attacks can cause a blast that deals 300 damage in the area. Blast Recharge Time: 12 Sec./10 Sec./8 Sec./6 Sec.",
+    effect: "Your Attacks can cause a blast that deals 300 damage in the area. \n ▸ Blast Recharge Time: 12 Sec./10 Sec./8 Sec./6 Sec.",
     icon: "/assets/boons/hephaestus/Volcanic_Strike.webp"
   },
   {
@@ -1411,7 +1411,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Apollo", "Hestia"],
     element: "Aether",
-    effect: "Whenever you Dodge or Daze causes a foe to miss, restore some Health. Life Restored per Evasion: 10",
+    effect: "Whenever you Dodge or Daze causes a foe to miss, restore some Health. \n ▸ Life Restored per Evasion: 10",
     icon: "/assets/boons/duo/Warm_Breeze.webp"
   },
   {
@@ -1420,7 +1420,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Gain Max Health for each Water Boon you have. Max Life per Water Boon: +15",
+    effect: "Gain Max Health for each Water Boon you have. \n ▸ Max Life per Water Boon: +15",
     icon: "/assets/boons/poseidon/Water_Fitness.webp"
   },
   {
@@ -1429,7 +1429,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Your Specials hit foes with a splash that knocks other foes away. Splash Damage: 25/35/45/55",
+    effect: "Your Specials hit foes with a splash that knocks other foes away. \n ▸ Splash Damage: 25/35/45/55",
     icon: "/assets/boons/poseidon/Wave_Flourish.webp"
   },
   {
@@ -1438,7 +1438,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Poseidon"],
     element: "Water",
-    effect: "Your Attacks hit foes with a splash that knocks other foes away. Splash Damage: 20/25/30/35",
+    effect: "Your Attacks hit foes with a splash that knocks other foes away. \n ▸ Splash Damage: 20/25/30/35",
     icon: "/assets/boons/poseidon/Wave_Strike.webp"
   },
   {
@@ -1447,7 +1447,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "Your \u03a9 Attack deals more damage, but uses +10 Magick. Omega Attack Damage: +50%/+75%/+100%/+125%",
+    effect: "Your \u03a9 Attack deals more damage, but uses +10 Magick. \n ▸ Omega Attack Damage: +50%/+75%/+100%/+125%",
     icon: "/assets/boons/demeter/Weed_Killer.webp"
   },
   {
@@ -1456,7 +1456,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "Freeze-afflicted foes shatter at 10% Health, dealing damage in the area. Shatter Area Damage: 100",
+    effect: "Freeze-afflicted foes shatter at 10% Health, dealing damage in the area. \n ▸ Shatter Area Damage: 100",
     icon: "/assets/boons/demeter/Winter_Harvest.webp"
   },
   {
@@ -1465,7 +1465,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Aphrodite"],
     element: null,
-    effect: "Gain a chance to Dodge for each Air Boon you have. Dodge Chance per Air Boon: +2%",
+    effect: "Gain a chance to Dodge for each Air Boon you have. \n ▸ Dodge Chance per Air Boon: +2%",
     icon: "/assets/boons/aphrodite/Wispy_Wiles.webp"
   }
 ];
