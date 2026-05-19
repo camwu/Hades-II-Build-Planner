@@ -392,7 +392,7 @@ export default function App() {
             {/* Toggle Button - High contrast background and accent border */}
             <button 
               onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
-              className={`absolute top-[76px] z-50 w-6 h-10 flex items-center justify-center transition-all duration-200 group border shadow-2xl ${
+              className={`absolute top-[44px] z-50 w-6 h-10 flex items-center justify-center transition-all duration-200 group border shadow-2xl ${
                 isPanelCollapsed 
                   ? 'left-4 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]' 
                   : '-right-3 rounded bg-hades-bg-dark border-hades-border-light hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]'
@@ -433,7 +433,7 @@ export default function App() {
                       )}
                     </div>
                     <p className="text-[11px] font-sans text-hades-text/60 leading-relaxed px-1">
-                      Search for boon names, effects, gods, slots (e.g. "attack"), or elements.
+                      Search by boon name, effect, god, slot (e.g. "attack"), or element
                     </p>
                   </div>
                 </div>
@@ -465,9 +465,9 @@ export default function App() {
             </motion.aside>
 
           {/* Right: Build View */}
-          <section className="flex-1 overflow-auto p-8 custom-scrollbar relative">
+          <section className="flex-1 overflow-auto p-6 md:px-8 py-6 custom-scrollbar relative">
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col gap-4 mb-12">
+              <div className="flex flex-col gap-2 mb-10">
                 <div className="flex flex-col gap-2 group">
                   <div className="flex items-center gap-3 h-10">
                     {isEditingName ? (
