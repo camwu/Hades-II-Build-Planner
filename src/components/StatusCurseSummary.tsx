@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { Boon, StatusCurse, GOD_COLORS } from '../types';
 import { STATUS_CURSES } from '../data/statusCursesData';
+import { ARCANA_CARDS } from '../data/arcanaData';
 import { FormattedBoonEffect } from './FormattedBoonEffect';
 import { Skull } from 'lucide-react';
 import { GodIcon } from './Icons';
@@ -16,6 +17,10 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
     const all = Object.values(coreBuild).filter((b): b is Boon => !!b);
     return [...all, ...additionalBoons];
   }, [coreBuild, additionalBoons]);
+
+  const originationCard = useMemo(() => {
+    return ARCANA_CARDS.find(card => card.id === 'origination');
+  }, []);
 
   const activeCurses = useMemo(() => {
     return STATUS_CURSES.filter(curse => {
@@ -115,7 +120,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
               </span>
               
               {/* Tooltip */}
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-hades-bg-dark border border-hades-red/30 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3 bg-hades-bg-dark border border-hades-red/30 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold uppercase tracking-widest text-hades-red">{curse.name}</span>
                 <span className="text-[9px] font-mono text-gray-500 uppercase">{curse.duration}</span>
@@ -169,11 +174,20 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
           </div>
 
           {/* Origination Tooltip */}
-          <div className="absolute bottom-full right-0 mb-2 w-72 p-4 bg-hades-bg-dark border border-amber-500/30 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none text-left">
+          <div className="absolute top-full right-0 mt-2 w-72 p-4 bg-hades-bg-dark border border-amber-500/30 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none text-left">
             <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
               <div className="flex items-center gap-2">
                 <img src="/assets/ui/Origination_Active_Icon.webp" className="w-5 h-5 object-contain" alt="Origination" referrerPolicy="no-referrer" />
-                <span className="text-xs font-bold uppercase tracking-widest text-amber-400">Origination</span>
+                <div className="flex flex-col leading-tight">
+                  <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
+                    {originationCard ? `${originationCard.number}. ${originationCard.name}` : 'Origination'}
+                  </span>
+                  {originationCard && (
+                    <span className="text-[8px] text-gray-400/80 font-mono uppercase tracking-wider">
+                      Cost: {originationCard.cost} Grasp
+                    </span>
+                  )}
+                </div>
               </div>
               <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-bold ${
                 isOriginationActive ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-white/5 text-gray-500'
@@ -181,9 +195,9 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                 {isOriginationActive ? 'ACTIVE' : 'INACTIVE'}
               </span>
             </div>
-            <p className="text-[10px] text-gray-300 leading-relaxed mb-3">
-              Your attacks and specials deal <strong className="text-amber-300 font-bold">*+25%*</strong> more damage to foes afflicted by at least two active curses from <strong className="text-amber-300 font-bold">different</strong> Gods.
-            </p>
+            <div className="text-[10px] text-gray-300 leading-relaxed mb-3">
+              <FormattedBoonEffect text={originationCard?.effect || ''} />
+            </div>
             <div className="flex flex-col gap-1 text-[9px] text-gray-400 bg-white/5 p-2 rounded-lg">
               <div className="flex justify-between">
                 <span>Active Curses:</span>

@@ -34,6 +34,15 @@ export interface StatusCurse {
   gods: string[];
 }
 
+export interface ArcanaCard {
+  id: string;
+  number: string; // Roman numeral e.g. "XVIII"
+  name: string;
+  effect: string;
+  cost: number;
+  icon?: string;
+}
+
 export const ALL_ELEMENTS: ElementType[] = ['Earth', 'Water', 'Air', 'Fire', 'Aether'];
 
 export const GOD_COLORS: Record<string, string> = {

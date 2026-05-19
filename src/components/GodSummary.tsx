@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { AlertCircle } from 'lucide-react';
 import { Boon, GOD_COLORS } from '../types';
 import { GodIcon } from './Icons';
@@ -9,16 +9,45 @@ interface GodSummaryProps {
   additionalBoons: Boon[];
 }
 
-const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades', 'Chaos'];
+const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades', 'Chaos', 'Raki', 'Twilight Curse'];
+
+const CANONICAL_ORDER = [
+  'Zeus',
+  'Poseidon',
+  'Demeter',
+  'Apollo',
+  'Hestia',
+  'Aphrodite',
+  'Hera',
+  'Hephaestus',
+  'Ares',
+  'Artemis',
+  'Hermes',
+  'Athena',
+  'Dionysus',
+  'Hades',
+  'Chaos',
+  'Raki',
+  'Twilight Curse'
+];
 
 export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
-  const { godData, poolLimitExceeded } = useMemo(() => {
+  const activeOrderRef = useRef<string[]>([]);
+
+  const { godData, poolLimitExceeded, godBoons } = useMemo(() => {
     const summary = {} as Record<string, number>;
+    const boonsByGod = {} as Record<string, Boon[]>;
     
     const addGods = (boon: Boon | null) => {
       if (boon?.gods) {
         boon.gods.forEach(god => {
           summary[god] = (summary[god] || 0) + 1;
+          if (!boonsByGod[god]) {
+            boonsByGod[god] = [];
+          }
+          if (!boonsByGod[god].some(b => b.id === boon.id)) {
+            boonsByGod[god].push(boon);
+          }
         });
       }
     };
@@ -26,15 +55,48 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
     Object.values(coreBuild).forEach(addGods);
     additionalBoons.forEach(addGods);
 
+    const activeGodsList = Object.keys(summary).filter(god => summary[god] > 0);
+    const activeGodsSet = new Set(activeGodsList);
+
+    // Keep only elements of persistent order that are still present
+    const kept = activeOrderRef.current.filter(god => activeGodsSet.has(god));
+    
+    // Find any new gods that are active but not yet in our persistent order
+    // Order them by core slots first, then additional boons
+    const orderedNewGods: string[] = [];
+    const recordNewGod = (boon: Boon | null) => {
+      if (boon?.gods) {
+        boon.gods.forEach(god => {
+          if (activeGodsSet.has(god) && !kept.includes(god) && !orderedNewGods.includes(god)) {
+            orderedNewGods.push(god);
+          }
+        });
+      }
+    };
+
+    const slotsInOrder = ['Attack', 'Special', 'Cast', 'Sprint', 'Magick'];
+    slotsInOrder.forEach(slot => recordNewGod(coreBuild[slot]));
+    additionalBoons.forEach(recordNewGod);
+
+    const mergedOrder = [...kept, ...orderedNewGods];
+    activeOrderRef.current = mergedOrder;
+
     const sortedData = Object.entries(summary)
       .filter(([_, count]) => count > 0)
-      .sort((a, b) => b[1] - a[1]);
+      .sort((a, b) => {
+        const indexA = mergedOrder.indexOf(a[0]);
+        const indexB = mergedOrder.indexOf(b[0]);
+        const valA = indexA === -1 ? 999 : indexA;
+        const valB = indexB === -1 ? 999 : indexB;
+        return valA - valB;
+      });
 
     const olympians = sortedData.filter(([god]) => !EXCLUDED_GODS.includes(god));
     
     return {
       godData: sortedData,
-      poolLimitExceeded: olympians.length > 4
+      poolLimitExceeded: olympians.length > 4,
+      godBoons: boonsByGod
     };
   }, [coreBuild, additionalBoons]);
 
@@ -75,14 +137,51 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15">
         {godData.map(([god, count]) => {
           const godColor = GOD_COLORS[god] || 'text-gray-400';
+          const boons = godBoons[god] || [];
+          const isExcluded = EXCLUDED_GODS.includes(god);
+          
           return (
-            <div key={god} className="flex items-center gap-2">
+            <div key={god} className="group relative flex items-center gap-2 cursor-help">
               <div className={`w-6 h-6 flex items-center justify-center z-20 transition-all duration-300 ${godColor}`}>
                 <GodIcon god={god} className="w-full h-full object-contain" />
               </div>
               <span className="text-sm font-bold font-mono text-gray-200">
                 {count}
               </span>
+
+              {/* God Tooltip */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+                <div className="flex items-center justify-between mb-1.5 pb-1.5 border-b border-white/5">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-4 h-4 ${godColor}`}>
+                      <GodIcon god={god} className="w-full h-full object-contain" />
+                    </div>
+                    <span className="text-xs font-bold uppercase tracking-widest text-gray-200">{god}</span>
+                  </div>
+                  <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300">
+                    {count} {count === 1 ? 'Boon' : 'Boons'}
+                  </span>
+                </div>
+
+                <div className="text-[9px] text-gray-400 leading-relaxed mb-2 flex items-center gap-1.5">
+                  <span className="text-gray-500 uppercase font-mono tracking-wider">Classification:</span>
+                  <span className={isExcluded ? 'text-blue-400' : 'text-emerald-400'}>
+                    {isExcluded ? 'Special/Excluded Guest' : 'Standard Pool Olympian'}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-1 text-[9px] bg-white/5 p-2 rounded-lg">
+                  <span className="text-gray-500 uppercase font-mono tracking-wider">Active Boons:</span>
+                  <div className="flex flex-col gap-1 max-h-32 overflow-y-auto pr-1">
+                    {boons.map((boon, idx) => (
+                      <div key={idx} className="flex justify-between items-center gap-2">
+                        <span className="font-bold text-gray-200 truncate">{boon.name}</span>
+                        <span className="text-[8px] text-gray-500 capitalize">{boon.type}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           );
         })}
