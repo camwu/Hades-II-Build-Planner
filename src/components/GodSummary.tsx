@@ -42,35 +42,35 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between gap-3 ml-1">
+      <div className="flex items-center gap-3 ml-1">
         <div className="flex items-center gap-2">
           <img src="/assets/ui/Icon-Olympian.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
           <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold">God Pool</span>
-        </div>
-        {poolLimitExceeded && (
-          <div className="flex items-center gap-2 group relative">
-            <AlertCircle className="w-3.5 h-3.5 text-hades-red animate-pulse cursor-help" />
-            <div className="absolute left-5 top-1/2 -translate-y-1/2 w-80 p-3 bg-hades-bg-dark border border-hades-red/30 rounded-lg shadow-2xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none group-hover:pointer-events-auto z-[100] text-[11px] leading-relaxed text-gray-300 translate-x-2 group-hover:translate-x-0">
-              {/* Invisible bridge to keep tooltip open while moving mouse */}
-              <div className="absolute -left-4 top-0 bottom-0 w-4" />
-              
-              <div className="font-bold text-hades-red mb-1 flex items-center gap-1.5 font-mono uppercase tracking-tighter">
-                <AlertCircle className="w-3 h-3" />
-                God Pool Warning
+          {poolLimitExceeded && (
+            <div className="flex items-center gap-2 group relative">
+              <AlertCircle className="w-3.5 h-3.5 text-hades-red animate-pulse cursor-help" />
+              <div className="absolute left-5 top-1/2 -translate-y-1/2 w-80 p-3 bg-hades-bg-dark border border-hades-red/30 rounded-lg shadow-2xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none group-hover:pointer-events-auto z-[100] text-[11px] leading-relaxed text-gray-300 translate-x-2 group-hover:translate-x-0">
+                {/* Invisible bridge to keep tooltip open while moving mouse */}
+                <div className="absolute -left-4 top-0 bottom-0 w-4" />
+                
+                <div className="font-bold text-hades-red mb-1 flex items-center gap-1.5 font-mono uppercase tracking-tighter">
+                  <AlertCircle className="w-3 h-3" />
+                  God Pool Warning
+                </div>
+                Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, and Hermes) are included in the god pool each night. See{' '}
+                <a 
+                  href="https://hades.fandom.com/wiki/Boons/Hades_II#God_Pool" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-hades-accent hover:underline pointer-events-auto"
+                >
+                  wiki
+                </a>{' '}
+                for more info.
               </div>
-              Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, and Hermes) are included in the god pool each night. See{' '}
-              <a 
-                href="https://hades.fandom.com/wiki/Boons/Hades_II#God_Pool" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-hades-accent hover:underline pointer-events-auto"
-              >
-                wiki
-              </a>{' '}
-              for more info.
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15">
         {godData.map(([god, count]) => {
