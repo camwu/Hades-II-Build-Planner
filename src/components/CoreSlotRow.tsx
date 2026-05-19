@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useDroppable } from '@dnd-kit/core';
+import { useDroppable, useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import { Plus, X } from 'lucide-react';
 import { Boon, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
@@ -25,8 +26,24 @@ interface CoreSlotRowProps {
 }
 
 export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBoon, isValid }: CoreSlotRowProps) {
-  const { setNodeRef, isOver } = useDroppable({
+  const { setNodeRef: setDroppableRef, isOver } = useDroppable({
     id: slot.type,
+  });
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef: setDraggableRef,
+    transform,
+    isDragging
+  } = useDraggable({
+    id: boon?.id || `empty-${slot.type}`,
+    disabled: !boon,
+    data: {
+      type: 'core',
+      slot: slot.type,
+      boon
+    }
   });
 
   const [isHovered, setIsHovered] = useState(false);
@@ -35,6 +52,11 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
   const shouldHighlight = isOver && isPotentialTarget;
   const shouldDim = draggedBoon && !isValid;
   const isExpanded = (boon ? isActive : false) || isOver || isHovered;
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+  };
 
   const renderSlotIcon = () => {
     if (boon) {
@@ -87,11 +109,11 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
   return (
     <div className="relative" style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}>
       <div 
+        ref={setDroppableRef}
         className={`group flex flex-col items-start absolute top-0 left-0 transition-opacity duration-100 ${shouldDim ? 'opacity-20 grayscale brightness-50 pointer-events-none' : ''}`}
         style={{ zIndex: isExpanded ? 50 : 10 }}
       >
         <motion.div 
-          ref={setNodeRef}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           onClick={onClick}
@@ -121,7 +143,14 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
           </AnimatePresence>
           
           <div 
-            style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
+            ref={setDraggableRef}
+            style={{ 
+              width: SLOT_COLLAPSED_WIDTH, 
+              height: SLOT_COLLAPSED_WIDTH,
+              ...style
+            }}
+            {...attributes}
+            {...listeners}
             className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
             shouldHighlight 
               ? 'bg-white/10 ring-[3px] ring-white/40 shadow-[0_0_40px_rgba(255,255,255,0.4)] z-50' 

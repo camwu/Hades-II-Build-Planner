@@ -29,7 +29,10 @@ import {
   DragStartEvent,
   DragEndEvent,
   closestCenter,
-  MeasuringStrategy
+  rectIntersection,
+  pointerWithin,
+  MeasuringStrategy,
+  useDroppable
 } from '@dnd-kit/core';
 import { 
   SortableContext, 
@@ -54,6 +57,7 @@ import { BoonDisplayCard, SortableBoonDisplayCard } from './components/BoonDispl
 import { DroppableSlotCard } from './components/DroppableSlotCard';
 import { ElementSummary } from './components/ElementSummary';
 import { GodSummary } from './components/GodSummary';
+import { PurgePool } from './components/PurgePool';
 
 export default function App() {
   const [coreBuild, setCoreBuild] = useState<Record<string, Boon | null>>(() => {
@@ -341,6 +345,28 @@ export default function App() {
 
     if (!over) return;
 
+    // Handle purging
+    if (over.id === 'PurgePool') {
+      const activeBoon = active.data.current?.boon || BOONS.find(b => b.id === active.id);
+      if (activeBoon) {
+        // If it's a sortable/assigned boon, remove it
+        if (active.data.current?.type === 'sortable' || selectedBoonIds.has(active.id as string)) {
+          // Check if it's a core boon
+          const coreEntry = Object.entries(coreBuild).find(([_, b]) => (b as Boon)?.id === activeBoon.id);
+          if (coreEntry) {
+            removeBoon(coreEntry[0] as BoonType);
+          } else {
+            // Find index in additional boons
+            const idx = additionalBoons.findIndex(b => b.id === activeBoon.id);
+            if (idx !== -1) {
+              removeAdditionalBoon(activeBoon, idx);
+            }
+          }
+        }
+      }
+      return;
+    }
+
     // Handle sorting first
     if (active.data.current?.type === 'sortable' && over.data.current?.type === 'sortable') {
       if (active.id !== over.id) {
@@ -383,6 +409,12 @@ export default function App() {
     <DndContext 
       key={dndContextKey}
       sensors={sensors}
+      collisionDetection={pointerWithin}
+      measuring={{
+        droppable: {
+          strategy: MeasuringStrategy.Always,
+        },
+      }}
       onDragStart={handleDragStart} 
       onDragEnd={handleDragEnd}
     >
@@ -580,35 +612,43 @@ export default function App() {
                 <div className="flex-1 w-full lg:pl-8 lg:border-l lg:border-white/10">
                   <div className="w-full">
                     <div className="flex flex-col gap-12">
-                      {/* Unified Boons Grid */}
-                      <div className="grid grid-flow-col grid-rows-5 gap-x-3 gap-y-3 auto-cols-max items-start">
-                        {/* Selected Boons */}
-                        <SortableContext 
-                          items={additionalBoons.map(b => b.id)} 
-                          strategy={rectSortingStrategy}
-                        >
-                          {additionalBoons.map((boon, idx) => (
-                            <SortableBoonDisplayCard 
-                              key={boon.id}
-                              boon={boon} 
-                              onRemove={() => removeAdditionalBoon(boon, idx)}
+                      {/* Unified Boons Grid Area with Purge Pool and Non-Core Slot */}
+                      <div className="flex items-start gap-16">
+                        <div className="grid grid-flow-col grid-rows-5 gap-x-3 gap-y-3 auto-cols-max items-start">
+                          {/* Selected Boons */}
+                          <SortableContext 
+                            items={additionalBoons.map(b => b.id)} 
+                            strategy={rectSortingStrategy}
+                          >
+                            {additionalBoons.map((boon, idx) => (
+                              <SortableBoonDisplayCard 
+                                key={boon.id}
+                                boon={boon} 
+                                onRemove={() => removeAdditionalBoon(boon, idx)}
+                              />
+                            ))}
+                          </SortableContext>
+                          
+                          {/* Unified Non-Core Slot */}
+                          <div>
+                            <DroppableSlotCard 
+                              id="NonCore"
+                              slot="NonCore"
+                              name="Non-Core Slot"
+                              icon={Plus}
+                              isActive={activeSlot === 'NonCore'}
+                              onClick={() => toggleActiveSlot('NonCore')}
+                              draggedBoon={draggedBoon}
+                              isValid={draggedBoon ? isValidForSlot(draggedBoon, 'NonCore') && !selectedBoonIds.has(draggedBoon.id) : true}
                             />
-                          ))}
-                        </SortableContext>
-
-                        {/* Unified Non-Core Slot */}
-                        <div>
-                          <DroppableSlotCard 
-                            id="NonCore"
-                            slot="NonCore"
-                            name="Non-Core Slot"
-                            icon={Plus}
-                            isActive={activeSlot === 'NonCore'}
-                            onClick={() => toggleActiveSlot('NonCore')}
-                            draggedBoon={draggedBoon}
-                            isValid={draggedBoon ? isValidForSlot(draggedBoon, 'NonCore') && !selectedBoonIds.has(draggedBoon.id) : true}
-                          />
+                          </div>
                         </div>
+
+                        <AnimatePresence>
+                          {draggedBoon && selectedBoonIds.has(draggedBoon.id) && (
+                            <PurgePool />
+                          )}
+                        </AnimatePresence>
                       </div>
                     </div>
                   </div>
