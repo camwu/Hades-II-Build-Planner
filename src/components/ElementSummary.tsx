@@ -28,16 +28,19 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold ml-1">Elemental Infusions</span>
+      <div className="flex items-center gap-2 ml-1">
+        <img src="/assets/ui/ElementalEssence.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
+        <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold">Elemental Infusions</span>
+      </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15">
         {ALL_ELEMENTS.map((el) => {
         const count = counts[el];
         return (
           <div key={el} className="flex items-center gap-2">
-            <div className={`w-7 h-7 ${BOON_ICON_ROUNDING} bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border transition-all duration-300 ${
+            <div className={`w-6 h-6 flex items-center justify-center z-20 transition-all duration-300 ${
               count > 0 
-                ? `${ELEMENT_COLORS[el]} border-white/10 shadow-[0_0_15px_-5px_currentColor]` 
-                : 'text-gray-600 border-white/5 opacity-40'
+                ? `${ELEMENT_COLORS[el]}` 
+                : 'text-gray-600 opacity-40'
             }`}>
               <ElementIcon element={el} className="w-full h-full" />
             </div>

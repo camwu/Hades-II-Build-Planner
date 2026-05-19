@@ -42,8 +42,11 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-3 ml-1">
-        <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold">God Pool</span>
+      <div className="flex items-center justify-between gap-3 ml-1">
+        <div className="flex items-center gap-2">
+          <img src="/assets/ui/Icon-Olympian.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
+          <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold">God Pool</span>
+        </div>
         {poolLimitExceeded && (
           <div className="flex items-center gap-2 group relative">
             <AlertCircle className="w-3.5 h-3.5 text-hades-red animate-pulse cursor-help" />
@@ -74,7 +77,7 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
           const godColor = GOD_COLORS[god] || 'text-gray-400';
           return (
             <div key={god} className="flex items-center gap-2">
-              <div className={`w-7 h-7 ${BOON_ICON_ROUNDING} bg-hades-bg-dark shadow-xl flex items-center justify-center p-0.5 z-20 border border-white/10 transition-all duration-300 ${godColor} shadow-[0_0_15px_-5px_currentColor]`}>
+              <div className={`w-6 h-6 flex items-center justify-center z-20 transition-all duration-300 ${godColor}`}>
                 <GodIcon god={god} className="w-full h-full object-contain" />
               </div>
               <span className="text-sm font-bold font-mono text-gray-200">
