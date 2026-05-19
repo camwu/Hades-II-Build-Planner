@@ -719,11 +719,11 @@ export default function App() {
                 </aside>
 
                 {/* Right Side: Reorganized Sections */}
-                <div className="flex-1 w-full lg:pl-16 lg:border-l lg:border-white/5">
+                <div className="flex-1 w-full lg:pl-8 lg:border-l lg:border-white/10">
                   <div className="w-full">
                     <div className="flex flex-col gap-12">
                       {/* Unified Boons Grid */}
-                      <div className="grid grid-flow-col grid-rows-5 gap-x-12 gap-y-3 auto-cols-max items-start">
+                      <div className="grid grid-flow-col grid-rows-5 gap-x-3 gap-y-3 auto-cols-max items-start">
                         {/* Selected Boons */}
                         {additionalBoons.map((boon, idx) => (
                           <div key={`${boon.id}-${idx}`}>
@@ -740,7 +740,7 @@ export default function App() {
                             id="NonCore"
                             slot="NonCore"
                             name="Non-Core Slot"
-                            icon={Sparkles}
+                            icon={Plus}
                             isActive={activeSlot === 'NonCore'}
                             onClick={() => toggleActiveSlot('NonCore')}
                             draggedBoon={draggedBoon}

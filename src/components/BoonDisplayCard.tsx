@@ -23,7 +23,7 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
   const rarityGlow = '';
 
   return (
-    <div className="h-[88px] relative" style={{ width: SLOT_COLLAPSED_WIDTH }}>
+    <div className="relative" style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}>
       <div 
         className="group absolute top-0 left-0 transition-opacity duration-200"
         onMouseEnter={() => setIsHovered(true)}

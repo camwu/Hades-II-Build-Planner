@@ -85,7 +85,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
   };
 
   return (
-    <div className="h-[88px] relative" style={{ width: SLOT_COLLAPSED_WIDTH }}>
+    <div className="relative" style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}>
       <div 
         className={`group flex flex-col items-start absolute top-0 left-0 transition-opacity duration-100 ${shouldDim ? 'opacity-20 grayscale brightness-50 pointer-events-none' : ''}`}
         style={{ zIndex: isExpanded ? 50 : 10 }}
@@ -124,12 +124,12 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
             onMouseLeave={() => setIsHovered(false)}
             className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
             shouldHighlight 
-              ? `bg-white/10 ${BOON_BORDER_WIDTH} border-white/40 border-solid shadow-[0_0_40px_rgba(255,255,255,0.4)] z-50` 
+              ? 'bg-white/10 ring-[3px] ring-white/40 shadow-[0_0_40px_rgba(255,255,255,0.4)] z-50' 
               : isPotentialTarget
-                ? `bg-white/5 ${BOON_BORDER_WIDTH} border-white/20 border-dashed animate-pulse z-40`
+                ? 'bg-white/5 ring-[3px] ring-white/20 ring-dashed animate-pulse z-40'
                 : isActive
-                  ? `bg-white/5 ${BOON_BORDER_WIDTH} border-white/40 border-solid z-50`
-                  : `${BOON_BORDER_WIDTH} border-transparent`
+                  ? 'bg-white/5 ring-[3px] ring-white/40 z-50'
+                  : ''
           }`}>
             <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
               {renderSlotIcon()}
