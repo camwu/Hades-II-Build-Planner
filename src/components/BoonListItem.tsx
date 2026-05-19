@@ -32,7 +32,7 @@ export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; is
               <GodIcon god={boon.gods[0]} className="w-10 h-10" />
             </div>
           )}
-          {boon.element && (
+          {boon.element && boon.type !== 'Infusion' && (
             <div className="absolute -bottom-0.5 -right-0.5 bg-hades-bg-dark rounded-full p-0.5 border border-hades-border shadow-lg z-20">
               <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
             </div>

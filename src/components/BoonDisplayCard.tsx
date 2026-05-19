@@ -72,7 +72,7 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
               <div className="absolute top-0 -right-0.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
                 <GodIcon god={boon.gods[0]} className="w-full h-full" />
               </div>
-              {boon.element && (
+              {boon.element && boon.type !== 'Infusion' && (
                 <div className="absolute bottom-0 -right-0.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
                   <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
                 </div>
