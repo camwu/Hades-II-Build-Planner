@@ -27,7 +27,7 @@ export const BOON_KEYWORDS = [
   // Status Curses
   'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn',
   // Mechanics
-  'Boon', 'Prime'
+  'Boon', 'Prime', 'Power'
 ];
 
 export const CORE_SLOTS: { type: BoonType; name: string; icon: string }[] = [

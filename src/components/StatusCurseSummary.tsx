@@ -12,6 +12,31 @@ interface StatusCurseSummaryProps {
   additionalBoons: Boon[];
 }
 
+const EXCLUDED_CURSE_BOONS = new Set([
+  'Broken Resolve',
+  'Sweet Surrender',
+  'Nervous Wreck',
+  'Back Burner',
+  'Grievous Blow',
+  'Profuse Bleeding',
+  'Cold Storage',
+  'Winter Harvest',
+  'Dying Wish',
+  'Hereditary Bane',
+  'Arc Flash',
+  'Burning Desire',
+  'Rude Awakening',
+  'Warm Breeze',
+  'Heinous Affront',
+  'Cryo Pounder',
+  'Tropical Cyclone',
+  'Incandescent Aura',
+  'Freezer Burn',
+  'Killer Current',
+  'Scalding Vapor',
+  'Romantic Spark'
+].map(name => name.toLowerCase()));
+
 export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSummaryProps) {
   const activeBoons = useMemo(() => {
     const all = Object.values(coreBuild).filter((b): b is Boon => !!b);
@@ -26,17 +51,23 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
 
   const activeCurses = useMemo(() => {
     const unfiltered = STATUS_CURSES.filter(curse => {
-      // Check if any boon mentions the curse name or if the curse's gods are in the build and the boon implies it
-      // For now, a simple text check in the boon effect is probably best
-      return activeBoons.some(boon => 
-        boon.effect.toLowerCase().includes(curse.name.toLowerCase()) ||
-        // Special cases like Scorch, Weak, etc. often have specific keywords
-        (curse.name === 'Weak' && boon.effect.toLowerCase().includes('weak')) ||
-        (curse.name === 'Scorch' && boon.effect.toLowerCase().includes('scorch')) ||
-        (curse.name === 'Blitz' && boon.effect.toLowerCase().includes('blitz')) ||
-        (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
-        (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'))
-      );
+      return activeBoons.some(boon => {
+        const nameLower = boon.name.toLowerCase();
+        if (EXCLUDED_CURSE_BOONS.has(nameLower)) {
+          return false;
+        }
+
+        if (nameLower === 'thermal dynamics') {
+          return curse.name === 'Scorch';
+        }
+
+        return boon.effect.toLowerCase().includes(curse.name.toLowerCase()) ||
+          (curse.name === 'Weak' && boon.effect.toLowerCase().includes('weak')) ||
+          (curse.name === 'Scorch' && boon.effect.toLowerCase().includes('scorch')) ||
+          (curse.name === 'Blitz' && boon.effect.toLowerCase().includes('blitz')) ||
+          (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
+          (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'));
+      });
     });
 
     const currentActiveIds = new Set(unfiltered.map(c => c.id));
@@ -173,14 +204,21 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                 )}
 
                 {(() => {
-                  const contributingBoons = activeBoons.filter(boon => 
-                    boon.effect.toLowerCase().includes(curse.name.toLowerCase()) ||
-                    (curse.name === 'Weak' && boon.effect.toLowerCase().includes('weak')) ||
-                    (curse.name === 'Scorch' && boon.effect.toLowerCase().includes('scorch')) ||
-                    (curse.name === 'Blitz' && boon.effect.toLowerCase().includes('blitz')) ||
-                    (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
-                    (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'))
-                  );
+                  const contributingBoons = activeBoons.filter(boon => {
+                    const nameLower = boon.name.toLowerCase();
+                    if (EXCLUDED_CURSE_BOONS.has(nameLower)) {
+                      return false;
+                    }
+                    if (nameLower === 'thermal dynamics') {
+                      return curse.name === 'Scorch';
+                    }
+                    return boon.effect.toLowerCase().includes(curse.name.toLowerCase()) ||
+                      (curse.name === 'Weak' && boon.effect.toLowerCase().includes('weak')) ||
+                      (curse.name === 'Scorch' && boon.effect.toLowerCase().includes('scorch')) ||
+                      (curse.name === 'Blitz' && boon.effect.toLowerCase().includes('blitz')) ||
+                      (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
+                      (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'));
+                  });
 
                   if (contributingBoons.length === 0) return null;
 

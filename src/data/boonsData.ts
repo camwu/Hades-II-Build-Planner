@@ -463,7 +463,7 @@ export const BOONS: Boon[] = [
   {
     id: "6e1d031a-7fda-55bb-86f5-06e4322d11c5",
     name: "Geyser Spout",
-    type: "Cast",
+    type: "Non-Core",
     gods: ["Poseidon"],
     element: "Water",
     effect: "Your \u03a9 Cast gains Power and knocks foes away. \n ▸ Omega Cast Power: +150/+200/+250/+300",
