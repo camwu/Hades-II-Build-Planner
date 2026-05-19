@@ -57,6 +57,7 @@ import { BoonDisplayCard, SortableBoonDisplayCard } from './components/BoonDispl
 import { DroppableSlotCard } from './components/DroppableSlotCard';
 import { ElementSummary } from './components/ElementSummary';
 import { GodSummary } from './components/GodSummary';
+import { StatusCurseSummary } from './components/StatusCurseSummary';
 import { PurgePool } from './components/PurgePool';
 
 export default function App() {
@@ -581,10 +582,11 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Elemental & God Tracker */}
-              <div className="mb-8 flex items-start gap-4 w-fit">
+              {/* Elemental, God & Status Tracker */}
+              <div className="mb-8 flex flex-wrap items-start gap-5 w-fit">
                 <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
                 <GodSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
+                <StatusCurseSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
               </div>
 
               {/* Consolidated Build View */}

@@ -13,9 +13,10 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
   const timePattern = `\\(\\s*every\\s+[^)]+\\)`;
   const rangePattern = `[+-]?[\\d.%]+(?:\\s*[A-Za-z.]+)?(?:\\s*/\\s*[+-]?[\\d.%]+(?:\\s*[A-Za-z.]+)?)+`;
   const keywordPattern = `\\b(?:${BOON_KEYWORDS.join('|')})(?:s|es)?\\b|Ω`;
+  const boldPattern = `\\*[^*]+\\*`;
   
   // Combine patterns into a single capturing group for split
-  const regex = new RegExp(`(${timePattern}|${rangePattern}|${keywordPattern})`, 'g');
+  const regex = new RegExp(`(${timePattern}|${rangePattern}|${keywordPattern}|${boldPattern})`, 'g');
   
   const parts = text.split(regex);
   
@@ -82,7 +83,16 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
           part.toLowerCase() === (k + 'es').toLowerCase()
         );
         const isRange = part.includes('/') && /\d/.test(part);
+        const isBold = part.startsWith('*') && part.endsWith('*');
         
+        if (isBold) {
+          return (
+            <strong key={i} className="font-bold text-hades-text">
+              {part.slice(1, -1)}
+            </strong>
+          );
+        }
+
         if (isKeyword) {
           return (
             <strong key={i} className="font-bold text-hades-text">

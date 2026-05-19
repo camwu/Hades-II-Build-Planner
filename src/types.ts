@@ -26,6 +26,14 @@ export type BoonType =
 
 export type ElementType = 'Air' | 'Fire' | 'Water' | 'Earth' | 'Aether';
 
+export interface StatusCurse {
+  id: string;
+  name: string;
+  description: string;
+  duration: string;
+  gods: string[];
+}
+
 export const ALL_ELEMENTS: ElementType[] = ['Earth', 'Water', 'Air', 'Fire', 'Aether'];
 
 export const GOD_COLORS: Record<string, string> = {
@@ -37,7 +45,12 @@ export const GOD_COLORS: Record<string, string> = {
   Aphrodite: 'text-pink-300',
   Hera: 'text-purple-400',
   Hephaestus: 'text-amber-700',
-  Ares: 'text-red-600'
+  Ares: 'text-red-600',
+  Artemis: 'text-emerald-400',
+  Dionysus: 'text-purple-600',
+  Hades: 'text-red-900',
+  Raki: 'text-emerald-200',
+  'Twilight Curse': 'text-indigo-600'
 };
 
 export const GOD_SYMBOLS: Record<string, string> = {
@@ -49,7 +62,12 @@ export const GOD_SYMBOLS: Record<string, string> = {
   Aphrodite: '/assets/gods/Aphrodite_symbol.webp',
   Hera: '/assets/gods/Hera_symbol.webp',
   Hephaestus: '/assets/gods/Hephaestus_symbol.webp',
-  Ares: '/assets/gods/Ares_symbol.webp'
+  Ares: '/assets/gods/Ares_symbol.webp',
+  Artemis: '/assets/gods/Artemis_symbol.webp',
+  Dionysus: '/assets/gods/Dionysus_symbol.webp',
+  Hades: '/assets/gods/Hades_symbol.webp',
+  Raki: '/assets/gods/Artemis_symbol.webp', // Reuse Artemis for Raki for now
+  'Twilight Curse': '/assets/gods/Hera_symbol.webp' // Reuse Hera for Twilight Curse for now
 };
 
 export const ELEMENT_COLORS: Record<ElementType, string> = {
