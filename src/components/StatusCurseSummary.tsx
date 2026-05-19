@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Boon, StatusCurse, GOD_COLORS } from '../types';
 import { STATUS_CURSES } from '../data/statusCursesData';
@@ -22,8 +22,10 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
     return ARCANA_CARDS.find(card => card.id === 'origination');
   }, []);
 
+  const activeOrderRef = useRef<string[]>([]);
+
   const activeCurses = useMemo(() => {
-    return STATUS_CURSES.filter(curse => {
+    const unfiltered = STATUS_CURSES.filter(curse => {
       // Check if any boon mentions the curse name or if the curse's gods are in the build and the boon implies it
       // For now, a simple text check in the boon effect is probably best
       return activeBoons.some(boon => 
@@ -35,6 +37,20 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
         (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
         (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'))
       );
+    });
+
+    const currentActiveIds = new Set(unfiltered.map(c => c.id));
+    const kept = activeOrderRef.current.filter(id => currentActiveIds.has(id));
+    const newIds = unfiltered.filter(c => !kept.includes(c.id)).map(c => c.id);
+    const merged = [...kept, ...newIds];
+    activeOrderRef.current = merged;
+
+    return [...unfiltered].sort((a, b) => {
+      const indexA = merged.indexOf(a.id);
+      const indexB = merged.indexOf(b.id);
+      const valA = indexA === -1 ? 999 : indexA;
+      const valB = indexB === -1 ? 999 : indexB;
+      return valA - valB;
     });
   }, [activeBoons]);
 
@@ -120,30 +136,69 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
               </span>
               
               {/* Tooltip */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3 bg-hades-bg-dark border border-hades-red/30 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold uppercase tracking-widest text-hades-red">{curse.name}</span>
-                <span className="text-[9px] font-mono text-gray-500 uppercase">{curse.duration}</span>
-              </div>
-              <div className="text-[10px] text-gray-300 leading-relaxed">
-                <FormattedBoonEffect text={curse.description} />
-              </div>
-              {curse.gods.length > 0 && (
-                <div className="mt-2 pt-2 border-t border-white/5 flex gap-2">
-                  <span className="text-[9px] text-gray-500 uppercase">Gods:</span>
-                  <div className="flex gap-1">
-                    {curse.gods.map(god => (
-                      <span 
-                        key={god} 
-                        className={`text-[9px] font-bold uppercase ${GOD_COLORS[god] || 'text-hades-accent/70'}`}
-                      >
-                        {god}
-                      </span>
-                    ))}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+                <div className="flex items-center justify-between mb-1.5 pb-1.5 border-b border-white/5">
+                  <div className="flex items-center gap-2">
+                    {mainGod ? (
+                      <div className={`w-4 h-4 ${godColor}`}>
+                        <GodIcon god={mainGod} className="w-full h-full object-contain" />
+                      </div>
+                    ) : (
+                      <div className="w-4 h-4 text-hades-red/70">
+                        <Skull className="w-3.5 h-3.5" />
+                      </div>
+                    )}
+                    <span className="text-xs font-bold uppercase tracking-widest text-gray-200">{curse.name}</span>
                   </div>
+                  <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 capitalize">
+                    {curse.duration || 'Active'}
+                  </span>
                 </div>
-              )}
-            </div>
+
+                <div className="text-[10px] text-gray-300 leading-relaxed mb-2.5">
+                  <FormattedBoonEffect text={curse.description} />
+                </div>
+
+                {curse.gods.length > 0 && (
+                  <div className="text-[9px] text-gray-400 leading-relaxed mb-2 flex items-center gap-1.5">
+                    <span className="text-gray-500 uppercase font-mono tracking-wider">Source Gods:</span>
+                    <div className="flex gap-1 flex-wrap">
+                      {curse.gods.map(god => (
+                        <span key={god} className={`font-bold ${GOD_COLORS[god] || 'text-white'}`}>
+                          {god}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {(() => {
+                  const contributingBoons = activeBoons.filter(boon => 
+                    boon.effect.toLowerCase().includes(curse.name.toLowerCase()) ||
+                    (curse.name === 'Weak' && boon.effect.toLowerCase().includes('weak')) ||
+                    (curse.name === 'Scorch' && boon.effect.toLowerCase().includes('scorch')) ||
+                    (curse.name === 'Blitz' && boon.effect.toLowerCase().includes('blitz')) ||
+                    (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
+                    (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'))
+                  );
+
+                  if (contributingBoons.length === 0) return null;
+
+                  return (
+                    <div className="flex flex-col gap-1 text-[9px] bg-white/5 p-2 rounded-lg">
+                      <span className="text-gray-500 uppercase font-mono tracking-wider">Contributing Boons:</span>
+                      <div className="flex flex-col gap-1 max-h-32 overflow-y-auto pr-1">
+                        {contributingBoons.map((boon, idx) => (
+                          <div key={idx} className="flex justify-between items-center gap-2">
+                            <span className="font-bold text-gray-200 truncate">{boon.name}</span>
+                            <span className="text-[8px] text-gray-500 capitalize">{boon.type}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
           </motion.div>
         )})}
 
@@ -180,13 +235,8 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                 <img src="/assets/ui/Origination_Active_Icon.webp" className="w-5 h-5 object-contain" alt="Origination" referrerPolicy="no-referrer" />
                 <div className="flex flex-col leading-tight">
                   <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
-                    {originationCard ? `${originationCard.number}. ${originationCard.name}` : 'Origination'}
+                    Origination
                   </span>
-                  {originationCard && (
-                    <span className="text-[8px] text-gray-400/80 font-mono uppercase tracking-wider">
-                      Cost: {originationCard.cost} Grasp
-                    </span>
-                  )}
                 </div>
               </div>
               <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-bold ${
