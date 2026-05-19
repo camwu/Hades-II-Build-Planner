@@ -28,7 +28,7 @@ export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; is
               <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} ${borderColor} ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
             </div>
           ) : (
-            <div className={`w-full h-full flex items-center justify-center p-1 ${BOON_BORDER_WIDTH} border-[#26262f] ${BOON_ICON_ROUNDING} opacity-40`}>
+            <div className={`w-full h-full flex items-center justify-center p-1 ${BOON_BORDER_WIDTH} border-white/5 ${BOON_ICON_ROUNDING} opacity-40`}>
               <GodIcon god={boon.gods[0]} className="w-10 h-10" />
             </div>
           )}

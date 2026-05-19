@@ -24,6 +24,6 @@ export const getBoonBorderColor = (type: BoonType | string) => {
     case 'Infusion': return 'border-hades-infusion/70';
     case 'Duo': return 'border-hades-duo/70';
     case 'Legendary': return 'border-hades-legendary/70';
-    default: return 'border-[#26262f]';
+    default: return 'border-white/20';
   }
 };

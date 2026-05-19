@@ -78,7 +78,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
     }
     const IconComponent = slot.icon;
     return (
-      <div className={`absolute inset-0 flex items-center justify-center p-5 ${BOON_BORDER_WIDTH} border-[#26262f] ${BOON_ICON_ROUNDING}`}>
+      <div className={`absolute inset-0 flex items-center justify-center p-5 ${BOON_BORDER_WIDTH} border-white/5 ${BOON_ICON_ROUNDING}`}>
         <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
       </div>
     );
