@@ -29,7 +29,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
   const isPotentialTarget = draggedBoon && isValid;
   const shouldHighlight = isOver && isPotentialTarget;
   const shouldDim = draggedBoon && !isValid;
-  const isExpanded = isActive || isOver || isHovered;
+  const isExpanded = false || isOver || isHovered;
 
   const renderIcon = () => {
     if (typeof icon === 'string') {
@@ -51,11 +51,9 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
   };
 
   return (
-    <div className="h-[88px] w-full relative">
+    <div className="h-[88px] relative" style={{ width: SLOT_COLLAPSED_WIDTH }}>
       <div 
         className={`group flex flex-col absolute top-0 left-0 transition-opacity duration-100 ${shouldDim ? 'opacity-20 grayscale brightness-50 pointer-events-none' : ''}`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         style={{ zIndex: isExpanded ? 50 : 10 }}
       >
         <motion.div 
@@ -70,7 +68,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
           whileHover={{ scale: 1 }}
           whileTap={{ scale: 1 }}
           className={`relative flex items-start gap-4 cursor-pointer transition-all duration-300 ${
-            isExpanded ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
+            isExpanded ? 'bg-hades-bg-dark/40 rounded-2xl' : 'pointer-events-auto'
           }`}
         >
           {/* Background masking for unfurled state */}
@@ -88,6 +86,8 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
 
           <div 
             style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
              shouldHighlight 
                ? `bg-white/10 ${BOON_BORDER_WIDTH} border-white/40 border-solid shadow-[0_0_40px_rgba(255,255,255,0.4)] z-50` 
@@ -102,7 +102,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
             </div>
           </div>
 
-          <div className="flex-1">
+          <div className={`flex-1 ${isExpanded ? 'pointer-events-auto' : 'pointer-events-none'}`}>
             <div className="w-[340px] flex flex-col justify-center pr-4 py-3 min-h-[84px]">
               <motion.div 
                 initial={false}

@@ -150,8 +150,22 @@ export default function App() {
     return Array.from(list).sort();
   }, []);
 
+  const selectedBoonIds = useMemo(() => {
+    const ids = new Set<string>();
+    Object.values(coreBuild).forEach(b => { 
+      if (b) ids.add((b as Boon).id); 
+    });
+    additionalBoons.forEach(b => ids.add(b.id));
+    return ids;
+  }, [coreBuild, additionalBoons]);
+
   const filteredBoons = useMemo(() => {
     return BOONS.filter(boon => {
+      // Don't show already selected boons in the library
+      if (selectedBoonIds.has(boon.id)) {
+        return false;
+      }
+
       const search = searchTerm.toLowerCase();
       const matchesSearch = searchTerm === '' || 
         boon.name.toLowerCase().includes(search) || 
@@ -182,7 +196,7 @@ export default function App() {
   }, [searchTerm, selectedGod, selectedElement, selectedType, activeSlot]);
 
   const selectBoon = (boon: Boon, slotId: string) => {
-    if (['Support', 'LegendaryDuo', 'Infusion'].includes(slotId)) {
+    if (slotId === 'NonCore') {
       setAdditionalBoons(prev => [...prev, boon]);
     } else {
       setCoreBuild(prev => ({ ...prev, [slotId]: boon }));
@@ -199,11 +213,8 @@ export default function App() {
   };
 
   const removeBoon = (slotId: string, index?: number) => {
-    if (['Support', 'LegendaryDuo', 'Infusion'].includes(slotId) && index !== undefined) {
-      // Find the absolute index in additionalBoons for the filtered item
-      // But it's easier to just pass the boon object or unique id
-      // For now we'll filter by a combined filter + index if we must, 
-      // but let's pass the boon ID or the item itself to removeBoon
+    if (slotId === 'NonCore' && index !== undefined) {
+      // Logic for removing additional boons is handled by removeAdditionalBoon
     } else {
       setCoreBuild(prev => ({ ...prev, [slotId]: null }));
     }
@@ -244,7 +255,7 @@ export default function App() {
       const boon = BOONS.find(b => b.id === active.id);
       const slotId = over.id as string;
       
-      if (boon && isValidForSlot(boon, slotId)) {
+      if (boon && isValidForSlot(boon, slotId) && !selectedBoonIds.has(boon.id)) {
         selectBoon(boon, slotId);
       }
     }
@@ -388,9 +399,7 @@ export default function App() {
                         );
                       })}
                       {(['Non-Core', 'Infusion', 'Legendary', 'Duo'] as BoonType[]).map(type => {
-                        const isSlotActive = (type === 'Non-Core' && activeSlot === 'Support') || 
-                                           ((type === 'Duo' || type === 'Legendary') && activeSlot === 'LegendaryDuo') ||
-                                           (type === 'Infusion' && activeSlot === 'Infusion');
+                        const isSlotActive = activeSlot === 'NonCore';
                         const isTypeSelected = selectedType === type;
                         const isActive = isSlotActive || isTypeSelected;
                         return (
@@ -561,18 +570,16 @@ export default function App() {
                 </button>
               </div>
 
+              {/* Elemental Tracker as a Header Row */}
+              <div className="mb-12 bg-hades-bg-dark/10 rounded-2xl p-6 border border-white/5">
+                <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
+              </div>
+
               {/* Consolidated Build View */}
               <div className="grid grid-cols-1 lg:grid-cols-[100px_1fr] gap-x-8 gap-y-16 items-start relative">
                 
                 {/* Left Side: Core Boon Slots (Narrow Column) */}
-                <aside className="lg:sticky lg:top-8 flex-shrink-0 z-30 flex flex-col items-center">
-                  <div className="flex flex-col items-center gap-2 mb-8 w-full" title="Core Boons">
-                    <Swords className="w-5 h-5 text-hades-accent" />
-                    <h3 className="text-[10px] font-mono uppercase text-hades-accent font-black tracking-[0.2em]">
-                      CORE
-                    </h3>
-                  </div>
-                  
+                <aside className="lg:sticky lg:top-8 flex-shrink-0 z-30 flex flex-col items-center pt-8">
                   <div className="flex flex-col gap-3 w-full items-center">
                     {CORE_SLOTS.map((slot) => (
                       <CoreSlotRow 
@@ -583,77 +590,41 @@ export default function App() {
                         onClick={() => toggleActiveSlot(slot.type)}
                         onRemove={() => removeBoon(slot.type)}
                         draggedBoon={draggedBoon}
-                        isValid={draggedBoon ? isValidForSlot(draggedBoon, slot.type) : true}
+                        isValid={draggedBoon ? isValidForSlot(draggedBoon, slot.type) && !selectedBoonIds.has(draggedBoon.id) : true}
                       />
                     ))}
                   </div>
                 </aside>
 
                 {/* Right Side: Reorganized Sections */}
-                <div className="flex-1 w-full lg:pl-16 lg:border-l lg:border-white/5">
+                <div className="flex-1 w-full lg:pl-16 lg:border-l lg:border-white/5 pt-8">
                   <div className="w-full">
-                    {/* Header for Non-Core Boons - Aligned with Core header rhythm */}
-                    <div className="flex flex-col items-start gap-2 mb-8 w-full" title="Non-Core Boons">
-                      <Sparkles className="w-5 h-5 text-hades-accent" />
-                      <h3 className="text-[10px] font-mono uppercase text-hades-accent font-black tracking-[0.2em]">
-                        NON-CORE
-                      </h3>
-                    </div>
-
                     <div className="flex flex-col gap-12">
-                      {/* Integrated Elemental Grid (Info Panel) */}
-                      <div className="bg-hades-bg-dark/20 rounded-2xl p-6 border border-white/5">
-                        <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                          <Droplets className="w-3 h-3" />
-                          Elemental Resonance
-                        </div>
-                        <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
-                      </div>
-
                       {/* Unified Boons Grid */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-x-8 gap-y-3">
+                      <div className="grid grid-flow-col grid-rows-5 gap-x-12 gap-y-3 auto-cols-max items-start">
                         {/* Selected Boons */}
                         {additionalBoons.map((boon, idx) => (
-                          <BoonDisplayCard 
-                            key={`${boon.id}-${idx}`}
-                            boon={boon} 
-                            onRemove={() => removeAdditionalBoon(boon, idx)}
-                          />
+                          <div key={`${boon.id}-${idx}`}>
+                            <BoonDisplayCard 
+                              boon={boon} 
+                              onRemove={() => removeAdditionalBoon(boon, idx)}
+                            />
+                          </div>
                         ))}
 
-                        {/* Slots - Arranged to potentially occupy the grid starts */}
-                        <DroppableSlotCard 
-                          id="Support"
-                          slot="Support"
-                          name="Support Slot"
-                          icon={Shield}
-                          isActive={activeSlot === 'Support'}
-                          onClick={() => toggleActiveSlot('Support')}
-                          draggedBoon={draggedBoon}
-                          isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Support') : true}
-                        />
-                        
-                        <DroppableSlotCard 
-                          id="LegendaryDuo"
-                          slot="LegendaryDuo"
-                          name="Leg./Duo Slot"
-                          icon={Sparkles}
-                          isActive={activeSlot === 'LegendaryDuo'}
-                          onClick={() => toggleActiveSlot('LegendaryDuo')}
-                          draggedBoon={draggedBoon}
-                          isValid={draggedBoon ? isValidForSlot(draggedBoon, 'LegendaryDuo') : true}
-                        />
-
-                        <DroppableSlotCard 
-                          id="Infusion"
-                          slot="Infusion"
-                          name="Infusion Slot"
-                          icon={Zap}
-                          isActive={activeSlot === 'Infusion'}
-                          onClick={() => toggleActiveSlot('Infusion')}
-                          draggedBoon={draggedBoon}
-                          isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Infusion') : true}
-                        />
+                        {/* Unified Non-Core Slot */}
+                        <div>
+                          <DroppableSlotCard 
+                            id="NonCore"
+                            slot="NonCore"
+                            name="Non-Core Slot"
+                            icon={Sparkles}
+                            isActive={activeSlot === 'NonCore'}
+                            onClick={() => toggleActiveSlot('NonCore')}
+                            draggedBoon={draggedBoon}
+                            isValid={draggedBoon ? isValidForSlot(draggedBoon, 'NonCore') && !selectedBoonIds.has(draggedBoon.id) : true}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

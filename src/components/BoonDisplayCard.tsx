@@ -23,9 +23,9 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
   const rarityGlow = '';
 
   return (
-    <div className="h-[88px] w-full relative">
+    <div className="h-[88px] relative" style={{ width: SLOT_COLLAPSED_WIDTH }}>
       <div 
-        className="group absolute top-0 left-0 w-full transition-opacity duration-200"
+        className="group absolute top-0 left-0 transition-opacity duration-200"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{ zIndex: isHovered ? 50 : 10 }}
@@ -39,8 +39,8 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
           transition={{ duration: 0.1, ease: "easeOut" }}
           whileHover={{ scale: 1 }}
           whileTap={{ scale: 1 }}
-          className={`relative flex items-start w-full gap-4 transition-all duration-300 ${
-            isHovered ? 'bg-hades-bg-dark/40 rounded-2xl' : ''
+          className={`relative flex items-start gap-4 transition-all duration-300 ${
+            isHovered ? 'bg-hades-bg-dark/40 rounded-2xl' : 'pointer-events-auto'
           }`}
         >
           {/* Background masking for hovered state */}
@@ -82,7 +82,7 @@ export function BoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
             </div>
           </div>
 
-          <div className="flex-1">
+          <div className={`flex-1 ${isHovered ? 'pointer-events-auto' : 'pointer-events-none'}`}>
             <div className="w-[340px] flex flex-col justify-center pr-4 py-3 min-h-[84px]">
               <motion.div 
                 initial={false}

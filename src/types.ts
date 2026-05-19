@@ -26,7 +26,7 @@ export type BoonType =
 
 export type ElementType = 'Air' | 'Fire' | 'Water' | 'Earth' | 'Aether';
 
-export const ALL_ELEMENTS: ElementType[] = ['Air', 'Water', 'Earth', 'Fire', 'Aether'];
+export const ALL_ELEMENTS: ElementType[] = ['Earth', 'Water', 'Air', 'Fire', 'Aether'];
 
 export const GOD_COLORS: Record<string, string> = {
   Zeus: 'text-yellow-400',
