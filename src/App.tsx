@@ -271,9 +271,8 @@ export default function App() {
       const matchesGod = !selectedGod || boon.gods.includes(selectedGod);
       const matchesElement = !selectedElement || boon.element === selectedElement;
       
-      const matchesType = activeSlot 
-        ? isValidForSlot(boon, activeSlot) 
-        : (!selectedType || boon.type === selectedType);
+      const matchesType = (activeSlot ? isValidForSlot(boon, activeSlot) : true) && 
+                          (!selectedType || boon.type === selectedType);
       
       return matchesSearch && matchesGod && matchesElement && matchesType;
     }).sort((a, b) => {
