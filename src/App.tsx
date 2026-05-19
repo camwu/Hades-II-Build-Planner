@@ -19,7 +19,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Edit2,
-  Github
+  Github,
+  Link
 } from 'lucide-react';
 import { 
   DndContext, 
@@ -48,17 +49,108 @@ import { ElementSummary } from './components/ElementSummary';
 import { SidebarFilterDropdown } from './components/SidebarFilterDropdown';
 
 export default function App() {
-  const [coreBuild, setCoreBuild] = useState<Record<string, Boon | null>>({
-    Attack: null,
-    Special: null,
-    Cast: null,
-    Sprint: null,
-    Magick: null,
+  const [coreBuild, setCoreBuild] = useState<Record<string, Boon | null>>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const coreParam = params.get('c');
+    const initialCore: Record<string, Boon | null> = {
+      Attack: null,
+      Special: null,
+      Cast: null,
+      Sprint: null,
+      Magick: null,
+    };
+    if (coreParam) {
+      // Handle both old full UUIDs and new short codes
+      const slotMap: Record<string, string> = {
+        at: 'Attack', sp: 'Special', ca: 'Cast', sr: 'Sprint', ma: 'Magick'
+      };
+      
+      coreParam.split(',').forEach(pair => {
+        const [slotKey, code] = pair.split(':');
+        if (slotKey && code) {
+          const slotName = slotMap[slotKey] || slotKey;
+          let boon;
+          if (code.length > 20) { // Likely a UUID
+            boon = BOONS.find(b => b.id === code);
+          } else { // Likely a base36 index
+            const index = parseInt(code, 36);
+            boon = BOONS[index];
+          }
+          if (boon) initialCore[slotName] = boon;
+        }
+      });
+    }
+    return initialCore;
   });
-  const [additionalBoons, setAdditionalBoons] = useState<Boon[]>([]);
+  const [additionalBoons, setAdditionalBoons] = useState<Boon[]>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const addParam = params.get('a');
+    if (addParam) {
+      return addParam.split(',')
+        .map(code => {
+          if (code.length > 20) { // UUID
+            return BOONS.find(b => b.id === code);
+          } else { // Base36 Index
+            const index = parseInt(code, 36);
+            return BOONS[index];
+          }
+        })
+        .filter((b): b is Boon => !!b);
+    }
+    return [];
+  });
 
   const [activeSlot, setActiveSlot] = useState<string | null>(null);
-  const [buildName, setBuildName] = useState('Untitled Build');
+  const [buildName, setBuildName] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('n') || 'Untitled Build';
+  });
+
+  // Sync state to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    
+    // Name
+    if (buildName && buildName !== 'Untitled Build') {
+      params.set('n', buildName);
+    }
+
+    // Core
+    const coreParts: string[] = [];
+    const slotAbbr: Record<string, string> = {
+      Attack: 'at', Special: 'sp', Cast: 'ca', Sprint: 'sr', Magick: 'ma'
+    };
+    
+    Object.entries(coreBuild).forEach(([slot, boon]) => {
+      if (boon) {
+        const index = BOONS.findIndex(b => b.id === (boon as Boon).id);
+        if (index !== -1) {
+          coreParts.push(`${slotAbbr[slot] || slot}:${index.toString(36)}`);
+        }
+      }
+    });
+    if (coreParts.length > 0) {
+      params.set('c', coreParts.join(','));
+    }
+
+    // Additional
+    if (additionalBoons.length > 0) {
+      const addParts = additionalBoons.map(boon => {
+        const index = BOONS.findIndex(b => b.id === boon.id);
+        return index !== -1 ? index.toString(36) : '';
+      }).filter(Boolean);
+      
+      if (addParts.length > 0) {
+        params.set('a', addParts.join(','));
+      }
+    }
+
+    const newUrl = params.toString() 
+      ? `${window.location.pathname}?${params.toString()}`
+      : window.location.pathname;
+    
+    window.history.replaceState({}, '', newUrl);
+  }, [coreBuild, additionalBoons, buildName]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -261,6 +353,16 @@ export default function App() {
     }
   };
 
+  const [isCopied, setIsCopied] = useState(false);
+
+  const copyBuildLink = () => {
+    const baseUrl = 'https://hades-ii-build-planner-54268731549.us-west2.run.app/';
+    const shareUrl = `${baseUrl}${window.location.search}`;
+    navigator.clipboard.writeText(shareUrl);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
   return (
     <DndContext 
       key={dndContextKey}
@@ -270,12 +372,12 @@ export default function App() {
     >
       <div className="h-screen bg-hades-bg text-hades-text font-sans selection:bg-hades-accent/30 overflow-hidden flex flex-col">
         {/* Header */}
-        <header className="fixed top-0 left-0 right-0 h-16 border-b border-hades-border bg-hades-bg-dark/80 backdrop-blur-md z-50 px-6 flex items-center text-gray-400">
+        <header className="fixed top-0 left-0 right-0 h-16 border-b border-hades-border bg-hades-bg-dark/80 backdrop-blur-md z-50 px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-hades-bg-main">
               <img 
                 src="/assets/ui/melinoe_icon.webp" 
-                alt="Melino\u00eb" 
+                alt="Melinoë" 
                 className="w-full h-full object-contain"
                 referrerPolicy="no-referrer"
               />
@@ -283,6 +385,9 @@ export default function App() {
             <h1 className="text-xl font-bold text-gray-300 uppercase italic">
               Hades II <span className="text-hades-accent not-italic ml-2">Build Planner</span>
             </h1>
+          </div>
+
+          <div className="flex items-center gap-4">
           </div>
         </header>
 
@@ -532,7 +637,7 @@ export default function App() {
           {/* Right: Build View */}
           <section className="flex-1 overflow-auto p-8 custom-scrollbar relative">
             <div className="max-w-7xl mx-auto">
-              <div className="flex items-center justify-between mb-12">
+              <div className="flex flex-col gap-4 mb-12">
                 <div className="flex flex-col gap-2 group">
                   <div className="flex items-center gap-3 h-10">
                     {isEditingName ? (
@@ -557,17 +662,32 @@ export default function App() {
                     )}
                   </div>
                 </div>
-                <button 
-                  onClick={purgeBuild}
-                  className={`text-xs font-mono uppercase transition-all duration-200 flex items-center gap-2 px-3 py-1.5 rounded border ${
-                    showPurgeConfirm 
-                      ? 'bg-hades-red text-white border-white/20 animate-pulse' 
-                      : 'text-hades-red hover:text-red-300 bg-hades-red/5 border-hades-red/10 hover:border-hades-red/30'
-                  }`}
-                >
-                  <Trash2 className={`w-4 h-4 ${showPurgeConfirm ? 'animate-bounce' : ''}`} />
-                  {showPurgeConfirm ? 'Confirm Purge?' : 'Purge Build'}
-                </button>
+
+                <div className="flex items-center gap-4">
+                  <button 
+                    onClick={copyBuildLink}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded border transition-all duration-200 uppercase font-mono text-[9px] tracking-widest ${
+                      isCopied 
+                        ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                        : 'bg-hades-accent/5 border-hades-accent/20 text-hades-accent/70 hover:border-hades-accent/50 hover:text-hades-accent'
+                    }`}
+                  >
+                    <Link className={`w-3 h-3 ${isCopied ? 'animate-bounce' : ''}`} />
+                    {isCopied ? 'Link Copied!' : 'Copy Share Link'}
+                  </button>
+
+                  <button 
+                    onClick={purgeBuild}
+                    className={`text-[9px] font-mono uppercase tracking-widest transition-all duration-200 flex items-center gap-2 px-3 py-1.5 rounded border ${
+                      showPurgeConfirm 
+                        ? 'bg-hades-red text-white border-white/20 animate-pulse' 
+                        : 'text-hades-red/80 hover:text-red-300 bg-hades-red/5 border-hades-red/10 hover:border-hades-red/30'
+                    }`}
+                  >
+                    <Trash2 className={`w-3 h-3 ${showPurgeConfirm ? 'animate-bounce' : ''}`} />
+                    {showPurgeConfirm ? 'Confirm Purge?' : 'Purge Build'}
+                  </button>
+                </div>
               </div>
 
               {/* Elemental Tracker as a Header Row */}
