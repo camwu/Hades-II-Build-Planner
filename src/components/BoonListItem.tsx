@@ -12,8 +12,8 @@ export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; is
   const rarityGlow = '';
   
   return (
-    <div className={`p-3 rounded-xl transition-all duration-75 transform-gpu ${
-      isOverlay ? 'bg-hades-bg-light shadow-2xl z-50' : 'bg-hades-bg-dark/40 border border-white/[0.03]'
+    <div className={`p-3 rounded-xl transition-all duration-150 transform-gpu ${
+      isOverlay ? 'bg-hades-bg-light shadow-2xl z-50' : 'bg-hades-bg-dark/80 border border-white/10 hover:border-white/20 group-hover:border-white/20'
     }`}>
       <div className="flex items-start gap-4 transform-gpu">
         <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>

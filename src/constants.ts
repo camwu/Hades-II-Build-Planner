@@ -15,7 +15,7 @@ export const SLOT_PRIORITY: Record<string, number> = {
 export const BOON_ICON_ROUNDING = 'rounded-[28%]';
 export const BOON_BORDER_WIDTH = 'border-[3px]';
 
-export const SIDEBAR_WIDTH = 450;
+export const SIDEBAR_WIDTH = 400;
 export const SLOT_COLLAPSED_WIDTH = '84px';
 export const SLOT_EXPANDED_WIDTH = '440px';
 
