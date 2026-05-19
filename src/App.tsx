@@ -411,7 +411,7 @@ export default function App() {
               className={`h-full flex flex-col overflow-hidden will-change-transform ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
             >
                 <div className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-2">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-hades-accent/50" />
                       <input 
@@ -432,7 +432,7 @@ export default function App() {
                         </button>
                       )}
                     </div>
-                    <p className="text-[11px] font-mono text-hades-text/60 leading-relaxed px-1">
+                    <p className="text-[11px] font-sans text-hades-text/60 leading-relaxed px-1">
                       Search for boon names, effects, gods, slots (e.g. "attack"), or elements.
                     </p>
                   </div>

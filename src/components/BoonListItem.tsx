@@ -48,7 +48,7 @@ export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; is
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <GodIcon god={boon.gods[0]} className="w-3 h-3" />
-              <span className="text-[10px] font-mono text-gray-500 uppercase leading-none">
+              <span className="text-[10px] font-mono text-hades-text/70 uppercase leading-none">
                 {boon.gods[0]}
               </span>
             </div>

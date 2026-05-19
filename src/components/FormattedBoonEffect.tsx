@@ -28,6 +28,7 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
 
   const renderRange = (part: string, key: string | number) => {
     const rangeParts = part.split(/(\/)/);
+    const kwRegex = new RegExp(`(${keywordPattern})`, 'gi');
     return (
       <strong key={key} className="font-bold">
         {rangeParts.map((subPart, j) => {
@@ -36,10 +37,33 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
           const rarityIndex = Math.floor(j / 2);
           const color = rarityColors[rarityIndex];
           
+          const subParts = subPart.split(kwRegex);
+          
           return (
-            <span key={j} style={color ? { color } : undefined}>
-              {subPart}
-            </span>
+            <React.Fragment key={j}>
+              {subParts.map((sp, k) => {
+                if (!sp) return null;
+                const isKw = sp === 'Ω' || BOON_KEYWORDS.some(kw => 
+                  sp.toLowerCase() === kw.toLowerCase() || 
+                  sp.toLowerCase() === (kw + 's').toLowerCase() || 
+                  sp.toLowerCase() === (kw + 'es').toLowerCase()
+                );
+                
+                if (isKw) {
+                  return (
+                    <span key={k} className="text-hades-text font-bold">
+                      {sp}
+                    </span>
+                  );
+                }
+                
+                return (
+                  <span key={k} style={color ? { color } : undefined}>
+                    {sp}
+                  </span>
+                );
+              })}
+            </React.Fragment>
           );
         })}
       </strong>
@@ -53,7 +77,9 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
 
         const isTime = part.startsWith('(') && part.toLowerCase().includes('every');
         const isKeyword = part === 'Ω' || BOON_KEYWORDS.some(k => 
-          part === k || part === k + 's' || part === k + 'es'
+          part.toLowerCase() === k.toLowerCase() || 
+          part.toLowerCase() === (k + 's').toLowerCase() || 
+          part.toLowerCase() === (k + 'es').toLowerCase()
         );
         const isRange = part.includes('/') && /\d/.test(part);
         

@@ -25,7 +25,9 @@ export const BOON_KEYWORDS = [
   // Gods
   'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Selene', 'Chaos', 'Hermes', 'Hades',
   // Status Curses
-  'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn'
+  'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn',
+  // Mechanics
+  'Boon', 'Prime'
 ];
 
 export const CORE_SLOTS: { type: BoonType; name: string; icon: string }[] = [
