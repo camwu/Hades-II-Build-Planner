@@ -10,12 +10,10 @@ import {
   Droplets, 
   Search, 
   X, 
-  Filter,
   Plus, 
   Swords, 
   Shield, 
   Sparkles,
-  Layers,
   ChevronLeft,
   ChevronRight,
   Edit2,
@@ -47,7 +45,6 @@ import { BoonDisplayCard } from './components/BoonDisplayCard';
 import { DroppableSlotCard } from './components/DroppableSlotCard';
 import { ElementSummary } from './components/ElementSummary';
 import { GodSummary } from './components/GodSummary';
-import { SidebarFilterDropdown } from './components/SidebarFilterDropdown';
 
 export default function App() {
   const [coreBuild, setCoreBuild] = useState<Record<string, Boon | null>>(() => {
@@ -162,9 +159,6 @@ export default function App() {
     }
   }, [isEditingName]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedGod, setSelectedGod] = useState<string | null>(null);
-  const [selectedElement, setSelectedElement] = useState<ElementType | null>(null);
-  const [selectedType, setSelectedType] = useState<BoonType | null>(null);
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
   const [draggedBoon, setDraggedBoon] = useState<Boon | null>(null);
   const draggedBoonRef = useRef<Boon | null>(null);
@@ -175,7 +169,6 @@ export default function App() {
   }, [draggedBoon]);
 
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isSlotTypeOpen, setIsSlotTypeOpen] = useState(false);
 
   const handleSidebarScroll = (e: React.UIEvent<HTMLDivElement>) => {
     // Scroll state no longer affects layout to prevent flickering, 
@@ -187,8 +180,6 @@ export default function App() {
       setIsScrolled(false);
     }
   };
-  const [isGodFilterOpen, setIsGodFilterOpen] = useState(false);
-  const [isElementFilterOpen, setIsElementFilterOpen] = useState(false);
   const [showPurgeConfirm, setShowPurgeConfirm] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -208,9 +199,6 @@ export default function App() {
           return;
         }
         setActiveSlot(null);
-        setSelectedGod(null);
-        setSelectedElement(null);
-        setSelectedType(null);
       }
     };
 
@@ -259,22 +247,21 @@ export default function App() {
         return false;
       }
 
-      const search = searchTerm.toLowerCase();
-      const matchesSearch = searchTerm === '' || 
-        boon.name.toLowerCase().includes(search) || 
-        boon.effect.toLowerCase().includes(search) ||
-        boon.gods.some(god => god.toLowerCase().includes(search)) ||
-        boon.type.toLowerCase().includes(search) ||
-        (boon.type === 'Non-Core' && 'support'.includes(search)) ||
-        (['Attack', 'Special', 'Cast', 'Sprint', 'Magick'].includes(boon.type) && 'core'.includes(search)) ||
-        (boon.element && boon.element.toLowerCase().includes(search));
-      const matchesGod = !selectedGod || boon.gods.includes(selectedGod);
-      const matchesElement = !selectedElement || boon.element === selectedElement;
+      const searchTerms = searchTerm.toLowerCase().replace(/Ω/g, 'omega').replace(/ω/g, 'omega').split(/\s+/).filter(t => t.length > 0);
+      const matchesSearch = searchTerms.length === 0 || searchTerms.every(term => {
+        const check = (text: string) => text.toLowerCase().replace(/Ω/g, 'omega').replace(/ω/g, 'omega').includes(term);
+        return check(boon.name) || 
+               check(boon.effect) ||
+               boon.gods.some(god => check(god)) ||
+               check(boon.type) ||
+               (boon.type === 'Non-Core' && check('support')) ||
+               (['Attack', 'Special', 'Cast', 'Sprint', 'Magick'].includes(boon.type) && check('core')) ||
+               (boon.element && check(boon.element));
+      });
       
-      const matchesType = (activeSlot ? isValidForSlot(boon, activeSlot) : true) && 
-                          (!selectedType || boon.type === selectedType);
+      const matchesType = (activeSlot ? isValidForSlot(boon, activeSlot) : true);
       
-      return matchesSearch && matchesGod && matchesElement && matchesType;
+      return matchesSearch && matchesType;
     }).sort((a, b) => {
       const priorityA = SLOT_PRIORITY[a.type] || 99;
       const priorityB = SLOT_PRIORITY[b.type] || 99;
@@ -285,7 +272,7 @@ export default function App() {
       
       return a.name.localeCompare(b.name);
     });
-  }, [searchTerm, selectedGod, selectedElement, selectedType, activeSlot]);
+  }, [searchTerm, activeSlot]);
 
   const selectBoon = (boon: Boon, slotId: string) => {
     if (slotId === 'NonCore') {
@@ -425,186 +412,29 @@ export default function App() {
             >
                 <div className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}>
                   <div className="flex flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-xs uppercase font-mono text-hades-accent font-bold flex items-center gap-2">
-                        <Filter className="w-3.5 h-3.5" />
-                        Filters
-                      </h2>
-                    </div>
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-hades-text opacity-30" />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-hades-accent/50" />
                       <input 
                         ref={searchInputRef}
                         type="text" 
                         placeholder="Press / to search boons..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg py-2.5 pl-10 pr-4 text-sm text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 transition-colors"
+                        className="w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg py-2.5 pl-10 pr-10 text-sm text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 transition-colors"
                       />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-3">
-                    <SidebarFilterDropdown 
-                      title={
-                        <div className="flex items-center gap-2">
-                          <Layers className="w-3.5 h-3.5 opacity-50" />
-                          <span>Slot</span>
-                        </div>
-                      }
-                      isOpen={isSlotTypeOpen} 
-                      setIsOpen={setIsSlotTypeOpen}
-                      summary={selectedType ? selectedType : activeSlot}
-                      icon={activeSlot ? (() => {
-                        const s = CORE_SLOTS.find(item => item.type === activeSlot);
-                        if (!s) return null;
-                        return <img src={s.icon} className="w-3.5 h-3.5 object-contain filter brightness-125" />;
-                      })() : null}
-                    >
-                      <button
-                        onClick={() => {
-                          setSelectedType(null);
-                          setActiveSlot(null);
-                          setIsSlotTypeOpen(false);
-                        }}
-                        className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${!selectedType && !activeSlot ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
-                      >
-                        <div className="w-6 h-6 flex items-center justify-center border border-white/10 rounded bg-white/5">
-                          <Layers className="w-3 h-3 opacity-40" />
-                        </div>
-                        Any Slot
-                      </button>
-                      
-                      {CORE_SLOTS.map(slot => {
-                        const isSlotActive = activeSlot === slot.type;
-                        const isTypeSelected = selectedType === slot.type;
-                        const isActive = isSlotActive || isTypeSelected;
-                        return (
-                          <button 
-                            key={slot.type}
-                            onClick={() => {
-                              if (isSlotActive) {
-                                setActiveSlot(null);
-                              } else {
-                                setSelectedType(isTypeSelected ? null : slot.type);
-                                setActiveSlot(null);
-                              }
-                              setIsSlotTypeOpen(false);
-                            }}
-                            className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${isActive ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
-                          >
-                            <img 
-                              src={slot.icon} 
-                              className="w-6 h-6 object-contain filter brightness-125" 
-                              alt="" 
-                              referrerPolicy="no-referrer" 
-                            />
-                            {slot.name}
-                          </button>
-                        );
-                      })}
-                      {(['Non-Core', 'Infusion', 'Legendary', 'Duo'] as BoonType[]).map(type => {
-                        const isSlotActive = activeSlot === 'NonCore';
-                        const isTypeSelected = selectedType === type;
-                        const isActive = isSlotActive || isTypeSelected;
-                        return (
-                          <button 
-                            key={type}
-                            onClick={() => {
-                              if (isSlotActive) {
-                                setActiveSlot(null);
-                              } else {
-                                setSelectedType(isTypeSelected ? null : type);
-                                setActiveSlot(null);
-                              }
-                              setIsSlotTypeOpen(false);
-                            }}
-                            className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${isActive ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
-                          >
-                            <div className="w-6 h-6" />
-                            {type}
-                          </button>
-                        );
-                      })}
-                    </SidebarFilterDropdown>
-
-                    <SidebarFilterDropdown 
-                      title={
-                        <div className="flex items-center gap-2">
-                          <img src="/assets/ui/Icon-Olympian.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
-                          <span>God</span>
-                        </div>
-                      } 
-                      isOpen={isGodFilterOpen} 
-                      setIsOpen={setIsGodFilterOpen}
-                      summary={selectedGod}
-                      icon={selectedGod ? <GodIcon god={selectedGod} className="w-4 h-4 filter brightness-125" /> : null}
-                    >
-                      <button
-                        onClick={() => {
-                          setSelectedGod(null);
-                          setIsGodFilterOpen(false);
-                        }}
-                        className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${!selectedGod ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
-                      >
-                        <div className="w-6 h-6 flex items-center justify-center border border-white/10 rounded bg-white/5">
-                          <Layers className="w-3 h-3 opacity-40" />
-                        </div>
-                        Any God
-                      </button>
-                      {gods.map(god => (
+                      {searchTerm && (
                         <button 
-                          key={god}
-                          onClick={() => {
-                            setSelectedGod(god === selectedGod ? null : god);
-                            setIsGodFilterOpen(false);
-                          }}
-                          className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${selectedGod === god ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
+                          onClick={() => setSearchTerm('')}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-hades-text/30 hover:text-hades-accent transition-colors p-0.5"
+                          title="Clear search"
                         >
-                          <GodIcon god={god} className="w-6 h-6 filter brightness-150" />
-                          {god}
+                          <X className="w-4 h-4" />
                         </button>
-                      ))}
-                    </SidebarFilterDropdown>
-
-                    <SidebarFilterDropdown 
-                      title={
-                        <div className="flex items-center gap-2">
-                          <img src="/assets/ui/ElementalEssence.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
-                          <span>Element</span>
-                        </div>
-                      } 
-                      isOpen={isElementFilterOpen} 
-                      setIsOpen={setIsElementFilterOpen}
-                      summary={selectedElement}
-                      icon={selectedElement ? <ElementIcon element={selectedElement} className="w-4 h-4" /> : null}
-                    >
-                      <button
-                        onClick={() => {
-                          setSelectedElement(null);
-                          setIsElementFilterOpen(false);
-                        }}
-                        className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${!selectedElement ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
-                      >
-                        <div className="w-6 h-6 flex items-center justify-center border border-white/10 rounded bg-white/5">
-                          <Layers className="w-3 h-3 opacity-40" />
-                        </div>
-                        Any Element
-                      </button>
-                      {ALL_ELEMENTS.map(el => (
-                        <button
-                          key={el}
-                          onClick={() => {
-                            setSelectedElement(el === selectedElement ? null : el);
-                            setIsElementFilterOpen(false);
-                          }}
-                          className={`flex items-center gap-3 p-2 rounded-lg text-left transition-colors font-mono text-[10px] uppercase tracking-wider ${selectedElement === el ? 'bg-hades-accent/20 text-hades-accent' : 'hover:bg-white/5 text-hades-text/60'}`}
-                        >
-                          <ElementIcon element={el} className="w-6 h-6" />
-                          {el}
-                        </button>
-                      ))}
-                    </SidebarFilterDropdown>
+                      )}
+                    </div>
+                    <p className="text-[11px] font-mono text-hades-text/60 leading-relaxed px-1">
+                      Search for boon names, effects, gods, slots (e.g. "attack"), or elements.
+                    </p>
                   </div>
                 </div>
 
