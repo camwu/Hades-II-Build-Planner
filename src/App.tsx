@@ -9,7 +9,7 @@ import {
   Zap, 
   Droplets, 
   Search, 
-  Trash2, 
+  X, 
   Filter,
   Plus, 
   Swords, 
@@ -46,6 +46,7 @@ import { CoreSlotRow } from './components/CoreSlotRow';
 import { BoonDisplayCard } from './components/BoonDisplayCard';
 import { DroppableSlotCard } from './components/DroppableSlotCard';
 import { ElementSummary } from './components/ElementSummary';
+import { GodSummary } from './components/GodSummary';
 import { SidebarFilterDropdown } from './components/SidebarFilterDropdown';
 
 export default function App() {
@@ -684,22 +685,23 @@ export default function App() {
                         : 'text-hades-red/80 hover:text-red-300 bg-hades-red/5 border-hades-red/10 hover:border-hades-red/30'
                     }`}
                   >
-                    <Trash2 className={`w-3 h-3 ${showPurgeConfirm ? 'animate-bounce' : ''}`} />
+                    <X className={`w-3 h-3 ${showPurgeConfirm ? 'animate-bounce' : ''}`} />
                     {showPurgeConfirm ? 'Confirm Purge?' : 'Purge Build'}
                   </button>
                 </div>
               </div>
 
-              {/* Elemental Tracker as a Header Row */}
-              <div className="mb-12 bg-hades-bg-dark/10 rounded-2xl p-6 border border-white/5">
+              {/* Elemental & God Tracker */}
+              <div className="mb-8 flex items-center gap-4 w-fit">
                 <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
+                <GodSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
               </div>
 
               {/* Consolidated Build View */}
               <div className="grid grid-cols-1 lg:grid-cols-[100px_1fr] gap-x-8 gap-y-16 items-start relative">
                 
                 {/* Left Side: Core Boon Slots (Narrow Column) */}
-                <aside className="lg:sticky lg:top-8 flex-shrink-0 z-30 flex flex-col items-center pt-8">
+                <aside className="lg:sticky lg:top-8 flex-shrink-0 z-30 flex flex-col items-center">
                   <div className="flex flex-col gap-3 w-full items-center">
                     {CORE_SLOTS.map((slot) => (
                       <CoreSlotRow 
@@ -717,7 +719,7 @@ export default function App() {
                 </aside>
 
                 {/* Right Side: Reorganized Sections */}
-                <div className="flex-1 w-full lg:pl-16 lg:border-l lg:border-white/5 pt-8">
+                <div className="flex-1 w-full lg:pl-16 lg:border-l lg:border-white/5">
                   <div className="w-full">
                     <div className="flex flex-col gap-12">
                       {/* Unified Boons Grid */}

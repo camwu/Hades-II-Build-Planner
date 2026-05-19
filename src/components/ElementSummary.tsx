@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Boon, ElementType, ALL_ELEMENTS, ELEMENT_COLORS } from '../types';
 import { ElementIcon } from './Icons';
+import { BOON_ICON_ROUNDING } from '../constants';
 
 interface ElementSummaryProps {
   coreBuild: Record<string, Boon | null>;
@@ -26,17 +27,21 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
   }, [coreBuild, additionalBoons]);
 
   return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-3 p-4 rounded-xl bg-hades-panel/40 border border-hades-border/40">
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/40 border border-white/5">
       {ALL_ELEMENTS.map((el) => {
         const count = counts[el];
         return (
-          <div key={el} className="flex items-center gap-2.5">
-            <div className={`p-1.5 rounded bg-hades-bg-main border border-hades-border/50 transition-all duration-300 ${count > 0 ? `${ELEMENT_COLORS[el]} shadow-[0_0_10px_-2px_currentColor]` : 'text-gray-600 opacity-40'}`}>
-              <ElementIcon element={el} className="w-4 h-4" />
+          <div key={el} className="flex items-center gap-2">
+            <div className={`w-7 h-7 ${BOON_ICON_ROUNDING} bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border transition-all duration-300 ${
+              count > 0 
+                ? `${ELEMENT_COLORS[el]} border-white/10 shadow-[0_0_15px_-5px_currentColor]` 
+                : 'text-gray-600 border-white/5 opacity-40'
+            }`}>
+              <ElementIcon element={el} className="w-full h-full" />
             </div>
-            <div className="flex flex-col">
-              <div className={`text-base font-bold font-mono transition-colors duration-300 ${count > 0 ? 'text-gray-100' : 'text-gray-600'}`}>{count}</div>
-            </div>
+            <span className={`text-sm font-bold font-mono transition-colors duration-300 ${count > 0 ? 'text-gray-200' : 'text-gray-600'}`}>
+              {count}
+            </span>
           </div>
         );
       })}
