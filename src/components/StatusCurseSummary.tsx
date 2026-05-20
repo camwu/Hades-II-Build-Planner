@@ -181,7 +181,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                     )}
                     <span className="text-xs font-bold uppercase tracking-widest text-gray-200">{curse.name}</span>
                   </div>
-                  <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 capitalize">
+                  <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 capitalize">
                     {curse.duration || 'Active'}
                   </span>
                 </div>
@@ -189,19 +189,6 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                 <div className="text-[10px] text-gray-300 leading-relaxed mb-2.5">
                   <FormattedBoonEffect text={curse.description} />
                 </div>
-
-                {curse.gods.length > 0 && (
-                  <div className="text-[9px] text-gray-400 leading-relaxed mb-2 flex items-center gap-1.5">
-                    <span className="text-gray-500 uppercase font-mono tracking-wider">Source Gods:</span>
-                    <div className="flex gap-1 flex-wrap">
-                      {curse.gods.map(god => (
-                        <span key={god} className={`font-bold ${GOD_COLORS[god] || 'text-white'}`}>
-                          {god}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 {(() => {
                   const contributingBoons = activeBoons.filter(boon => {
@@ -228,8 +215,15 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                       <div className="flex flex-col gap-1 max-h-32 overflow-y-auto pr-1">
                         {contributingBoons.map((boon, idx) => (
                           <div key={idx} className="flex justify-between items-center gap-2">
-                            <span className="font-bold text-gray-200 truncate">{boon.name}</span>
-                            <span className="text-[8px] text-gray-500 capitalize">{boon.type}</span>
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              {boon.gods?.[0] && (
+                                <div className="w-3.5 h-3.5 flex-shrink-0">
+                                  <GodIcon god={boon.gods[0]} className="w-full h-full object-contain" />
+                                </div>
+                              )}
+                              <span className="font-bold text-gray-200 truncate text-[10px]">{boon.name}</span>
+                            </div>
+                            <span className="text-[9px] text-gray-400 font-mono flex-shrink-0">{boon.type}</span>
                           </div>
                         ))}
                       </div>
