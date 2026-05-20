@@ -103,11 +103,16 @@ export function BoonDisplayCard({ boon, onRemove, isSorting }: BoonDisplayCardPr
                 referrerPolicy="no-referrer" 
               />
               {/* Overlapping icons */}
-              <div className="absolute top-0 -right-0.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/10 transition-colors">
+              <div className={`absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border-2 ${getBoonBorderColor(boon.type)} transition-colors`}>
                 <GodIcon god={boon.gods[0]} className="w-full h-full" />
               </div>
+              {boon.gods[1] && (
+                <div className={`absolute top-[28px] -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border-2 ${getBoonBorderColor(boon.type)} transition-colors animate-fade-in`}>
+                  <GodIcon god={boon.gods[1]} className="w-full h-full" />
+                </div>
+              )}
               {boon.element && boon.type !== 'Infusion' && (
-                <div className="absolute bottom-0 -right-0.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border border-white/5 transition-colors">
+                <div className={`absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border-2 ${getBoonBorderColor(boon.type)} transition-colors`}>
                   <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
                 </div>
               )}
