@@ -14,7 +14,7 @@ export function PurgePool() {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className={`relative w-[210px] h-[340px] flex flex-col items-center justify-center border-2 border-dashed transition-all duration-300 rounded-3xl group ${
+      className={`relative w-[210px] h-[396px] flex flex-col items-center justify-center border-2 border-dashed transition-all duration-300 rounded-3xl group ${
         isOver 
           ? 'bg-hades-red/[0.08] border-hades-red/50 shadow-[0_0_30px_rgba(255,100,100,0.15)]' 
           : 'bg-transparent border-white/10 hover:border-hades-red/30 hover:bg-hades-red/[0.03]'
