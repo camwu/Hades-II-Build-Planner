@@ -45,7 +45,7 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
           }
           
           // Ordered to match "Max Health" and "Max Magick" before "Health" and "Magick", and element boons before elements or plasma
-          const regex = /\b(Max\s+Healths?|Healths?|Max\s+Magicks?|magicks?|plasmas?|airs?\s+boons?|earths?\s+boons?|fires?\s+boons?|waters?\s+boons?|aethers?\s+boons?|airs?|earths?|fires?|waters?|aethers?)\b/gi;
+          const regex = /\b(Max\s+Healths?|Healths?|Max\s+Magicks?|magicks?|plasmas?|mystery\s+seeds?|rarity?|airs?\s+boons?|earths?\s+boons?|fires?\s+boons?|waters?\s+boons?|aethers?\s+boons?|airs?|earths?|fires?|waters?|aethers?)\b/gi;
           const parts = inputText.split(regex);
           
           return (
@@ -106,6 +106,18 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
                       <img 
                         src="/assets/ui/BloodDrop.webp" 
                         alt="Plasma" 
+                        className="inline-block h-[13px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'mystery seed' || lower === 'mystery seeds') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Mystery_Seeds.webp" 
+                        alt="Mystery Seed" 
                         className="inline-block h-[13px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
                         referrerPolicy="no-referrer"
                       />

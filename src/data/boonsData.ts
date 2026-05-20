@@ -196,7 +196,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Hera", "Demeter"],
     element: "Aether",
-    effect: "Your Keepsakes are stronger this night (if possible). \n ▸ Bonus Keepsake Ranks: +1",
+    effect: "Your Keepsakes are stronger this night _(if possible)_. \n ▸ Bonus Keepsake Ranks: +1",
     icon: "/assets/boons/duo/Cherished_Heirloom.webp"
   },
   {
@@ -232,7 +232,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Demeter", "Hephaestus"],
     element: "Aether",
-    effect: "Your blasts from Hephaestus deal more damage to Freeze-afflicted foes.",
+    effect: "Your blasts from Hephaestus deal more damage to Freeze-afflicted foes. \n ▸ Bonus Blast Damage: +50%",
     icon: "/assets/boons/duo/Cryo_Pounder.webp"
   },
   {
@@ -448,7 +448,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Demeter"],
     element: null,
-    effect: "While you have at least 6 water boons, whenever you would take at least 20 damage, take less. \n ▸ Heavy Damage Reduction: -10",
+    effect: "While you have at least 6 Water Boons, whenever you would take at least *20* damage, take less. \n ▸ Heavy Damage Reduction: -10",
     icon: "/assets/boons/demeter/Frosty_Veneer.webp"
   },
   {
@@ -754,7 +754,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "Your \u03a9 Cast deals more damage. \n ▸ If you are in the binding circle, the bonus is doubled. \n ▸ Omega Cast Bonus Damage: +20%/+30%/+40%/+50%",
+    effect: "Your \u03a9 Cast deals more damage. If you are in the binding circle, the bonus is doubled. \n ▸ Omega Cast Bonus Damage: +20%/+30%/+40%/+50%",
     icon: "/assets/boons/demeter/Local_Climate.webp"
   },
   {
@@ -826,7 +826,7 @@ export const BOONS: Boon[] = [
     type: "Duo",
     gods: ["Poseidon", "Demeter"],
     element: "Aether",
-    effect: "Your Boon(s) in the leftmost column gain increased Lv. spread across however many you got. \n ▸ Total Bonus Lv. for Main Boon(s): +8",
+    effect: "Your *Boon(s)* in the leftmost column gain increased *Lv.* spread across however many you have. \n ▸ Total Bonus Lv. for Main Boon(s): +8",
     icon: "/assets/boons/duo/Natural_Selection.webp"
   },
   {
@@ -898,7 +898,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "Whenever you gather resources from a Location, restore Health. \n ▸ Receive 1 Mystery Seed now. \n ▸ Life Restored from Gathering: 10%/12%/14%/16%",
+    effect: "Whenever you gather resources from a Location, restore some Health. Gain *+1 Mystery Seed* now. \n ▸ Life Restored from Gathering: 10%/12%/14%/16%",
     icon: "/assets/boons/demeter/Plentiful_Forage.webp"
   },
   {
@@ -1141,7 +1141,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "Gain a barrier that stops 1 instance of damage in each Location, but you Prime Magick. \n ▸ Magick Primed: 25/20/15/10",
+    effect: "Gain a barrier that stops *1* instance of damage in each Location, but you Prime Magick. \n ▸ Magick Primed: 25/20/15/10",
     icon: "/assets/boons/demeter/Snow_Queen.webp"
   },
   {
@@ -1312,7 +1312,7 @@ export const BOONS: Boon[] = [
     type: "Magick",
     gods: ["Demeter"],
     element: "Earth",
-    effect: "After remaining inactive for 0.5 Sec., rapidly restores Magick until you act. \n ▸ Magick Restoration (every 1 Sec.): 50%/75%/100%/125%",
+    effect: "After remaining inactive for *0.5 Sec.*, rapidly restores Magick until you act. \n ▸ Magick Restoration (every 1 Sec.): 50%/75%/100%/125%",
     icon: "/assets/boons/demeter/Tranquil_Gain.webp"
   },
   {
