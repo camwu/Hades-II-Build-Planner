@@ -570,7 +570,7 @@ export default function App() {
                         />
                         <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
                           hideAssigned 
-                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent shadow-[0_0_8px_rgba(224,163,46,0.2)]' 
+                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
                             : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
                         }`}>
                           {hideAssigned && (
@@ -594,7 +594,7 @@ export default function App() {
                           />
                           <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
                             limitToGodPool 
-                              ? 'bg-hades-accent/20 border-hades-accent text-hades-accent shadow-[0_0_8px_rgba(224,163,46,0.2)]' 
+                              ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
                               : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
                           }`}>
                             {limitToGodPool && (
