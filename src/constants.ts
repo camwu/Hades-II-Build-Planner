@@ -27,7 +27,10 @@ export const BOON_KEYWORDS = [
   // Status Curses
   'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn',
   // Mechanics
-  'Boon', 'Prime', 'Power', 'Plasma', 'Heartthrob', 'Keepsake', 'Dodge', 'Location'
+  'Boon', 'Prime', 'Power', 'Plasma', 'Heartthrob', 'Keepsake', 'Dodge', 'Location', 'Rush', 'Rushing', 'Health', 'Max Health', 'Max Magick', 'Curse', 'Encounter', 'Charm', 'Weapon', 'Channel', 'Blade Rift', 'Omega Moves', 'Ω Moves', 'Omega Move', 'Ω Move', 'Omega',
+  // Elements
+  'Air', 'Earth', 'Fire', 'Water', 'Aether',
+  'Air Boon', 'Earth Boon', 'Fire Boon', 'Water Boon', 'Aether Boon'
 ];
 
 export const CORE_SLOTS: { type: BoonType; name: string; icon: string }[] = [

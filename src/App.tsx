@@ -119,6 +119,20 @@ export default function App() {
     return params.get('n') || 'Untitled Build';
   });
 
+  const [searchTerm, setSearchTerm] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('q') || '';
+  });
+  const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
+  const [hideAssigned, setHideAssigned] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('ha') !== '0';
+  });
+  const [limitToGodPool, setLimitToGodPool] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('lp') !== '0';
+  });
+
   // Sync state to URL
   useEffect(() => {
     const params = new URLSearchParams();
@@ -158,12 +172,23 @@ export default function App() {
       }
     }
 
+    // Search & Filters
+    if (searchTerm) {
+      params.set('q', searchTerm);
+    }
+    if (!hideAssigned) {
+      params.set('ha', '0');
+    }
+    if (!limitToGodPool) {
+      params.set('lp', '0');
+    }
+
     const newUrl = params.toString() 
       ? `${window.location.pathname}?${params.toString()}`
       : window.location.pathname;
     
     window.history.replaceState({}, '', newUrl);
-  }, [coreBuild, additionalBoons, buildName]);
+  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -173,10 +198,6 @@ export default function App() {
       nameInputRef.current.select();
     }
   }, [isEditingName]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
-  const [hideAssigned, setHideAssigned] = useState(true);
-  const [limitToGodPool, setLimitToGodPool] = useState(true);
   const [draggedBoon, setDraggedBoon] = useState<Boon | null>(null);
   const draggedBoonRef = useRef<Boon | null>(null);
   const [dndContextKey, setDndContextKey] = useState(0);
