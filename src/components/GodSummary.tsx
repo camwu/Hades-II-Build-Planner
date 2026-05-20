@@ -109,7 +109,7 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
           {poolLimitExceeded && (
             <div className="flex items-center gap-2 group relative">
               <AlertTriangle className="w-3.5 h-3.5 text-hades-red animate-pulse cursor-help" />
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 w-80 p-3 bg-hades-bg-dark border border-hades-red/30 rounded-lg shadow-2xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none group-hover:pointer-events-auto z-[100] text-[11px] leading-relaxed text-gray-300 translate-x-2 group-hover:translate-x-0">
+              <div className="absolute left-5 top-1/2 -translate-y-1/2 w-80 p-3 bg-hades-bg-dark border border-hades-red/30 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all pointer-events-none group-hover:pointer-events-auto z-[100] text-[11px] leading-relaxed text-gray-300 translate-x-2 group-hover:translate-x-0">
                 {/* Invisible bridge to keep tooltip open while moving mouse */}
                 <div className="absolute -left-4 top-0 bottom-0 w-4" />
                 
