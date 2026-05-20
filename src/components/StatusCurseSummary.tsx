@@ -231,7 +231,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                   return (
                     <div className="flex flex-col gap-1.5 text-xs bg-white/5 p-2 rounded-lg">
                       <span className="text-[10px] text-gray-400 uppercase font-mono tracking-wider font-semibold">Contributing Boons:</span>
-                      <div className="flex flex-col gap-1.5 max-h-32 overflow-y-auto pr-1">
+                      <div className="flex flex-col gap-1.5">
                         {contributingBoons.map((boon, idx) => (
                           <div key={idx} className="flex justify-between items-center gap-2">
                             <div className="flex items-center gap-1.5 min-w-0">
@@ -319,7 +319,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
               <div className="flex flex-col gap-1.5 pt-0.5">
                 <span className="text-[10px] text-gray-400 uppercase font-mono tracking-wider font-semibold">Contributing Boons:</span>
                 {originationContributingBoons.length > 0 ? (
-                  <div className="flex flex-col gap-1.5 max-h-32 overflow-y-auto pr-1">
+                  <div className="flex flex-col gap-1.5">
                     {originationContributingBoons.map((boon, idx) => (
                       <div key={idx} className="flex justify-between items-center gap-2">
                         <div className="flex items-center gap-1.5 min-w-0">
