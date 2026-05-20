@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from 'react';
-import { AlertCircle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { Boon, GOD_COLORS } from '../types';
-import { GodIcon } from './Icons';
+import { GodIcon, ElementIcon } from './Icons';
 import { BOON_ICON_ROUNDING } from '../constants';
 
 interface GodSummaryProps {
@@ -110,15 +110,16 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
           <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold">God Pool</span>
           {poolLimitExceeded && (
             <div className="flex items-center gap-2 group relative">
-              <AlertCircle className="w-3.5 h-3.5 text-hades-red animate-pulse cursor-help" />
+              <AlertTriangle className="w-3.5 h-3.5 text-hades-red animate-pulse cursor-help" />
               <div className="absolute left-5 top-1/2 -translate-y-1/2 w-80 p-3 bg-hades-bg-dark border border-hades-red/30 rounded-lg shadow-2xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none group-hover:pointer-events-auto z-[100] text-[11px] leading-relaxed text-gray-300 translate-x-2 group-hover:translate-x-0">
                 {/* Invisible bridge to keep tooltip open while moving mouse */}
                 <div className="absolute -left-4 top-0 bottom-0 w-4" />
                 
                 <div className="font-bold text-hades-red mb-1 flex items-center gap-1.5 font-mono uppercase tracking-tighter">
-                  <AlertCircle className="w-3 h-3" />
+                  <AlertTriangle className="w-3 h-3" />
                   God Pool Warning
                 </div>
+                <div className="mb-1.5">Standard god pool exceeded!</div>
                 Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, and Hermes) are included in the god pool each night. See{' '}
                 <a 
                   href="https://hades.fandom.com/wiki/Boons/Hades_II#God_Pool" 
@@ -128,7 +129,7 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
                 >
                   wiki
                 </a>{' '}
-                for more info.
+                for more details.
               </div>
             </div>
           )}
@@ -158,7 +159,7 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
                     </div>
                     <span className="text-xs font-bold uppercase tracking-widest text-gray-200">{god}</span>
                   </div>
-                  <span className="text-[10px] font-bold font-mono px-1 py-0.5 rounded bg-amber-500/15 text-amber-300">
+                  <span className="text-[10px] font-bold font-mono px-1 py-0.5 rounded bg-emerald-500/15 text-emerald-400">
                     {count} {count === 1 ? 'Boon' : 'Boons'}
                   </span>
                 </div>
@@ -168,8 +169,15 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
                   <div className="flex flex-col gap-1 max-h-32 overflow-y-auto pr-1">
                     {boons.map((boon, idx) => (
                       <div key={idx} className="flex justify-between items-center gap-2">
-                        <span className="font-bold text-gray-200 truncate text-[10px]">{boon.name}</span>
-                        <span className="text-[9px] text-gray-400 capitalize font-mono">{boon.type}</span>
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          {boon.element && (
+                            <div className="w-3.5 h-3.5 flex-shrink-0">
+                              <ElementIcon element={boon.element} className="w-full h-full" />
+                            </div>
+                          )}
+                          <span className="font-bold text-gray-200 truncate text-[10px]">{boon.name}</span>
+                        </div>
+                        <span className="text-[9px] text-gray-400 font-mono flex-shrink-0">{boon.type}</span>
                       </div>
                     ))}
                   </div>
