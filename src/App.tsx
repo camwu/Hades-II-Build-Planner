@@ -617,7 +617,7 @@ export default function App() {
                 
                 {/* Left Side: Core Boon Slots (Narrow Column) */}
                 <aside className="lg:sticky lg:top-8 flex-shrink-0 z-30 flex flex-col items-center">
-                  <div className="flex flex-col gap-3 w-full items-center">
+                  <div className="flex flex-col gap-5 w-full items-center">
                     {CORE_SLOTS.map((slot) => (
                       <CoreSlotRow 
                         key={slot.type}
@@ -639,7 +639,7 @@ export default function App() {
                     <div className="flex flex-col gap-12">
                       {/* Unified Boons Grid Area with Purge Pool and Non-Core Slot */}
                       <div className="flex items-start gap-16">
-                        <div className="grid grid-flow-col grid-rows-5 gap-x-3 gap-y-3 auto-cols-max items-start">
+                        <div className="grid grid-flow-col grid-rows-5 gap-x-5 gap-y-5 auto-cols-max items-start">
                           {/* Selected Boons */}
                           <SortableContext 
                             items={additionalBoons.map(b => b.id)} 
