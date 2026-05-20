@@ -150,33 +150,26 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
               </span>
 
               {/* God Tooltip */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-52 p-2.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="flex items-center justify-between mb-1.5 pb-1.5 border-b border-white/5">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-4 h-4 ${godColor}`}>
+                  <div className="flex items-center gap-1.5">
+                    <div className={`w-3.5 h-3.5 ${godColor}`}>
                       <GodIcon god={god} className="w-full h-full object-contain" />
                     </div>
                     <span className="text-xs font-bold uppercase tracking-widest text-gray-200">{god}</span>
                   </div>
-                  <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300">
+                  <span className="text-[10px] font-bold font-mono px-1 py-0.5 rounded bg-amber-500/15 text-amber-300">
                     {count} {count === 1 ? 'Boon' : 'Boons'}
                   </span>
                 </div>
 
-                <div className="text-[9px] text-gray-400 leading-relaxed mb-2 flex items-center gap-1.5">
-                  <span className="text-gray-500 uppercase font-mono tracking-wider">Classification:</span>
-                  <span className={isExcluded ? 'text-blue-400' : 'text-emerald-400'}>
-                    {isExcluded ? 'Special/Excluded Guest' : 'Standard Pool Olympian'}
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-1 text-[9px] bg-white/5 p-2 rounded-lg">
-                  <span className="text-gray-500 uppercase font-mono tracking-wider">Active Boons:</span>
+                <div className="flex flex-col gap-1 text-[10px] bg-white/5 p-2 rounded-lg">
+                  <span className="text-[8.5px] text-gray-400 uppercase font-mono tracking-wider">Boons in Build:</span>
                   <div className="flex flex-col gap-1 max-h-32 overflow-y-auto pr-1">
                     {boons.map((boon, idx) => (
                       <div key={idx} className="flex justify-between items-center gap-2">
-                        <span className="font-bold text-gray-200 truncate">{boon.name}</span>
-                        <span className="text-[8px] text-gray-500 capitalize">{boon.type}</span>
+                        <span className="font-bold text-gray-200 truncate text-[10px]">{boon.name}</span>
+                        <span className="text-[9px] text-gray-400 capitalize font-mono">{boon.type}</span>
                       </div>
                     ))}
                   </div>

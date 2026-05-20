@@ -167,7 +167,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
               </span>
               
               {/* Tooltip */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="flex items-center justify-between mb-1.5 pb-1.5 border-b border-white/5">
                   <div className="flex items-center gap-2">
                     {mainGod ? (
@@ -267,7 +267,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
           </div>
 
           {/* Origination Tooltip */}
-          <div className="absolute top-full right-0 mt-2 w-72 p-4 bg-hades-bg-dark border border-amber-500/30 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none text-left">
+          <div className="absolute top-full right-0 mt-2 w-72 p-4 bg-hades-bg-dark border border-amber-500/30 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 text-left">
             <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
               <div className="flex items-center gap-2">
                 <img src="/assets/ui/Origination_Active_Icon.webp" className="w-5 h-5 object-contain" alt="Origination" referrerPolicy="no-referrer" />
