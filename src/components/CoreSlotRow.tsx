@@ -178,23 +178,26 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
                   animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
                   className="relative"
                 >
-                  <div className="text-[9px] font-mono text-hades-accent uppercase mb-0.5 font-bold">
-                    {slot.name}
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <h4 className={`text-sm font-black uppercase tracking-wider leading-tight ${getBoonColor(boon.type)}`}>
+                      {boon.name}
+                    </h4>
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      <span className="text-[9px] font-mono text-hades-accent/80 uppercase leading-none font-bold bg-hades-accent/10 px-1.5 py-[3px] rounded border border-hades-accent/20 flex-shrink-0">
+                        {boon.type}
+                      </span>
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); onRemove(); }}
+                        className="text-hades-red/70 hover:text-hades-red bg-hades-red/5 hover:bg-hades-red/15 rounded border border-hades-red/10 hover:border-hades-red/20 transition-all flex items-center justify-center h-[17px] w-[17px] flex-shrink-0"
+                        title="Remove Boon"
+                      >
+                        <X className="w-2.5 h-2.5" />
+                      </button>
+                    </div>
                   </div>
-                  <h4 className={`text-sm font-black uppercase tracking-wider leading-tight ${getBoonColor(boon.type)}`}>
-                    {boon.name}
-                  </h4>
-                  <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal mt-1">
+                  <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal">
                     <FormattedBoonEffect text={boon.effect} />
                   </p>
-                  
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); onRemove(); }}
-                    className="absolute right-0 top-0 p-1 hover:text-hades-red text-gray-700 hover:bg-hades-red/10 rounded transition-all"
-                    title="Remove Boon"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
                 </motion.div>
               ) : (
                 <motion.div 
