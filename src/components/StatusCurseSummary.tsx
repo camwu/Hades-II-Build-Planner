@@ -128,8 +128,6 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
 
   const isOriginationActive = uniqueGods.length >= 2;
 
-  if (activeCurses.length === 0) return null;
-
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2 ml-1">
@@ -141,8 +139,11 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
         />
         <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold">Status Curses</span>
       </div>
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15">
-        {activeCurses.map((curse) => {
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px]">
+        {activeCurses.length === 0 ? (
+          <span className="text-[11px] text-gray-500 font-mono">No Active Curses</span>
+        ) : (
+          activeCurses.map((curse) => {
           const mainGod = curse.gods[0];
           const godColor = mainGod ? (GOD_COLORS[mainGod] || 'text-gray-400') : 'text-gray-400';
           
@@ -232,7 +233,8 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                 })()}
               </div>
           </motion.div>
-        )})}
+        );
+        }))}
 
         {/* Separator */}
         <div className="h-5 w-[1px] bg-white/10 mx-1 self-center" />
