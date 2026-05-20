@@ -395,6 +395,10 @@ export default function App() {
     });
     setAdditionalBoons([]);
     setBuildName('Untitled Build');
+    setSearchTerm('');
+    setActiveSlot(null);
+    setHideAssigned(true);
+    setLimitToGodPool(true);
     setShowPurgeConfirm(false);
   };
 
