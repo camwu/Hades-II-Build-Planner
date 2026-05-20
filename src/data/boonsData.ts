@@ -231,7 +231,7 @@ export const BOONS: Boon[] = [
     name: "Cryo Pounder",
     type: "Duo",
     gods: ["Demeter", "Hephaestus"],
-    element: null,
+    element: "Aether",
     effect: "Your blasts from Hephaestus deal more damage to Freeze-afflicted foes.",
     icon: "/assets/boons/duo/Cryo_Pounder.webp"
   },
@@ -249,7 +249,7 @@ export const BOONS: Boon[] = [
     name: "Cutting Edge",
     type: "Duo",
     gods: ["Apollo", "Ares"],
-    element: null,
+    element: "Aether",
     effect: "Your falling blades from Ares drop +1 time in succession and deal damage in a larger area. \n ▸ Blade Area of Effect: +50%. \n ▸ Falling Blades count as Olympian Damage",
     icon: "/assets/boons/duo/Cutting_Edge.webp"
   },
@@ -429,7 +429,7 @@ export const BOONS: Boon[] = [
     name: "Freezer Burn",
     type: "Duo",
     gods: ["Demeter", "Hestia"],
-    element: null,
+    element: "Aether",
     effect: "Whenever you inflict Freeze, on a foe with Scorch, deal damage and remove Scorch. \n ▸ Damage from Scorch: 200%",
     icon: "/assets/boons/duo/Freezer_Burn.webp"
   },
@@ -555,7 +555,7 @@ export const BOONS: Boon[] = [
     name: "Hearty Appetite",
     type: "Duo",
     gods: ["Demeter", "Aphrodite"],
-    element: null,
+    element: "Aether",
     effect: "You deal more damage with your Weapon the more Max Health you have. \n ▸ Bonus Damage per 50 Life: +10%",
     icon: "/assets/boons/duo/Hearty_Appetite.webp"
   },
@@ -636,7 +636,7 @@ export const BOONS: Boon[] = [
     name: "Hostile Environment",
     type: "Duo",
     gods: ["Demeter", "Ares"],
-    element: null,
+    element: "Aether",
     effect: "Your \u03a9 Cast is stronger and follows you, even as you start to Channel it. \n ▸ Omega Cast Damage: +100%",
     icon: "/assets/boons/duo/Hostile_Environment.webp"
   },
@@ -1014,7 +1014,7 @@ export const BOONS: Boon[] = [
     name: "Rude Awakening",
     type: "Duo",
     gods: ["Apollo", "Hephaestus"],
-    element: null,
+    element: "Aether",
     effect: "Your blast effects from Hephaestus clear Daze and deal more damage if they do. \n ▸ Bonus Blast Damage: 220.",
     icon: "/assets/boons/duo/Rude_Awakening.webp"
   },
@@ -1320,7 +1320,7 @@ export const BOONS: Boon[] = [
     name: "Tropical Cyclone",
     type: "Duo",
     gods: ["Demeter", "Apollo"],
-    element: null,
+    element: "Aether",
     effect: "While standing in a Gust, you randomly fire gales every 0.3 Sec. \n ▸ Gale Damage (every 0.5 Sec.): 70.",
     icon: "/assets/boons/duo/Tropical_Cyclone.webp"
   },

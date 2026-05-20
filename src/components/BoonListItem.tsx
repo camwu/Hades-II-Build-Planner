@@ -32,31 +32,42 @@ export function StaticBoonListItem({ boon, isOverlay = false }: { boon: Boon; is
               <GodIcon god={boon.gods[0]} className="w-10 h-10" />
             </div>
           )}
-          {boon.element && boon.type !== 'Infusion' && (
-            <div className="absolute -bottom-0.5 -right-0.5 bg-hades-bg-dark rounded-full p-0.5 border border-hades-border shadow-lg z-20">
-              <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
-            </div>
-          )}
         </div>
         
         <div className="flex-1 min-w-0 py-0.5">
-          <div className="flex items-center justify-between mb-0.5">
+          <div className="flex items-center justify-between gap-2 mb-0.5">
             <h4 className={`text-sm font-bold uppercase truncate ${getBoonColor(boon.type)}`}>
               {boon.name}
             </h4>
+            <span className="text-[9px] font-mono text-hades-accent/80 uppercase leading-none font-bold bg-hades-accent/10 px-1.5 py-0.5 rounded border border-hades-accent/20 flex-shrink-0">
+              {boon.type}
+            </span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5">
-              <GodIcon god={boon.gods[0]} className="w-3 h-3" />
-              <span className="text-[10px] font-mono text-hades-text/70 uppercase leading-none">
-                {boon.gods[0]}
-              </span>
+          <div className="flex flex-col gap-1 mt-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              {boon.gods.map((god, idx) => (
+                <div key={idx} className="flex items-center gap-1.5">
+                  <GodIcon god={god} className="w-3 h-3" />
+                  <span className="text-[10px] font-mono text-hades-text/70 uppercase leading-none">
+                    {god}
+                  </span>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-[10px] font-mono text-hades-accent/70 uppercase leading-none font-bold">
-                {boon.type}
-              </span>
-            </div>
+            {boon.element ? (
+              <div className="flex items-center gap-1.5">
+                <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
+                <span className="text-[10px] font-mono text-hades-text/70 uppercase leading-none">
+                  {boon.element}
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 opacity-40">
+                <span className="text-[10px] font-mono text-gray-500 uppercase leading-none">
+                  No Element
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

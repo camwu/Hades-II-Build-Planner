@@ -27,13 +27,13 @@ export const BOON_KEYWORDS = [
   // Status Curses
   'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn',
   // Mechanics
-  'Boon', 'Prime', 'Power'
+  'Boon', 'Prime', 'Power', 'Plasma', 'Heartthrob', 'Keepsake', 'Dodge', 'Location'
 ];
 
 export const CORE_SLOTS: { type: BoonType; name: string; icon: string }[] = [
-  { type: 'Attack', name: 'Attack', icon: '/assets/slots/SlotIcon_Attack.webp' },
-  { type: 'Special', name: 'Special', icon: '/assets/slots/SlotIcon_Special.webp' },
-  { type: 'Cast', name: 'Cast', icon: '/assets/slots/SlotIcon_Cast.webp' },
-  { type: 'Sprint', name: 'Sprint', icon: '/assets/slots/SlotIcon_Dash.webp' },
-  { type: 'Magick', name: 'Magick', icon: '/assets/slots/SlotIcon_Magick.webp' },
+  { type: 'Attack', name: 'Strike', icon: '/assets/slots/SlotIcon_Attack.webp' },
+  { type: 'Special', name: 'Flourish', icon: '/assets/slots/SlotIcon_Special.webp' },
+  { type: 'Cast', name: 'Ring', icon: '/assets/slots/SlotIcon_Cast.webp' },
+  { type: 'Sprint', name: 'Rush', icon: '/assets/slots/SlotIcon_Dash.webp' },
+  { type: 'Magick', name: 'Gain', icon: '/assets/slots/SlotIcon_Magick.webp' },
 ];

@@ -12,7 +12,7 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
   // Patterns for text highlighting
   const timePattern = `\\(\\s*every\\s+[^)]+\\)`;
   const rangePattern = `[+-]?[\\d.%]+(?:\\s*[A-Za-z.]+)?(?:\\s*/\\s*[+-]?[\\d.%]+(?:\\s*[A-Za-z.]+)?)+`;
-  const keywordPattern = `\\b(?:${BOON_KEYWORDS.join('|')})(?:s|es)?\\b|Ω`;
+  const keywordPattern = `\\b(?:${BOON_KEYWORDS.join('|')})(?:s|es|\\(s\\))?\\b|Ω`;
   const boldPattern = `\\*[^*]+\\*`;
   
   // Combine patterns into a single capturing group for split
@@ -26,7 +26,7 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
     '#9d12ff', // Epic
     '#f86059', // Heroic
   ];
-
+ 
   const renderRange = (part: string, key: string | number) => {
     const rangeParts = part.split(/(\/)/);
     const kwRegex = new RegExp(`(${keywordPattern})`, 'gi');
@@ -47,7 +47,8 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
                 const isKw = sp === 'Ω' || BOON_KEYWORDS.some(kw => 
                   sp.toLowerCase() === kw.toLowerCase() || 
                   sp.toLowerCase() === (kw + 's').toLowerCase() || 
-                  sp.toLowerCase() === (kw + 'es').toLowerCase()
+                  sp.toLowerCase() === (kw + 'es').toLowerCase() ||
+                  sp.toLowerCase() === (kw + '(s)').toLowerCase()
                 );
                 
                 if (isKw) {
@@ -80,7 +81,8 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
         const isKeyword = part === 'Ω' || BOON_KEYWORDS.some(k => 
           part.toLowerCase() === k.toLowerCase() || 
           part.toLowerCase() === (k + 's').toLowerCase() || 
-          part.toLowerCase() === (k + 'es').toLowerCase()
+          part.toLowerCase() === (k + 'es').toLowerCase() ||
+          part.toLowerCase() === (k + '(s)').toLowerCase()
         );
         const isRange = part.includes('/') && /\d/.test(part);
         const isBold = part.startsWith('*') && part.endsWith('*');
