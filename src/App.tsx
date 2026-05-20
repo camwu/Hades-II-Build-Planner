@@ -174,6 +174,7 @@ export default function App() {
   }, [isEditingName]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
+  const [hideAssigned, setHideAssigned] = useState(true);
   const [draggedBoon, setDraggedBoon] = useState<Boon | null>(null);
   const draggedBoonRef = useRef<Boon | null>(null);
   const [dndContextKey, setDndContextKey] = useState(0);
@@ -256,8 +257,8 @@ export default function App() {
 
   const filteredBoons = useMemo(() => {
     return BOONS.filter(boon => {
-      // Don't show already selected boons in the library
-      if (selectedBoonIds.has(boon.id)) {
+      // Don't show already selected boons in the library if hideAssigned is toggled
+      if (hideAssigned && selectedBoonIds.has(boon.id)) {
         return false;
       }
 
@@ -286,7 +287,7 @@ export default function App() {
       
       return a.name.localeCompare(b.name);
     });
-  }, [searchTerm, activeSlot]);
+  }, [searchTerm, activeSlot, hideAssigned, selectedBoonIds]);
 
   const selectBoon = (boon: Boon, slotId: string) => {
     if (slotId === 'NonCore') {
@@ -497,6 +498,28 @@ export default function App() {
                     <p className="text-[11px] font-sans text-hades-text/60 leading-relaxed px-1">
                       Search by boon name, effect, god, slot (e.g. "attack"), or element
                     </p>
+                    <label className="flex items-center gap-2 cursor-pointer group mt-1 px-1 w-fit">
+                      <input 
+                        type="checkbox" 
+                        checked={hideAssigned} 
+                        onChange={(e) => setHideAssigned(e.target.checked)}
+                        className="sr-only"
+                      />
+                      <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                        hideAssigned 
+                          ? 'bg-hades-accent/20 border-hades-accent text-hades-accent shadow-[0_0_8px_rgba(224,163,46,0.2)]' 
+                          : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                      }`}>
+                        {hideAssigned && (
+                          <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        )}
+                      </div>
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
+                        Hide Assigned Boons
+                      </span>
+                    </label>
                   </div>
                 </div>
 
