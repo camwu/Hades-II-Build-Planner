@@ -44,6 +44,26 @@ import { BuildHeader } from './components/BuildHeader';
 import { BoonLibrary } from './components/BoonLibrary';
 
 export default function App() {
+  // Check if URL has build parameters
+  const hasUrlParams = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.has('c') || params.has('a') || params.has('n');
+  }, []);
+
+  // Try to load state from localStorage if no URL params
+  const savedState = useMemo(() => {
+    if (hasUrlParams) return null;
+    try {
+      const data = localStorage.getItem('hades_build_planner_state');
+      if (data) {
+        return JSON.parse(data);
+      }
+    } catch (e) {
+      console.error('Failed to parse saved state from localStorage:', e);
+    }
+    return null;
+  }, [hasUrlParams]);
+
   const [coreBuild, setCoreBuild] = useState<Record<string, Boon | null>>(() => {
     const params = new URLSearchParams(window.location.search);
     const coreParam = params.get('c');
@@ -74,9 +94,20 @@ export default function App() {
           if (boon) initialCore[slotName] = boon;
         }
       });
+      return initialCore;
+    } else if (savedState && savedState.coreBuildIds) {
+      const core: Record<string, Boon | null> = { ...initialCore };
+      Object.entries(savedState.coreBuildIds).forEach(([slot, id]) => {
+        if (id) {
+          const boon = BOONS.find(b => b.id === id);
+          if (boon) core[slot] = boon;
+        }
+      });
+      return core;
     }
     return initialCore;
   });
+
   const [additionalBoons, setAdditionalBoons] = useState<Boon[]>(() => {
     const params = new URLSearchParams(window.location.search);
     const addParam = params.get('a');
@@ -91,32 +122,55 @@ export default function App() {
           }
         })
         .filter((b): b is Boon => !!b);
+    } else if (savedState && savedState.additionalBoonIds) {
+      return savedState.additionalBoonIds
+        .map((id: string) => BOONS.find(b => b.id === id))
+        .filter((b: Boon | undefined): b is Boon => !!b);
     }
     return [];
   });
 
   const [activeSlot, setActiveSlot] = useState<string | null>(null);
+
   const [buildName, setBuildName] = useState(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.get('n') || 'Untitled Build';
+    const nameParam = params.get('n');
+    if (nameParam) return nameParam;
+    if (savedState && typeof savedState.buildName === 'string') return savedState.buildName;
+    return 'Untitled Build';
   });
 
   const [searchTerm, setSearchTerm] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('q') || '';
   });
+
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+
   const [hideAssigned, setHideAssigned] = useState(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.get('ha') !== '0';
-  });
-  const [limitToGodPool, setLimitToGodPool] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('lp') !== '0';
+    if (params.has('ha')) {
+      return params.get('ha') !== '0';
+    }
+    if (savedState && typeof savedState.hideAssigned === 'boolean') {
+      return savedState.hideAssigned;
+    }
+    return true;
   });
 
-  // Sync state to URL
+  const [limitToGodPool, setLimitToGodPool] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('lp')) {
+      return params.get('lp') !== '0';
+    }
+    if (savedState && typeof savedState.limitToGodPool === 'boolean') {
+      return savedState.limitToGodPool;
+    }
+    return true;
+  });
+
+  // Sync state to URL and localStorage
   useEffect(() => {
     const params = new URLSearchParams();
     
@@ -171,6 +225,29 @@ export default function App() {
       : window.location.pathname;
     
     window.history.replaceState({}, '', newUrl);
+
+    // Save to localStorage
+    try {
+      const coreBuildIds: Record<string, string | null> = {};
+      Object.entries(coreBuild).forEach(([slot, boonObj]) => {
+        const boon = boonObj as Boon | null;
+        coreBuildIds[slot] = boon ? boon.id : null;
+      });
+
+      const additionalBoonIds = additionalBoons.map(b => b.id);
+
+      const stateToSave = {
+        coreBuildIds,
+        additionalBoonIds,
+        buildName,
+        hideAssigned,
+        limitToGodPool
+      };
+
+      localStorage.setItem('hades_build_planner_state', JSON.stringify(stateToSave));
+    } catch (e) {
+      console.error('Failed to save build state to localStorage:', e);
+    }
   }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
