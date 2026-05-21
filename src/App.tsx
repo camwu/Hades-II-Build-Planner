@@ -830,7 +830,7 @@ export default function App() {
               <span>GitHub Repo</span>
             </a>
             <div className="hidden md:block w-px h-3 bg-hades-border opacity-30" />
-            <span>Updated: May 17, 2026</span>
+            <span>Updated: {(import.meta as any).env.VITE_LAST_UPDATED || 'May 17, 2026'}</span>
           </div>
           
           <p className="max-w-[700px] text-center md:text-right text-[8px] text-gray-500 leading-[1.6] font-sans uppercase opacity-40">
