@@ -214,8 +214,8 @@ export function BoonLibrary({
 
         {/* Pinned Boons Section (Frozen context when scrolling) */}
         {pinnedBoons.length > 0 && (
-          <div className="flex-shrink-0 border-b border-hades-border px-5 py-4 bg-hades-bg-dark/15 flex flex-col">
-            <div className="flex items-center justify-between px-1 pb-2 border-b border-hades-accent/15 select-none">
+          <div className="flex-shrink-0 border-b border-hades-border py-4 bg-hades-bg-dark/15 flex flex-col">
+            <div className="flex items-center justify-between mx-5 px-1 pb-2 border-b border-hades-accent/15 select-none">
               <button
                 onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
                 className="text-[10px] font-mono uppercase tracking-wider text-hades-accent font-bold flex items-center gap-1.5 cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
@@ -244,9 +244,9 @@ export function BoonLibrary({
                 marginTop: isPinnedExpanded ? 10 : 0
               }}
               transition={{ type: 'spring', damping: 30, stiffness: 350 }}
-              className="overflow-hidden -ml-2 pl-2"
+              className="overflow-hidden"
             >
-              <div className="space-y-3 max-h-[196px] overflow-y-auto custom-scrollbar -ml-2 pl-3.5 pr-1.5 pt-2 pb-1.5">
+              <div className="space-y-3 max-h-[196px] overflow-y-auto custom-scrollbar px-5 pt-2 pb-1.5">
                 {pinnedBoons.map(boon => {
                   let isLocked = false;
                   const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
