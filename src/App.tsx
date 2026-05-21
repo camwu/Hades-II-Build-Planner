@@ -232,6 +232,10 @@ export default function App() {
         }
       }
       if (e.key === 'Escape') {
+        if (draggedBoonRef.current) {
+          setDndContextKey(prev => prev + 1);
+          setDraggedBoon(null);
+        }
         if (document.activeElement === searchInputRef.current) {
           setSearchTerm('');
           searchInputRef.current?.blur();
