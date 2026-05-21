@@ -124,6 +124,7 @@ export default function App() {
     return params.get('q') || '';
   });
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
   const [hideAssigned, setHideAssigned] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('ha') !== '0';
@@ -513,25 +514,32 @@ export default function App() {
           <motion.aside 
             initial={false}
             animate={{ 
-              width: isPanelCollapsed ? 0 : SIDEBAR_WIDTH,
+              width: isPanelCollapsed 
+                ? (isButtonHovered ? 24 : 0) 
+                : SIDEBAR_WIDTH,
             }}
             transition={{ type: 'spring', damping: 30, stiffness: 350 }}
             className="border-r border-hades-border bg-hades-panel flex flex-col z-30 relative flex-shrink-0"
           >
             {/* Toggle Button - High contrast background and accent border */}
             <button 
-              onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
+              onClick={() => {
+                setIsPanelCollapsed(!isPanelCollapsed);
+                setIsButtonHovered(false);
+              }}
+              onMouseEnter={() => setIsButtonHovered(true)}
+              onMouseLeave={() => setIsButtonHovered(false)}
               className={`absolute top-[44px] z-50 w-6 h-10 flex items-center justify-center transition-all duration-200 group border shadow-2xl ${
                 isPanelCollapsed 
                   ? 'left-4 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]' 
-                  : '-right-3 rounded bg-hades-bg-dark border-hades-border-light hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]'
+                  : '-right-3 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]'
               }`}
               title={isPanelCollapsed ? "Expand Library" : "Collapse Library"}
             >
                 {isPanelCollapsed ? (
-                  <ChevronRight className="w-4 h-4 text-hades-accent animate-pulse" />
+                  <ChevronRight className={`w-4 h-4 text-hades-accent ${isButtonHovered ? 'animate-pulse' : ''}`} />
                 ) : (
-                  <ChevronLeft className="w-4 h-4 text-hades-text group-hover:text-hades-accent transition-colors" />
+                  <ChevronLeft className={`w-4 h-4 text-hades-accent ${isButtonHovered ? 'animate-pulse' : ''}`} />
                 )}
               </button>
 
