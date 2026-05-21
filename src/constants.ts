@@ -24,11 +24,20 @@ export const BOON_KEYWORDS = [
   'Attack', 'Special', 'Cast', 'Sprint', 'Magick', 'Dash',
   // Gods
   'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Selene', 'Chaos', 'Hermes', 'Hades',
+  // God keywords
+  'Plasma', 'Heartthrob', 'Blade Rift', 'Charm', 'Fine Line', 'Ocean Swell', 'Steam', 'Aether Font',
   // Status Curses
   'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn',
   // Mechanics
-  'Boon', 'Prime', 'Power', 'Plasma', 'Heartthrob', 'Keepsake', 'Dodge', 'Location', 'Rush', 'Rushing', 'Health', 'Max Health', 'Max Magick', 'Curse', 'Encounter', 'Charm', 'Weapon', 'Channel', 'Blade Rift', 'Omega Moves', 'Ω Moves', 'Omega Move', 'Ω Move', 'Omega', 'Mystery Seed', 'Rarity',
+  'Boon', 'Lv.', 'Rarity', 'Common', 'Rare', 'Epic', 'Heroic', 'Infusion',
+  'Prime', 'Power', 'Dodge', 'Rush', 'Rushing', 'Curse', 'Channel', 
+  'Keepsake', 'Weapon', 'Aspect', 'Nocturnal Arms',
+  'Health', 'Max Health', 'Healing', 'Max Magick', 'Armor',
+  'Minor Find', 'Minor Finds', 'Gold Crown', 'Gold Crowns', 'Gold', 'Bones', 'Mystery Seed', 'Daedalus Hammer', 'Daedalus Hammers',
+  'Omega Moves', 'Ω Moves', 'Omega Move', 'Ω Move', 'Omega',
+  'Location', 'Encounter', 'Guardians',
   // Elements
+  'Element', 'Elements',
   'Air', 'Earth', 'Fire', 'Water', 'Aether',
   'Air Boon', 'Earth Boon', 'Fire Boon', 'Water Boon', 'Aether Boon'
 ];

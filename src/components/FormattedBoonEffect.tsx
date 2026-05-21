@@ -45,7 +45,7 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
           }
           
           // Ordered to match "Max Health" and "Max Magick" before "Health" and "Magick", and element boons before elements or plasma
-          const regex = /\b(Max\s+Healths?|Healths?|Max\s+Magicks?|magicks?|plasmas?|mystery\s+seeds?|rarity?|airs?\s+boons?|earths?\s+boons?|fires?\s+boons?|waters?\s+boons?|aethers?\s+boons?|airs?|earths?|fires?|waters?|aethers?)\b/gi;
+          const regex = /(\bMax\s+Healths?\b|\bHealths?\b|\bMax\s+Magicks?\b|\bmagicks?\b|\bplasmas?\b|\bmystery\s+seeds?\b|\bDaedalus\s+Hammers?\b|\bGold\s+Crowns?\b|\bGold\b|\bHealing\b|\bBones\b|\barmors?\b|\brarity?\b|\bairs?\s+boons?\b|\bearths?\s+boons?\b|\bfires?\s+boons?\b|\bwaters?\s+boons?\b|\baethers?\s+boons?\b|\bairs?\b|\bearths?\b|\bfires?\b|\bwaters?\b|\baethers?\b(?!\s+Fonts?\b)|\blv\.(?!\w))/gi;
           const parts = inputText.split(regex);
           
           return (
@@ -124,6 +124,90 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
                       {p}
                     </span>
                   );
+                } else if (lower === 'daedalus hammer' || lower === 'daedalus hammers') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Daedalus_Hammer.webp" 
+                        alt="Daedalus Hammer" 
+                        className="inline-block h-[15px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'gold crown' || lower === 'gold crowns') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/MoneyDrop_Text.webp" 
+                        alt="Gold Crown" 
+                        className="inline-block h-[13px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'gold') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Coins_II.webp" 
+                        alt="Gold" 
+                        className="inline-block h-[13px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'healing') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/LifeRestore.webp" 
+                        alt="Healing" 
+                        className="inline-block h-[18px] w-auto object-contain align-middle relative -top-[2px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'bones') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Bones.webp" 
+                        alt="Bones" 
+                        className="inline-block h-[15px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'armor' || lower === 'armors') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Armor.webp" 
+                        alt="Armor" 
+                        className="inline-block h-[13px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'lv.') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/UpArrow.webp" 
+                        alt="Lv." 
+                        className="inline-block h-[13px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
                 } else if (lower.startsWith('air')) {
                   return (
                     <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
@@ -149,6 +233,10 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
                     </span>
                   );
                 } else if (lower.startsWith('fire')) {
+                  // We require any Fire-related keyword/element to start with capital 'F' to represent the element
+                  if (!p.startsWith('F')) {
+                    return p;
+                  }
                   // If it's used as a verb (e.g., "fire 2 times", "fires 2 times", "fire twice", "fire gales")
                   const isVerb = (lower === 'fire' || lower === 'fires') && parts[index + 1] && (
                     /^\s+(2\s+times|twice|gales)\b/i.test(parts[index + 1])
@@ -179,7 +267,7 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
                       {p}
                     </span>
                   );
-                } else if (lower.startsWith('aether')) {
+                } else if (lower.startsWith('aether') && !lower.includes('font')) {
                   return (
                     <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
                       <img 
@@ -204,7 +292,14 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
         const sortedKeywords = [...BOON_KEYWORDS].sort((a, b) => b.length - a.length);
         const omegaKeywords = sortedKeywords.filter(k => k.includes('Ω'));
         const standardKeywords = sortedKeywords.filter(k => !k.includes('Ω'));
-        const keywordPattern = `(?:\\b(?:${standardKeywords.join('|')})(?:s|es|\\(s\\))?\\b)|Ω\\s*Moves?|Ω\\s*Move|Ω`;
+        const standardKeywordPatterns = standardKeywords.map(k => {
+          const escaped = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const startBoundary = /^\w/.test(k) ? '\\b' : '';
+          const endBoundary = /\w$/.test(k) ? '\\b' : '';
+          const pluralSuffix = /[A-Za-z]$/.test(k) ? '(?:s|es|\\(s\\))?' : '';
+          return `${startBoundary}${escaped}${pluralSuffix}${endBoundary}`;
+        });
+        const keywordPattern = `(?:${standardKeywordPatterns.join('|')})|Ω\\s*Moves?|Ω\\s*Move|Ω`;
         const boldPattern = `\\*[^*]+\\*`;
         const italicPattern = `_[^_]+_`;
         
@@ -219,6 +314,16 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
           '#9d12ff', // Epic
           '#f86059', // Heroic
         ];
+
+        const getRarityColor = (p: string): string | undefined => {
+          const trimmed = p.trim();
+          if (trimmed === 'Common' || trimmed === 'Commons') return rarityColors[0];
+          if (trimmed === 'Rare' || trimmed === 'Rares') return rarityColors[1];
+          if (trimmed === 'Epic' || trimmed === 'Epics') return rarityColors[2];
+          if (trimmed === 'Heroic' || trimmed === 'Heroics') return rarityColors[3];
+          if (trimmed.toLowerCase() === 'infusion' || trimmed.toLowerCase() === 'infusions') return '#ED4AF1';
+          return undefined;
+        };
        
         const renderRange = (part: string, key: string | number) => {
           const rangeParts = part.split(/(\/)/);
@@ -241,6 +346,13 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
                         sp === 'Ω' || 
                         /^[Ωω]\s*Moves?$/i.test(sp) ||
                         BOON_KEYWORDS.some(kw => {
+                          const sTrimmed = sp.trim();
+                          if (kw === 'Rare' && sTrimmed === 'rare') {
+                            return false;
+                          }
+                          if (kw === 'Fire' && !/^[F]/.test(sTrimmed)) {
+                            return false;
+                          }
                           const sLower = sp.toLowerCase().trim();
                           const kLower = kw.toLowerCase().trim();
                           return sLower === kLower || 
@@ -251,6 +363,14 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
                         })
                       );
                       if (isKw) {
+                        const rarityColor = getRarityColor(sp);
+                        if (rarityColor) {
+                          return (
+                            <span key={k} className="font-bold" style={{ color: rarityColor }}>
+                              {renderTextWithIcons(sp, true, `kw-${k}`)}
+                            </span>
+                          );
+                        }
                         return (
                           <span key={k} className="text-hades-text font-bold">
                             {renderTextWithIcons(sp, true, `kw-${k}`)}
@@ -286,6 +406,13 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
             part === 'Ω' || 
             /^[Ωω]\s*Moves?$/i.test(part) ||
             BOON_KEYWORDS.some(k => {
+              const pTrimmed = part.trim();
+              if (k === 'Rare' && pTrimmed === 'rare') {
+                return false;
+              }
+              if (k === 'Fire' && !/^[F]/.test(pTrimmed)) {
+                return false;
+              }
               const pLower = part.toLowerCase().trim();
               const kLower = k.toLowerCase().trim();
               return pLower === kLower || 
@@ -300,22 +427,48 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
           const isItalic = part.startsWith('_') && part.endsWith('_');
           
           if (isBold) {
+            const innerText = part.slice(1, -1);
+            const rarityColor = getRarityColor(innerText);
+            if (rarityColor) {
+              return (
+                <strong key={i} className="font-bold" style={{ color: rarityColor }}>
+                  {renderTextWithIcons(innerText, true, `bold-${i}`)}
+                </strong>
+              );
+            }
             return (
               <strong key={i} className="font-bold text-hades-text">
-                {renderTextWithIcons(part.slice(1, -1), true, `bold-${i}`)}
+                {renderTextWithIcons(innerText, true, `bold-${i}`)}
               </strong>
             );
           }
 
           if (isItalic) {
+            const innerText = part.slice(1, -1);
+            const rarityColor = getRarityColor(innerText);
+            if (rarityColor) {
+              return (
+                <em key={i} className="italic font-bold" style={{ color: rarityColor }}>
+                  {renderTextWithIcons(innerText, true, `italic-${i}`)}
+                </em>
+              );
+            }
             return (
               <em key={i} className="italic text-gray-300">
-                {renderTextWithIcons(part.slice(1, -1), false, `italic-${i}`)}
+                {renderTextWithIcons(innerText, false, `italic-${i}`)}
               </em>
             );
           }
 
           if (isKeyword) {
+            const rarityColor = getRarityColor(part);
+            if (rarityColor) {
+              return (
+                <strong key={i} className="font-bold" style={{ color: rarityColor }}>
+                  {renderTextWithIcons(part, true, `key-${i}`)}
+                </strong>
+              );
+            }
             return (
               <strong key={i} className="font-bold text-hades-text">
                 {renderTextWithIcons(part, true, `key-${i}`)}
