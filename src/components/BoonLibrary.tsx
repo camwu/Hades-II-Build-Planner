@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Search, X, Info, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, X, Info, ChevronLeft, ChevronRight, Pin, ChevronDown } from 'lucide-react';
 import { Boon, BoonPrerequisite, ElementType } from '../types';
 import { SIDEBAR_WIDTH } from '../constants';
 import { DraggableBoonListItem } from './BoonListItem';
+import { BOONS } from '../data/boonsData';
 
 interface BoonLibraryProps {
   isPanelCollapsed: boolean;
@@ -25,6 +26,9 @@ interface BoonLibraryProps {
   searchInputRef: React.RefObject<HTMLInputElement | null>;
   selectedBoonIds: Set<string>;
   elementCounts: Record<ElementType, number>;
+  pinnedBoonIds: string[];
+  togglePin: (boonId: string) => void;
+  clearAllPins: () => void;
 }
 
 export function BoonLibrary({
@@ -46,8 +50,34 @@ export function BoonLibrary({
   handleSidebarScroll,
   searchInputRef,
   selectedBoonIds,
-  elementCounts
+  elementCounts,
+  pinnedBoonIds,
+  togglePin,
+  clearAllPins
 }: BoonLibraryProps) {
+  const pinnedBoons = React.useMemo(() => {
+    return pinnedBoonIds
+      .map(id => BOONS.find(b => b.id === id))
+      .filter((b): b is Boon => !!b);
+  }, [pinnedBoonIds]);
+
+  const [isPinnedExpanded, setIsPinnedExpanded] = React.useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem('hades_build_planner_pinned_expanded');
+      return stored !== null ? JSON.parse(stored) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('hades_build_planner_pinned_expanded', JSON.stringify(isPinnedExpanded));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [isPinnedExpanded]);
+
   return (
     <motion.aside 
       initial={false}
@@ -182,14 +212,95 @@ export function BoonLibrary({
           </div>
         </div>
 
+        {/* Pinned Boons Section (Frozen context when scrolling) */}
+        {pinnedBoons.length > 0 && (
+          <div className="flex-shrink-0 border-b border-hades-border px-5 py-4 bg-hades-bg-dark/15 flex flex-col">
+            <div className="flex items-center justify-between px-1 pb-2 border-b border-hades-accent/15 select-none">
+              <button
+                onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
+                className="text-[10px] font-mono uppercase tracking-wider text-hades-accent font-bold flex items-center gap-1.5 cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
+              >
+                {isPinnedExpanded ? (
+                  <ChevronDown className="w-3.5 h-3.5 text-hades-accent shrink-0" />
+                ) : (
+                  <ChevronRight className="w-3.5 h-3.5 text-hades-accent shrink-0" />
+                )}
+                <Pin className="w-3.5 h-3.5 text-hades-accent fill-current rotate-45 shrink-0" />
+                Pinned for Reference ({pinnedBoons.length})
+              </button>
+              <button
+                onClick={clearAllPins}
+                className="text-[9px] font-mono uppercase text-hades-text/45 hover:text-hades-accent transition-colors cursor-pointer"
+              >
+                Clear All
+              </button>
+            </div>
+            
+            <motion.div
+              initial={false}
+              animate={{ 
+                height: isPinnedExpanded ? "auto" : 0,
+                opacity: isPinnedExpanded ? 1 : 0,
+                marginTop: isPinnedExpanded ? 10 : 0
+              }}
+              transition={{ type: 'spring', damping: 30, stiffness: 350 }}
+              className="overflow-hidden -ml-2 pl-2"
+            >
+              <div className="space-y-3 max-h-[196px] overflow-y-auto custom-scrollbar -ml-2 pl-3.5 pr-1.5 pt-2 pb-1.5">
+                {pinnedBoons.map(boon => {
+                  let isLocked = false;
+                  const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
+                  if (boon.prerequisites && boon.prerequisites.length > 0) {
+                    boon.prerequisites.forEach(prereq => {
+                      let met = false;
+                      if (prereq.element && prereq.elementCount) {
+                        const currentCount = elementCounts[prereq.element] || 0;
+                        met = currentCount >= prereq.elementCount;
+                      } else {
+                        met = prereq.any
+                          ? prereq.boonIds.some(id => selectedBoonIds.has(id))
+                          : prereq.boonIds.every(id => selectedBoonIds.has(id));
+                      }
+                      if (!met) {
+                        isLocked = true;
+                      }
+                      prerequisitesStatus.push({ prereq, met });
+                    });
+                  }
+
+                  return (
+                    <DraggableBoonListItem 
+                      key={`pinned-${boon.id}`} 
+                      boon={boon} 
+                      onClick={() => activeSlot && selectBoon(boon, activeSlot)}
+                      isSelectable={!!activeSlot}
+                      isLocked={isLocked}
+                      prerequisitesStatus={prerequisitesStatus}
+                      isPinned={true}
+                      onPinToggle={() => togglePin(boon.id)}
+                    />
+                  );
+                })}
+              </div>
+            </motion.div>
+          </div>
+        )}
+
         {/* Fixed spacer area that doesn't disappear on scroll */}
-        <div className="h-6 flex-shrink-0" />
+        <div className="h-4 flex-shrink-0" />
 
         <div 
           onScroll={handleSidebarScroll}
           className="flex-1 overflow-y-auto custom-scrollbar px-5 pb-8 transform-gpu"
         >
           <div className="space-y-3 transform-gpu">
+            {/* All/Filtered Boons header inside the scroll container */}
+            {filteredBoons.length > 0 && pinnedBoons.length > 0 && (
+              <div className="text-[10px] font-mono uppercase tracking-wider text-hades-text/40 px-1 pb-1">
+                Boon Library
+              </div>
+            )}
+
             {filteredBoons.map(boon => {
               let isLocked = false;
               const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
@@ -219,6 +330,8 @@ export function BoonLibrary({
                   isSelectable={!!activeSlot}
                   isLocked={isLocked}
                   prerequisitesStatus={prerequisitesStatus}
+                  isPinned={false}
+                  onPinToggle={() => togglePin(boon.id)}
                 />
               );
             })}

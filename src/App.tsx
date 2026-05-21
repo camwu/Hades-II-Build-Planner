@@ -170,6 +170,36 @@ export default function App() {
     return true;
   });
 
+  const [pinnedBoonIds, setPinnedBoonIds] = useState<string[]>(() => {
+    try {
+      const data = localStorage.getItem('hades_build_planner_pinned_boons');
+      if (data) {
+        return JSON.parse(data);
+      }
+    } catch (e) {
+      console.error('Failed to parse pinned boons:', e);
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('hades_build_planner_pinned_boons', JSON.stringify(pinnedBoonIds));
+    } catch (e) {
+      console.error('Failed to save pinned boons:', e);
+    }
+  }, [pinnedBoonIds]);
+
+  const togglePin = (boonId: string) => {
+    setPinnedBoonIds(prev => 
+      prev.includes(boonId) ? prev.filter(id => id !== boonId) : [...prev, boonId]
+    );
+  };
+
+  const clearAllPins = () => {
+    setPinnedBoonIds([]);
+  };
+
   // Sync state to URL and localStorage
   useEffect(() => {
     const params = new URLSearchParams();
@@ -384,6 +414,11 @@ export default function App() {
 
   const filteredBoons = useMemo(() => {
     return BOONS.filter(boon => {
+      // Don't show pinned boons in the main list since they are pinned to the top
+      if (pinnedBoonIds.includes(boon.id)) {
+        return false;
+      }
+
       // Don't show already selected boons in the library if hideAssigned is toggled
       if (hideAssigned && selectedBoonIds.has(boon.id)) {
         return false;
@@ -425,7 +460,7 @@ export default function App() {
       
       return a.name.localeCompare(b.name);
     });
-  }, [searchTerm, activeSlot, hideAssigned, selectedBoonIds, limitToGodPool, activeStandardOlympians]);
+  }, [searchTerm, activeSlot, hideAssigned, selectedBoonIds, limitToGodPool, activeStandardOlympians, pinnedBoonIds]);
 
   const selectBoon = (boon: Boon, slotId: string) => {
     if (slotId === 'NonCore') {
@@ -587,6 +622,9 @@ export default function App() {
             searchInputRef={searchInputRef}
             selectedBoonIds={selectedBoonIds}
             elementCounts={elementCounts}
+            pinnedBoonIds={pinnedBoonIds}
+            togglePin={togglePin}
+            clearAllPins={clearAllPins}
           />
 
           {/* Right: Build View */}

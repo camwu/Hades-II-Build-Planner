@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
-import { Lock, Check, X } from 'lucide-react';
+import { Lock, Check, X, Pin } from 'lucide-react';
 import { Boon, BoonPrerequisite, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
@@ -84,7 +84,7 @@ export function StaticBoonListItem({
       isOverlay 
         ? 'bg-hades-bg-light shadow-2xl z-50' 
         : 'bg-hades-bg-dark/80 border border-white/10 hover:border-white/20 group-hover:border-white/20'
-    } ${isLocked ? 'border-red-950/45 bg-hades-bg-dark/60 shadow-[inset_0_0_12px_rgba(220,38,38,0.06)]' : ''}`}>
+    } ${isLocked ? 'bg-hades-bg-dark/60' : ''}`}>
       <div className={`flex items-start gap-4 transform-gpu transition-opacity duration-150 ${isLocked ? 'opacity-50 saturate-[0.7]' : ''}`}>
         <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
           {boon.icon ? (
@@ -95,12 +95,7 @@ export function StaticBoonListItem({
                 className="w-full h-full object-contain" 
                 referrerPolicy="no-referrer" 
               />
-              <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} ${isLocked ? 'border-red-900/40' : borderColor} ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-              {isLocked && (
-                <div className="absolute inset-0 bg-red-950/40 flex items-center justify-center rounded-xl z-20">
-                  <Lock className="w-5 h-5 text-red-500/80" />
-                </div>
-              )}
+              <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} ${borderColor} ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
             </div>
           ) : (
             <div className={`w-full h-full flex items-center justify-center p-1 ${BOON_BORDER_WIDTH} border-white/5 ${BOON_ICON_ROUNDING} opacity-40`}>
@@ -197,13 +192,17 @@ export function DraggableBoonListItem({
   onClick, 
   isSelectable,
   isLocked = false,
-  prerequisitesStatus = []
+  prerequisitesStatus = [],
+  isPinned = false,
+  onPinToggle
 }: { 
   boon: Boon; 
   onClick?: () => void; 
   isSelectable?: boolean; 
   isLocked?: boolean;
   prerequisitesStatus?: { prereq: BoonPrerequisite; met: boolean }[];
+  isPinned?: boolean;
+  onPinToggle?: () => void;
   key?: any 
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -239,6 +238,31 @@ export function DraggableBoonListItem({
         isLocked={isLocked} 
         prerequisitesStatus={prerequisitesStatus} 
       />
+      
+      {/* Pin button on top left (hover/pinned active) */}
+      {onPinToggle && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onPinToggle();
+          }}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+          }}
+          className={`absolute -top-1 -left-1 z-40 w-5 h-5 flex items-center justify-center p-0 rounded-full border transition-all duration-150 shadow-md ${
+            isPinned 
+              ? 'opacity-100 text-hades-accent border-hades-accent/80 bg-hades-bg-light' 
+              : 'opacity-0 md:group-hover:opacity-100 text-hades-text/40 border-white/10 bg-hades-bg-dark hover:text-hades-accent hover:border-hades-accent/40'
+          }`}
+          title={isPinned ? "Unpin Boon" : "Pin Boon to top"}
+        >
+          <Pin className={`w-3 h-3 rotate-45 scale-[0.8] ${isPinned ? 'fill-current' : ''}`} />
+        </button>
+      )}
+
       {/* Selection indicator only for selectable, unlocked items */}
       {isSelectable && !isLocked && (
         <div className="absolute inset-0 rounded-xl border-2 border-hades-accent/30 group-hover:border-hades-accent pointer-events-none transition-colors duration-75" />
