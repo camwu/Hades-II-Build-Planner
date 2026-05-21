@@ -79,7 +79,19 @@ export const BOONS: Boon[] = [
     gods: ["Apollo"],
     element: "Fire",
     effect: "Foes with Daze take more damage if struck from behind. \n ▸ Backstab Damage: +50%/+75%/+100%/+125%",
-    icon: "/assets/boons/apollo/Back_Burner.webp"
+    icon: "/assets/boons/apollo/Back_Burner.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
+          "b16d3778-57f6-5f4c-b33b-25364fc0238c", // Dazzling Display
+          "abde81b0-8578-5373-b6c8-f49ab73f6a98"  // Light Smite
+        ],
+        any: true,
+        description: "Requires Solar Ring, Blinding Rush, Dazzling Display, or Light Smite"
+      }
+    ]
   },
   {
     id: "a530eb3d-8188-5895-8f3a-fb5e28933c2b",
@@ -88,7 +100,37 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon", "Apollo"],
     element: "Aether",
     effect: "Your Sprint creates a watery globe behind you, which surges ahead once you stop. \n ▸ Max Blast Damage (after 2 Sec.): 300",
-    icon: "/assets/boons/duo/Beach_Ball.webp"
+    icon: "/assets/boons/duo/Beach_Ball.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
+          "677ad451-8bea-54fc-94c9-82953d9044e8", // Nova Flourish
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+        ],
+        any: true,
+        description: "Requires Nova Strike, Nova Flourish, Solar Ring, or Lucid Gain"
+      },
+      {
+        boonIds: [
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
+          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
+          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3"  // Flood Gain
+        ],
+        any: true,
+        description: "Requires Wave Strike, Wave Flourish, Tidal Ring, or Flood Gain"
+      },
+      {
+        boonIds: [
+          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
+          "3d9b7234-b439-502a-8dae-581fc3ad6359"  // Breaker Rush
+        ],
+        any: true,
+        description: "Requires Blinding Rush or Breaker Rush"
+      }
+    ]
   },
   {
     id: "9f297b05-6e18-537a-8845-79c082317b9d",
@@ -312,7 +354,29 @@ export const BOONS: Boon[] = [
     gods: ["Apollo", "Ares"],
     element: "Aether",
     effect: "Your falling blades from Ares drop *+1* time in succession and deal damage in a larger area. \n ▸ Blade Area of Effect: +50%",
-    icon: "/assets/boons/duo/Cutting_Edge.webp"
+    icon: "/assets/boons/duo/Cutting_Edge.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
+          "677ad451-8bea-54fc-94c9-82953d9044e8", // Nova Flourish
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
+          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+        ],
+        any: true,
+        description: "Requires Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, or Lucid Gain"
+      },
+      {
+        boonIds: [
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "d477b146-1783-5971-bf9f-16a9e50b4ff4", // Stabbing Rush
+          "b430f1b7-3cca-5861-8357-5a3bdc7b7399"  // Cut Above
+        ],
+        any: true,
+        description: "Requires Sword Ring, Stabbing Rush, or Cut Above"
+      }
+    ]
   },
   {
     id: "b16d3778-57f6-5f4c-b33b-25364fc0238c",
@@ -321,7 +385,13 @@ export const BOONS: Boon[] = [
     gods: ["Apollo"],
     element: "Fire",
     effect: "Your attacks may inflict Daze. \n ▸ Daze Chance: +10%/+15%/+20%/+25%",
-    icon: "/assets/boons/apollo/Dazzling_Display.webp"
+    icon: "/assets/boons/apollo/Dazzling_Display.webp",
+    prerequisites: [
+      {
+        boonIds: ["bc4205cb-d68d-50c7-9cfc-47f75316dd7c"], // Nova Strike
+        description: "Requires Nova Strike"
+      }
+    ]
   },
   {
     id: "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5",
@@ -405,7 +475,36 @@ export const BOONS: Boon[] = [
     gods: ["Apollo"],
     element: "Fire",
     effect: "Your \u03a9 Attack and \u03a9 Special fire *2* times, but use more Magick. \n ▸ Omega Move Cost: +30 Magick",
-    icon: "/assets/boons/apollo/Exceptional_Talent.webp"
+    icon: "/assets/boons/apollo/Exceptional_Talent.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
+          "677ad451-8bea-54fc-94c9-82953d9044e8"  // Nova Flourish
+        ],
+        any: true,
+        description: "Requires Nova Strike or Nova Flourish"
+      },
+      {
+        boonIds: [
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
+          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+        ],
+        any: true,
+        description: "Requires Solar Ring, Blinding Rush, or Lucid Gain"
+      },
+      {
+        boonIds: [
+          "70eb8b0d-cb4e-536e-a306-cc32b6e055e8", // Extra Dose
+          "09fcd20a-2b99-5492-841d-db0f338e1ae1", // Super Nova
+          "fbe7a0b7-94e3-5c60-a593-06210f26053d", // Back Burner
+          "8355f4f2-d521-5794-8e4b-6ca89243bb52"  // Prominence Flare
+        ],
+        any: true,
+        description: "Requires Extra Dose, Super Nova, Back Burner, or Prominence Flare"
+      }
+    ]
   },
   {
     id: "7785b010-246d-55b5-88db-633ad19320a2",
@@ -423,7 +522,24 @@ export const BOONS: Boon[] = [
     gods: ["Apollo"],
     element: "Air",
     effect: "Your Attack has a chance to hit *2* times. \n ▸ Double Strike Chance: +5%/+8%/+10%/+13%",
-    icon: "/assets/boons/apollo/Extra_Dose.webp"
+    icon: "/assets/boons/apollo/Extra_Dose.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273"  // Wave Strike
+        ],
+        any: true,
+        description: "Requires any Attack Boon"
+      }
+    ]
   },
   {
     id: "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d",
@@ -575,7 +691,23 @@ export const BOONS: Boon[] = [
     gods: ["Zeus", "Apollo"],
     element: "Aether",
     effect: "You can Channel +30 Magick into your Ω Cast to repeatedly strike foes with lightning bolts. \n ▸ Bolt Damage (every 0.13 Sec.): 20",
-    icon: "/assets/boons/duo/Glorious_Disaster.webp"
+    icon: "/assets/boons/duo/Glorious_Disaster.webp",
+    prerequisites: [
+      {
+        boonIds: ["8355f4f2-d521-5794-8e4b-6ca89243bb52"], // Prominence Flare
+        description: "Requires Prominence Flare"
+      },
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63"  // Thunder Rush
+        ],
+        any: true,
+        description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, or Thunder Rush"
+      }
+    ]
   },
   {
     id: "e022fec1-5de0-5dba-b7f9-d89f502ef7bd",
@@ -1127,7 +1259,24 @@ export const BOONS: Boon[] = [
     gods: ["Apollo"],
     element: "Fire",
     effect: "After your \u03a9 Cast expires, rapidly deal damage in the area for *2 Sec.* \n ▸ Omega Cast Damage (every 0.13 Sec.): 10/12/14/16",
-    icon: "/assets/boons/apollo/Prominence_Flare.webp"
+    icon: "/assets/boons/apollo/Prominence_Flare.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+        ],
+        any: true,
+        description: "Requires any Cast Boon"
+      }
+    ]
   },
   {
     id: "d860babc-cd19-5e8d-af1f-4f4c8d037eb8",
@@ -1263,7 +1412,28 @@ export const BOONS: Boon[] = [
     gods: ["Apollo", "Hephaestus"],
     element: "Aether",
     effect: "Your blast effects from Hephaestus clear Daze and deal more damage if they do. \n ▸ Bonus Blast Damage: 300",
-    icon: "/assets/boons/duo/Rude_Awakening.webp"
+    icon: "/assets/boons/duo/Rude_Awakening.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
+          "abde81b0-8578-5373-b6c8-f49ab73f6a98", // Light Smite
+          "b16d3778-57f6-5f4c-b33b-25364fc0238c"  // Dazzling Display
+        ],
+        any: true,
+        description: "Requires Solar Ring, Blinding Rush, Light Smite, or Dazzling Display"
+      },
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
+          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+        ],
+        any: true,
+        description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
+      }
+    ]
   },
   {
     id: "176c7b4e-e3e0-5430-a378-5974e62311fa",
@@ -1325,14 +1495,14 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Apollo"],
     element: null,
-    effect: "While you have at least 3 Fire Essences, whenever you take damage, restore some Health. \n ▸ Damage Recovered (over 5 Sec.): 30%",
+    effect: "While you have at least 2 Fire Essences, whenever you take damage, restore some Health. \n ▸ Damage Recovered (over 5 Sec.): 30%",
     icon: "/assets/boons/apollo/Self_Healing.webp",
     prerequisites: [
       {
         boonIds: [],
-        description: "Requires 3 Fire Essences",
+        description: "Requires 2 Fire Essences",
         element: "Fire",
-        elementCount: 3
+        elementCount: 2
       }
     ]
   },
@@ -1469,7 +1639,27 @@ export const BOONS: Boon[] = [
     gods: ["Hera", "Apollo"],
     element: "Aether",
     effect: "In each Encounter, the first foe you slay returns to fight for you. \n ▸ Servant Damage: +200%",
-    icon: "/assets/boons/duo/Sun_Worshiper.webp"
+    icon: "/assets/boons/duo/Sun_Worshiper.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
+          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+        ],
+        any: true,
+        description: "Requires Solar Ring, Blinding Rush, or Lucid Gain"
+      },
+      {
+        boonIds: [
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
+          "da411c4d-69ec-5427-8d4e-a7101c649833"  // Born Gain
+        ],
+        any: true,
+        description: "Requires Engagement Ring, Nexus Rush, or Born Gain"
+      }
+    ]
   },
   {
     id: "41d2708d-2d25-572e-b145-abd2152f7874",
@@ -1608,7 +1798,28 @@ export const BOONS: Boon[] = [
     gods: ["Demeter", "Apollo"],
     element: "Aether",
     effect: "While standing in a Gust, you randomly fire gales every *0.3 Sec.* \n ▸ Gale Damage (every 0.5 Sec.): 70.",
-    icon: "/assets/boons/duo/Tropical_Cyclone.webp"
+    icon: "/assets/boons/duo/Tropical_Cyclone.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
+          "677ad451-8bea-54fc-94c9-82953d9044e8", // Nova Flourish
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
+          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+        ],
+        any: true,
+        description: "Requires Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, or Lucid Gain"
+      },
+      {
+        boonIds: [
+          "f4b3601e-b839-5f04-a1ae-675a1431b640", // Frigid Rush
+          "0760776f-5eaa-534a-833c-8d8dd3ded47c"  // Arctic Gale
+        ],
+        any: true,
+        description: "Requires Frigid Rush or Arctic Gale"
+      }
+    ]
   },
   {
     id: "d998f057-e8f8-5ecd-872f-6ef808c1fdd7",
@@ -1698,7 +1909,30 @@ export const BOONS: Boon[] = [
     gods: ["Apollo", "Hestia"],
     element: "Aether",
     effect: "Whenever you Dodge or Daze causes a foe to miss, restore some Health. \n ▸ Life Restored per Evasion: 10",
-    icon: "/assets/boons/duo/Warm_Breeze.webp"
+    icon: "/assets/boons/duo/Warm_Breeze.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
+          "abde81b0-8578-5373-b6c8-f49ab73f6a98", // Light Smite
+          "b16d3778-57f6-5f4c-b33b-25364fc0238c"  // Dazzling Display
+        ],
+        any: true,
+        description: "Requires Solar Ring, Blinding Rush, Light Smite, or Dazzling Display"
+      },
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "ed08770d-871a-5322-a96b-25c501a4992f", // Heat Rush
+          "cb343fe8-09fb-5cda-9361-9fb6cd40085d"  // Cardio Gain
+        ],
+        any: true,
+        description: "Requires Flame Strike, Flame Flourish, Smolder Ring, Heat Rush, or Cardio Gain"
+      }
+    ]
   },
   {
     id: "f35ccd65-627c-5556-b865-6ef1adf19aea",
