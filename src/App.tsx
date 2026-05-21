@@ -4,23 +4,8 @@
  */
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Zap, 
-  Droplets, 
-  Search, 
-  X, 
-  Plus, 
-  Swords, 
-  Shield, 
-  Sparkles,
-  ChevronLeft,
-  ChevronRight,
-  Edit2,
-  Github,
-  Link,
-  Info
-} from 'lucide-react';
+import { AnimatePresence } from 'motion/react';
+import { Plus } from 'lucide-react';
 import { 
   DndContext, 
   DragOverlay,
@@ -29,37 +14,34 @@ import {
   PointerSensor,
   DragStartEvent,
   DragEndEvent,
-  closestCenter,
-  rectIntersection,
   pointerWithin,
-  MeasuringStrategy,
-  useDroppable
+  MeasuringStrategy
 } from '@dnd-kit/core';
 import { 
   SortableContext, 
   arrayMove, 
-  rectSortingStrategy,
-  useSortable
+  rectSortingStrategy
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { BOONS } from './data/boonsData';
-import { Boon, BoonType, ElementType, ALL_ELEMENTS } from './types';
+import { Boon, BoonType } from './types';
 import { 
   SLOT_PRIORITY, 
   CORE_SLOTS, 
-  SIDEBAR_WIDTH, 
   SLOT_EXPANDED_WIDTH 
 } from './constants';
-import { isValidForSlot, getBoonColor } from './utils/boonUtils';
-import { GodIcon, ElementIcon } from './components/Icons';
-import { StaticBoonListItem, DraggableBoonListItem } from './components/BoonListItem';
+import { isValidForSlot } from './utils/boonUtils';
+import { StaticBoonListItem } from './components/BoonListItem';
 import { CoreSlotRow } from './components/CoreSlotRow';
-import { BoonDisplayCard, SortableBoonDisplayCard } from './components/BoonDisplayCard';
+import { SortableBoonDisplayCard } from './components/BoonDisplayCard';
 import { DroppableSlotCard } from './components/DroppableSlotCard';
 import { ElementSummary } from './components/ElementSummary';
 import { GodSummary } from './components/GodSummary';
 import { StatusCurseSummary } from './components/StatusCurseSummary';
 import { PurgePool } from './components/PurgePool';
+import { MainHeader } from './components/MainHeader';
+import { MainFooter } from './components/MainFooter';
+import { BuildHeader } from './components/BuildHeader';
+import { BoonLibrary } from './components/BoonLibrary';
 
 export default function App() {
   const [coreBuild, setCoreBuild] = useState<Record<string, Boon | null>>(() => {
@@ -492,243 +474,44 @@ export default function App() {
       onDragEnd={handleDragEnd}
     >
       <div className="h-screen bg-hades-bg text-hades-text font-sans overflow-hidden flex flex-col">
-        {/* Header */}
-        <header className="fixed top-0 left-0 right-0 h-16 border-b border-hades-border bg-hades-bg-dark/80 backdrop-blur-md z-50 px-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-hades-bg-main">
-              <img 
-                src="/assets/ui/melinoe_icon.webp" 
-                alt="Melinoë" 
-                className="w-full h-full object-contain"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            <h1 className="text-xl font-bold text-gray-300 uppercase italic">
-              Hades II <span className="text-hades-accent not-italic ml-2">Build Planner</span>
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-4">
-          </div>
-        </header>
+        <MainHeader />
 
         {/* Main Content */}
         <main className="flex-1 mt-16 flex overflow-hidden relative">
-          {/* Left: Boon Picker (Collapsible) */}
-          <motion.aside 
-            initial={false}
-            animate={{ 
-              width: isPanelCollapsed 
-                ? (isButtonHovered ? 24 : 0) 
-                : SIDEBAR_WIDTH,
-            }}
-            transition={{ type: 'spring', damping: 30, stiffness: 350 }}
-            className="border-r border-hades-border bg-hades-panel flex flex-col z-30 relative flex-shrink-0"
-          >
-            {/* Toggle Button - High contrast background and accent border */}
-            <button 
-              onClick={() => {
-                setIsPanelCollapsed(!isPanelCollapsed);
-                setIsButtonHovered(false);
-              }}
-              onMouseEnter={() => setIsButtonHovered(true)}
-              onMouseLeave={() => setIsButtonHovered(false)}
-              className={`absolute top-[44px] z-50 w-6 h-10 flex items-center justify-center transition-all duration-200 group border shadow-2xl ${
-                isPanelCollapsed 
-                  ? 'left-4 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]' 
-                  : '-right-3 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]'
-              }`}
-              title={isPanelCollapsed ? "Expand Library" : "Collapse Library"}
-            >
-                {isPanelCollapsed ? (
-                  <ChevronRight className={`w-4 h-4 text-hades-accent ${isButtonHovered ? 'animate-pulse' : ''}`} />
-                ) : (
-                  <ChevronLeft className={`w-4 h-4 text-hades-accent ${isButtonHovered ? 'animate-pulse' : ''}`} />
-                )}
-              </button>
-
-            <div 
-              style={{ width: SIDEBAR_WIDTH }}
-              className={`h-full flex flex-col overflow-hidden will-change-transform ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
-            >
-                <div className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}>
-                  <div className="flex flex-col gap-2">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-hades-accent/50" />
-                      <input 
-                        ref={searchInputRef}
-                        type="text" 
-                        placeholder="Press / to search boons..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg py-2.5 pl-10 pr-10 text-sm text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 transition-colors"
-                      />
-                      {searchTerm && (
-                        <button 
-                          onClick={() => setSearchTerm('')}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-hades-text/30 hover:text-hades-accent transition-colors p-0.5"
-                          title="Clear search"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      )}
-                    </div>
-                    <p className="text-[11px] font-sans text-hades-text/60 leading-relaxed px-1">
-                      Search by boon name, effect, god, slot (e.g. "attack"), or element
-                    </p>
-                    <div className="flex flex-col gap-2 mt-1">
-                      <label className="flex items-center gap-2 cursor-pointer group px-1 w-fit">
-                        <input 
-                          type="checkbox" 
-                          checked={hideAssigned} 
-                          onChange={(e) => setHideAssigned(e.target.checked)}
-                          className="sr-only"
-                        />
-                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                          hideAssigned 
-                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                            : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                        }`}>
-                          {hideAssigned && (
-                            <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          )}
-                        </div>
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
-                          Hide Assigned Boons
-                        </span>
-                      </label>
-
-                      <div className="flex items-center gap-2 px-1 w-fit">
-                        <label className="flex items-center gap-2 cursor-pointer group select-none">
-                          <input 
-                            type="checkbox" 
-                            checked={limitToGodPool} 
-                            onChange={(e) => setLimitToGodPool(e.target.checked)}
-                            className="sr-only"
-                          />
-                          <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                            limitToGodPool 
-                              ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                              : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                          }`}>
-                            {limitToGodPool && (
-                              <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="20 6 9 17 4 12" />
-                              </svg>
-                            )}
-                          </div>
-                          <span className="text-[10px] font-mono uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
-                            Limit Boons To God Pool
-                          </span>
-                        </label>
-                        
-                        <div className="flex items-center gap-1.5 ml-0.5">
-                          <span className={`text-[9px] font-semibold px-1 py-[0.5px] rounded-sm transition-colors ${activeStandardOlympians.length >= 4 ? 'bg-amber-400/15 text-amber-400 border border-amber-400/20' : 'bg-white/5 text-gray-400 border border-white/10'}`}>
-                            {activeStandardOlympians.length}/4
-                          </span>
-
-                          {/* Info Button with Stylized Tooltip */}
-                          <div className="relative group/tooltip inline-flex items-center">
-                            <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-64 p-3 bg-hades-bg-dark border border-white/15 rounded-lg text-[11px] leading-relaxed text-gray-300 shadow-2xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50">
-                              {/* Connector bridge to make hovering steady */}
-                              <div className="absolute left-0 right-0 top-full h-2" />
-                              <p className="font-sans">
-                                Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, and Hermes) are included in the god pool each night. If checked, once you have boons from four gods, all other gods' boons are filtered out.
-                              </p>
-                              {/* Triangular pointer */}
-                              <div className="absolute top-[calc(100%-4px)] left-1/2 -translate-x-1/2 w-2 h-2 bg-hades-bg-dark border-r border-b border-white/15 rotate-45" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Fixed spacer area that doesn't disappear on scroll */}
-                <div className="h-6 flex-shrink-0" />
-
-                <div 
-                  onScroll={handleSidebarScroll}
-                  className="flex-1 overflow-y-auto custom-scrollbar px-5 pb-8 transform-gpu"
-                >
-                  <div className="space-y-3 transform-gpu">
-                    {filteredBoons.map(boon => (
-                      <DraggableBoonListItem 
-                        key={boon.id} 
-                        boon={boon} 
-                        onClick={() => activeSlot && selectBoon(boon, activeSlot)}
-                        isSelectable={!!activeSlot}
-                      />
-                    ))}
-                    {filteredBoons.length === 0 && (
-                      <div className="text-center py-12 text-gray-400 font-mono text-xs uppercase tracking-tight text-gray-400">
-                        No matches found
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </motion.aside>
+          <BoonLibrary
+            isPanelCollapsed={isPanelCollapsed}
+            setIsPanelCollapsed={setIsPanelCollapsed}
+            isButtonHovered={isButtonHovered}
+            setIsButtonHovered={setIsButtonHovered}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            hideAssigned={hideAssigned}
+            setHideAssigned={setHideAssigned}
+            limitToGodPool={limitToGodPool}
+            setLimitToGodPool={setLimitToGodPool}
+            activeStandardOlympians={activeStandardOlympians}
+            filteredBoons={filteredBoons}
+            activeSlot={activeSlot}
+            selectBoon={selectBoon}
+            isScrolled={isScrolled}
+            handleSidebarScroll={handleSidebarScroll}
+            searchInputRef={searchInputRef}
+          />
 
           {/* Right: Build View */}
           <section className="flex-1 overflow-auto p-6 md:px-8 py-6 custom-scrollbar relative">
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col gap-2 mb-10">
-                <div className="flex flex-col gap-2 group">
-                  <div className="flex items-center gap-3 h-10">
-                    {isEditingName ? (
-                      <input
-                        ref={nameInputRef}
-                        type="text"
-                        value={buildName}
-                        onChange={(e) => setBuildName(e.target.value)}
-                        onBlur={() => setIsEditingName(false)}
-                        onKeyDown={(e) => e.key === 'Enter' && setIsEditingName(false)}
-                        className="text-2xl font-light bg-transparent border-b border-hades-accent outline-none text-white w-full max-w-md uppercase py-0"
-                        autoFocus
-                      />
-                    ) : (
-                      <h2 
-                        onClick={() => setIsEditingName(true)}
-                        className="text-2xl font-light text-gray-300 flex items-center gap-3 uppercase cursor-pointer hover:text-hades-accent transition-colors h-full"
-                      >
-                        {buildName || 'Untitled Build'}
-                        <Edit2 className="w-4 h-4 opacity-0 group-hover:opacity-50 transition-opacity" />
-                      </h2>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <button 
-                    onClick={copyBuildLink}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded border transition-all duration-200 uppercase font-mono text-[9px] tracking-widest ${
-                      isCopied 
-                        ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                        : 'bg-hades-accent/5 border-hades-accent/20 text-hades-accent/70 hover:border-hades-accent/50 hover:text-hades-accent'
-                    }`}
-                  >
-                    <Link className={`w-3 h-3 ${isCopied ? 'animate-bounce' : ''}`} />
-                    {isCopied ? 'Link Copied!' : 'Copy Share Link'}
-                  </button>
-
-                  <button 
-                    onClick={purgeBuild}
-                    className={`text-[9px] font-mono uppercase tracking-widest transition-all duration-200 flex items-center gap-2 px-3 py-1.5 rounded border ${
-                      showPurgeConfirm 
-                        ? 'bg-hades-red text-white border-white/20 animate-pulse' 
-                        : 'text-hades-red/80 hover:text-red-300 bg-hades-red/5 border-hades-red/10 hover:border-hades-red/30'
-                    }`}
-                  >
-                    <X className={`w-3 h-3 ${showPurgeConfirm ? 'animate-bounce' : ''}`} />
-                    {showPurgeConfirm ? 'Confirm Purge?' : 'Purge Build'}
-                  </button>
-                </div>
-              </div>
+              <BuildHeader
+                buildName={buildName}
+                setBuildName={setBuildName}
+                isEditingName={isEditingName}
+                setIsEditingName={setIsEditingName}
+                nameInputRef={nameInputRef}
+                copyBuildLink={copyBuildLink}
+                isCopied={isCopied}
+                purgeBuild={purgeBuild}
+                showPurgeConfirm={showPurgeConfirm}
+              />
 
               {/* Elemental, God & Status Tracker */}
               <div className="mb-8 flex flex-wrap items-start gap-5 w-fit">
@@ -817,26 +600,7 @@ export default function App() {
           ) : null}
         </DragOverlay>
 
-        {/* Footer */}
-        <footer className="py-3 bg-hades-bg-dark border-t border-hades-border px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-6 text-[9px] font-mono text-gray-400 uppercase flex items-center gap-6">
-            <a 
-              href="https://github.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-hades-accent transition-colors group"
-            >
-              <Github className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
-              <span>GitHub Repo</span>
-            </a>
-            <div className="hidden md:block w-px h-3 bg-hades-border opacity-30" />
-            <span>Updated: {(import.meta as any).env.VITE_LAST_UPDATED || 'May 17, 2026'}</span>
-          </div>
-          
-          <p className="max-w-[700px] text-center md:text-right text-[8px] text-gray-500 leading-[1.6] font-sans uppercase opacity-40">
-            Hades II Build Planner is an unofficial, fan-developed project that is not affiliated with or endorsed by Supergiant Games. Hades II, its characters, and all art assets are owned by Supergiant Games.
-          </p>
-        </footer>
+        <MainFooter />
       </div>
     </DndContext>
   );
