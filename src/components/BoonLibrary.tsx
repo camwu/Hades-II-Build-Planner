@@ -70,6 +70,96 @@ export function BoonLibrary({
     }
   });
 
+  const [pinnedMaxHeight, setPinnedMaxHeight] = React.useState<number>(() => {
+    try {
+      const stored = localStorage.getItem('hades_build_planner_pinned_max_height');
+      return stored ? parseInt(stored, 10) : 196;
+    } catch {
+      return 196;
+    }
+  });
+
+  const [isResizing, setIsResizing] = React.useState<boolean>(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const dragStartRef = React.useRef<{ y: number; height: number }>({ y: 0, height: 196 });
+  const currentHeightRef = React.useRef<number>(196);
+
+  const startResize = React.useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const initialHeight = containerRef.current ? containerRef.current.offsetHeight : pinnedMaxHeight;
+    dragStartRef.current = { y: clientY, height: initialHeight };
+    currentHeightRef.current = initialHeight;
+    setIsResizing(true);
+  }, [pinnedMaxHeight]);
+
+  React.useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaY = e.clientY - dragStartRef.current.y;
+      const newHeight = dragStartRef.current.height + deltaY;
+      const clampedHeight = Math.max(80, Math.min(newHeight, 800));
+      
+      currentHeightRef.current = clampedHeight;
+      if (containerRef.current) {
+        containerRef.current.style.maxHeight = `${clampedHeight}px`;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      const deltaY = e.touches[0].clientY - dragStartRef.current.y;
+      const newHeight = dragStartRef.current.height + deltaY;
+      const clampedHeight = Math.max(80, Math.min(newHeight, 800));
+      
+      currentHeightRef.current = clampedHeight;
+      if (containerRef.current) {
+        containerRef.current.style.maxHeight = `${clampedHeight}px`;
+      }
+    };
+
+    const stopResize = () => {
+      setIsResizing(false);
+      setPinnedMaxHeight(currentHeightRef.current);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', stopResize);
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', stopResize);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', stopResize);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', stopResize);
+    };
+  }, [isResizing]);
+
+  React.useEffect(() => {
+    if (isResizing) return;
+    try {
+      localStorage.setItem('hades_build_planner_pinned_max_height', pinnedMaxHeight.toString());
+    } catch (e) {
+      console.error(e);
+    }
+  }, [pinnedMaxHeight, isResizing]);
+
+  React.useEffect(() => {
+    if (isResizing) {
+      document.body.style.cursor = 'row-resize';
+      document.body.style.userSelect = 'none';
+    } else {
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+    return () => {
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isResizing]);
+
   React.useEffect(() => {
     try {
       localStorage.setItem('hades_build_planner_pinned_expanded', JSON.stringify(isPinnedExpanded));
@@ -214,7 +304,7 @@ export function BoonLibrary({
 
         {/* Pinned Boons Section (Frozen context when scrolling) */}
         {pinnedBoons.length > 0 && (
-          <div className="flex-shrink-0 border-b border-hades-border py-4 bg-hades-bg-dark/15 flex flex-col">
+          <div className="flex-shrink-0 border-b border-hades-border pt-4 pb-2 bg-hades-bg-dark/15 flex flex-col relative">
             <div className="flex items-center justify-between mx-5 px-1 pb-2 border-b border-hades-accent/15 select-none">
               <button
                 onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
@@ -246,7 +336,11 @@ export function BoonLibrary({
               transition={{ type: 'spring', damping: 30, stiffness: 350 }}
               className="overflow-hidden"
             >
-              <div className="space-y-3 max-h-[196px] overflow-y-auto custom-scrollbar px-5 pt-2 pb-1.5">
+              <div 
+                ref={containerRef}
+                style={{ maxHeight: `${pinnedMaxHeight}px` }}
+                className={`space-y-3 overflow-y-auto custom-scrollbar px-5 pt-2 pb-1.5 ${isResizing ? 'select-none pointer-events-none' : 'transition-[max-height] duration-300'}`}
+              >
                 {pinnedBoons.map(boon => {
                   let isLocked = false;
                   const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
@@ -283,6 +377,27 @@ export function BoonLibrary({
                 })}
               </div>
             </motion.div>
+
+            {/* Draggable Divider Handle */}
+            {isPinnedExpanded && (
+              <div 
+                onMouseDown={startResize}
+                onTouchStart={startResize}
+                onDoubleClick={() => setPinnedMaxHeight(196)}
+                className="h-3 cursor-row-resize flex items-center justify-center relative z-30 select-none group/resize mt-2"
+                title="Drag to resize, double-click to reset"
+                id="pinned-boons-resize-handle"
+              >
+                {/* Full-width modern thin track line */}
+                <div className={`absolute left-4 right-4 h-[1px] transition-colors duration-200 ${
+                  isResizing ? 'bg-zinc-600/40' : 'bg-zinc-800/60 group-hover/resize:bg-zinc-700/50'
+                }`} />
+                {/* Streamlined central control pill */}
+                <div className={`w-10 h-[3px] rounded-full transition-all duration-200 z-10 ${
+                  isResizing ? 'bg-zinc-400 scale-x-110' : 'bg-zinc-700 group-hover/resize:bg-zinc-500 group-hover/resize:w-16'
+                }`} />
+              </div>
+            )}
           </div>
         )}
 
