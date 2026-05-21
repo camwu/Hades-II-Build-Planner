@@ -539,7 +539,13 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite"],
     element: "Water",
     effect: "Whenever you exit a Location, restore 100% Health if you have not lost too much. \n ▸ Min Life for Full Recovery: 80%/70%/60%/50%",
-    icon: "/assets/boons/aphrodite/Healthy_Rebound.webp"
+    icon: "/assets/boons/aphrodite/Healthy_Rebound.webp",
+    prerequisites: [
+      {
+        boonIds: ["8a0ecab3-8591-587d-9aac-bf3ebefb1867"],
+        description: "Requires Shameless Attitude"
+      }
+    ]
   },
   {
     id: "0a10c1fd-89af-5dec-8dd5-d20ba7f1aaf6",

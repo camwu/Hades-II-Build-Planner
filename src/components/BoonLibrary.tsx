@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Search, X, Info, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Boon } from '../types';
+import { Boon, BoonPrerequisite } from '../types';
 import { SIDEBAR_WIDTH } from '../constants';
 import { DraggableBoonListItem } from './BoonListItem';
 
@@ -23,6 +23,7 @@ interface BoonLibraryProps {
   isScrolled: boolean;
   handleSidebarScroll: (e: React.UIEvent<HTMLDivElement>) => void;
   searchInputRef: React.RefObject<HTMLInputElement | null>;
+  selectedBoonIds: Set<string>;
 }
 
 export function BoonLibrary({
@@ -42,7 +43,8 @@ export function BoonLibrary({
   selectBoon,
   isScrolled,
   handleSidebarScroll,
-  searchInputRef
+  searchInputRef,
+  selectedBoonIds
 }: BoonLibraryProps) {
   return (
     <motion.aside 
@@ -186,14 +188,32 @@ export function BoonLibrary({
           className="flex-1 overflow-y-auto custom-scrollbar px-5 pb-8 transform-gpu"
         >
           <div className="space-y-3 transform-gpu">
-            {filteredBoons.map(boon => (
-              <DraggableBoonListItem 
-                key={boon.id} 
-                boon={boon} 
-                onClick={() => activeSlot && selectBoon(boon, activeSlot)}
-                isSelectable={!!activeSlot}
-              />
-            ))}
+            {filteredBoons.map(boon => {
+              let isLocked = false;
+              const unmetPrerequisites: BoonPrerequisite[] = [];
+              if (boon.prerequisites && boon.prerequisites.length > 0) {
+                boon.prerequisites.forEach(prereq => {
+                  const meets = prereq.any
+                    ? prereq.boonIds.some(id => selectedBoonIds.has(id))
+                    : prereq.boonIds.every(id => selectedBoonIds.has(id));
+                  if (!meets) {
+                    isLocked = true;
+                    unmetPrerequisites.push(prereq);
+                  }
+                });
+              }
+
+              return (
+                <DraggableBoonListItem 
+                  key={boon.id} 
+                  boon={boon} 
+                  onClick={() => activeSlot && selectBoon(boon, activeSlot)}
+                  isSelectable={!!activeSlot}
+                  isLocked={isLocked}
+                  unmetPrerequisites={unmetPrerequisites}
+                />
+              );
+            })}
             {filteredBoons.length === 0 && (
               <div className="text-center py-12 text-gray-400 font-mono text-xs uppercase tracking-tight">
                 No matches found

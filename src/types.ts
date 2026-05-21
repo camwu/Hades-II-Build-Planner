@@ -3,6 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+export interface BoonPrerequisite {
+  boonIds: string[]; // Boon IDs of which at least one/all must be assigned
+  any?: boolean;     // If true, any of the boonIds is sufficient. If false (default), all are required.
+  description: string; // User-facing description of the prerequisite
+}
+
 export interface Boon {
   id: string;
   name: string;
@@ -11,6 +17,7 @@ export interface Boon {
   element: ElementType | null;
   effect: string;
   icon?: string;
+  prerequisites?: BoonPrerequisite[];
 }
 
 export type BoonType = 

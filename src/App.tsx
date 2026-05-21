@@ -573,6 +573,7 @@ export default function App() {
             isScrolled={isScrolled}
             handleSidebarScroll={handleSidebarScroll}
             searchInputRef={searchInputRef}
+            selectedBoonIds={selectedBoonIds}
           />
 
           {/* Right: Build View */}
