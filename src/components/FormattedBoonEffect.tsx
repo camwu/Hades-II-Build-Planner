@@ -45,7 +45,7 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
           }
           
           // Ordered to match "Max Health" and "Max Magick" before "Health" and "Magick", and element boons before elements or plasma
-          const regex = /(\bMax\s+Healths?\b|\bHealths?\b|\bMax\s+Magicks?\b|\bmagicks?\b|\bplasmas?\b|\bmystery\s+seeds?\b|\bDaedalus\s+Hammers?\b|\bGold\s+Crowns?\b|\bGold\b|\bHealing\b|\bBones\b|\barmors?\b|\brarity?\b|\bairs?\s+boons?\b|\bearths?\s+boons?\b|\bfires?\s+boons?\b|\bwaters?\s+boons?\b|\baethers?\s+boons?\b|\bairs?\b|\bearths?\b|\bfires?\b|\bwaters?\b|\baethers?\b(?!\s+Fonts?\b)|\blv\.(?!\w))/gi;
+          const regex = /(\bMax\s+Healths?\b|\bHealths?\b|\bMax\s+Magicks?\b|\bmagicks?\b|\bplasmas?\b|\bmystery\s+seeds?\b|\bDaedalus\s+Hammers?\b|\bGold\s+Crowns?\b|\bGold\b|\bHealing\b|\bBones\b|\barmors?\b|\brarity?\b|\bairs?\s+(?:boons?|essences?|elements?)\b|\bearths?\s+(?:boons?|essences?|elements?)\b|\bfires?\s+(?:boons?|essences?|elements?)\b|\bwaters?\s+(?:boons?|essences?|elements?)\b|\baethers?\s+(?:boons?|essences?|elements?)\b|\bairs?\b|\bearths?\b|\bfires?\b|\bwaters?\b|\baethers?\b(?!\s+Fonts?\b)|\blv\.(?!\w))/gi;
           const parts = inputText.split(regex);
           
           return (

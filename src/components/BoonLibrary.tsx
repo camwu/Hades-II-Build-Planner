@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Search, X, Info, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Boon, BoonPrerequisite } from '../types';
+import { Boon, BoonPrerequisite, ElementType } from '../types';
 import { SIDEBAR_WIDTH } from '../constants';
 import { DraggableBoonListItem } from './BoonListItem';
 
@@ -24,6 +24,7 @@ interface BoonLibraryProps {
   handleSidebarScroll: (e: React.UIEvent<HTMLDivElement>) => void;
   searchInputRef: React.RefObject<HTMLInputElement | null>;
   selectedBoonIds: Set<string>;
+  elementCounts: Record<ElementType, number>;
 }
 
 export function BoonLibrary({
@@ -44,7 +45,8 @@ export function BoonLibrary({
   isScrolled,
   handleSidebarScroll,
   searchInputRef,
-  selectedBoonIds
+  selectedBoonIds,
+  elementCounts
 }: BoonLibraryProps) {
   return (
     <motion.aside 
@@ -190,16 +192,22 @@ export function BoonLibrary({
           <div className="space-y-3 transform-gpu">
             {filteredBoons.map(boon => {
               let isLocked = false;
-              const unmetPrerequisites: BoonPrerequisite[] = [];
+              const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
               if (boon.prerequisites && boon.prerequisites.length > 0) {
                 boon.prerequisites.forEach(prereq => {
-                  const meets = prereq.any
-                    ? prereq.boonIds.some(id => selectedBoonIds.has(id))
-                    : prereq.boonIds.every(id => selectedBoonIds.has(id));
-                  if (!meets) {
-                    isLocked = true;
-                    unmetPrerequisites.push(prereq);
+                  let met = false;
+                  if (prereq.element && prereq.elementCount) {
+                    const currentCount = elementCounts[prereq.element] || 0;
+                    met = currentCount >= prereq.elementCount;
+                  } else {
+                    met = prereq.any
+                      ? prereq.boonIds.some(id => selectedBoonIds.has(id))
+                      : prereq.boonIds.every(id => selectedBoonIds.has(id));
                   }
+                  if (!met) {
+                    isLocked = true;
+                  }
+                  prerequisitesStatus.push({ prereq, met });
                 });
               }
 
@@ -210,7 +218,7 @@ export function BoonLibrary({
                   onClick={() => activeSlot && selectBoon(boon, activeSlot)}
                   isSelectable={!!activeSlot}
                   isLocked={isLocked}
-                  unmetPrerequisites={unmetPrerequisites}
+                  prerequisitesStatus={prerequisitesStatus}
                 />
               );
             })}

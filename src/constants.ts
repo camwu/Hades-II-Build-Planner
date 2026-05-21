@@ -37,9 +37,10 @@ export const BOON_KEYWORDS = [
   'Omega Moves', 'Ω Moves', 'Omega Move', 'Ω Move', 'Omega',
   'Location', 'Encounter', 'Guardians',
   // Elements
-  'Element', 'Elements',
+  'Element', 'Elements', 'Essence', 'Essences',
   'Air', 'Earth', 'Fire', 'Water', 'Aether',
-  'Air Boon', 'Earth Boon', 'Fire Boon', 'Water Boon', 'Aether Boon'
+  'Air Boon', 'Earth Boon', 'Fire Boon', 'Water Boon', 'Aether Boon', 
+  'Air Essence', 'Earth Essence', 'Fire Essence', 'Water Essence', 'Aether Essence'
 ];
 
 export const CORE_SLOTS: { type: BoonType; name: string; icon: string }[] = [

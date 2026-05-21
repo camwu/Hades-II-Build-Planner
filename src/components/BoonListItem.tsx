@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
-import { Lock } from 'lucide-react';
+import { Lock, Check, X } from 'lucide-react';
 import { Boon, BoonPrerequisite, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
@@ -9,33 +9,60 @@ import { FormattedBoonEffect } from './FormattedBoonEffect';
 import { BOON_ICON_ROUNDING, BOON_BORDER_WIDTH } from '../constants';
 import { BOONS } from '../data/boonsData';
 
-function formatPrerequisiteDescription(prereq: BoonPrerequisite) {
-  const description = prereq.description;
-  const requiredBoonNames = prereq.boonIds
-    .map(id => BOONS.find(b => b.id === id)?.name)
-    .filter((name): name is string => !!name);
-
-  if (requiredBoonNames.length === 0) {
-    return <span className="font-medium">{description}</span>;
+function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, removeRequires = false) {
+  let description = prereq.description;
+  if (removeRequires) {
+    if (description.startsWith('Requires ')) {
+      description = description.slice(9);
+    } else if (description.startsWith('requires ')) {
+      description = description.slice(9);
+    }
   }
+  const requiredBoons = prereq.boonIds
+    .map(id => BOONS.find(b => b.id === id))
+    .filter((b): b is Boon => !!b);
 
-  // Create a regex pattern that matches exactly any of the required boon names
-  const pattern = new RegExp(`(${requiredBoonNames.map(name => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g');
-  const parts = description.split(pattern);
+  const requiredBoonNames = requiredBoons.map(b => b.name);
+  const uniqueGods = isDuo ? Array.from(new Set(requiredBoons.flatMap(b => b.gods))) : [];
+
+  // Parse pattern for highlighting
+  const pattern = requiredBoonNames.length > 0 
+    ? new RegExp(`(${requiredBoonNames.map(name => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g')
+    : null;
+  const parts = pattern ? description.split(pattern) : [];
 
   return (
-    <span className="font-medium">
-      {parts.map((part, index) => {
-        if (requiredBoonNames.includes(part)) {
-          return (
-            <strong key={index} className="font-bold text-hades-text">
-              {part}
-            </strong>
-          );
-        }
-        return part;
-      })}
-    </span>
+    <>
+      {uniqueGods.map((god, gIdx) => {
+        const capitalizedGod = god.charAt(0).toUpperCase() + god.slice(1).toLowerCase();
+        const isLast = gIdx === uniqueGods.length - 1;
+        return (
+          <span key={gIdx} className={`inline select-none${isLast ? '' : ' mr-1'}`}>
+            {gIdx > 0 && <span className="text-gray-500 mx-1">/</span>}
+            <GodIcon god={god} className="w-3.5 h-3.5 object-contain inline-block align-middle -mt-[1px] mr-1" />
+            <strong className="font-bold text-gray-200">{capitalizedGod}</strong>
+          </span>
+        );
+      })}{uniqueGods.length > 0 && (
+        <span className="text-gray-400 font-normal select-none">:</span>
+      )}{' '}
+      <span className="text-gray-300">
+        {requiredBoonNames.length === 0 ? (
+          <FormattedBoonEffect text={description.replace(/(\d+)/g, '*$1*')} />
+        ) : (
+          parts.map((part, index) => {
+            if (requiredBoonNames.includes(part)) {
+              return (
+                <strong key={index} className="font-bold text-hades-text">
+                  {part}
+                </strong>
+              );
+            }
+            return <span key={index}>{part}</span>;
+          })
+        )}
+      </span>
+    </>
   );
 }
 
@@ -43,12 +70,12 @@ export function StaticBoonListItem({
   boon, 
   isOverlay = false, 
   isLocked = false, 
-  unmetPrerequisites = [] 
+  prerequisitesStatus = [] 
 }: { 
   boon: Boon; 
   isOverlay?: boolean; 
   isLocked?: boolean; 
-  unmetPrerequisites?: BoonPrerequisite[]; 
+  prerequisitesStatus?: { prereq: BoonPrerequisite; met: boolean }[]; 
 }) {
   const borderColor = getBoonBorderColor(boon.type);
   
@@ -127,15 +154,38 @@ export function StaticBoonListItem({
         <FormattedBoonEffect text={boon.effect} />
       </p>
 
-      {isLocked && unmetPrerequisites.length > 0 && (
-        <div className="mt-2.5 pt-2 border-t border-red-950/45 flex flex-col gap-1.5 text-xs font-sans text-gray-400">
-          {unmetPrerequisites.map((prereq, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0" />
-              <span className="font-semibold text-red-400/80">Locked:</span>
-              {formatPrerequisiteDescription(prereq)}
+      {isLocked && prerequisitesStatus.length > 0 && (
+        <div className="mt-2.5 pt-2 border-t border-red-950/45 text-xs font-sans text-gray-400">
+          {prerequisitesStatus.length === 1 ? (
+            <div className={`flex items-start gap-2 ${prerequisitesStatus[0].met ? 'line-through opacity-45' : ''}`}>
+              <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
+              <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked:</span>
+              <div className="flex-1 text-xs text-gray-400 leading-normal font-medium">
+                {formatPrerequisiteDescription(prerequisitesStatus[0].prereq, boon.type === 'Duo')}
+              </div>
             </div>
-          ))}
+          ) : (
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-start gap-2">
+                <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
+                <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Requirements:</span>
+              </div>
+              <ul className="pl-0 space-y-1.5 text-gray-400 leading-normal">
+                {prerequisitesStatus.map(({ prereq, met }, index) => (
+                  <li key={index} className={`flex items-start gap-2.5 ${met ? 'line-through opacity-45 text-gray-500/95' : ''}`}>
+                    {met ? (
+                      <Check className="w-3.5 h-3.5 text-emerald-500/60 flex-shrink-0 mt-0.5" />
+                    ) : (
+                      <X className="w-3.5 h-3.5 text-red-500/70 flex-shrink-0 mt-0.5" />
+                    )}
+                    <div className="flex-1 text-xs text-gray-300 leading-normal font-medium">
+                      {formatPrerequisiteDescription(prereq, boon.type === 'Duo', true)}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -147,13 +197,13 @@ export function DraggableBoonListItem({
   onClick, 
   isSelectable,
   isLocked = false,
-  unmetPrerequisites = []
+  prerequisitesStatus = []
 }: { 
   boon: Boon; 
   onClick?: () => void; 
   isSelectable?: boolean; 
   isLocked?: boolean;
-  unmetPrerequisites?: BoonPrerequisite[];
+  prerequisitesStatus?: { prereq: BoonPrerequisite; met: boolean }[];
   key?: any 
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -167,7 +217,7 @@ export function DraggableBoonListItem({
       {...listeners}
       {...attributes}
       onClick={isLocked ? undefined : onClick}
-      whileHover={isLocked ? {} : { x: 6 }}
+      whileHover={isLocked ? { x: [0, -3, 3, -3, 3, 0], transition: { duration: 0.3, ease: 'easeInOut' } } : { x: 6 }}
       whileTap={isLocked ? {} : { scale: 0.98 }}
       transition={{ 
         type: 'spring', 
@@ -187,7 +237,7 @@ export function DraggableBoonListItem({
       <StaticBoonListItem 
         boon={boon} 
         isLocked={isLocked} 
-        unmetPrerequisites={unmetPrerequisites} 
+        prerequisitesStatus={prerequisitesStatus} 
       />
       {/* Selection indicator only for selectable, unlocked items */}
       {isSelectable && !isLocked && (

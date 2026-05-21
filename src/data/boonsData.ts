@@ -7,8 +7,16 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Zeus"],
     element: null,
-    effect: "While you have at least 5 Air Boons, you can never deal less damage than the limit. \n ▸ Min Damage per Hit: 50",
-    icon: "/assets/boons/zeus/Air_Quality.webp"
+    effect: "While you have at least *5* Air Essences, you can never deal less damage than the limit. \n ▸ Min Damage per Hit: 50",
+    icon: "/assets/boons/zeus/Air_Quality.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 5 Air Essences",
+        element: "Air",
+        elementCount: 5
+      }
+    ]
   },
   {
     id: "8a7e45a9-f976-59f5-aed9-a45bec173935",
@@ -16,7 +24,7 @@ export const BOONS: Boon[] = [
     type: "Legendary",
     gods: ["Hera"],
     element: "Aether",
-    effect: "Gain Earth, Water, Air, and Fire Elements, and *1* Infusion Boon for each. \n ▸ Essences Gained per Element: +1",
+    effect: "Gain Earth, Water, Air, and Fire Essence, and *1* Infusion Boon for each. \n ▸ Essences Gained per Element: +1",
     icon: "/assets/boons/hera/All_Together.webp"
   },
   {
@@ -143,7 +151,18 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite"],
     element: "Water",
     effect: "Your Weak effects are more potent. \n ▸ Weak Damage Reduction: +10%/+12%/+14%/+16%",
-    icon: "/assets/boons/aphrodite/Broken_Resolve.webp"
+    icon: "/assets/boons/aphrodite/Broken_Resolve.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
+          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+        ],
+        any: true,
+        description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
+      }
+    ]
   },
   {
     id: "be5d5870-6628-523b-b174-1166d7ae9ab1",
@@ -161,7 +180,27 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite", "Hestia"],
     element: "Aether",
     effect: "While foes are Weak, any Scorch they have does not diminish as it deals damage. \n ▸ Scorch Duration on Weak Foes: \u221E",
-    icon: "/assets/boons/duo/Burning_Desire.webp"
+    icon: "/assets/boons/duo/Burning_Desire.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
+          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+        ],
+        any: true,
+        description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
+      },
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+        ],
+        any: true,
+        description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
+      }
+    ]
   },
   {
     id: "cb343fe8-09fb-5cda-9361-9fb6cd40085d",
@@ -179,7 +218,29 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite", "Ares"],
     element: "Aether",
     effect: "Whenever you collect Plasma, create a Heartthrob. \n ▸ Chance of Heartthrob: 35%",
-    icon: "/assets/boons/duo/Carnal_Pleasure.webp"
+    icon: "/assets/boons/duo/Carnal_Pleasure.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
+          "5d4dcdca-fb70-5019-84f9-78964ad23d72", // Flutter Flourish
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
+          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+        ],
+        any: true,
+        description: "Requires Flutter Strike, Flutter Flourish, Rapture Ring, Passion Rush, or Glamour Gain"
+      },
+      {
+        boonIds: [
+          "e48529f3-4dfc-5349-92e0-e5c717ce684f", // Grisly Gain
+          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4", // Visceral Impact
+          "c6036ec2-ad36-5f5c-8ac4-225dc0e7d919"  // Profuse Bleeding
+        ],
+        any: true,
+        description: "Requires Grisly Gain, Visceral Impact, or Profuse Bleeding"
+      }
+    ]
   },
   {
     id: "c25813a6-179c-5dc7-b672-739644a10ee5",
@@ -296,7 +357,28 @@ export const BOONS: Boon[] = [
     gods: ["Hera", "Aphrodite"],
     element: "Aether",
     effect: "As long as multiple foes are in an Encounter, automatically inflict Charm on *1* of them. \n ▸ Min Foes for Auto-Charm: 2",
-    icon: "/assets/boons/duo/Ecstatic_Obsession.webp"
+    icon: "/assets/boons/duo/Ecstatic_Obsession.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
+          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+        ],
+        any: true,
+        description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
+      },
+      {
+        boonIds: [
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "25a736fc-b220-55cd-a713-e05a01b4dbfa"  // Nexus Rush
+        ],
+        any: true,
+        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Nexus Rush"
+      }
+    ]
   },
   {
     id: "e8201d88-05cf-5aae-ad8a-392a6128b01b",
@@ -448,8 +530,16 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Demeter"],
     element: null,
-    effect: "While you have at least 6 Water Boons, whenever you would take at least *20* damage, take less. \n ▸ Heavy Damage Reduction: -10",
-    icon: "/assets/boons/demeter/Frosty_Veneer.webp"
+    effect: "While you have at least 6 Water Essences, whenever you would take at least *20* damage, take less. \n ▸ Heavy Damage Reduction: -10",
+    icon: "/assets/boons/demeter/Frosty_Veneer.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 6 Water Essences",
+        element: "Water",
+        elementCount: 6
+      }
+    ]
   },
   {
     id: "0ace7aad-68c9-5b65-9a31-899364d9d6c1",
@@ -563,7 +653,31 @@ export const BOONS: Boon[] = [
     gods: ["Demeter", "Aphrodite"],
     element: "Aether",
     effect: "You deal more damage with your Weapon the more Max Health you have. \n ▸ Bonus Damage per 100 Life: +10%",
-    icon: "/assets/boons/duo/Hearty_Appetite.webp"
+    icon: "/assets/boons/duo/Hearty_Appetite.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
+          "5d4dcdca-fb70-5019-84f9-78964ad23d72", // Flutter Flourish
+          "936e899f-cc41-5003-bdb9-66a6ebae52a1", // Glamour Gain
+          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
+          "8c1e6524-c456-57be-96a6-01b398e0e76d"  // Healthy Rebound
+        ],
+        any: true,
+        description: "Requires Flutter Strike, Flutter Flourish, Glamour Gain, Passion Rush, or Healthy Rebound"
+      },
+      {
+        boonIds: [
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
+          "16265777-2471-507d-9457-ef385a9a5a47", // Tranquil Gain
+          "f4b3601e-b839-5f04-a1ae-675a1431b640", // Frigid Rush
+          "a947883b-7f61-5123-9eb8-4ade0773ab2b"  // Plentiful Forage
+        ],
+        any: true,
+        description: "Requires Ice Strike, Ice Flourish, Tranquil Gain, Frigid Rush, or Plentiful Forage"
+      }
+    ]
   },
   {
     id: "ed08770d-871a-5322-a96b-25c501a4992f",
@@ -707,7 +821,28 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon", "Aphrodite"],
     element: "Aether",
     effect: "You take less damage from nearby foes. Boons of Aphrodite treat all foes as nearby. \n ▸ Damage Resistance: +15%",
-    icon: "/assets/boons/duo/Island_Getaway.webp"
+    icon: "/assets/boons/duo/Island_Getaway.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
+          "5d4dcdca-fb70-5019-84f9-78964ad23d72"  // Flutter Flourish
+        ],
+        any: true,
+        description: "Requires Flutter Strike or Flutter Flourish"
+      },
+      {
+        boonIds: [
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
+          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
+          "3d9b7234-b439-502a-8dae-581fc3ad6359", // Breaker Rush
+          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3"  // Flood Gain
+        ],
+        any: true,
+        description: "Requires Wave Strike, Wave Flourish, Tidal Ring, Breaker Rush, or Flood Gain"
+      }
+    ]
   },
   {
     id: "c6a28c11-b12a-5e08-ab4f-f3bbb301ccb0",
@@ -770,7 +905,29 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite", "Hephaestus"],
     element: "Aether",
     effect: "Your blast effects from Hephaestus also create a Heartthrob. \n ▸ Heartthrob Blast Damage: 160.",
-    icon: "/assets/boons/duo/Love_Handles.webp"
+    icon: "/assets/boons/duo/Love_Handles.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
+          "5d4dcdca-fb70-5019-84f9-78964ad23d72", // Flutter Flourish
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
+          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+        ],
+        any: true,
+        description: "Requires Flutter Strike, Flutter Flourish, Rapture Ring, Passion Rush, or Glamour Gain"
+      },
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
+          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+        ],
+        any: true,
+        description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
+      }
+    ]
   },
   {
     id: "ac3b5773-96b3-5e4d-bbda-4fff994aed86",
@@ -787,7 +944,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Hephaestus"],
     element: null,
-    effect: "Your Attack and Special deal more damage for each Earth Boon you have. \n ▸ Damage per Earth Boon: +5%",
+    effect: "Your Attack and Special deal more damage for each Earth Essence you have. \n ▸ Damage per Earth Essence: +5%",
     icon: "/assets/boons/hephaestus/Martial_Art.webp"
   },
   {
@@ -842,7 +999,36 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite"],
     element: "Air",
     effect: "Whenever you inflict Weak, also randomly inflict Curses from other Olympians. \n ▸ Bonus Random Curses: 3.",
-    icon: "/assets/boons/aphrodite/Nervous_Wreck.webp"
+    icon: "/assets/boons/aphrodite/Nervous_Wreck.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "b9e84fce-bfbb-5ee7-a821-f55fa8b6b984", // Broken Resolve
+          "39706212-eaea-552d-800f-d1671ddfc8cc", // Sweet Surrender
+          "8a0ecab3-8591-587d-9aac-bf3ebefb1867", // Shameless Attitude
+          "db1be79a-686e-5905-b3f5-0f9bb748e8ea"  // Secret Crush
+        ],
+        any: true,
+        description: "Requires Broken Resolve, Sweet Surrender, Shameless Attitude, or Secret Crush"
+      },
+      {
+        boonIds: [
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
+          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+        ],
+        any: true,
+        description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
+      },
+      {
+        boonIds: [
+          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
+          "5d4dcdca-fb70-5019-84f9-78964ad23d72"  // Flutter Flourish
+        ],
+        any: true,
+        description: "Requires Flutter Strike or Flutter Flourish"
+      }
+    ]
   },
   {
     id: "25a736fc-b220-55cd-a713-e05a01b4dbfa",
@@ -949,8 +1135,34 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Hera"],
     element: null,
-    effect: "While you have at least *2* Earth, Water, Air, and Fire Elements, _all_ your Common Boons gain Rarity. \n ▸ Rarity Gained: Rare",
-    icon: "/assets/boons/hera/Proper_Upbringing.webp"
+    effect: "While you have at least *2* Earth, Water, Air, and Fire Essences, _all_ your Common Boons gain Rarity. \n ▸ Rarity Gained: Rare",
+    icon: "/assets/boons/hera/Proper_Upbringing.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 2 Earth Essences",
+        element: "Earth",
+        elementCount: 2
+      },
+      {
+        boonIds: [],
+        description: "Requires 2 Water Essences",
+        element: "Water",
+        elementCount: 2
+      },
+      {
+        boonIds: [],
+        description: "Requires 2 Air Essences",
+        element: "Air",
+        elementCount: 2
+      },
+      {
+        boonIds: [],
+        description: "Requires 2 Fire Essences",
+        element: "Fire",
+        elementCount: 2
+      }
+    ]
   },
   {
     id: "5d0b83d6-ae4a-5a02-a8ab-1d7ac5237f8a",
@@ -976,8 +1188,16 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Ares"],
     element: null,
-    effect: "While you have at least 8 Earth Boons, any of your damaging effects from Olympians are stronger. \n ▸ Olympian Bonus Damage: +50%.",
-    icon: "/assets/boons/ares/Rallying_Cry.webp"
+    effect: "While you have at least 8 Earth Essences, any of your damaging effects from Olympians are stronger. \n ▸ Olympian Bonus Damage: +50%.",
+    icon: "/assets/boons/ares/Rallying_Cry.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 8 Earth Essences",
+        element: "Earth",
+        elementCount: 8
+      }
+    ]
   },
   {
     id: "f879486a-3356-5538-b340-3140a893bdba",
@@ -1004,7 +1224,28 @@ export const BOONS: Boon[] = [
     gods: ["Zeus", "Aphrodite"],
     element: "Aether",
     effect: "Rushing into foes with Blitz immediately activates the effect and makes it stronger. \n ▸ Bonus Blitz Damage: +80%",
-    icon: "/assets/boons/duo/Romantic_Spark.webp"
+    icon: "/assets/boons/duo/Romantic_Spark.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
+          "5d4dcdca-fb70-5019-84f9-78964ad23d72", // Flutter Flourish
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
+          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+        ],
+        any: true,
+        description: "Requires Flutter Strike, Flutter Flourish, Rapture Ring, Passion Rush, or Glamour Gain"
+      },
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e"  // Heaven Flourish
+        ],
+        any: true,
+        description: "Requires Heaven Strike or Heaven Flourish"
+      }
+    ]
   },
   {
     id: "c771858f-175d-5a0c-924e-4e5f1fc6a1e1",
@@ -1084,8 +1325,16 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Apollo"],
     element: null,
-    effect: "While you have at least 3 Fire Boons, whenever you take damage, restore some Health. \n ▸ Damage Recovered (over 5 Sec.): 30%",
-    icon: "/assets/boons/apollo/Self_Healing.webp"
+    effect: "While you have at least 3 Fire Essences, whenever you take damage, restore some Health. \n ▸ Damage Recovered (over 5 Sec.): 30%",
+    icon: "/assets/boons/apollo/Self_Healing.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 3 Fire Essences",
+        element: "Fire",
+        elementCount: 3
+      }
+    ]
   },
   {
     id: "8a0ecab3-8591-587d-9aac-bf3ebefb1867",
@@ -1120,7 +1369,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Hestia"],
     element: null,
-    effect: "Your Attacks and Specials gain Power the more Fire Boons you have. \n ▸ Power per Fire Boon: +2",
+    effect: "Your Attacks and Specials gain Power the more Fire Essences you have. \n ▸ Power per Fire Essence: +2",
     icon: "/assets/boons/hestia/Slow_Cooker.webp"
   },
   {
@@ -1229,7 +1478,27 @@ export const BOONS: Boon[] = [
     gods: ["Apollo", "Aphrodite"],
     element: "Aether",
     effect: "Whenever you create Heartthrobs, create more. \n ▸ Bonus Heartthrobs: +2.",
-    icon: "/assets/boons/duo/Sunny_Disposition.webp"
+    icon: "/assets/boons/duo/Sunny_Disposition.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "0a10c1fd-89af-5dec-8dd5-d20ba7f1aaf6"  // Heart Breaker
+        ],
+        any: true,
+        description: "Requires Heart Breaker"
+      },
+      {
+        boonIds: [
+          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
+          "677ad451-8bea-54fc-94c9-82953d9044e8", // Nova Flourish
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
+          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+        ],
+        any: true,
+        description: "Requires Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, or Lucid Gain"
+      }
+    ]
   },
   {
     id: "09fcd20a-2b99-5492-841d-db0f338e1ae1",
@@ -1247,7 +1516,18 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite"],
     element: "Water",
     effect: "Weak-afflicted foes take more damage. \n ▸ Damage vs. Weak: +10%/+15%/+20%/+25%",
-    icon: "/assets/boons/aphrodite/Sweet_Surrender.webp"
+    icon: "/assets/boons/aphrodite/Sweet_Surrender.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
+          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+        ],
+        any: true,
+        description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
+      }
+    ]
   },
   {
     id: "4b08ee45-008d-5f11-a89a-8a2dc68ff363",
@@ -1426,7 +1706,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Poseidon"],
     element: null,
-    effect: "Gain Max Health for each Water Boon you have. \n ▸ Max Life per Water Boon: +15",
+    effect: "Gain Max Health for each Water Essence you have. \n ▸ Max Life per Water Essence: +15",
     icon: "/assets/boons/poseidon/Water_Fitness.webp"
   },
   {
@@ -1471,7 +1751,15 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Aphrodite"],
     element: null,
-    effect: "Gain a chance to Dodge for each Air Boon you have. \n ▸ Dodge Chance per Air Boon: +2%",
-    icon: "/assets/boons/aphrodite/Wispy_Wiles.webp"
+    effect: "Gain a chance to Dodge for each Air Essence you have. \n ▸ Dodge Chance per Air Essence: +2%",
+    icon: "/assets/boons/aphrodite/Wispy_Wiles.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 2 Air Essences",
+        element: "Air",
+        elementCount: 2
+      }
+    ]
   }
 ];

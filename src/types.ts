@@ -7,6 +7,8 @@ export interface BoonPrerequisite {
   boonIds: string[]; // Boon IDs of which at least one/all must be assigned
   any?: boolean;     // If true, any of the boonIds is sufficient. If false (default), all are required.
   description: string; // User-facing description of the prerequisite
+  element?: ElementType; // Optional element type prerequisite
+  elementCount?: number; // Optional number of element types required
 }
 
 export interface Boon {

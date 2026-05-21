@@ -23,7 +23,7 @@ import {
   rectSortingStrategy
 } from '@dnd-kit/sortable';
 import { BOONS } from './data/boonsData';
-import { Boon, BoonType } from './types';
+import { Boon, BoonType, ElementType } from './types';
 import { 
   SLOT_PRIORITY, 
   CORE_SLOTS, 
@@ -342,6 +342,18 @@ export default function App() {
     return ids;
   }, [coreBuild, additionalBoons]);
 
+  const elementCounts = useMemo(() => {
+    const summary = { Air: 0, Fire: 0, Water: 0, Earth: 0, Aether: 0 } as Record<ElementType, number>;
+    Object.values(coreBuild).forEach(b => {
+      const boon = b as Boon | null;
+      if (boon?.element && boon.type !== 'Infusion') summary[boon.element]++;
+    });
+    additionalBoons.forEach(b => {
+      if (b?.element && b.type !== 'Infusion') summary[b.element]++;
+    });
+    return summary;
+  }, [coreBuild, additionalBoons]);
+
   const activeStandardOlympians = useMemo(() => {
     const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades', 'Chaos', 'Raki', 'Twilight Curse'];
     const active = new Set<string>();
@@ -574,6 +586,7 @@ export default function App() {
             handleSidebarScroll={handleSidebarScroll}
             searchInputRef={searchInputRef}
             selectedBoonIds={selectedBoonIds}
+            elementCounts={elementCounts}
           />
 
           {/* Right: Build View */}
