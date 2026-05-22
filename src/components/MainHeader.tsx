@@ -12,8 +12,8 @@ export function MainHeader() {
             referrerPolicy="no-referrer"
           />
         </div>
-        <h1 className="text-xl font-bold text-gray-300 uppercase italic">
-          Hades II <span className="text-hades-accent not-italic ml-2">Build Planner</span>
+        <h1 className="text-xl font-bold text-gray-300 uppercase italic font-display">
+          Hades II <span className="text-hades-accent not-italic ml-2 font-display">Build Planner</span>
         </h1>
       </div>
 

@@ -108,10 +108,10 @@ export function StaticBoonListItem({
         
         <div className={`flex-1 min-w-0 py-0.5 ${isLocked ? 'opacity-50' : ''}`}>
           <div className="flex items-center justify-between gap-2 mb-0.5">
-            <h4 className={`text-sm font-bold uppercase truncate ${getBoonColor(boon.type)}`}>
+            <h4 className={`text-sm font-bold uppercase truncate font-display ${getBoonColor(boon.type)}`}>
               {boon.name}
             </h4>
-            <span className={`text-[9px] font-mono uppercase leading-none font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${
+            <span className={`text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${
               isLocked 
                 ? 'bg-red-950/25 border-red-900/20 text-red-100/50' 
                 : 'bg-hades-accent/10 border-hades-accent/20 text-hades-accent/80'
@@ -124,7 +124,7 @@ export function StaticBoonListItem({
               {boon.gods.map((god, idx) => (
                 <div key={idx} className="flex items-center gap-1.5">
                   <GodIcon god={god} className="w-3 h-3" />
-                  <span className="text-[10px] font-mono text-hades-text/70 uppercase leading-none">
+                  <span className="text-[10px] font-display text-hades-text/70 uppercase leading-none">
                     {god}
                   </span>
                 </div>
@@ -133,13 +133,13 @@ export function StaticBoonListItem({
             {boon.element ? (
               <div className="flex items-center gap-1.5">
                 <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
-                <span className="text-[10px] font-mono text-hades-text/70 uppercase leading-none">
+                <span className="text-[10px] font-display text-hades-text/70 uppercase leading-none">
                   {boon.element}
                 </span>
               </div>
             ) : (
               <div className="flex items-center gap-1.5 opacity-40">
-                <span className="text-[10px] font-mono text-gray-500 uppercase leading-none">
+                <span className="text-[10px] font-display text-gray-500 uppercase leading-none">
                   No Element
                 </span>
               </div>

@@ -36,13 +36,13 @@ export function BuildHeader({
               onChange={(e) => setBuildName(e.target.value)}
               onBlur={() => setIsEditingName(false)}
               onKeyDown={(e) => e.key === 'Enter' && setIsEditingName(false)}
-              className="text-2xl font-light bg-transparent border-b border-hades-accent outline-none text-white w-full max-w-md uppercase py-0"
+              className="text-2xl font-light bg-transparent border-b border-hades-accent outline-none text-white w-full max-w-md uppercase py-0 font-display"
               autoFocus
             />
           ) : (
             <h2 
               onClick={() => setIsEditingName(true)}
-              className="text-2xl font-light text-gray-300 flex items-center gap-3 uppercase cursor-pointer hover:text-hades-accent transition-colors h-full"
+              className="text-2xl font-light text-gray-300 flex items-center gap-3 uppercase cursor-pointer hover:text-hades-accent transition-colors h-full font-display"
             >
               {buildName || 'Untitled Build'}
               <Edit2 className="w-4 h-4 opacity-0 group-hover:opacity-50 transition-opacity" />

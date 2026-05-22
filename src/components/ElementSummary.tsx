@@ -46,7 +46,7 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2 ml-1">
         <img src="/assets/ui/ElementalEssence.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
-        <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold">Elemental Essences</span>
+        <span className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold">Elemental Essences</span>
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px]">
         {ALL_ELEMENTS.map((el) => {
@@ -73,7 +73,7 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
                     <div className={`w-4 h-4 ${ELEMENT_COLORS[el]}`}>
                       <ElementIcon element={el} className="w-full h-full" />
                     </div>
-                    <span className="text-sm font-bold uppercase tracking-widest text-gray-200">{el}</span>
+                    <span className="text-sm font-bold uppercase tracking-widest text-gray-200 font-display">{el}</span>
                   </div>
                   <span className={`text-[11px] font-bold font-mono px-1.5 py-0.5 rounded ${
                     count > 0 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-white/5 text-gray-500'

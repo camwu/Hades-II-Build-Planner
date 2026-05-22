@@ -383,7 +383,7 @@ export function BoonLibrary({
             <div className="flex items-center justify-between mx-5 px-1 select-none">
               <button
                 onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
-                className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
+                className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
               >
                 {isPinnedExpanded ? (
                   <ChevronDown className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
@@ -397,7 +397,7 @@ export function BoonLibrary({
               </button>
               <button
                 onClick={clearAllPins}
-                className="text-[9px] font-mono uppercase text-hades-text/45 hover:text-hades-accent transition-colors cursor-pointer"
+                className="text-[9px] font-display uppercase text-hades-text/45 hover:text-hades-accent transition-colors cursor-pointer"
               >
                 Clear All
               </button>
@@ -482,7 +482,7 @@ export function BoonLibrary({
         {/* Boon Library Section Header (Frozen) */}
         <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative">
           <div className="flex items-center justify-between mx-5 px-1 select-none">
-            <div className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold flex items-center gap-2 select-none text-left">
+            <div className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center gap-2 select-none text-left">
               <img 
                 src="/assets/ui/BoonII.webp" 
                 alt="Boon Library Icon" 

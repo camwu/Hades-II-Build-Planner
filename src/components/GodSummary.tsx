@@ -105,7 +105,7 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
       <div className="flex items-center gap-3 ml-1">
         <div className="flex items-center gap-2">
           <img src="/assets/ui/Icon-Olympian.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
-          <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold">God Pool</span>
+          <span className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold">God Pool</span>
           {poolLimitExceeded && (
             <div className="flex items-center gap-2 group relative">
               <AlertTriangle className="w-3.5 h-3.5 text-hades-red animate-pulse cursor-help" />
@@ -158,7 +158,7 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
                       <div className={`w-4 h-4 ${godColor}`}>
                         <GodIcon god={god} className="w-full h-full object-contain" />
                       </div>
-                      <span className="text-sm font-bold uppercase tracking-widest text-gray-200">{god}</span>
+                      <span className="text-sm font-bold uppercase tracking-widest text-gray-200 font-display">{god}</span>
                     </div>
                     <span className="text-[11px] font-bold font-mono px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400">
                       {count} {count === 1 ? 'Boon' : 'Boons'}

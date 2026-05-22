@@ -157,7 +157,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
           alt="Origination Icon" 
           referrerPolicy="no-referrer"
         />
-        <span className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold">Status Curses</span>
+        <span className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold">Status Curses</span>
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px]">
         {activeCurses.length === 0 ? (
@@ -198,7 +198,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                         <Skull className="w-4 h-4" />
                       </div>
                     )}
-                    <span className="text-sm font-bold uppercase tracking-widest text-gray-200">{curse.name}</span>
+                    <span className="text-sm font-bold uppercase tracking-widest text-gray-200 font-display">{curse.name}</span>
                   </div>
                   <span className="text-[11px] font-bold font-mono px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 capitalize">
                     {curse.duration || 'Active'}
@@ -273,7 +273,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
           </div>
 
           <div className="flex flex-col justify-center">
-            <span className={`text-[10px] font-bold uppercase tracking-wider font-mono ${
+            <span className={`text-[10px] font-bold uppercase tracking-wider font-display ${
               isOriginationActive ? 'text-amber-400' : 'text-gray-500'
             }`}>
               Origination
@@ -288,7 +288,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
               <div className="flex items-center gap-2">
                 <img src="/assets/ui/Origination_Active_Icon.webp" className="w-5.5 h-5.5 object-contain" style={{ width: '22px', height: '22px' }} alt="Origination" referrerPolicy="no-referrer" />
                 <div className="flex flex-col leading-tight">
-                  <span className="text-sm font-bold uppercase tracking-widest text-amber-400">
+                  <span className="text-sm font-bold uppercase tracking-widest text-amber-400 font-display">
                     Origination
                   </span>
                 </div>

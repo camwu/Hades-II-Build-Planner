@@ -179,11 +179,11 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
                   className="relative"
                 >
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <h4 className={`text-sm font-black uppercase tracking-wider leading-tight ${getBoonColor(boon.type)}`}>
+                    <h4 className={`text-sm font-black uppercase tracking-wider leading-tight font-display ${getBoonColor(boon.type)}`}>
                       {boon.name}
                     </h4>
                     <div className="flex items-center gap-1.5 flex-shrink-0">
-                      <span className="text-[9px] font-mono text-hades-accent/80 uppercase leading-none font-bold bg-hades-accent/10 px-1.5 py-[3px] rounded border border-hades-accent/20 flex-shrink-0">
+                      <span className="text-[9px] font-display text-hades-accent/80 uppercase leading-none font-bold bg-hades-accent/10 px-1.5 py-[3px] rounded border border-hades-accent/20 flex-shrink-0">
                         {boon.type}
                       </span>
                       <button 
@@ -205,7 +205,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
                   animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -10 }}
                   className="relative"
                 >
-                  <div className="text-sm font-black uppercase tracking-wider leading-tight text-hades-accent mb-1">
+                  <div className="text-sm font-black uppercase tracking-wider leading-tight text-hades-accent mb-1 font-display">
                     {slot.name}
                   </div>
                   <p className="text-[12px] text-white/40 leading-normal font-normal mt-1">
