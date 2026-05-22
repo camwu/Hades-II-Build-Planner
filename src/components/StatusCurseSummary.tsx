@@ -12,31 +12,6 @@ interface StatusCurseSummaryProps {
   additionalBoons: Boon[];
 }
 
-const EXCLUDED_CURSE_BOONS = new Set([
-  'Broken Resolve',
-  'Sweet Surrender',
-  'Nervous Wreck',
-  'Back Burner',
-  'Grievous Blow',
-  'Profuse Bleeding',
-  'Cold Storage',
-  'Winter Harvest',
-  'Dying Wish',
-  'Hereditary Bane',
-  'Arc Flash',
-  'Burning Desire',
-  'Rude Awakening',
-  'Warm Breeze',
-  'Heinous Affront',
-  'Cryo Pounder',
-  'Tropical Cyclone',
-  'Incandescent Aura',
-  'Freezer Burn',
-  'Killer Current',
-  'Scalding Vapor',
-  'Romantic Spark'
-].map(name => name.toLowerCase()));
-
 export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSummaryProps) {
   const activeBoons = useMemo(() => {
     const all = Object.values(coreBuild).filter((b): b is Boon => !!b);
@@ -51,23 +26,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
 
   const activeCurses = useMemo(() => {
     const unfiltered = STATUS_CURSES.filter(curse => {
-      return activeBoons.some(boon => {
-        const nameLower = boon.name.toLowerCase();
-        if (EXCLUDED_CURSE_BOONS.has(nameLower)) {
-          return false;
-        }
-
-        if (nameLower === 'thermal dynamics') {
-          return curse.name === 'Scorch';
-        }
-
-        return boon.effect.toLowerCase().includes(curse.name.toLowerCase()) ||
-          (curse.name === 'Weak' && boon.effect.toLowerCase().includes('weak')) ||
-          (curse.name === 'Scorch' && boon.effect.toLowerCase().includes('scorch')) ||
-          (curse.name === 'Blitz' && boon.effect.toLowerCase().includes('blitz')) ||
-          (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
-          (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'));
-      });
+      return activeBoons.some(boon => boon.inflictsCurse === curse.id);
     });
 
     const currentActiveIds = new Set(unfiltered.map(c => c.id));
@@ -88,14 +47,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
   const curseGods = useMemo(() => {
     const godsMap = new Map<string, string[]>();
     activeCurses.forEach(curse => {
-      const matchingBoons = activeBoons.filter(boon => 
-        boon.effect.toLowerCase().includes(curse.name.toLowerCase()) ||
-        (curse.name === 'Weak' && boon.effect.toLowerCase().includes('weak')) ||
-        (curse.name === 'Scorch' && boon.effect.toLowerCase().includes('scorch')) ||
-        (curse.name === 'Blitz' && boon.effect.toLowerCase().includes('blitz')) ||
-        (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
-        (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'))
-      );
+      const matchingBoons = activeBoons.filter(boon => boon.inflictsCurse === curse.id);
       
       const godsForThisCurse = new Set<string>();
       matchingBoons.forEach(boon => {
@@ -130,21 +82,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
 
   const originationContributingBoons = useMemo(() => {
     return activeBoons.filter(boon => {
-      const nameLower = boon.name.toLowerCase();
-      if (EXCLUDED_CURSE_BOONS.has(nameLower)) {
-        return false;
-      }
-      return activeCurses.some(curse => {
-        if (nameLower === 'thermal dynamics') {
-          return curse.name === 'Scorch';
-        }
-        return boon.effect.toLowerCase().includes(curse.name.toLowerCase()) ||
-          (curse.name === 'Weak' && boon.effect.toLowerCase().includes('weak')) ||
-          (curse.name === 'Scorch' && boon.effect.toLowerCase().includes('scorch')) ||
-          (curse.name === 'Blitz' && boon.effect.toLowerCase().includes('blitz')) ||
-          (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
-          (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'));
-      });
+      return activeCurses.some(curse => boon.inflictsCurse === curse.id);
     });
   }, [activeBoons, activeCurses]);
 
@@ -210,21 +148,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                 </div>
 
                 {(() => {
-                  const contributingBoons = activeBoons.filter(boon => {
-                    const nameLower = boon.name.toLowerCase();
-                    if (EXCLUDED_CURSE_BOONS.has(nameLower)) {
-                      return false;
-                    }
-                    if (nameLower === 'thermal dynamics') {
-                      return curse.name === 'Scorch';
-                    }
-                    return boon.effect.toLowerCase().includes(curse.name.toLowerCase()) ||
-                      (curse.name === 'Weak' && boon.effect.toLowerCase().includes('weak')) ||
-                      (curse.name === 'Scorch' && boon.effect.toLowerCase().includes('scorch')) ||
-                      (curse.name === 'Blitz' && boon.effect.toLowerCase().includes('blitz')) ||
-                      (curse.name === 'Freeze' && boon.effect.toLowerCase().includes('freeze')) ||
-                      (curse.name === 'Hitch' && boon.effect.toLowerCase().includes('hitch'));
-                  });
+                  const contributingBoons = activeBoons.filter(boon => boon.inflictsCurse === curse.id);
 
                   if (contributingBoons.length === 0) return null;
 

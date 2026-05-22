@@ -20,6 +20,7 @@ export interface Boon {
   effect: string;
   icon?: string;
   prerequisites?: BoonPrerequisite[];
+  inflictsCurse?: string;
 }
 
 export type BoonType = 

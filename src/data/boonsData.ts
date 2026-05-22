@@ -52,7 +52,8 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Water",
     effect: "Your Casts also create a Gust at the binding circle. \n ▸ Gust Area Damage (every 0.25 Sec.): 4/8/12/16",
-    icon: "/assets/boons/demeter/Arctic_Gale.webp"
+    icon: "/assets/boons/demeter/Arctic_Gale.webp",
+    inflictsCurse: "gust"
   },
   {
     id: "e8e876fb-519e-5b75-bfe6-5f05079f62c1",
@@ -61,7 +62,8 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Water",
     effect: "Your Casts inflict Freeze and repeatedly deal damage to foes in the binding circle. \n ▸ Cast Damage (every 0.5 Sec.): 10/15/20/25",
-    icon: "/assets/boons/demeter/Arctic_Ring.webp"
+    icon: "/assets/boons/demeter/Arctic_Ring.webp",
+    inflictsCurse: "freeze"
   },
   {
     id: "3cc47d40-d0d9-5d2a-8e40-e8f9f3b7c44e",
@@ -139,7 +141,8 @@ export const BOONS: Boon[] = [
     gods: ["Apollo"],
     element: "Fire",
     effect: "Your Sprint is faster and inflicts Daze on surrounding foes. \n ▸ Sprint Speed: +15%/+20%/+25%/+30%",
-    icon: "/assets/boons/apollo/Blinding_Rush.webp"
+    icon: "/assets/boons/apollo/Blinding_Rush.webp",
+    inflictsCurse: "daze"
   },
   {
     id: "e625b64a-23d8-5b20-bbef-e9e3056331a2",
@@ -386,6 +389,7 @@ export const BOONS: Boon[] = [
     element: "Fire",
     effect: "Your attacks may inflict Daze. \n ▸ Daze Chance: +10%/+15%/+20%/+25%",
     icon: "/assets/boons/apollo/Dazzling_Display.webp",
+    inflictsCurse: "daze",
     prerequisites: [
       {
         boonIds: ["bc4205cb-d68d-50c7-9cfc-47f75316dd7c"], // Nova Strike
@@ -466,7 +470,8 @@ export const BOONS: Boon[] = [
     gods: ["Hera"],
     element: "Air",
     effect: "Your Casts inflict Hitch and immediately deal damage based on foes in the binding circle. \n ▸ Damage per Foe: 20/30/40/50",
-    icon: "/assets/boons/hera/Engagement_Ring.webp"
+    icon: "/assets/boons/hera/Engagement_Ring.webp",
+    inflictsCurse: "hitch"
   },
   {
     id: "28daab2f-4165-57b0-981f-abb6478d61c0",
@@ -557,7 +562,8 @@ export const BOONS: Boon[] = [
     gods: ["Hestia"],
     element: "Fire",
     effect: "Your Casts destroy many foes' ranged shots, and inflict Scorch on the attacking foes. \n ▸ Scorch Damage (every 3 Sec.): 400",
-    icon: "/assets/boons/hestia/Fire_Away.webp"
+    icon: "/assets/boons/hestia/Fire_Away.webp",
+    inflictsCurse: "scorch"
   },
   {
     id: "f67e501c-5277-588f-a274-d0216437c764",
@@ -566,7 +572,8 @@ export const BOONS: Boon[] = [
     gods: ["Hestia"],
     element: "Fire",
     effect: "Your Specials inflict Scorch. \n ▸ Scorch Damage: 35/53/70/88",
-    icon: "/assets/boons/hestia/Flame_Flourish.webp"
+    icon: "/assets/boons/hestia/Flame_Flourish.webp",
+    inflictsCurse: "scorch"
   },
   {
     id: "ed24b45a-d7bc-57d9-817d-989521fc5bf3",
@@ -575,7 +582,8 @@ export const BOONS: Boon[] = [
     gods: ["Hestia"],
     element: "Fire",
     effect: "Your Attacks inflict Scorch. \n ▸ Scorch Damage: 30/45/60/75",
-    icon: "/assets/boons/hestia/Flame_Strike.webp"
+    icon: "/assets/boons/hestia/Flame_Strike.webp",
+    inflictsCurse: "scorch"
   },
   {
     id: "7854f04e-79bd-5de0-8f93-9bf87c4e31f3",
@@ -620,7 +628,8 @@ export const BOONS: Boon[] = [
     gods: ["Hestia", "Ares"],
     element: "Aether",
     effect: "Your fireball effects from Hestia inflict Wounds with even greater Power. \n ▸ Fireball Wounds Bonus Power: +250",
-    icon: "/assets/boons/duo/Fourth_Degree.webp"
+    icon: "/assets/boons/duo/Fourth_Degree.webp",
+    inflictsCurse: "wounds"
   },
   {
     id: "495481f4-c2de-5bc7-a420-fd6e5c43880c",
@@ -638,7 +647,8 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Water",
     effect: "Your Sprint forms a Gust around you that lingers after you stop. \n ▸ Gust Area Damage (every 0.25 Sec.): 4/6/8/10",
-    icon: "/assets/boons/demeter/Frigid_Rush.webp"
+    icon: "/assets/boons/demeter/Frigid_Rush.webp",
+    inflictsCurse: "gust"
   },
   {
     id: "915939ec-15c7-5be6-96a5-22949b009bb8",
@@ -664,7 +674,8 @@ export const BOONS: Boon[] = [
     gods: ["Hephaestus"],
     element: "Fire",
     effect: "Your blast effects from Hephaestus also inflict Glow on foes. \n ▸ Glow Bonus Damage: +15%/+19%/+25%/+26%",
-    icon: "/assets/boons/hephaestus/Furnace_Blast.webp"
+    icon: "/assets/boons/hephaestus/Furnace_Blast.webp",
+    inflictsCurse: "glow"
   },
   {
     id: "6e1d031a-7fda-55bb-86f5-06e4322d11c5",
@@ -682,7 +693,8 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite"],
     element: "Air",
     effect: "You automatically inflict Weak on nearby foes and gradually restore Magick near them. \n ▸ Magick Restoration (every 1 Sec.): 6/8/10/12",
-    icon: "/assets/boons/aphrodite/Glamour_Gain.webp"
+    icon: "/assets/boons/aphrodite/Glamour_Gain.webp",
+    inflictsCurse: "weak"
   },
   {
     id: "b0fb61c9-819d-5be4-8be4-5612ce6209af",
@@ -827,7 +839,8 @@ export const BOONS: Boon[] = [
     gods: ["Zeus"],
     element: "Air",
     effect: "Your Specials inflict Blitz. \n ▸ Blitz Damage: 100/130/160/190",
-    icon: "/assets/boons/zeus/Heaven_Flourish.webp"
+    icon: "/assets/boons/zeus/Heaven_Flourish.webp",
+    inflictsCurse: "blitz"
   },
   {
     id: "d830b8f9-7744-5114-a60e-a0f738d3e4b0",
@@ -836,7 +849,8 @@ export const BOONS: Boon[] = [
     gods: ["Zeus"],
     element: "Air",
     effect: "Your Attacks inflict Blitz. \n ▸ Blitz Damage: 80/120/160/200",
-    icon: "/assets/boons/zeus/Heaven_Strike.webp"
+    icon: "/assets/boons/zeus/Heaven_Strike.webp",
+    inflictsCurse: "blitz"
   },
   {
     id: "c71088b5-8a65-589d-aeea-80912b32c25b",
@@ -917,7 +931,8 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Water",
     effect: "Your Specials deal more damage and inflict Freeze. \n ▸ Special Damage: +40%/+60%/+80%/+100%",
-    icon: "/assets/boons/demeter/Ice_Flourish.webp"
+    icon: "/assets/boons/demeter/Ice_Flourish.webp",
+    inflictsCurse: "freeze"
   },
   {
     id: "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6",
@@ -926,7 +941,8 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Water",
     effect: "Your Attacks deal more damage and inflict Freeze. \n ▸ Attack Damage: +30%/+45%/+60%/+75%",
-    icon: "/assets/boons/demeter/Ice_Strike.webp"
+    icon: "/assets/boons/demeter/Ice_Strike.webp",
+    inflictsCurse: "freeze"
   },
   {
     id: "c574f032-ec8d-5490-b2cd-5cf374236df8",
@@ -1010,7 +1026,8 @@ export const BOONS: Boon[] = [
     gods: ["Apollo"],
     element: "Fire",
     effect: "After you take damage, automatically damage and Daze _all_ foes in the vicinity. \n ▸ Revenge Damage: 50/75/100/125",
-    icon: "/assets/boons/apollo/Light_Smite.webp"
+    icon: "/assets/boons/apollo/Light_Smite.webp",
+    inflictsCurse: "daze"
   },
   {
     id: "2bd56797-3ab2-5ed8-95d5-6cdd5a3a4f28",
@@ -1169,7 +1186,8 @@ export const BOONS: Boon[] = [
     gods: ["Hera"],
     element: "Fire",
     effect: "Your Sprint inflicts Hitch on surrounding foes, and deals damage when it does. \n ▸ Damage with Hitch: 60/90/120/150",
-    icon: "/assets/boons/hera/Nexus_Rush.webp"
+    icon: "/assets/boons/hera/Nexus_Rush.webp",
+    inflictsCurse: "hitch"
   },
   {
     id: "677ad451-8bea-54fc-94c9-82953d9044e8",
@@ -1205,7 +1223,8 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite"],
     element: "Air",
     effect: "Rushing damages surrounding foes and inflicts Weak, and again once you stop. \n ▸ Blast Damage: 20/30/40/50",
-    icon: "/assets/boons/aphrodite/Passion_Rush.webp"
+    icon: "/assets/boons/aphrodite/Passion_Rush.webp",
+    inflictsCurse: "weak"
   },
   {
     id: "96e5a954-5856-5fd4-9ecb-228df17f2385",
@@ -1355,7 +1374,8 @@ export const BOONS: Boon[] = [
     gods: ["Aphrodite"],
     element: "Air",
     effect: "Your Casts inflict Weak, and damage foes while dragging them toward the center. \n ▸ Cast Damage (every 0.85 Sec.): 10/15/20/25",
-    icon: "/assets/boons/aphrodite/Rapture_Ring.webp"
+    icon: "/assets/boons/aphrodite/Rapture_Ring.webp",
+    inflictsCurse: "weak"
   },
   {
     id: "4da2a419-4972-5b2e-93f9-3d3b4cd876e5",
@@ -1531,7 +1551,8 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon"],
     element: "Water",
     effect: "Your splash effects from Poseidon also inflict Froth, and Froth deals more damage. \n ▸ Froth Damage: +20%/+50%/+80%/+110%",
-    icon: "/assets/boons/poseidon/Slippery_Slope.webp"
+    icon: "/assets/boons/poseidon/Slippery_Slope.webp",
+    inflictsCurse: "froth"
   },
   {
     id: "16427bf1-ec92-5b08-91d9-24ce6f55b69a",
@@ -1558,7 +1579,8 @@ export const BOONS: Boon[] = [
     gods: ["Hestia"],
     element: "Fire",
     effect: "Your Casts repeatedly inflict Scorch on foes in the binding circle. \n ▸ Scorch Damage (every 1 Sec.): 40/60/80/100",
-    icon: "/assets/boons/hestia/Smolder_Ring.webp"
+    icon: "/assets/boons/hestia/Smolder_Ring.webp",
+    inflictsCurse: "scorch"
   },
   {
     id: "467bc2c3-8cd4-53e8-84b6-0f9f8e45ecd2",
@@ -1585,7 +1607,8 @@ export const BOONS: Boon[] = [
     gods: ["Apollo"],
     element: "Fire",
     effect: "Your Casts inflict Daze, and deal a burst of damage before they expire. \n ▸ Cast Damage: 80/120/160/200",
-    icon: "/assets/boons/apollo/Solar_Ring.webp"
+    icon: "/assets/boons/apollo/Solar_Ring.webp",
+    inflictsCurse: "daze"
   },
   {
     id: "da004d70-d8bb-5868-a665-a45ca980589f",
@@ -1735,7 +1758,8 @@ export const BOONS: Boon[] = [
     gods: ["Hera"],
     element: "Earth",
     effect: "Your Specials deal more damage and inflict Hitch. \n ▸ Special Damage: +60%/+70%/+80%/+90%",
-    icon: "/assets/boons/hera/Sworn_Flourish.webp"
+    icon: "/assets/boons/hera/Sworn_Flourish.webp",
+    inflictsCurse: "hitch"
   },
   {
     id: "b13b119a-0570-534b-8a30-abf4c38b0da5",
@@ -1744,7 +1768,8 @@ export const BOONS: Boon[] = [
     gods: ["Hera"],
     element: "Earth",
     effect: "Your Attacks deal more damage and inflict Hitch. \n ▸ Attack Damage: +50%/+60%/+70%/+80%",
-    icon: "/assets/boons/hera/Sworn_Strike.webp"
+    icon: "/assets/boons/hera/Sworn_Strike.webp",
+    inflictsCurse: "hitch"
   },
   {
     id: "7ab48430-8d7a-5daa-827d-f91ddc154548",
@@ -1753,7 +1778,8 @@ export const BOONS: Boon[] = [
     gods: ["Zeus", "Hestia"],
     element: "Aether",
     effect: "Your Blitz effects also inflict Scorch whenever they deal damage. \n ▸ Scorch Damage: 160",
-    icon: "/assets/boons/duo/Thermal_Dynamics.webp"
+    icon: "/assets/boons/duo/Thermal_Dynamics.webp",
+    inflictsCurse: "scorch"
   },
   {
     id: "13f515f5-6415-51e1-a45f-6fb7f2eb2b63",
@@ -1771,7 +1797,8 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon"],
     element: "Water",
     effect: "Your Casts also immediately hit foes with a powerful splash that inflicts Froth. \n ▸ Splash Damage: 60/90/120/150",
-    icon: "/assets/boons/poseidon/Tidal_Ring.webp"
+    icon: "/assets/boons/poseidon/Tidal_Ring.webp",
+    inflictsCurse: "froth"
   },
   {
     id: "f3b24e95-48e4-5813-8b41-01674038821d",
@@ -1864,7 +1891,8 @@ export const BOONS: Boon[] = [
     gods: ["Ares"],
     element: "Earth",
     effect: "Your Specials deal more damage and inflict Wounds. \n ▸ Special Damage: +30%/+40%/+50%/+60%.",
-    icon: "/assets/boons/ares/Vicious_Flourish.webp"
+    icon: "/assets/boons/ares/Vicious_Flourish.webp",
+    inflictsCurse: "wounds"
   },
   {
     id: "5eb0886b-24f5-5bb1-b2ba-9208e0212339",
@@ -1873,7 +1901,8 @@ export const BOONS: Boon[] = [
     gods: ["Ares"],
     element: "Earth",
     effect: "Your Attacks deal more damage and inflict Wounds. \n ▸ Attack Damage: +20%/+30%/+40%/+50%.",
-    icon: "/assets/boons/ares/Vicious_Strike.webp"
+    icon: "/assets/boons/ares/Vicious_Strike.webp",
+    inflictsCurse: "wounds"
   },
   {
     id: "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4",
