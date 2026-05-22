@@ -80,13 +80,15 @@ export function StaticBoonListItem({
   const borderColor = getBoonBorderColor(boon.type);
   
   return (
-    <div className={`p-3 rounded-xl transition-all duration-150 transform-gpu ${
+    <div className={`p-3 rounded-xl transition-all duration-150 ${
       isOverlay 
         ? 'bg-hades-bg-light shadow-2xl z-50' 
-        : 'bg-hades-bg-dark/80 border border-white/10 hover:border-white/20 group-hover:border-white/20'
-    } ${isLocked ? 'bg-hades-bg-dark/60' : ''}`}>
-      <div className={`flex items-start gap-4 transform-gpu transition-opacity duration-150 ${isLocked ? 'opacity-50 saturate-[0.7]' : ''}`}>
-        <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
+        : isLocked
+          ? 'bg-hades-bg-dark/60 border border-red-950/45'
+          : 'bg-hades-bg-dark/80 border border-white/10 hover:border-white/20 group-hover:border-white/20'
+    }`}>
+      <div className="flex items-start gap-4 transition-opacity duration-150">
+        <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING} ${isLocked ? 'opacity-50' : ''}`}>
           {boon.icon ? (
             <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
               <img 
@@ -104,9 +106,9 @@ export function StaticBoonListItem({
           )}
         </div>
         
-        <div className="flex-1 min-w-0 py-0.5">
+        <div className={`flex-1 min-w-0 py-0.5 ${isLocked ? 'opacity-50' : ''}`}>
           <div className="flex items-center justify-between gap-2 mb-0.5">
-            <h4 className={`text-sm font-bold uppercase truncate ${isLocked ? 'text-gray-500' : getBoonColor(boon.type)}`}>
+            <h4 className={`text-sm font-bold uppercase truncate ${getBoonColor(boon.type)}`}>
               {boon.name}
             </h4>
             <span className={`text-[9px] font-mono uppercase leading-none font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${
@@ -145,7 +147,7 @@ export function StaticBoonListItem({
           </div>
         </div>
       </div>
-      <p className={`text-[12px] text-gray-400 leading-normal font-medium mt-2 transition-opacity duration-150 ${isLocked ? 'opacity-50 saturate-[0.7]' : ''}`}>
+      <p className={`text-[12px] text-gray-400 leading-normal font-medium mt-2 transition-opacity duration-150 ${isLocked ? 'opacity-50' : ''}`}>
         <FormattedBoonEffect text={boon.effect} />
       </p>
 
@@ -207,7 +209,7 @@ export function DraggableBoonListItem({
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: boon.id,
-    disabled: isLocked || isPinned, // Disable dragging if locked or pinned so that we can sort reorder instead
+    disabled: isLocked,
   });
   
   return (
@@ -223,7 +225,7 @@ export function DraggableBoonListItem({
         stiffness: 500,
         damping: 30
       }}
-      className={`relative group transition-opacity duration-150 transform-gpu backface-hidden ${
+      className={`relative group transition-opacity duration-150 ${
         isDragging 
           ? 'opacity-20 pointer-events-none' 
           : isLocked

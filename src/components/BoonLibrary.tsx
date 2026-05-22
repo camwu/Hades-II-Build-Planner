@@ -5,6 +5,8 @@ import { Boon, BoonPrerequisite, ElementType } from '../types';
 import { SIDEBAR_WIDTH } from '../constants';
 import { DraggableBoonListItem } from './BoonListItem';
 import { BOONS } from '../data/boonsData';
+import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface BoonLibraryProps {
   isPanelCollapsed: boolean;
@@ -30,6 +32,67 @@ interface BoonLibraryProps {
   togglePin: (boonId: string) => void;
   reorderPinnedBoons: (newOrder: string[]) => void;
   clearAllPins: () => void;
+}
+
+interface SortablePinnedBoonItemProps {
+  boon: Boon;
+  isLocked: boolean;
+  prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[];
+  activeSlot: string | null;
+  selectBoon: (boon: Boon, slotId: string) => void;
+  togglePin: (id: string) => void;
+  key?: string | number;
+}
+
+function SortablePinnedBoonItem({
+  boon,
+  isLocked,
+  prerequisitesStatus,
+  activeSlot,
+  selectBoon,
+  togglePin,
+}: SortablePinnedBoonItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: boon.id,
+    disabled: isLocked,
+    data: {
+      type: 'sortable-pinned',
+      boon,
+    },
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.3 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="transform-gpu transition-[shadow,transform] duration-200"
+    >
+      <DraggableBoonListItem
+        boon={boon}
+        onClick={() => activeSlot && selectBoon(boon, activeSlot)}
+        isSelectable={!!activeSlot}
+        isLocked={isLocked}
+        prerequisitesStatus={prerequisitesStatus}
+        isPinned={true}
+        onPinToggle={() => togglePin(boon.id)}
+      />
+    </div>
+  );
 }
 
 export function BoonLibrary({
@@ -82,7 +145,6 @@ export function BoonLibrary({
   });
 
   const [isResizing, setIsResizing] = React.useState<boolean>(false);
-  const [draggedIdx, setDraggedIdx] = React.useState<number | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const dragStartRef = React.useRef<{ y: number; height: number }>({ y: 0, height: 196 });
   const currentHeightRef = React.useRef<number>(196);
@@ -317,8 +379,8 @@ export function BoonLibrary({
 
         {/* Pinned Boons Section (Frozen context when scrolling) */}
         {pinnedBoons.length > 0 && (
-          <div className="flex-shrink-0 border-b border-hades-border pt-4 pb-2 bg-hades-bg-dark/15 flex flex-col relative">
-            <div className="flex items-center justify-between mx-5 px-1 pb-2 border-b border-hades-accent/15 select-none">
+          <div className="flex-shrink-0 border-b border-hades-border-light pt-4 pb-2 bg-hades-bg-dark/15 flex flex-col relative">
+            <div className="flex items-center justify-between mx-5 px-1 pb-1 select-none">
               <button
                 onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
                 className="text-[10px] font-mono uppercase tracking-wider text-hades-accent font-bold flex items-center gap-1.5 cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
@@ -329,7 +391,7 @@ export function BoonLibrary({
                   <ChevronRight className="w-3.5 h-3.5 text-hades-accent shrink-0" />
                 )}
                 <Pin className="w-3.5 h-3.5 text-hades-accent fill-current rotate-45 shrink-0" />
-                Pinned for Reference ({pinnedBoons.length})
+                Pinned Boons ({pinnedBoons.length})
               </button>
               <button
                 onClick={clearAllPins}
@@ -344,7 +406,7 @@ export function BoonLibrary({
               animate={{ 
                 height: isPinnedExpanded ? "auto" : 0,
                 opacity: isPinnedExpanded ? 1 : 0,
-                marginTop: isPinnedExpanded ? 10 : 0
+                marginTop: isPinnedExpanded ? 8 : 0
               }}
               transition={{ type: 'spring', damping: 30, stiffness: 350 }}
               className="overflow-hidden"
@@ -354,76 +416,41 @@ export function BoonLibrary({
                 style={{ maxHeight: `${pinnedMaxHeight}px` }}
                 className={`space-y-3 overflow-y-auto custom-scrollbar px-5 pt-2 pb-1.5 ${isResizing ? 'select-none pointer-events-none' : 'transition-[max-height] duration-300'}`}
               >
-                {pinnedBoons.map((boon, index) => {
-                  let isLocked = false;
-                  const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
-                  if (boon.prerequisites && boon.prerequisites.length > 0) {
-                    boon.prerequisites.forEach(prereq => {
-                      let met = false;
-                      if (prereq.element && prereq.elementCount) {
-                        const currentCount = elementCounts[prereq.element] || 0;
-                        met = currentCount >= prereq.elementCount;
-                      } else {
-                        met = prereq.any
-                          ? prereq.boonIds.some(id => selectedBoonIds.has(id))
-                          : prereq.boonIds.every(id => selectedBoonIds.has(id));
-                      }
-                      if (!met) {
-                        isLocked = true;
-                      }
-                      prerequisitesStatus.push({ prereq, met });
-                    });
-                  }
+                <SortableContext items={pinnedBoonIds} strategy={verticalListSortingStrategy}>
+                  {pinnedBoons.map((boon) => {
+                    let isLocked = false;
+                    const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
+                    if (boon.prerequisites && boon.prerequisites.length > 0) {
+                      boon.prerequisites.forEach(prereq => {
+                        let met = false;
+                        if (prereq.element && prereq.elementCount) {
+                          const currentCount = elementCounts[prereq.element] || 0;
+                          met = currentCount >= prereq.elementCount;
+                        } else {
+                          met = prereq.any
+                            ? prereq.boonIds.some(id => selectedBoonIds.has(id))
+                            : prereq.boonIds.every(id => selectedBoonIds.has(id));
+                        }
+                        if (!met) {
+                          isLocked = true;
+                        }
+                        prerequisitesStatus.push({ prereq, met });
+                      });
+                    }
 
-                  const isBeingDragged = draggedIdx === index;
-
-                  return (
-                    <motion.div
-                      layout
-                      key={`pinned-wrapper-${boon.id}`}
-                      draggable={!isResizing}
-                      onDragStart={(e) => {
-                        setDraggedIdx(index);
-                        e.dataTransfer.effectAllowed = 'move';
-                      }}
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                      }}
-                      onDragEnter={(e) => {
-                        e.preventDefault();
-                        if (draggedIdx === null || draggedIdx === index) return;
-                        const newOrder = [...pinnedBoonIds];
-                        const draggedId = newOrder[draggedIdx];
-                        newOrder.splice(draggedIdx, 1);
-                        newOrder.splice(index, 0, draggedId);
-                        setDraggedIdx(index);
-                        reorderPinnedBoons(newOrder);
-                      }}
-                      onDragEnd={() => {
-                        setDraggedIdx(null);
-                      }}
-                      className={`transform-gpu ${
-                        isBeingDragged ? 'opacity-30 scale-[0.98]' : 'hover:scale-[1.01]'
-                      }`}
-                      transition={{
-                        type: 'spring',
-                        stiffness: 500,
-                        damping: 35,
-                        mass: 0.5
-                      }}
-                    >
-                      <DraggableBoonListItem 
-                        boon={boon} 
-                        onClick={() => activeSlot && selectBoon(boon, activeSlot)}
-                        isSelectable={!!activeSlot}
+                    return (
+                      <SortablePinnedBoonItem
+                        key={boon.id}
+                        boon={boon}
                         isLocked={isLocked}
                         prerequisitesStatus={prerequisitesStatus}
-                        isPinned={true}
-                        onPinToggle={() => togglePin(boon.id)}
+                        activeSlot={activeSlot}
+                        selectBoon={selectBoon}
+                        togglePin={togglePin}
                       />
-                    </motion.div>
-                  );
-                })}
+                    );
+                  })}
+                </SortableContext>
               </div>
             </motion.div>
 
@@ -455,7 +482,7 @@ export function BoonLibrary({
 
         <div 
           onScroll={handleSidebarScroll}
-          className="flex-1 overflow-y-auto custom-scrollbar px-5 pb-8 transform-gpu"
+          className="flex-1 overflow-y-auto custom-scrollbar px-5 pt-2 pb-8 transform-gpu"
         >
           <div className="space-y-3 transform-gpu">
             {/* All/Filtered Boons header inside the scroll container */}

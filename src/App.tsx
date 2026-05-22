@@ -513,6 +513,8 @@ export default function App() {
     } else {
       setCoreBuild(prev => ({ ...prev, [slotId]: boon }));
     }
+    // Automatically remove from pinned boons when assigned
+    setPinnedBoonIds(prev => prev.filter(id => id !== boon.id));
     setActiveSlot(null);
   };
 
@@ -597,6 +599,18 @@ export default function App() {
         setAdditionalBoons((items) => {
           const oldIndex = items.findIndex(b => b.id === active.id);
           const newIndex = items.findIndex(b => b.id === over.id);
+          return arrayMove(items, oldIndex, newIndex);
+        });
+      }
+      return;
+    }
+
+    // Handle sorting pinned boons
+    if (active.data.current?.type === 'sortable-pinned' && over.data.current?.type === 'sortable-pinned') {
+      if (active.id !== over.id) {
+        setPinnedBoonIds((items) => {
+          const oldIndex = items.indexOf(active.id as string);
+          const newIndex = items.indexOf(over.id as string);
           return arrayMove(items, oldIndex, newIndex);
         });
       }
