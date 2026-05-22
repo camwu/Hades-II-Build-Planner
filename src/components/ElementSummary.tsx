@@ -62,7 +62,7 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
               }`}>
                 <ElementIcon element={el} className="w-full h-full" />
               </div>
-              <span className={`text-sm font-bold font-mono transition-colors duration-300 ${count > 0 ? 'text-gray-200' : 'text-gray-600'}`}>
+              <span className={`text-sm font-bold font-display transition-colors duration-300 ${count > 0 ? 'text-gray-200' : 'text-gray-600'}`}>
                 {count}
               </span>
 
@@ -75,7 +75,7 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
                     </div>
                     <span className="text-sm font-bold uppercase tracking-widest text-gray-200 font-display">{el}</span>
                   </div>
-                  <span className={`text-[11px] font-bold font-mono px-1.5 py-0.5 rounded ${
+                  <span className={`text-[11px] font-bold font-display px-1.5 py-0.5 rounded ${
                     count > 0 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-white/5 text-gray-500'
                   }`}>
                     {count} {count === 1 ? 'Boon' : 'Boons'}
@@ -83,7 +83,7 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
                 </div>
                 {count > 0 ? (
                   <div className="flex flex-col gap-1.5 text-xs bg-white/5 p-2 rounded-lg">
-                    <span className="text-[10px] text-gray-400 uppercase font-mono tracking-wider font-semibold">Contributing Boons:</span>
+                    <span className="text-[10px] text-gray-400 uppercase font-display tracking-wider font-semibold">Contributing Boons:</span>
                     <div className="flex flex-col gap-1.5">
                       {boons.map((boon, idx) => (
                         <div key={idx} className="flex justify-between items-center gap-2">
@@ -95,13 +95,13 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
                             )}
                             <span className="font-bold text-gray-200 truncate text-xs">{boon.name}</span>
                           </div>
-                          <span className="text-[10px] text-gray-400 font-mono flex-shrink-0">{boon.type}</span>
+                          <span className="text-[10px] text-gray-400 font-display flex-shrink-0">{boon.type}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                 ) : (
-                  <div className="text-xs text-gray-400 bg-white/[0.02] p-2 rounded-lg text-center font-mono">
+                  <div className="text-xs text-gray-400 bg-white/[0.02] p-2 rounded-lg text-center font-display">
                     No active boons
                   </div>
                 )}

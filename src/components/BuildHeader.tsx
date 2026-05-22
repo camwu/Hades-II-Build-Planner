@@ -54,7 +54,7 @@ export function BuildHeader({
       <div className="flex items-center gap-4">
         <button 
           onClick={copyBuildLink}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded border transition-all duration-200 uppercase font-mono text-[9px] tracking-widest ${
+          className={`flex items-center gap-2 px-3 py-1.5 rounded border transition-all duration-200 uppercase font-display text-[9px] tracking-widest ${
             isCopied 
               ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
               : 'bg-hades-accent/5 border-hades-accent/20 text-hades-accent/70 hover:border-hades-accent/50 hover:text-hades-accent'
@@ -66,7 +66,7 @@ export function BuildHeader({
 
         <button 
           onClick={purgeBuild}
-          className={`text-[9px] font-mono uppercase tracking-widest transition-all duration-200 flex items-center gap-2 px-3 py-1.5 rounded border ${
+          className={`text-[9px] font-display uppercase tracking-widest transition-all duration-200 flex items-center gap-2 px-3 py-1.5 rounded border ${
             showPurgeConfirm 
               ? 'bg-hades-red text-white border-white/20 animate-pulse' 
               : 'text-hades-red/80 hover:text-red-300 bg-hades-red/5 border-hades-red/10 hover:border-hades-red/30'

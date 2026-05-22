@@ -65,7 +65,7 @@ export function PurgePool() {
         </div>
 
         <div className="flex flex-col items-center text-center px-4">
-          <span className={`text-sm font-mono uppercase tracking-[0.2em] font-bold transition-colors duration-300 ${
+          <span className={`text-sm font-display uppercase tracking-[0.2em] font-bold transition-colors duration-300 ${
             isOver ? 'text-gray-200' : 'text-hades-red/40 text-xs'
           }`}>
             Pool of Purging

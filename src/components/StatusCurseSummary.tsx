@@ -161,7 +161,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px]">
         {activeCurses.length === 0 ? (
-          <span className="text-[11px] text-gray-500 font-mono">No Active Curses</span>
+          <span className="text-[11px] text-gray-500 font-display">No Active Curses</span>
         ) : (
           activeCurses.map((curse) => {
           const mainGod = curse.gods[0];
@@ -181,7 +181,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                   <Skull className="w-3.5 h-3.5" />
                 </div>
               )}
-              <span className="text-sm font-bold font-mono text-gray-200">
+              <span className="text-sm font-bold font-display text-gray-200">
                 {curse.name}
               </span>
               
@@ -200,7 +200,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                     )}
                     <span className="text-sm font-bold uppercase tracking-widest text-gray-200 font-display">{curse.name}</span>
                   </div>
-                  <span className="text-[11px] font-bold font-mono px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 capitalize">
+                  <span className="text-[11px] font-bold font-display px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 capitalize">
                     {curse.duration || 'Active'}
                   </span>
                 </div>
@@ -230,7 +230,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
 
                   return (
                     <div className="flex flex-col gap-1.5 text-xs bg-white/5 p-2 rounded-lg">
-                      <span className="text-[10px] text-gray-400 uppercase font-mono tracking-wider font-semibold">Contributing Boons:</span>
+                      <span className="text-[10px] text-gray-400 uppercase font-display tracking-wider font-semibold">Contributing Boons:</span>
                       <div className="flex flex-col gap-1.5">
                         {contributingBoons.map((boon, idx) => (
                           <div key={idx} className="flex justify-between items-center gap-2">
@@ -242,7 +242,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                               )}
                               <span className="font-bold text-gray-200 truncate text-xs">{boon.name}</span>
                             </div>
-                            <span className="text-[10px] text-gray-400 font-mono flex-shrink-0">{boon.type}</span>
+                            <span className="text-[10px] text-gray-400 font-display flex-shrink-0">{boon.type}</span>
                           </div>
                         ))}
                       </div>
@@ -293,7 +293,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                   </span>
                 </div>
               </div>
-              <span className={`text-[11px] font-mono px-1.5 py-0.5 rounded font-bold ${
+              <span className={`text-[11px] font-display px-1.5 py-0.5 rounded font-bold ${
                 isOriginationActive ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-white/5 text-gray-500'
               }`}>
                 {isOriginationActive ? 'ACTIVE' : 'INACTIVE'}
@@ -317,7 +317,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
               </div>
 
               <div className="flex flex-col gap-1.5 pt-0.5">
-                <span className="text-[10px] text-gray-400 uppercase font-mono tracking-wider font-semibold">Contributing Boons:</span>
+                <span className="text-[10px] text-gray-400 uppercase font-display tracking-wider font-semibold">Contributing Boons:</span>
                 {originationContributingBoons.length > 0 ? (
                   <div className="flex flex-col gap-1.5">
                     {originationContributingBoons.map((boon, idx) => (
@@ -330,12 +330,12 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                           )}
                           <span className="font-bold text-gray-200 truncate text-xs">{boon.name}</span>
                         </div>
-                        <span className="text-[10px] text-gray-400 font-mono flex-shrink-0">{boon.type}</span>
+                        <span className="text-[10px] text-gray-400 font-display flex-shrink-0">{boon.type}</span>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-xs text-gray-400 bg-white/[0.02] p-1.5 rounded text-center font-mono">
+                  <div className="text-xs text-gray-400 bg-white/[0.02] p-1.5 rounded text-center font-display">
                     No active boons
                   </div>
                 )}

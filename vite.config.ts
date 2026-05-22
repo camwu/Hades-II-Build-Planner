@@ -33,17 +33,13 @@ export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   const latestTime = getLatestModifiedTime(path.resolve(__dirname, 'src'));
   const validDate = latestTime.getTime() === 0 ? new Date() : latestTime;
-  const formattedDate = validDate.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  });
+  const isoString = validDate.toISOString();
 
   return {
     plugins: [react(), tailwindcss()],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-      'import.meta.env.VITE_LAST_UPDATED': JSON.stringify(formattedDate),
+      'import.meta.env.VITE_LAST_UPDATED': JSON.stringify(isoString),
     },
     resolve: {
       alias: {

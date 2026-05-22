@@ -4,6 +4,7 @@ import { Search, X, Info, ChevronLeft, ChevronRight, Pin, ChevronDown } from 'lu
 import { Boon, BoonPrerequisite, ElementType } from '../types';
 import { SIDEBAR_WIDTH } from '../constants';
 import { DraggableBoonListItem } from './BoonListItem';
+import { GodIcon, ElementIcon } from './Icons';
 import { BOONS } from '../data/boonsData';
 import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -282,7 +283,7 @@ export function BoonLibrary({
       >
         <div className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}>
           <div className="flex flex-col gap-2">
-            <div className="relative">
+            <div className="relative flex items-center">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-hades-accent/50" />
               <input 
                 ref={searchInputRef as React.RefObject<HTMLInputElement>}
@@ -290,21 +291,60 @@ export function BoonLibrary({
                 placeholder="Press / to search boons..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg py-2.5 pl-10 pr-10 text-sm text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 transition-colors"
+                className="w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg py-2.5 pl-10 pr-16 text-sm text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 transition-colors"
               />
-              {searchTerm && (
-                <button 
-                  onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-hades-text/30 hover:text-hades-accent transition-colors p-0.5"
-                  title="Clear search"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10">
+                {searchTerm && (
+                  <button 
+                    onClick={() => setSearchTerm('')}
+                    className="text-hades-text/30 hover:text-hades-red transition-colors p-0.5 cursor-pointer"
+                    title="Clear search"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                <div className="relative group/info flex items-center justify-center">
+                  <button 
+                    type="button"
+                    className="text-hades-text/30 hover:text-hades-accent transition-colors p-0.5 cursor-help"
+                    aria-label="Search tips"
+                  >
+                    <Info className="w-3.5 h-3.5" />
+                  </button>
+                  {/* Tooltip */}
+                  <div className="absolute top-full right-0 mt-2.5 w-64 bg-hades-bg-dark border border-hades-border-light rounded-lg p-3.5 shadow-2xl opacity-0 scale-95 invisible group-hover/info:opacity-100 group-hover/info:scale-100 group-hover/info:visible transition-all duration-200 origin-top-right z-50 pointer-events-none">
+                    {/* Connector bridge to make hovering steady */}
+                    <div className="absolute left-0 right-0 bottom-full h-2.5" />
+                    <p className="text-[10px] font-semibold text-hades-accent mb-1 uppercase tracking-wider font-display">
+                      Search parameters
+                    </p>
+                    <p className="text-[11px] font-sans text-hades-text/85 mb-1.5">
+                      You can search for boons by:
+                    </p>
+                    <ul className="text-[11px] font-sans text-hades-text/85 space-y-0.5">
+                      <li className="flex items-start gap-2">
+                        <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>
+                        <span>Boon name or description</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>
+                        <span>God</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>
+                        <span>Slot (Attack, Special, Non-Core, etc.)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>
+                        <span>Elemental essence</span>
+                      </li>
+                    </ul>
+                    {/* Triangular pointer pointing up */}
+                    <div className="absolute bottom-[calc(100%-4px)] right-3.5 w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="text-[11px] font-sans text-hades-text/60 leading-relaxed px-1">
-              Search by boon name, effect, god, slot (e.g. "attack"), or element
-            </p>
             <div className="flex flex-col gap-2 mt-1">
               <label className="flex items-center gap-2 cursor-pointer group px-1 w-fit">
                 <input 
@@ -324,7 +364,7 @@ export function BoonLibrary({
                     </svg>
                   )}
                 </div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
+                <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
                   Hide Assigned Boons
                 </span>
               </label>
@@ -348,7 +388,7 @@ export function BoonLibrary({
                       </svg>
                     )}
                   </div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
+                  <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
                     Limit Boons To God Pool
                   </span>
                 </label>
@@ -361,14 +401,17 @@ export function BoonLibrary({
                   {/* Info Button with Stylized Tooltip */}
                   <div className="relative group/tooltip inline-flex items-center">
                     <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                    <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-64 p-3 bg-hades-bg-dark border border-white/15 rounded-lg text-[11px] leading-relaxed text-gray-300 shadow-2xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50">
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50 origin-top">
                       {/* Connector bridge to make hovering steady */}
-                      <div className="absolute left-0 right-0 top-full h-2" />
-                      <p className="font-sans">
+                      <div className="absolute left-0 right-0 bottom-full h-2" />
+                      <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                        God Pool Mechanics
+                      </p>
+                      <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
                         Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, and Hermes) are included in the god pool each night. If checked, once you have boons from four gods, all other gods' boons are filtered out.
                       </p>
-                      {/* Triangular pointer */}
-                      <div className="absolute top-[calc(100%-4px)] left-1/2 -translate-x-1/2 w-2 h-2 bg-hades-bg-dark border-r border-b border-white/15 rotate-45" />
+                      {/* Triangular pointer pointing up */}
+                      <div className="absolute bottom-[calc(100%-4px)] left-1/2 -translate-x-1/2 w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
                     </div>
                   </div>
                 </div>
@@ -380,7 +423,7 @@ export function BoonLibrary({
         {/* Pinned Boons Section (Frozen context when scrolling) */}
         {pinnedBoons.length > 0 && (
           <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative">
-            <div className="flex items-center justify-between mx-5 px-1 select-none">
+            <div className="flex items-center justify-between pl-5 pr-[26px] select-none">
               <button
                 onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
                 className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
@@ -397,7 +440,7 @@ export function BoonLibrary({
               </button>
               <button
                 onClick={clearAllPins}
-                className="text-[9px] font-display uppercase text-hades-text/45 hover:text-hades-accent transition-colors cursor-pointer"
+                className="text-[9px] font-display uppercase text-hades-text/45 hover:text-hades-red transition-colors cursor-pointer"
               >
                 Clear All
               </button>
@@ -539,14 +582,14 @@ export function BoonLibrary({
               <div className="pt-2 text-center">
                 <button
                   onClick={() => setVisibleCount(prev => prev + 30)}
-                  className="w-full py-2.5 px-4 bg-hades-accent/5 hover:bg-hades-accent/10 border border-hades-accent/20 hover:border-hades-accent/50 rounded-lg text-xs font-mono uppercase tracking-wider text-hades-accent/70 hover:text-hades-accent transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                  className="w-full py-2.5 px-4 bg-hades-accent/5 hover:bg-hades-accent/10 border border-hades-accent/20 hover:border-hades-accent/50 rounded-lg text-xs font-display uppercase tracking-wider text-hades-accent/70 hover:text-hades-accent transition-all duration-200 cursor-pointer active:scale-[0.98]"
                 >
                   Load More (+{filteredBoons.length - visibleCount} remaining)
                 </button>
               </div>
             )}
             {filteredBoons.length === 0 && (
-              <div className="text-center py-12 text-gray-400 font-mono text-xs uppercase tracking-tight">
+              <div className="text-center py-12 text-gray-400 font-display text-xs uppercase tracking-tight">
                 No matches found
               </div>
             )}
