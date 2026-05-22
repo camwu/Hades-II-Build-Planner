@@ -129,7 +129,7 @@ export function BoonDisplayCard({ boon, onRemove, isSorting }: BoonDisplayCardPr
                 className="relative"
               >
                 <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <h4 className={`text-sm font-black uppercase tracking-wider leading-tight font-display ${getBoonColor(boon.type)}`}>
+                  <h4 className={`text-base font-bold uppercase tracking-wide leading-tight font-display ${getBoonColor(boon.type)}`}>
                     {boon.name}
                   </h4>
                   <div className="flex items-center gap-1.5 flex-shrink-0">

@@ -31,16 +31,97 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
     : null;
   const parts = pattern ? description.split(pattern) : [];
 
+  if (isDuo && uniqueGods.length > 0) {
+    if (prereq.any && uniqueGods.length > 1) {
+      return (
+        <div className="flex flex-col gap-1 w-full">
+          <div className="text-xs text-gray-400 font-normal normal-case select-none leading-tight">
+            One of the following:
+          </div>
+          <div className="text-xs text-gray-300 leading-normal font-medium flex items-start gap-1.5">
+            <span className="text-gray-500 select-none">▸</span>
+            <span className="flex-1 leading-normal">
+              {requiredBoonNames.length === 0 ? (
+                <FormattedBoonEffect text={description.replace(/(\d+)/g, '*$1*')} />
+              ) : (
+                parts.map((part, index) => {
+                  if (requiredBoonNames.includes(part)) {
+                    const partBoon = requiredBoons.find(b => b.name === part);
+                    return (
+                      <span key={index} className="inline-flex items-center align-middle gap-1 mx-0.5">
+                        {partBoon && partBoon.gods.map(god => (
+                          <span key={god} className="inline-flex items-center">
+                            <GodIcon god={god} className="w-3.5 h-3.5 object-contain inline" />
+                          </span>
+                        ))}
+                        <strong className="font-bold text-hades-text">
+                          {part}
+                        </strong>
+                      </span>
+                    );
+                  }
+                  return <span key={index} className="align-middle">{part}</span>;
+                })
+              )}
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-col gap-1 w-full">
+        <div className="flex flex-wrap items-center gap-1.5 mt-[2px]">
+          {uniqueGods.map((god, gIdx) => (
+            <React.Fragment key={gIdx}>
+              {gIdx > 0 && (
+                <span className="text-gray-500 select-none text-[10px] font-display font-semibold leading-none mx-0.5">
+                  /
+                </span>
+              )}
+              <span className="inline-flex items-center select-none gap-1">
+                <GodIcon god={god} className="w-3.5 h-3.5 object-contain" />
+                <strong className="text-[10px] font-display font-medium text-gray-200 uppercase tracking-wider leading-none">
+                  {god}
+                </strong>
+              </span>
+            </React.Fragment>
+          ))}
+        </div>
+        <div className="text-xs text-gray-300 leading-normal font-medium flex items-start gap-1.5">
+          <span className="text-gray-500 select-none">▸</span>
+          <span className="flex-1">
+            {requiredBoonNames.length === 0 ? (
+              <FormattedBoonEffect text={description.replace(/(\d+)/g, '*$1*')} />
+            ) : (
+              parts.map((part, index) => {
+                if (requiredBoonNames.includes(part)) {
+                  return (
+                    <strong key={index} className="font-bold text-hades-text">
+                      {part}
+                    </strong>
+                  );
+                }
+                return <span key={index}>{part}</span>;
+              })
+            )}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {uniqueGods.map((god, gIdx) => {
-        const capitalizedGod = god.charAt(0).toUpperCase() + god.slice(1).toLowerCase();
         const isLast = gIdx === uniqueGods.length - 1;
         return (
-          <span key={gIdx} className={`inline select-none${isLast ? '' : ' mr-1'}`}>
-            {gIdx > 0 && <span className="text-gray-500 mx-1">/</span>}
-            <GodIcon god={god} className="w-3.5 h-3.5 object-contain inline-block align-middle -mt-[1px] mr-1" />
-            <strong className="font-bold text-gray-200">{capitalizedGod}</strong>
+          <span key={gIdx} className={`inline select-none${isLast ? '' : ' mr-1.5'}`}>
+            {gIdx > 0 && <span className="text-gray-500 mr-1">/</span>}
+            <GodIcon god={god} className="w-3.5 h-3.5 object-contain inline-block align-middle mr-1 -mt-0.5" />
+            <strong className="text-[10px] font-display font-medium text-gray-200 uppercase tracking-wider inline-block align-middle leading-none">
+              {god}
+            </strong>
           </span>
         );
       })}{uniqueGods.length > 0 && (
@@ -106,9 +187,9 @@ export function StaticBoonListItem({
           )}
         </div>
         
-        <div className={`flex-1 min-w-0 py-0.5 ${isLocked ? 'opacity-50' : ''}`}>
-          <div className="flex items-center justify-between gap-2 mb-0.5">
-            <h4 className={`text-sm font-bold uppercase truncate font-display ${getBoonColor(boon.type)}`}>
+        <div className={`flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5 ${isLocked ? 'opacity-50' : ''}`}>
+          <div className="flex items-center justify-between gap-2">
+            <h4 className={`text-base font-bold uppercase tracking-wide truncate font-display leading-tight ${getBoonColor(boon.type)}`}>
               {boon.name}
             </h4>
             <span className={`text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${
@@ -119,32 +200,32 @@ export function StaticBoonListItem({
               {boon.type}
             </span>
           </div>
-          <div className="flex flex-col gap-1 mt-1">
-            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-              {boon.gods.map((god, idx) => (
-                <div key={idx} className="flex items-center gap-1.5">
-                  <GodIcon god={god} className="w-3 h-3" />
-                  <span className="text-[10px] font-display text-hades-text/70 uppercase leading-none">
-                    {god}
-                  </span>
-                </div>
-              ))}
-            </div>
-            {boon.element ? (
-              <div className="flex items-center gap-1.5">
-                <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
-                <span className="text-[10px] font-display text-hades-text/70 uppercase leading-none">
-                  {boon.element}
+          
+          <div className="flex flex-wrap items-center gap-x-2.5">
+            {boon.gods.map((god, idx) => (
+              <div key={idx} className="flex items-center gap-1.5">
+                <GodIcon god={god} className="w-3 h-3" />
+                <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                  {god}
                 </span>
               </div>
-            ) : (
-              <div className="flex items-center gap-1.5 opacity-40">
-                <span className="text-[10px] font-display text-gray-500 uppercase leading-none">
-                  No Element
-                </span>
-              </div>
-            )}
+            ))}
           </div>
+
+          {boon.element ? (
+            <div className="flex items-center gap-1.5">
+              <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
+              <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                {boon.element}
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 opacity-40">
+              <span className="text-[10px] font-display text-gray-500 uppercase tracking-wider leading-none">
+                No Element
+              </span>
+            </div>
+          )}
         </div>
       </div>
       <p className={`text-[12px] text-gray-400 leading-normal font-medium mt-2 transition-opacity duration-150 ${isLocked ? 'opacity-50' : ''}`}>
