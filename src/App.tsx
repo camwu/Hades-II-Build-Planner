@@ -196,6 +196,10 @@ export default function App() {
     );
   };
 
+  const reorderPinnedBoons = (newOrder: string[]) => {
+    setPinnedBoonIds(newOrder);
+  };
+
   const clearAllPins = () => {
     setPinnedBoonIds([]);
   };
@@ -624,6 +628,7 @@ export default function App() {
             elementCounts={elementCounts}
             pinnedBoonIds={pinnedBoonIds}
             togglePin={togglePin}
+            reorderPinnedBoons={reorderPinnedBoons}
             clearAllPins={clearAllPins}
           />
 

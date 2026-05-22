@@ -28,6 +28,7 @@ interface BoonLibraryProps {
   elementCounts: Record<ElementType, number>;
   pinnedBoonIds: string[];
   togglePin: (boonId: string) => void;
+  reorderPinnedBoons: (newOrder: string[]) => void;
   clearAllPins: () => void;
 }
 
@@ -53,6 +54,7 @@ export function BoonLibrary({
   elementCounts,
   pinnedBoonIds,
   togglePin,
+  reorderPinnedBoons,
   clearAllPins
 }: BoonLibraryProps) {
   const pinnedBoons = React.useMemo(() => {
@@ -73,13 +75,14 @@ export function BoonLibrary({
   const [pinnedMaxHeight, setPinnedMaxHeight] = React.useState<number>(() => {
     try {
       const stored = localStorage.getItem('hades_build_planner_pinned_max_height');
-      return stored ? parseInt(stored, 10) : 196;
+      return stored ? Math.max(140, parseInt(stored, 10)) : 196;
     } catch {
       return 196;
     }
   });
 
   const [isResizing, setIsResizing] = React.useState<boolean>(false);
+  const [draggedIdx, setDraggedIdx] = React.useState<number | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const dragStartRef = React.useRef<{ y: number; height: number }>({ y: 0, height: 196 });
   const currentHeightRef = React.useRef<number>(196);
@@ -99,7 +102,7 @@ export function BoonLibrary({
     const handleMouseMove = (e: MouseEvent) => {
       const deltaY = e.clientY - dragStartRef.current.y;
       const newHeight = dragStartRef.current.height + deltaY;
-      const clampedHeight = Math.max(80, Math.min(newHeight, 800));
+      const clampedHeight = Math.max(140, Math.min(newHeight, 800));
       
       currentHeightRef.current = clampedHeight;
       if (containerRef.current) {
@@ -111,7 +114,7 @@ export function BoonLibrary({
       if (e.touches.length === 0) return;
       const deltaY = e.touches[0].clientY - dragStartRef.current.y;
       const newHeight = dragStartRef.current.height + deltaY;
-      const clampedHeight = Math.max(80, Math.min(newHeight, 800));
+      const clampedHeight = Math.max(140, Math.min(newHeight, 800));
       
       currentHeightRef.current = clampedHeight;
       if (containerRef.current) {
@@ -341,7 +344,7 @@ export function BoonLibrary({
                 style={{ maxHeight: `${pinnedMaxHeight}px` }}
                 className={`space-y-3 overflow-y-auto custom-scrollbar px-5 pt-2 pb-1.5 ${isResizing ? 'select-none pointer-events-none' : 'transition-[max-height] duration-300'}`}
               >
-                {pinnedBoons.map(boon => {
+                {pinnedBoons.map((boon, index) => {
                   let isLocked = false;
                   const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
                   if (boon.prerequisites && boon.prerequisites.length > 0) {
@@ -362,17 +365,53 @@ export function BoonLibrary({
                     });
                   }
 
+                  const isBeingDragged = draggedIdx === index;
+
                   return (
-                    <DraggableBoonListItem 
-                      key={`pinned-${boon.id}`} 
-                      boon={boon} 
-                      onClick={() => activeSlot && selectBoon(boon, activeSlot)}
-                      isSelectable={!!activeSlot}
-                      isLocked={isLocked}
-                      prerequisitesStatus={prerequisitesStatus}
-                      isPinned={true}
-                      onPinToggle={() => togglePin(boon.id)}
-                    />
+                    <motion.div
+                      layout
+                      key={`pinned-wrapper-${boon.id}`}
+                      draggable={!isResizing}
+                      onDragStart={(e) => {
+                        setDraggedIdx(index);
+                        e.dataTransfer.effectAllowed = 'move';
+                      }}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                      }}
+                      onDragEnter={(e) => {
+                        e.preventDefault();
+                        if (draggedIdx === null || draggedIdx === index) return;
+                        const newOrder = [...pinnedBoonIds];
+                        const draggedId = newOrder[draggedIdx];
+                        newOrder.splice(draggedIdx, 1);
+                        newOrder.splice(index, 0, draggedId);
+                        setDraggedIdx(index);
+                        reorderPinnedBoons(newOrder);
+                      }}
+                      onDragEnd={() => {
+                        setDraggedIdx(null);
+                      }}
+                      className={`transform-gpu ${
+                        isBeingDragged ? 'opacity-30 scale-[0.98]' : 'hover:scale-[1.01]'
+                      }`}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 500,
+                        damping: 35,
+                        mass: 0.5
+                      }}
+                    >
+                      <DraggableBoonListItem 
+                        boon={boon} 
+                        onClick={() => activeSlot && selectBoon(boon, activeSlot)}
+                        isSelectable={!!activeSlot}
+                        isLocked={isLocked}
+                        prerequisitesStatus={prerequisitesStatus}
+                        isPinned={true}
+                        onPinToggle={() => togglePin(boon.id)}
+                      />
+                    </motion.div>
                   );
                 })}
               </div>

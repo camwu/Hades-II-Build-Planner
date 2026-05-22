@@ -207,7 +207,7 @@ export function DraggableBoonListItem({
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: boon.id,
-    disabled: isLocked, // Disable dragging if locked
+    disabled: isLocked || isPinned, // Disable dragging if locked or pinned so that we can sort reorder instead
   });
   
   return (
