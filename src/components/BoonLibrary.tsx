@@ -379,19 +379,21 @@ export function BoonLibrary({
 
         {/* Pinned Boons Section (Frozen context when scrolling) */}
         {pinnedBoons.length > 0 && (
-          <div className="flex-shrink-0 border-b border-hades-border-light pt-4 pb-2 bg-hades-bg-dark/15 flex flex-col relative">
-            <div className="flex items-center justify-between mx-5 px-1 pb-1 select-none">
+          <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative">
+            <div className="flex items-center justify-between mx-5 px-1 select-none">
               <button
                 onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
-                className="text-[10px] font-mono uppercase tracking-wider text-hades-accent font-bold flex items-center gap-1.5 cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
+                className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
               >
                 {isPinnedExpanded ? (
-                  <ChevronDown className="w-3.5 h-3.5 text-hades-accent shrink-0" />
+                  <ChevronDown className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
                 ) : (
-                  <ChevronRight className="w-3.5 h-3.5 text-hades-accent shrink-0" />
+                  <ChevronRight className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
                 )}
-                <Pin className="w-3.5 h-3.5 text-hades-accent fill-current rotate-45 shrink-0" />
-                Pinned Boons ({pinnedBoons.length})
+                <div className="flex items-center gap-2">
+                  <Pin className="w-4 h-4 text-hades-accent fill-current rotate-45 shrink-0" />
+                  <span>Pinned Boons ({pinnedBoons.length})</span>
+                </div>
               </button>
               <button
                 onClick={clearAllPins}
@@ -477,20 +479,26 @@ export function BoonLibrary({
           </div>
         )}
 
-        {/* Fixed spacer area that doesn't disappear on scroll */}
-        <div className="h-4 flex-shrink-0" />
+        {/* Boon Library Section Header (Frozen) */}
+        <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative">
+          <div className="flex items-center justify-between mx-5 px-1 select-none">
+            <div className="text-xs font-mono uppercase tracking-widest text-hades-accent font-bold flex items-center gap-2 select-none text-left">
+              <img 
+                src="/assets/ui/BoonII.webp" 
+                alt="Boon Library Icon" 
+                className="w-4 h-4 object-contain shrink-0" 
+                referrerPolicy="no-referrer"
+              />
+              Boon Library ({filteredBoons.length})
+            </div>
+          </div>
+        </div>
 
         <div 
           onScroll={handleSidebarScroll}
-          className="flex-1 overflow-y-auto custom-scrollbar px-5 pt-2 pb-8 transform-gpu"
+          className="flex-1 overflow-y-auto custom-scrollbar px-5 pt-3 pb-8 transform-gpu"
         >
           <div className="space-y-3 transform-gpu">
-            {/* All/Filtered Boons header inside the scroll container */}
-            {filteredBoons.length > 0 && pinnedBoons.length > 0 && (
-              <div className="text-[10px] font-mono uppercase tracking-wider text-hades-text/40 px-1 pb-1">
-                Boon Library
-              </div>
-            )}
 
             {displayedBoons.map(boon => {
               let isLocked = false;
@@ -531,7 +539,7 @@ export function BoonLibrary({
               <div className="pt-2 text-center">
                 <button
                   onClick={() => setVisibleCount(prev => prev + 30)}
-                  className="w-full py-2.5 px-4 bg-hades-bg-light/40 hover:bg-hades-accent/10 border border-hades-border hover:border-hades-accent/40 rounded-lg text-xs font-mono uppercase tracking-wider text-hades-text/80 hover:text-hades-accent transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                  className="w-full py-2.5 px-4 bg-hades-accent/5 hover:bg-hades-accent/10 border border-hades-accent/20 hover:border-hades-accent/50 rounded-lg text-xs font-mono uppercase tracking-wider text-hades-accent/70 hover:text-hades-accent transition-all duration-200 cursor-pointer active:scale-[0.98]"
                 >
                   Load More (+{filteredBoons.length - visibleCount} remaining)
                 </button>
