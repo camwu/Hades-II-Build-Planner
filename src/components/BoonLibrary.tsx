@@ -87,6 +87,16 @@ export function BoonLibrary({
   const dragStartRef = React.useRef<{ y: number; height: number }>({ y: 0, height: 196 });
   const currentHeightRef = React.useRef<number>(196);
 
+  const [visibleCount, setVisibleCount] = React.useState<number>(30);
+
+  React.useEffect(() => {
+    setVisibleCount(30);
+  }, [searchTerm, hideAssigned, limitToGodPool, activeSlot]);
+
+  const displayedBoons = React.useMemo(() => {
+    return filteredBoons.slice(0, visibleCount);
+  }, [filteredBoons, visibleCount]);
+
   const startResize = React.useCallback((e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
@@ -455,7 +465,7 @@ export function BoonLibrary({
               </div>
             )}
 
-            {filteredBoons.map(boon => {
+            {displayedBoons.map(boon => {
               let isLocked = false;
               const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
               if (boon.prerequisites && boon.prerequisites.length > 0) {
@@ -489,6 +499,17 @@ export function BoonLibrary({
                 />
               );
             })}
+
+            {filteredBoons.length > visibleCount && (
+              <div className="pt-2 text-center">
+                <button
+                  onClick={() => setVisibleCount(prev => prev + 30)}
+                  className="w-full py-2.5 px-4 bg-hades-bg-light/40 hover:bg-hades-accent/10 border border-hades-border hover:border-hades-accent/40 rounded-lg text-xs font-mono uppercase tracking-wider text-hades-text/80 hover:text-hades-accent transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                >
+                  Load More (+{filteredBoons.length - visibleCount} remaining)
+                </button>
+              </div>
+            )}
             {filteredBoons.length === 0 && (
               <div className="text-center py-12 text-gray-400 font-mono text-xs uppercase tracking-tight">
                 No matches found
