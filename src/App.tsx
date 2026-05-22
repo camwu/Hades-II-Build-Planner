@@ -417,6 +417,14 @@ export default function App() {
   }, [coreBuild, additionalBoons]);
 
   const filteredBoons = useMemo(() => {
+    // Compute normalized terms once up front!
+    const searchTerms = searchTerm
+      .toLowerCase()
+      .replace(/Ω/g, 'omega')
+      .replace(/ω/g, 'omega')
+      .split(/\s+/)
+      .filter(t => t.length > 0);
+
     return BOONS.filter(boon => {
       // Don't show pinned boons in the main list since they are pinned to the top
       if (pinnedBoonIds.includes(boon.id)) {
@@ -439,7 +447,6 @@ export default function App() {
         }
       }
 
-      const searchTerms = searchTerm.toLowerCase().replace(/Ω/g, 'omega').replace(/ω/g, 'omega').split(/\s+/).filter(t => t.length > 0);
       const matchesSearch = searchTerms.length === 0 || searchTerms.every(term => {
         const check = (text: string) => text.toLowerCase().replace(/Ω/g, 'omega').replace(/ω/g, 'omega').includes(term);
         return check(boon.name) || 
