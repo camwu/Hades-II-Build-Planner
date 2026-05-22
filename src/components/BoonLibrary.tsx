@@ -152,6 +152,33 @@ export function BoonLibrary({
 
   const [visibleCount, setVisibleCount] = React.useState<number>(30);
 
+  const sidebarRef = React.useRef<HTMLDivElement>(null);
+  const filterHeaderRef = React.useRef<HTMLDivElement>(null);
+  const libraryHeaderRef = React.useRef<HTMLDivElement>(null);
+  const libraryListContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const [sidebarHeight, setSidebarHeight] = React.useState<number>(800);
+  const [libraryHeight, setLibraryHeight] = React.useState<number>(400);
+
+  React.useEffect(() => {
+    if (isPanelCollapsed) return;
+    const handleResize = () => {
+      if (sidebarRef.current) {
+        setSidebarHeight(sidebarRef.current.offsetHeight);
+      }
+      if (libraryListContainerRef.current) {
+        setLibraryHeight(libraryListContainerRef.current.offsetHeight);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    const timer = setInterval(handleResize, 200);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearInterval(timer);
+    };
+  }, [isPanelCollapsed, pinnedBoonIds, isPinnedExpanded]);
+
   React.useEffect(() => {
     setVisibleCount(30);
   }, [searchTerm, hideAssigned, limitToGodPool, activeSlot]);
@@ -175,7 +202,14 @@ export function BoonLibrary({
     const handleMouseMove = (e: MouseEvent) => {
       const deltaY = e.clientY - dragStartRef.current.y;
       const newHeight = dragStartRef.current.height + deltaY;
-      const clampedHeight = Math.max(140, Math.min(newHeight, 800));
+      
+      const totalH = sidebarRef.current ? sidebarRef.current.offsetHeight : window.innerHeight - 64;
+      const filterHeaderH = filterHeaderRef.current ? filterHeaderRef.current.offsetHeight : 180;
+      const libraryHeaderH = libraryHeaderRef.current ? libraryHeaderRef.current.offsetHeight : 44;
+      const maxAllowed = totalH - filterHeaderH - libraryHeaderH - 70 - 80;
+      const finalMaxHeight = Math.max(140, maxAllowed);
+      
+      const clampedHeight = Math.max(140, Math.min(newHeight, finalMaxHeight));
       
       currentHeightRef.current = clampedHeight;
       if (containerRef.current) {
@@ -187,7 +221,14 @@ export function BoonLibrary({
       if (e.touches.length === 0) return;
       const deltaY = e.touches[0].clientY - dragStartRef.current.y;
       const newHeight = dragStartRef.current.height + deltaY;
-      const clampedHeight = Math.max(140, Math.min(newHeight, 800));
+      
+      const totalH = sidebarRef.current ? sidebarRef.current.offsetHeight : window.innerHeight - 64;
+      const filterHeaderH = filterHeaderRef.current ? filterHeaderRef.current.offsetHeight : 180;
+      const libraryHeaderH = libraryHeaderRef.current ? libraryHeaderRef.current.offsetHeight : 44;
+      const maxAllowed = totalH - filterHeaderH - libraryHeaderH - 70 - 80;
+      const finalMaxHeight = Math.max(140, maxAllowed);
+      
+      const clampedHeight = Math.max(140, Math.min(newHeight, finalMaxHeight));
       
       currentHeightRef.current = clampedHeight;
       if (containerRef.current) {
@@ -244,6 +285,13 @@ export function BoonLibrary({
     }
   }, [isPinnedExpanded]);
 
+  const filterHeaderHeight = filterHeaderRef.current ? filterHeaderRef.current.offsetHeight : 180;
+  const libraryHeaderHeight = libraryHeaderRef.current ? libraryHeaderRef.current.offsetHeight : 44;
+  const pinnedHeaderAndHandleHeight = 70;
+  const minLibraryListHeight = 80;
+  const maxAllowedHeight = sidebarHeight - filterHeaderHeight - libraryHeaderHeight - pinnedHeaderAndHandleHeight - minLibraryListHeight;
+  const activePinnedMaxHeight = Math.min(pinnedMaxHeight, Math.max(140, maxAllowedHeight));
+
   return (
     <motion.aside 
       initial={false}
@@ -278,10 +326,14 @@ export function BoonLibrary({
       </button>
 
       <div 
+        ref={sidebarRef}
         style={{ width: SIDEBAR_WIDTH }}
         className={`h-full flex flex-col overflow-hidden will-change-transform ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
       >
-        <div className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}>
+        <div 
+          ref={filterHeaderRef}
+          className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}
+        >
           <div className="flex flex-col gap-2">
             <div className="relative flex items-center">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-hades-accent/50" />
@@ -458,7 +510,7 @@ export function BoonLibrary({
             >
               <div 
                 ref={containerRef}
-                style={{ maxHeight: `${pinnedMaxHeight}px` }}
+                style={{ maxHeight: `${activePinnedMaxHeight}px` }}
                 className={`space-y-3 overflow-y-auto custom-scrollbar px-5 pt-2 pb-1.5 ${isResizing ? 'select-none pointer-events-none' : 'transition-[max-height] duration-300'}`}
               >
                 <SortableContext items={pinnedBoonIds} strategy={verticalListSortingStrategy}>
@@ -523,7 +575,10 @@ export function BoonLibrary({
         )}
 
         {/* Boon Library Section Header (Frozen) */}
-        <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative">
+        <div 
+          ref={libraryHeaderRef}
+          className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative"
+        >
           <div className="flex items-center justify-between mx-5 px-1 select-none">
             <div className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center gap-2 select-none text-left">
               <img 
@@ -538,8 +593,11 @@ export function BoonLibrary({
         </div>
 
         <div 
+          ref={libraryListContainerRef}
           onScroll={handleSidebarScroll}
-          className="flex-1 overflow-y-auto custom-scrollbar px-5 pt-3 pb-8 transform-gpu"
+          className={`flex-1 overflow-y-auto custom-scrollbar px-5 transform-gpu ${
+            filteredBoons.length === 0 && libraryHeight < 160 ? 'pt-1 pb-2' : 'pt-3 pb-8'
+          }`}
         >
           <div className="space-y-3 transform-gpu">
 
@@ -589,7 +647,9 @@ export function BoonLibrary({
               </div>
             )}
             {filteredBoons.length === 0 && (
-              <div className="text-center py-12 text-gray-400 font-display text-xs uppercase tracking-tight">
+              <div className={`text-center text-gray-400 font-display text-xs uppercase tracking-tight transition-all duration-200 ${
+                libraryHeight < 160 ? 'py-2' : 'py-12'
+              }`}>
                 No matches found
               </div>
             )}
