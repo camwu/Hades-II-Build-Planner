@@ -220,96 +220,102 @@ export default function App() {
     setPinnedBoonIds([]);
   };
 
-  // Sync state to URL and localStorage
+  // Sync state to URL and localStorage (debounced to avoid blocking I/O/history updates on every keypress)
   useEffect(() => {
-    const params = new URLSearchParams();
-    
-    // Name
-    if (buildName && buildName !== 'Untitled Build') {
-      params.set('n', buildName);
-    }
+    const handler = setTimeout(() => {
+      const params = new URLSearchParams();
+      
+      // Name
+      if (buildName && buildName !== 'Untitled Build') {
+        params.set('n', buildName);
+      }
 
-    // Core
-    const coreParts: string[] = [];
-    const slotAbbr: Record<string, string> = {
-      Attack: 'at', Special: 'sp', Cast: 'ca', Sprint: 'sr', Magick: 'ma'
-    };
-    
-    Object.entries(coreBuild).forEach(([slot, boon]) => {
-      if (boon) {
-        const index = BOONS.findIndex(b => b.id === (boon as Boon).id);
-        if (index !== -1) {
-          coreParts.push(`${slotAbbr[slot] || slot}:${index.toString(36)}`);
+      // Core
+      const coreParts: string[] = [];
+      const slotAbbr: Record<string, string> = {
+        Attack: 'at', Special: 'sp', Cast: 'ca', Sprint: 'sr', Magick: 'ma'
+      };
+      
+      Object.entries(coreBuild).forEach(([slot, boon]) => {
+        if (boon) {
+          const index = BOONS.findIndex(b => b.id === (boon as Boon).id);
+          if (index !== -1) {
+            coreParts.push(`${slotAbbr[slot] || slot}:${index.toString(36)}`);
+          }
+        }
+      });
+      if (coreParts.length > 0) {
+        params.set('c', coreParts.join(','));
+      }
+
+      // Additional
+      if (additionalBoons.length > 0) {
+        const addParts = additionalBoons.map(boon => {
+          const index = BOONS.findIndex(b => b.id === boon.id);
+          return index !== -1 ? index.toString(36) : '';
+        }).filter(Boolean);
+        
+        if (addParts.length > 0) {
+          params.set('a', addParts.join(','));
         }
       }
-    });
-    if (coreParts.length > 0) {
-      params.set('c', coreParts.join(','));
-    }
 
-    // Additional
-    if (additionalBoons.length > 0) {
-      const addParts = additionalBoons.map(boon => {
-        const index = BOONS.findIndex(b => b.id === boon.id);
-        return index !== -1 ? index.toString(36) : '';
-      }).filter(Boolean);
-      
-      if (addParts.length > 0) {
-        params.set('a', addParts.join(','));
+      // Search & Filters
+      if (searchTerm) {
+        params.set('q', searchTerm);
       }
-    }
-
-    // Search & Filters
-    if (searchTerm) {
-      params.set('q', searchTerm);
-    }
-    if (!hideAssigned) {
-      params.set('ha', '0');
-    }
-    if (!limitToGodPool) {
-      params.set('lp', '0');
-    }
-
-    // Pinned
-    if (pinnedBoonIds.length > 0) {
-      const pinParts = pinnedBoonIds.map(id => {
-        const index = BOONS.findIndex(b => b.id === id);
-        return index !== -1 ? index.toString(36) : '';
-      }).filter(Boolean);
-      
-      if (pinParts.length > 0) {
-        params.set('p', pinParts.join(','));
+      if (!hideAssigned) {
+        params.set('ha', '0');
       }
-    }
+      if (!limitToGodPool) {
+        params.set('lp', '0');
+      }
 
-    const newUrl = params.toString() 
-      ? `${window.location.pathname}?${params.toString()}`
-      : window.location.pathname;
-    
-    window.history.replaceState({}, '', newUrl);
+      // Pinned
+      if (pinnedBoonIds.length > 0) {
+        const pinParts = pinnedBoonIds.map(id => {
+          const index = BOONS.findIndex(b => b.id === id);
+          return index !== -1 ? index.toString(36) : '';
+        }).filter(Boolean);
+        
+        if (pinParts.length > 0) {
+          params.set('p', pinParts.join(','));
+        }
+      }
 
-    // Save to localStorage
-    try {
-      const coreBuildIds: Record<string, string | null> = {};
-      Object.entries(coreBuild).forEach(([slot, boonObj]) => {
-        const boon = boonObj as Boon | null;
-        coreBuildIds[slot] = boon ? boon.id : null;
-      });
+      const newUrl = params.toString() 
+        ? `${window.location.pathname}?${params.toString()}`
+        : window.location.pathname;
+      
+      window.history.replaceState({}, '', newUrl);
 
-      const additionalBoonIds = additionalBoons.map(b => b.id);
+      // Save to localStorage
+      try {
+        const coreBuildIds: Record<string, string | null> = {};
+        Object.entries(coreBuild).forEach(([slot, boonObj]) => {
+          const boon = boonObj as Boon | null;
+          coreBuildIds[slot] = boon ? boon.id : null;
+        });
 
-      const stateToSave = {
-        coreBuildIds,
-        additionalBoonIds,
-        buildName,
-        hideAssigned,
-        limitToGodPool
-      };
+        const additionalBoonIds = additionalBoons.map(b => b.id);
 
-      localStorage.setItem('hades_build_planner_state', JSON.stringify(stateToSave));
-    } catch (e) {
-      console.error('Failed to save build state to localStorage:', e);
-    }
+        const stateToSave = {
+          coreBuildIds,
+          additionalBoonIds,
+          buildName,
+          hideAssigned,
+          limitToGodPool
+        };
+
+        localStorage.setItem('hades_build_planner_state', JSON.stringify(stateToSave));
+      } catch (e) {
+        console.error('Failed to save build state to localStorage:', e);
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
   }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool, pinnedBoonIds]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
