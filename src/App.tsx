@@ -47,7 +47,7 @@ export default function App() {
   // Check if URL has build parameters
   const hasUrlParams = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.has('c') || params.has('a') || params.has('n');
+    return params.has('c') || params.has('a') || params.has('n') || params.has('p');
   }, []);
 
   // Try to load state from localStorage if no URL params
@@ -171,6 +171,22 @@ export default function App() {
   });
 
   const [pinnedBoonIds, setPinnedBoonIds] = useState<string[]>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pinParam = params.get('p');
+    if (pinParam) {
+      return pinParam.split(',')
+        .map(code => {
+          if (code.length > 20) { // UUID
+            return BOONS.find(b => b.id === code)?.id;
+          } else { // Base36 Index
+            const index = parseInt(code, 36);
+            return BOONS[index]?.id;
+          }
+        })
+        .filter((id): id is string => !!id);
+    } else if (hasUrlParams) {
+      return [];
+    }
     try {
       const data = localStorage.getItem('hades_build_planner_pinned_boons');
       if (data) {
@@ -254,6 +270,18 @@ export default function App() {
       params.set('lp', '0');
     }
 
+    // Pinned
+    if (pinnedBoonIds.length > 0) {
+      const pinParts = pinnedBoonIds.map(id => {
+        const index = BOONS.findIndex(b => b.id === id);
+        return index !== -1 ? index.toString(36) : '';
+      }).filter(Boolean);
+      
+      if (pinParts.length > 0) {
+        params.set('p', pinParts.join(','));
+      }
+    }
+
     const newUrl = params.toString() 
       ? `${window.location.pathname}?${params.toString()}`
       : window.location.pathname;
@@ -282,7 +310,7 @@ export default function App() {
     } catch (e) {
       console.error('Failed to save build state to localStorage:', e);
     }
-  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool]);
+  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool, pinnedBoonIds]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -588,8 +616,7 @@ export default function App() {
   const [isCopied, setIsCopied] = useState(false);
 
   const copyBuildLink = () => {
-    const baseUrl = 'https://hades-ii-build-planner-54268731549.us-west2.run.app/';
-    const shareUrl = `${baseUrl}${window.location.search}`;
+    const shareUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`;
     navigator.clipboard.writeText(shareUrl);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
