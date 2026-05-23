@@ -8,22 +8,28 @@ You can access the live application here: **[Hades II Build Planner](https://had
 ## ✨ Features
 
 - **Fluid Drag & Drop UI**: Assign boons smoothly from the sidebar library by dragging and dropping using `@dnd-kit` powered drag mechanics.
+- **Altar of Ashes (Arcana Cards)**: Unlock and toggle cards from Melinoë's deck of 25 unique Arcana cards. Automatically tracks Grasp costs against your current budget and validates special Awakening requirements (such as zero-cost cards requiring specific surrounding/count activations) in real time.
 - **Dynamic Elements & Status Tracker**: Keep automated tallies of Elemental Essences (Air, Earth, Fire, Water, Aether) and active Status Curses as you assign boons.
-- **Instantly Shareable Builds**: The application automatically synchronizes your current planner config directly into the browser URL query parameters. Copy the link to bookmark or your build instantly!
-- **LocalStorage State Persistence**: Your selected boons, custom build name, and library filter preferences are saved to your local browser storage.
+- **Instantly Shareable Builds**: The application automatically synchronizes both your selected boons and active Arcana card layouts directly into the browser URL query parameters (`ar`). Copy the link to share or bookmark your exact build instantly!
+- **LocalStorage State Persistence**: Your selected boons, active Arcana setup, custom build name, and library filter preferences are saved automatically to your local browser storage.
+- **Mirrored Dual-Sidebar Interface**: Retractable, buttery smooth sidebar panels on both left and right flanks that slide into deep slate card frames, maintaining design alignment across both planning wings.
 
 ## 📝 How to Use
 
 1. **Explore & Filter**: 
     - Search for boons in the collapsible Boon Library sidebar using the search bar (press `/` to focus). 
-    - You can search by boon name, boon effect, Olympian god, Elemental Essence, Status Curse, or boon slot (Attack, Special, Cast, Sprint, Magick, Non-Core, Infusion, Legendary, Duo).
-    - Toggle checkboxes to filter by God Pools or hide already assigned boons.
-2. **Assign slots**: 
-    - Drag and drop boons from the library into their respective slots to assign them to your build.
-    - Alternatively, clicking a slot will filter the library to show valid boons that can fit into that slot (ex: clicking on an empty Special slot will filter the library to show just Special boons for assignment).
-3. **Purge/Remove Boons**: Drag a boon into the *Pool of Purging* to discard it, or simply click on the X in the top right corner of the boon card.
-4. **Name Your Build**: Click on the **"Untitled Build"** (or current name) heading at the top of the planner, type your custom name, and press `Enter` to set it.
-5. **Save and Share Your Build**: Click the **Copy Share Link** button to copy a custom, serialized URL directly to your clipboard for bookmarking or sharing.
+    - Search by boon name, boon effect, Olympian god, Elemental Essence, Status Curse, or slot (Attack, Special, Cast, Sprint, Magick, Non-Core, Infusion, Legendary, Duo).
+    - Filter by God Pools, or hide already assigned boons.
+2. **Assign Slots**: 
+    - Drag and drop boons from the library into their slots to assign them to your character build.
+    - Alternatively, click a slot to auto-filter the library list to valid options (e.g. clicking Special brings up only Special boons).
+3. **Toggle Arcana Cards (Altar of Ashes)**:
+    - Expand the right-hand **Altar of Ashes** sidebar panel to toggle your deck cards.
+    - Select cards within your active Grasp limit constraints.
+    - Hover over card layouts to view full Awakening conditions, exact Roman numeral codes, and Grasp allocation stats.
+4. **Purge/Remove Boons**: Drag a boon card into the central *Pool of Purging* to discard it, or click the X icon on the card banner.
+5. **Name Your Build**: Click the build title header at the top of the interface, type a custom name, and save it.
+6. **Save & Share**: Click the **Copy Share Link** button to copy a fully serialized custom URL containing both your boon slots and active Arcana grid configuration.
 
 ## 📦 Tech Stack
 

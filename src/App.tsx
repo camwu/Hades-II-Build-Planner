@@ -558,7 +558,13 @@ export default function App() {
         // Only trigger if not already focused on an input/textarea
         if (document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
           e.preventDefault();
-          searchInputRef.current?.focus();
+          if (isPanelCollapsed) {
+            setIsPanelCollapsed(false);
+          }
+          // Request animation frame or setTimeout to ensure transition finishes or elements are made visible before focusing
+          setTimeout(() => {
+            searchInputRef.current?.focus();
+          }, 50);
         }
       }
       if (e.key === 'Escape') {
@@ -588,7 +594,7 @@ export default function App() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('blur', handleBlur);
     };
-  }, []);
+  }, [isPanelCollapsed]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
