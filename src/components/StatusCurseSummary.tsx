@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Boon, StatusCurse, GOD_COLORS } from '../types';
 import { STATUS_CURSES } from '../data/statusCursesData';
 import { ARCANA_CARDS } from '../data/arcanaData';
@@ -10,9 +10,10 @@ import { GodIcon } from './Icons';
 interface StatusCurseSummaryProps {
   coreBuild: Record<string, Boon | null>;
   additionalBoons: Boon[];
+  activeArcana?: number[];
 }
 
-export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSummaryProps) {
+export function StatusCurseSummary({ coreBuild, additionalBoons, activeArcana = [] }: StatusCurseSummaryProps) {
   const activeBoons = useMemo(() => {
     const all = Object.values(coreBuild).filter((b): b is Boon => !!b);
     return [...all, ...additionalBoons];
@@ -88,16 +89,102 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2 ml-1">
-        <img 
-          src="/assets/ui/Origination_Active_Icon.webp" 
-          className="w-4 h-4 object-contain filter brightness-110 rounded-sm" 
-          alt="Origination Icon" 
-          referrerPolicy="no-referrer"
-        />
-        <span className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold">Status Curses</span>
+      <div className="flex items-center gap-2.5 ml-1 select-none h-6">
+        <div className="flex items-center gap-2">
+          <img src="/assets/ui/Icon-Olympian.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
+          <span className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold">Status Curses</span>
+        </div>
+
+        <AnimatePresence initial={false}>
+          {activeArcana.includes(14) && (
+            <motion.div
+              key="origination-icon-only"
+              initial={{ opacity: 0, scale: 0.9, x: -5 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.9, x: -5 }}
+              transition={{ duration: 0.2 }}
+              className="relative group flex items-center justify-center cursor-help h-5 w-5"
+            >
+              <img 
+                src="/assets/ui/Origination_Active_Icon.webp" 
+                className={`w-4 h-4 object-contain rounded transition-all duration-300 ${
+                  isOriginationActive 
+                    ? 'opacity-100 grayscale-0 filter drop-shadow-[0_0_4px_rgba(245,158,11,0.6)]' 
+                    : 'opacity-45 grayscale'
+                }`} 
+                alt="Origination" 
+                referrerPolicy="no-referrer"
+              />
+
+              {/* Origination Tooltip */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-80 p-4 bg-hades-bg-dark border border-amber-500/30 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 text-left pointer-events-none group-hover:pointer-events-auto">
+                {/* Invisible bridge to keep tooltip open while moving mouse */}
+                <div className="absolute -top-2 left-0 right-0 h-2" />
+                <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
+                  <div className="flex items-center gap-2">
+                    <img src="/assets/ui/Origination_Active_Icon.webp" className="w-5.5 h-5.5 object-contain" style={{ width: '22px', height: '22px' }} alt="Origination" referrerPolicy="no-referrer" />
+                    <div className="flex flex-col leading-tight">
+                      <span className="text-sm font-bold tracking-widest text-amber-400 font-sc normal-case">
+                        Origination
+                      </span>
+                    </div>
+                  </div>
+                  <span className={`text-[11px] font-display px-1.5 py-0.5 rounded font-bold ${
+                    isOriginationActive ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-white/5 text-gray-500'
+                  }`}>
+                    {isOriginationActive ? 'ACTIVE' : 'INACTIVE'}
+                  </span>
+                </div>
+                <div className="text-xs text-gray-300 leading-relaxed mb-3">
+                  <FormattedEffectText text={originationCard?.effect || ''} />
+                </div>
+                <div className="flex flex-col gap-2 text-xs bg-white/5 p-2.5 rounded-lg border border-white/5">
+                  <div className="flex flex-col gap-1 text-[10.5px] text-gray-400 pb-2 border-b border-white/5">
+                    <div className="flex justify-between">
+                      <span>Active Curses:</span>
+                      <span className="text-gray-300 font-bold">{activeCurses.length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Unique Gods:</span>
+                      <span className={isOriginationActive ? 'text-amber-300 font-bold' : 'text-gray-300 font-bold'}>
+                        {uniqueGods.length} / 2
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5 pt-0.5">
+                    <span className="text-[10px] text-gray-400 uppercase font-display tracking-wider font-semibold">Contributing Boons:</span>
+                    {originationContributingBoons.length > 0 ? (
+                      <div className="flex flex-col gap-1.5">
+                        {originationContributingBoons.map((boon, idx) => (
+                          <div key={idx} className="flex justify-between items-center gap-2">
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              {boon.gods?.[0] && (
+                                <div className="w-4 h-4 flex-shrink-0">
+                                  <GodIcon god={boon.gods[0]} className="w-full h-full object-contain" />
+                                </div>
+                              )}
+                              <span className="font-bold text-gray-200 truncate text-xs font-sc">
+                                {boon.name}
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-gray-400 font-display flex-shrink-0">{boon.type}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-xs text-gray-400 bg-white/[0.02] p-1.5 rounded text-center font-display">
+                        No active boons
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px]">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px] self-start w-fit">
         {activeCurses.length === 0 ? (
           <span className="text-[11px] text-gray-500 font-display">No Active Curses</span>
         ) : (
@@ -190,98 +277,6 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
             </div>
           );
         }))}
-
-        {/* Separator */}
-        <div className="h-5 w-[1px] bg-white/10 mx-1 self-center" />
-
-        {/* Origination Block */}
-        <div className={`group relative flex items-center gap-2 px-3 py-1 rounded-lg cursor-help ${
-          isOriginationActive 
-            ? 'bg-amber-500/10 border border-amber-500/30 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.05)]' 
-            : 'bg-white/[0.02] border border-white/5 text-gray-500 grayscale'
-        }`}>
-          <div className="relative w-4 h-4 flex items-center justify-center">
-            <img 
-              src="/assets/ui/Origination_Active_Icon.webp" 
-              className={`w-4 h-4 object-contain rounded ${isOriginationActive ? 'opacity-100' : 'opacity-40'}`} 
-              alt="Origination" 
-              referrerPolicy="no-referrer"
-            />
-          </div>
-
-          <div className="flex flex-col justify-center">
-            <span className={`text-[10px] font-bold tracking-wider ${
-              isOriginationActive ? 'text-amber-400' : 'text-gray-500'
-            } ${/\d/.test('Origination') ? 'font-display' : 'font-sc normal-case'}`}>
-              Origination
-            </span>
-          </div>
-
-          {/* Origination Tooltip */}
-          <div className="absolute top-full right-0 mt-2 w-80 p-4 bg-hades-bg-dark border border-amber-500/30 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 text-left">
-            {/* Invisible bridge to keep tooltip open while moving mouse */}
-            <div className="absolute -top-2 left-0 right-0 h-2" />
-            <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
-              <div className="flex items-center gap-2">
-                <img src="/assets/ui/Origination_Active_Icon.webp" className="w-5.5 h-5.5 object-contain" style={{ width: '22px', height: '22px' }} alt="Origination" referrerPolicy="no-referrer" />
-                <div className="flex flex-col leading-tight">
-                  <span className={`text-sm font-bold tracking-widest text-amber-400 ${/\d/.test('Origination') ? 'font-display' : 'font-sc normal-case'}`}>
-                    Origination
-                  </span>
-                </div>
-              </div>
-              <span className={`text-[11px] font-display px-1.5 py-0.5 rounded font-bold ${
-                isOriginationActive ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-white/5 text-gray-500'
-              }`}>
-                {isOriginationActive ? 'ACTIVE' : 'INACTIVE'}
-              </span>
-            </div>
-            <div className="text-xs text-gray-300 leading-relaxed mb-3">
-              <FormattedEffectText text={originationCard?.effect || ''} />
-            </div>
-            <div className="flex flex-col gap-2 text-xs bg-white/5 p-2.5 rounded-lg border border-white/5">
-              <div className="flex flex-col gap-1 text-[10.5px] text-gray-400 pb-2 border-b border-white/5">
-                <div className="flex justify-between">
-                  <span>Active Curses:</span>
-                  <span className="text-gray-300 font-bold">{activeCurses.length}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Unique Gods:</span>
-                  <span className={isOriginationActive ? 'text-amber-300 font-bold' : 'text-gray-300 font-bold'}>
-                    {uniqueGods.length} / 2
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1.5 pt-0.5">
-                <span className="text-[10px] text-gray-400 uppercase font-display tracking-wider font-semibold">Contributing Boons:</span>
-                {originationContributingBoons.length > 0 ? (
-                  <div className="flex flex-col gap-1.5">
-                    {originationContributingBoons.map((boon, idx) => (
-                      <div key={idx} className="flex justify-between items-center gap-2">
-                        <div className="flex items-center gap-1.5 min-w-0">
-                          {boon.gods?.[0] && (
-                            <div className="w-4 h-4 flex-shrink-0">
-                              <GodIcon god={boon.gods[0]} className="w-full h-full object-contain" />
-                            </div>
-                          )}
-                          <span className="font-bold text-gray-200 truncate text-xs font-sc">
-                            {boon.name}
-                          </span>
-                        </div>
-                        <span className="text-[10px] text-gray-400 font-display flex-shrink-0">{boon.type}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-xs text-gray-400 bg-white/[0.02] p-1.5 rounded text-center font-display">
-                    No active boons
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

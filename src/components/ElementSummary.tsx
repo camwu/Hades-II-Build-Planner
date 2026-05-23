@@ -44,11 +44,11 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2 ml-1">
+      <div className="flex items-center gap-2 ml-1 h-6">
         <img src="/assets/ui/ElementalEssence.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
         <span className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold">Elemental Essences</span>
       </div>
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px]">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px] self-start w-fit">
         {ALL_ELEMENTS.map((el, index) => {
           const count = counts[el];
           const boons = contributingBoons[el] || [];

@@ -878,10 +878,10 @@ export default function App() {
               />
 
               {/* Elemental, God & Status Tracker */}
-              <div className="mb-8 flex flex-wrap items-start gap-5 w-fit">
+              <div className="mb-8 flex flex-wrap items-start gap-5 w-full">
                 <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
                 <GodSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
-                <StatusCurseSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
+                <StatusCurseSummary coreBuild={coreBuild} additionalBoons={additionalBoons} activeArcana={activeArcana} />
               </div>
 
               {/* Consolidated Build View */}
