@@ -234,7 +234,7 @@ export function ArcanaSidebar({
                       </span>
                     )}
                   </div>
-                  <div className="text-[12px] font-sans text-gray-300 font-medium leading-normal max-h-[74px] overflow-y-auto custom-scrollbar pr-1 whitespace-normal">
+                  <div className="text-[12px] font-sans text-gray-400 font-medium leading-normal max-h-[74px] overflow-y-auto custom-scrollbar pr-1 whitespace-normal">
                     <FormattedEffectText text={hoveredCard.effect} />
                   </div>
                 </div>
@@ -252,10 +252,10 @@ export function ArcanaSidebar({
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center text-center py-4"
               >
-                <span className="text-xs font-sans font-semibold text-gray-400">
-                  hover over card for details
+                <span className="text-xs font-sans font-medium text-gray-300">
+                  Hover over card for details
                 </span>
-                <span className="text-xs font-sans font-semibold text-gray-500 mt-1">
+                <span className="text-xs font-sans font-medium text-gray-400 mt-1">
                   Click a card to toggle activation status
                 </span>
               </motion.div>

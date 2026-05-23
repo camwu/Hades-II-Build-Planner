@@ -45,7 +45,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
           }
           
           // Ordered to match "Max Health" and "Max Magick" before "Health" and "Magick", and element boons before elements or plasma
-          const regex = /(\bMax\s+Healths?\b|\bHealths?\b|\bMax\s+Magicks?\b|\bmagicks?\b|\bplasmas?\b|\bmystery\s+seeds?\b|\bDaedalus\s+Hammers?\b|\bGold\s+Crowns?\b|\bGold\b|\bHealing\b|\bBones\b|\barmors?\b|\brarity?\b|\bairs?\s+(?:boons?|essences?|elements?)\b|\bearths?\s+(?:boons?|essences?|elements?)\b|\bfires?\s+(?:boons?|essences?|elements?)\b|\bwaters?\s+(?:boons?|essences?|elements?)\b|\baethers?\s+(?:boons?|essences?|elements?)\b|\bairs?\b|\bearths?\b|\bfires?\b|\bwaters?\b|\baethers?\b(?!\s+Fonts?\b)|\blv\.(?!\w))/gi;
+          const regex = /(\bMax\s+Healths?\b|\bHealths?\b|\bMax\s+Magicks?\b|\bmagicks?\b|\bplasmas?\b|\bmystery\s+seeds?\b|\bDaedalus\s+Hammers?\b|\bGold\s+Crowns?\b|\bGold\b|\bHealing\b|\bBones\b|\barmors?\b|\brarity?\b|\bDeath\s+Defiances?\b|\bChange\s+of\s+Fates?\b|\bGrasps?\b|\bairs?\s+(?:boons?|essences?|elements?)\b|\bearths?\s+(?:boons?|essences?|elements?)\b|\bfires?\s+(?:boons?|essences?|elements?)\b|\bwaters?\s+(?:boons?|essences?|elements?)\b|\baethers?\s+(?:boons?|essences?|elements?)\b|\bairs?\b|\bearths?\b|\bfires?\b|\bwaters?\b|\baethers?\b(?!\s+Fonts?\b)|\blv\.(?!\w))/gi;
           const parts = inputText.split(regex);
           
           return (
@@ -191,6 +191,42 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
                         src="/assets/ui/Armor.webp" 
                         alt="Armor" 
                         className="inline-block h-[13px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'death defiance' || lower === 'death defiances') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/DeathDefiance.webp" 
+                        alt="Death Defiance" 
+                        className="inline-block h-[14px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'change of fate' || lower === 'change of fates') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Dice.webp" 
+                        alt="Change of Fate" 
+                        className="inline-block h-[14px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'grasp' || lower === 'grasps') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Grasp.webp" 
+                        alt="Grasp" 
+                        className="inline-block h-[14px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
                         referrerPolicy="no-referrer"
                       />
                       {p}
