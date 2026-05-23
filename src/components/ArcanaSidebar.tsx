@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight, Sparkles, Trash2 } from 'lucide-react';
 import { ARCANA_CARDS } from '../data/arcanaData';
 import { ArcanaCard } from '../types';
-import { FormattedBoonEffect } from './FormattedBoonEffect';
+import { FormattedEffectText } from './FormattedEffectText';
 
 const getActivationCondition = (num: string) => {
   switch (num) {
@@ -235,7 +235,7 @@ export function ArcanaSidebar({
                     )}
                   </div>
                   <div className="text-[12px] font-sans text-gray-300 font-medium leading-normal max-h-[74px] overflow-y-auto custom-scrollbar pr-1 whitespace-normal">
-                    <FormattedBoonEffect text={hoveredCard.effect} />
+                    <FormattedEffectText text={hoveredCard.effect} />
                   </div>
                 </div>
                 {hoveredCard.cost === 0 && (

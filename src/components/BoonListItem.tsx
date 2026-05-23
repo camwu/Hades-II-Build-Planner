@@ -5,7 +5,7 @@ import { Lock, Check, X, Pin } from 'lucide-react';
 import { Boon, BoonPrerequisite, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
-import { FormattedBoonEffect } from './FormattedBoonEffect';
+import { FormattedEffectText } from './FormattedEffectText';
 import { BOON_ICON_ROUNDING, BOON_BORDER_WIDTH } from '../constants';
 import { BOONS } from '../data/boonsData';
 
@@ -42,7 +42,7 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
             <span className="text-gray-500 select-none">▸</span>
             <span className="flex-1 leading-normal">
               {requiredBoonNames.length === 0 ? (
-                <FormattedBoonEffect text={description.replace(/(\d+)/g, '*$1*')} />
+                <FormattedEffectText text={description.replace(/(\d+)/g, '*$1*')} />
               ) : (
                 parts.map((part, index) => {
                   if (requiredBoonNames.includes(part)) {
@@ -92,7 +92,7 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
           <span className="text-gray-500 select-none">▸</span>
           <span className="flex-1">
             {requiredBoonNames.length === 0 ? (
-              <FormattedBoonEffect text={description.replace(/(\d+)/g, '*$1*')} />
+              <FormattedEffectText text={description.replace(/(\d+)/g, '*$1*')} />
             ) : (
               parts.map((part, index) => {
                 if (requiredBoonNames.includes(part)) {
@@ -129,7 +129,7 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
       )}{' '}
       <span className="text-gray-300">
         {requiredBoonNames.length === 0 ? (
-          <FormattedBoonEffect text={description.replace(/(\d+)/g, '*$1*')} />
+          <FormattedEffectText text={description.replace(/(\d+)/g, '*$1*')} />
         ) : (
           parts.map((part, index) => {
             if (requiredBoonNames.includes(part)) {
@@ -229,7 +229,7 @@ export function StaticBoonListItem({
         </div>
       </div>
       <p className={`text-[12px] text-gray-400 leading-normal font-medium mt-2 transition-opacity duration-150 ${isLocked ? 'opacity-50' : ''}`}>
-        <FormattedBoonEffect text={boon.effect} />
+        <FormattedEffectText text={boon.effect} />
       </p>
 
       {isLocked && prerequisitesStatus.length > 0 && (

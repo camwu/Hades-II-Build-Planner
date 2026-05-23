@@ -1,12 +1,12 @@
 import React from 'react';
 import { BOON_KEYWORDS } from '../constants';
 
-interface FormattedBoonEffectProps {
+interface FormattedEffectTextProps {
   text: string;
   className?: string;
 }
 
-export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProps) {
+export function FormattedEffectText({ text, className }: FormattedEffectTextProps) {
   if (!text) return null;
 
   const lines = text.split('\n');

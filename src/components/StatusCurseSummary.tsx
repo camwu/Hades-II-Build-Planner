@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { Boon, StatusCurse, GOD_COLORS } from '../types';
 import { STATUS_CURSES } from '../data/statusCursesData';
 import { ARCANA_CARDS } from '../data/arcanaData';
-import { FormattedBoonEffect } from './FormattedBoonEffect';
+import { FormattedEffectText } from './FormattedEffectText';
 import { Skull } from 'lucide-react';
 import { GodIcon } from './Icons';
 
@@ -144,7 +144,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                 </div>
 
                 <div className="text-xs text-gray-300 leading-relaxed mb-3">
-                  <FormattedBoonEffect text={curse.description} />
+                  <FormattedEffectText text={curse.description} />
                 </div>
 
                 {(() => {
@@ -224,7 +224,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
               </span>
             </div>
             <div className="text-xs text-gray-300 leading-relaxed mb-3">
-              <FormattedBoonEffect text={originationCard?.effect || ''} />
+              <FormattedEffectText text={originationCard?.effect || ''} />
             </div>
             <div className="flex flex-col gap-2 text-xs bg-white/5 p-2.5 rounded-lg border border-white/5">
               <div className="flex flex-col gap-1 text-[10.5px] text-gray-400 pb-2 border-b border-white/5">

@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 import { Boon, ELEMENT_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
-import { FormattedBoonEffect } from './FormattedBoonEffect';
+import { FormattedEffectText } from './FormattedEffectText';
 import { 
   BOON_ICON_ROUNDING, 
   BOON_BORDER_WIDTH,
@@ -146,7 +146,7 @@ export function BoonDisplayCard({ boon, onRemove, isSorting }: BoonDisplayCardPr
                   </div>
                 </div>
                 <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal">
-                  <FormattedBoonEffect text={boon.effect} />
+                  <FormattedEffectText text={boon.effect} />
                 </p>
               </motion.div>
             </div>
