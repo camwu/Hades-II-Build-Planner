@@ -41,7 +41,7 @@ export interface StatusCurse {
   name: string;
   description: string;
   duration: string;
-  gods: string[];
+  god: string;
 }
 
 export interface ArcanaCard {
@@ -86,8 +86,6 @@ export const GOD_SYMBOLS: Record<string, string> = {
   Artemis: '/assets/gods/Artemis_symbol.webp',
   Dionysus: '/assets/gods/Dionysus_symbol.webp',
   Hades: '/assets/gods/Hades_symbol.webp',
-  Raki: '/assets/gods/Artemis_symbol.webp', // Reuse Artemis for Raki for now
-  'Twilight Curse': '/assets/gods/Hera_symbol.webp' // Reuse Hera for Twilight Curse for now
 };
 
 export const ELEMENT_COLORS: Record<ElementType, string> = {

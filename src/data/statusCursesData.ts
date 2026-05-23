@@ -6,83 +6,83 @@ export const STATUS_CURSES: StatusCurse[] = [
     name: 'Weak',
     description: 'Afflicted foes deal at least *30%* less damage.',
     duration: '1 Sec.',
-    gods: ['Aphrodite']
+    god: 'Aphrodite'
   },
   {
     id: 'daze',
     name: 'Daze',
     description: 'Afflicted foes have *20%* chance to deal no damage.',
     duration: '9 Sec.',
-    gods: ['Apollo']
+    god: 'Apollo'
   },
   {
     id: 'wounds',
     name: 'Wounds',
     description: 'Your strike has *+50 Power* when inflicting this. Can be re-applied after *3 Sec.*',
     duration: 'Instant',
-    gods: ['Ares']
+    god: 'Ares'
   },
   {
     id: 'marked',
     name: 'Marked',
     description: 'Afflicted foes have *+30%* chance to take *Critical* damage.',
     duration: '6 Sec.',
-    gods: ['Artemis']
+    god: 'Artemis'
   },
   {
     id: 'freeze',
     name: 'Freeze',
     description: 'Afflicted foes are stopped for *2 Sec.* Can be reapplied after *10 Sec.*',
     duration: '2 Sec.',
-    gods: ['Demeter']
+    god: 'Demeter'
   },
   {
     id: 'gust',
     name: 'Gust',
     description: 'Afflicted foes are *20%* slower and their ranged shots *60%* slower.',
     duration: '3 Sec.',
-    gods: ['Demeter']
+    god: 'Demeter'
   },
   {
     id: 'hangover',
     name: 'Hangover',
     description: 'Afflicted foes take damage continuously.',
     duration: '4 Sec.',
-    gods: ['Dionysus']
+    god: 'Dionysus'
   },
   {
     id: 'glow',
     name: 'Glow',
     description: 'Afflicted foes take *+15%* damage for *5 Sec.*',
     duration: '5 Sec.',
-    gods: ['Hephaestus']
+    god: 'Hephaestus'
   },
   {
     id: 'hitch',
     name: 'Hitch',
     description: 'Afflicted foes take *30%* of damage dealt to other afflicted foes.',
     duration: '8 Sec.',
-    gods: ['Hera']
+    god: 'Hera'
   },
   {
     id: 'scorch',
     name: 'Scorch',
     description: 'Afflicted foes take *100* damage accrued from this every *1 Sec.*',
     duration: '1 Sec./100 Scorch',
-    gods: ['Hestia']
+    god: 'Hestia'
   },
   {
     id: 'froth',
     name: 'Froth',
     description: 'When hit, afflicted foes have a *25%* chance to take *50* damage.',
     duration: '3 Sec.',
-    gods: ['Poseidon']
+    god: 'Poseidon'
   },
   {
     id: 'blitz',
     name: 'Blitz',
     description: 'After taking *120* damage, afflicted foes get struck by lightning.',
     duration: '4 Sec.',
-    gods: ['Zeus']
+    god: 'Zeus'
   }
 ];

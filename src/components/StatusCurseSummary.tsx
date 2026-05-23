@@ -53,16 +53,15 @@ export function StatusCurseSummary({ coreBuild, additionalBoons, activeArcana = 
       const godsForThisCurse = new Set<string>();
       matchingBoons.forEach(boon => {
         boon.gods.forEach(g => {
-          if (curse.gods.includes(g)) {
+          if (curse.god === g) {
             godsForThisCurse.add(g);
           }
         });
       });
       
       // Fallback if no matching boons directly matched but curse is active
-      if (godsForThisCurse.size === 0 && curse.gods.length > 0) {
-        const preferredGod = curse.gods.find(g => g !== 'Raki') || curse.gods[0];
-        godsForThisCurse.add(preferredGod);
+      if (godsForThisCurse.size === 0 && curse.god) {
+        godsForThisCurse.add(curse.god);
       }
       
       godsMap.set(curse.id, Array.from(godsForThisCurse));
@@ -189,7 +188,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons, activeArcana = 
           <span className="text-[11px] text-gray-500 font-display">No Active Curses</span>
         ) : (
           activeCurses.map((curse, index) => {
-          const mainGod = curse.gods[0];
+          const mainGod = curse.god;
           const godColor = mainGod ? (GOD_COLORS[mainGod] || 'text-gray-400') : 'text-gray-400';
           
           let tooltipPositionClass = "left-1/2 -translate-x-1/2 mt-2";
