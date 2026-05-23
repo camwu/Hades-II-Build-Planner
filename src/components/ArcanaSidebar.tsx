@@ -313,6 +313,19 @@ export function ArcanaSidebar({
                       {cardData.number}
                     </span>
                   </div>
+
+                  {/* Grasp Cost Badge in top right corner */}
+                  <div 
+                    className={`absolute top-1 right-1 w-[22px] h-[22px] rounded-full flex items-center justify-center z-20 select-none shadow-md transition-all duration-300 pointer-events-none ${
+                      isActive 
+                        ? 'bg-hades-bg-dark border border-hades-accent text-hades-accent shadow-[0_0_8px_rgba(16,185,129,0.35)]' 
+                        : 'bg-[#0e0e14]/95 border border-white/15 text-gray-400'
+                    }`}
+                  >
+                    <span className="text-[11px] font-sans font-extrabold leading-none">
+                      {cardData.cost}
+                    </span>
+                  </div>
                 </button>
               );
             })}
