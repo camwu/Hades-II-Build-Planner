@@ -27,7 +27,7 @@ export const STATUS_CURSES: StatusCurse[] = [
     name: 'Marked',
     description: 'Afflicted foes have *+30%* chance to take *Critical* damage.',
     duration: '6 Sec.',
-    gods: ['Artemis', 'Raki']
+    gods: ['Artemis']
   },
   {
     id: 'freeze',
@@ -79,24 +79,10 @@ export const STATUS_CURSES: StatusCurse[] = [
     gods: ['Poseidon']
   },
   {
-    id: 'morph',
-    name: 'Morph',
-    description: 'Afflicted foes turn into harmless critters.',
-    duration: '4 Sec.',
-    gods: ['Twilight Curse']
-  },
-  {
     id: 'blitz',
     name: 'Blitz',
     description: 'After taking *120* damage, afflicted foes get struck by lightning.',
     duration: '4 Sec.',
     gods: ['Zeus']
-  },
-  {
-    id: 'scorn',
-    name: 'Scorn',
-    description: 'Afflicted foes take *+30%**Attack* and *Special* damage.',
-    duration: '10 Sec.',
-    gods: ['Hades']
   }
 ];
