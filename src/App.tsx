@@ -42,12 +42,111 @@ import { MainHeader } from './components/MainHeader';
 import { MainFooter } from './components/MainFooter';
 import { BuildHeader } from './components/BuildHeader';
 import { BoonLibrary } from './components/BoonLibrary';
+import { ArcanaSidebar } from './components/ArcanaSidebar';
+
+const ZERO_COST_CARDS = [5, 13, 20, 21, 24, 25];
+
+const getSurroundingCards = (cardNumber: number): number[] => {
+  const r = Math.floor((cardNumber - 1) / 5);
+  const col = (cardNumber - 1) % 5;
+  const list: number[] = [];
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+      const nr = r + dr;
+      const ncol = col + dc;
+      if (nr >= 0 && nr < 5 && ncol >= 0 && ncol < 5) {
+        list.push(nr * 5 + ncol + 1);
+      }
+    }
+  }
+  return list;
+};
+
+const ARCANA_COSTS: Record<number, number> = {
+  1: 1, 2: 1, 3: 2, 4: 3, 5: 0,
+  6: 2, 7: 2, 8: 1, 9: 5, 10: 2,
+  11: 1, 12: 4, 13: 0, 14: 5, 15: 3,
+  16: 3, 17: 5, 18: 3, 19: 5, 20: 0,
+  21: 0, 22: 4, 23: 4, 24: 0, 25: 0
+};
+
+export function resolveAllActiveArcana(manualSelection: number[]): number[] {
+  let activeSet = new Set(manualSelection.filter(num => !ZERO_COST_CARDS.includes(num)));
+
+  let changed = true;
+  let iterations = 0;
+  while (changed && iterations < 10) {
+    changed = false;
+    const currentActive = Array.from(activeSet);
+
+    for (const cardNum of ZERO_COST_CARDS) {
+      if (activeSet.has(cardNum)) continue;
+
+      let shouldActivate = false;
+
+      if (cardNum === 5) {
+        // V. The Moon: "Activate any surrounding cards" -> at least one surrounding card is active
+        const surrounding = getSurroundingCards(5);
+        shouldActivate = surrounding.some(n => activeSet.has(n));
+      } else if (cardNum === 13) {
+        // XIII. The Centaur: "Activate surrounding cards" -> VIII, XII, XIV, XVIII are active
+        const surroundingOf13 = [8, 12, 14, 18];
+        shouldActivate = surroundingOf13.every(n => activeSet.has(n));
+      } else if (cardNum === 20) {
+        // XX. The Queen: "Activate no more than two cards of the same Grasp cost."
+        const costCounts: Record<number, number> = {};
+        for (const act of currentActive) {
+          const cost = ARCANA_COSTS[act] || 0;
+          if (cost > 0) {
+            costCounts[cost] = (costCounts[cost] || 0) + 1;
+          }
+        }
+        shouldActivate = currentActive.length > 0 && Object.values(costCounts).every(cnt => cnt <= 2);
+      } else if (cardNum === 21) {
+        // XXI. The Fates: "Activate three surrounding cards."
+        const surrounding = getSurroundingCards(21);
+        const activeCount = surrounding.filter(n => activeSet.has(n)).length;
+        shouldActivate = activeCount >= 3;
+      } else if (cardNum === 24) {
+        // XXIV. Divinity: "Activate all columns/cards in any one row."
+        for (let r = 0; r < 5; r++) {
+          let allActive = true;
+          for (let c = 0; c < 5; c++) {
+            const num = r * 5 + c + 1;
+            if (num === 24) continue;
+            if (!activeSet.has(num)) {
+              allActive = false;
+              break;
+            }
+          }
+          if (allActive) {
+            shouldActivate = true;
+            break;
+          }
+        }
+      } else if (cardNum === 25) {
+        // XXV. Judgment: "Activate three or fewer cards."
+        const activeNormalCount = currentActive.filter(n => !ZERO_COST_CARDS.includes(n)).length;
+        shouldActivate = activeNormalCount > 0 && activeNormalCount <= 3;
+      }
+
+      if (shouldActivate) {
+        activeSet.add(cardNum);
+        changed = true;
+      }
+    }
+    iterations++;
+  }
+
+  return Array.from(activeSet).sort((a, b) => a - b);
+}
 
 export default function App() {
   // Check if URL has build parameters
   const hasUrlParams = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.has('c') || params.has('a') || params.has('n') || params.has('p');
+    return params.has('c') || params.has('a') || params.has('n') || params.has('p') || params.has('ar');
   }, []);
 
   // Try to load state from localStorage if no URL params
@@ -147,6 +246,43 @@ export default function App() {
 
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+
+  const [isArcanaCollapsed, setIsArcanaCollapsed] = useState(false);
+  const [isArcanaButtonHovered, setIsArcanaButtonHovered] = useState(false);
+
+  const [activeArcana, setActiveArcana] = useState<number[]>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const arParam = params.get('ar');
+    let loaded: number[] = [];
+    if (arParam) {
+      loaded = arParam.split(',')
+        .map(Number)
+        .filter(n => !isNaN(n) && n >= 1 && n <= 25);
+    } else if (savedState && Array.isArray(savedState.activeArcana)) {
+      loaded = savedState.activeArcana;
+    }
+    return resolveAllActiveArcana(loaded);
+  });
+
+  const toggleArcana = (cardNumber: number) => {
+    if (ZERO_COST_CARDS.includes(cardNumber)) return;
+
+    setActiveArcana(prev => {
+      const manualOnly = prev.filter(num => !ZERO_COST_CARDS.includes(num));
+      const nextManual = manualOnly.includes(cardNumber)
+        ? manualOnly.filter(n => n !== cardNumber)
+        : [...manualOnly, cardNumber];
+      return resolveAllActiveArcana(nextManual);
+    });
+  };
+
+  const selectAllArcana = () => {
+    setActiveArcana(Array.from({ length: 25 }, (_, i) => i + 1));
+  };
+
+  const clearAllArcana = () => {
+    setActiveArcana([]);
+  };
 
   const [hideAssigned, setHideAssigned] = useState(() => {
     const params = new URLSearchParams(window.location.search);
@@ -283,6 +419,11 @@ export default function App() {
         }
       }
 
+      // Arcana Cards
+      if (activeArcana.length > 0) {
+        params.set('ar', activeArcana.join(','));
+      }
+
       const newUrl = params.toString() 
         ? `${window.location.pathname}?${params.toString()}`
         : window.location.pathname;
@@ -304,7 +445,8 @@ export default function App() {
           additionalBoonIds,
           buildName,
           hideAssigned,
-          limitToGodPool
+          limitToGodPool,
+          activeArcana
         };
 
         localStorage.setItem('hades_build_planner_state', JSON.stringify(stateToSave));
@@ -316,7 +458,7 @@ export default function App() {
     return () => {
       clearTimeout(handler);
     };
-  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool, pinnedBoonIds]);
+  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool, pinnedBoonIds, activeArcana]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -552,6 +694,7 @@ export default function App() {
       Magick: null,
     });
     setAdditionalBoons([]);
+    setActiveArcana([]);
     setBuildName('Untitled Build');
     setSearchTerm('');
     setActiveSlot(null);
@@ -778,6 +921,17 @@ export default function App() {
               </div>
             </div>
           </section>
+
+          <ArcanaSidebar
+            activeArcana={activeArcana}
+            toggleArcana={toggleArcana}
+            selectAllArcana={selectAllArcana}
+            clearAllArcana={clearAllArcana}
+            isArcanaCollapsed={isArcanaCollapsed}
+            setIsArcanaCollapsed={setIsArcanaCollapsed}
+            isButtonHovered={isArcanaButtonHovered}
+            setIsButtonHovered={setIsArcanaButtonHovered}
+          />
         </main>
 
         <DragOverlay>
