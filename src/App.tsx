@@ -90,9 +90,16 @@ export function resolveAllActiveArcana(manualSelection: number[]): number[] {
         const surrounding = getSurroundingCards(5);
         shouldActivate = surrounding.some(n => activeSet.has(n));
       } else if (cardNum === 13) {
-        // XIII. The Centaur: "Activate surrounding cards" -> VIII, XII, XIV, XVIII are active
-        const surroundingOf13 = [8, 12, 14, 18];
-        shouldActivate = surroundingOf13.every(n => activeSet.has(n));
+        // XIII. The Centaur: "Activate Cards that use 1 through 5 Grasp."
+        // We need at least one active card of each Grasp cost from 1 to 5.
+        const activeCosts = new Set<number>();
+        for (const num of activeSet) {
+          const cost = ARCANA_COSTS[num];
+          if (cost >= 1 && cost <= 5) {
+            activeCosts.add(cost);
+          }
+        }
+        shouldActivate = [1, 2, 3, 4, 5].every(c => activeCosts.has(c));
       } else if (cardNum === 20) {
         // XX. The Queen: "Activate no more than two cards of the same Grasp cost."
         const costCounts: Record<number, number> = {};
@@ -109,12 +116,14 @@ export function resolveAllActiveArcana(manualSelection: number[]): number[] {
         const activeCount = surrounding.filter(n => activeSet.has(n)).length;
         shouldActivate = activeCount >= 3;
       } else if (cardNum === 24) {
-        // XXIV. Divinity: "Activate all columns/cards in any one row."
-        for (let r = 0; r < 5; r++) {
+        // XXIV. Divinity: "Activate all 5 Cards in any other row or column."
+        // Divinity is in Row 4, Column 3. Other rows are 0, 1, 2, 3. Other columns are 0, 1, 2, 4.
+
+        // Check rows 0, 1, 2, 3
+        for (let r = 0; r < 4; r++) {
           let allActive = true;
           for (let c = 0; c < 5; c++) {
             const num = r * 5 + c + 1;
-            if (num === 24) continue;
             if (!activeSet.has(num)) {
               allActive = false;
               break;
@@ -123,6 +132,25 @@ export function resolveAllActiveArcana(manualSelection: number[]): number[] {
           if (allActive) {
             shouldActivate = true;
             break;
+          }
+        }
+
+        // Check columns 0, 1, 2, 4
+        if (!shouldActivate) {
+          const columnsToCheck = [0, 1, 2, 4];
+          for (const c of columnsToCheck) {
+            let allActive = true;
+            for (let r = 0; r < 5; r++) {
+              const num = r * 5 + c + 1;
+              if (!activeSet.has(num)) {
+                allActive = false;
+                break;
+              }
+            }
+            if (allActive) {
+              shouldActivate = true;
+              break;
+            }
           }
         }
       } else if (cardNum === 25) {

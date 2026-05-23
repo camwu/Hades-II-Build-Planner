@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Sparkles, X, Hand, MessageCircle, Lock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sparkles, X, Hand, MessageCircle, Lock, LockKeyholeOpen } from 'lucide-react';
 import { ARCANA_CARDS } from '../data/arcanaData';
 import { ArcanaCard } from '../types';
 import { FormattedEffectText } from './FormattedEffectText';
@@ -10,13 +10,13 @@ const getActivationCondition = (num: string) => {
     case 'V':
       return "Auto-activates if at least 1 surrounding card is active.";
     case 'XIII':
-      return "Auto-activates if VIII, XII, XIV, and XVIII are active.";
+      return "Auto-activates if you have active cards of costs 1, 2, 3, 4, and 5 Grasp.";
     case 'XX':
       return "Auto-activates if no more than 2 cards of each active cost are active.";
     case 'XXI':
       return "Auto-activates if at least 3 surrounding cards are active.";
     case 'XXIV':
-      return "Auto-activates if any full row is active.";
+      return "Auto-activates if any other row or column is fully active.";
     case 'XXV':
       return "Auto-activates if 1 to 3 cards are active total.";
     default:
@@ -247,86 +247,94 @@ export function ArcanaSidebar({
               const hasFailed = imageErrors[cardNumber];
 
               return (
-                <button
-                  key={cardNumber}
-                  onClick={() => {
-                    if (isZeroCost) {
-                      if (!isActive) {
-                        setShakeTrigger(prev => prev + 1);
-                      }
-                    } else {
-                      toggleArcana(cardNumber);
-                    }
-                  }}
-                  onMouseEnter={() => setHoveredCard(cardData)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  className={`group relative outline-none bg-transparent aspect-[219/341] w-full rounded-md overflow-hidden transition-all duration-300 transform-gpu cursor-pointer ${
-                    isZeroCost
-                      ? 'opacity-80 hover:opacity-100 font-sc'
+                <div 
+                  key={cardNumber} 
+                  className={`relative group/card-wrapper w-full transition-all duration-300 transform-gpu ${
+                    isZeroCost 
+                      ? '' 
                       : 'hover:scale-[1.08]'
-                  } ${
-                    isActive
-                      ? 'shadow-[0_0_16px_rgba(16,185,129,0.85),_0_0_28px_rgba(16,185,129,0.45)] border border-hades-accent/40 opacity-100 z-10'
-                      : 'border border-white/5 opacity-65 hover:opacity-100 hover:border-white/20'
                   }`}
-                  aria-label={`${cardData.number}. ${cardData.name}`}
                 >
-                  {!hasFailed ? (
-                    <div className="absolute inset-0 w-full h-full select-none pointer-events-none">
-                      {/* Inactive card image background */}
-                      <img
-                        src={getCardImageSrc(cardNumber, false)}
-                        alt={`${cardData.number}. ${cardData.name} Inactive`}
-                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
-                        style={{ opacity: isActive ? 0 : 1 }}
-                        referrerPolicy="no-referrer"
-                        onError={() => {
-                          setImageErrors(prev => ({ ...prev, [cardNumber]: true }));
-                        }}
-                      />
-                      {/* Active card image crossfade */}
-                      <img
-                        src={getCardImageSrc(cardNumber, true)}
-                        alt={`${cardData.number}. ${cardData.name} Active`}
-                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
-                        style={{ opacity: isActive ? 1 : 0 }}
-                        referrerPolicy="no-referrer"
-                        onError={() => {
-                          setImageErrors(prev => ({ ...prev, [cardNumber]: true }));
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c24] to-[#0d0d12] flex flex-col items-center justify-center border border-hades-accent/30 p-1.5 select-none pointer-events-none">
-                      <span className="text-[#e3b869] font-display text-xs font-bold tracking-wider leading-none">
+                  <button
+                    onClick={() => {
+                      if (isZeroCost) {
+                        if (!isActive) {
+                          setShakeTrigger(prev => prev + 1);
+                        }
+                      } else {
+                        toggleArcana(cardNumber);
+                      }
+                    }}
+                    onMouseEnter={() => setHoveredCard(cardData)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    className={`group w-full relative outline-none bg-transparent aspect-[219/341] rounded-md overflow-hidden transition-all duration-300 cursor-pointer ${
+                      isZeroCost
+                        ? 'opacity-80 hover:opacity-100 font-sc'
+                        : ''
+                    } ${
+                      isActive
+                        ? 'shadow-[0_0_16px_rgba(16,185,129,0.85),_0_0_28px_rgba(16,185,129,0.45)] border border-hades-accent/40 opacity-100 z-10'
+                        : 'border border-white/5 opacity-65 hover:opacity-100 hover:border-white/20'
+                    }`}
+                    aria-label={`${cardData.number}. ${cardData.name}`}
+                  >
+                    {!hasFailed ? (
+                      <div className="absolute inset-0 w-full h-full select-none pointer-events-none">
+                        {/* Inactive card image background */}
+                        <img
+                          src={getCardImageSrc(cardNumber, false)}
+                          alt={`${cardData.number}. ${cardData.name} Inactive`}
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                          style={{ opacity: isActive ? 0 : 1 }}
+                          referrerPolicy="no-referrer"
+                          onError={() => {
+                            setImageErrors(prev => ({ ...prev, [cardNumber]: true }));
+                          }}
+                        />
+                        {/* Active card image crossfade */}
+                        <img
+                          src={getCardImageSrc(cardNumber, true)}
+                          alt={`${cardData.number}. ${cardData.name} Active`}
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                          style={{ opacity: isActive ? 1 : 0 }}
+                          referrerPolicy="no-referrer"
+                          onError={() => {
+                            setImageErrors(prev => ({ ...prev, [cardNumber]: true }));
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c24] to-[#0d0d12] flex flex-col items-center justify-center border border-hades-accent/30 p-1.5 select-none pointer-events-none">
+                        <span className="text-[#e3b869] font-display text-xs font-bold tracking-wider leading-none">
+                          {cardData.number}
+                        </span>
+                        <span className="text-[7.5px] text-gray-400 font-bold normal-case font-sc text-center mt-1 scale-90 leading-tight line-clamp-2 px-0.5">
+                          {cardData.name}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* High contrast Roman numeral overlay on card hover */}
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                      <span className="text-white text-sm font-bold font-display tracking-widest">
                         {cardData.number}
                       </span>
-                      <span className="text-[7.5px] text-gray-400 font-bold normal-case font-sc text-center mt-1 scale-90 leading-tight line-clamp-2 px-0.5">
-                        {cardData.name}
-                      </span>
                     </div>
-                  )}
+                  </button>
 
-                  {/* High contrast Roman numeral overlay on card hover */}
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                    <span className="text-white text-sm font-bold font-display tracking-widest">
-                      {cardData.number}
-                    </span>
-                  </div>
-
-                  {/* Grasp Cost Badge in top right corner */}
+                  {/* Grasp Cost Badge positioned خارج button to avoid overflow-hidden clipping */}
                   <div 
-                    className={`absolute top-1 right-1 w-[22px] h-[22px] rounded-full flex items-center justify-center z-20 select-none shadow-md transition-all duration-300 pointer-events-none ${
+                    className={`absolute -top-1.5 -right-1.5 w-[26px] h-[26px] rounded-full flex items-center justify-center z-20 select-none shadow-md transition-all duration-300 pointer-events-none ${
                       isActive 
-                        ? 'bg-hades-bg-dark border border-hades-accent text-hades-accent shadow-[0_0_8px_rgba(16,185,129,0.35)]' 
+                        ? 'bg-[#030712] border border-hades-accent text-hades-accent shadow-[0_0_8px_rgba(16,185,129,0.35)]' 
                         : 'bg-[#0e0e14]/95 border border-white/15 text-gray-400'
                     }`}
                   >
-                    <span className="text-[11px] font-sans font-extrabold leading-none">
+                    <span className="text-[13px] font-sans font-extrabold leading-none flex items-center justify-center h-full w-full text-center">
                       {cardData.cost}
                     </span>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
@@ -362,21 +370,19 @@ export function ArcanaSidebar({
                         </div>
 
                         <div className="flex flex-wrap items-center gap-x-2.5">
-                          {hoveredCard.cost === 0 ? (
-                            <span className="text-[10px] font-display text-hades-accent/80 uppercase tracking-wider leading-none">
-                              Auto-activated
-                            </span>
-                          ) : (
-                            <div className="flex items-center gap-1.5 text-hades-accent text-[10px] uppercase font-bold tracking-wider leading-none select-none">
-                              <img 
-                                src="/assets/ui/Grasp.png" 
-                                alt="Grasp" 
-                                className="h-3.5 w-auto object-contain relative -top-[0.5px]" 
-                                referrerPolicy="no-referrer"
-                              />
-                              <span>{hoveredCard.cost} Grasp</span>
-                            </div>
-                          )}
+                          {(() => {
+                            const cardIndex = ARCANA_CARDS.findIndex(c => c.id === hoveredCard.id) + 1;
+                            const isCardActive = activeArcana.includes(cardIndex);
+                            return isCardActive ? (
+                              <span className="text-[9px] font-display font-extrabold uppercase tracking-widest px-1.5 py-0.5 rounded border bg-emerald-500/10 border-emerald-500/20 text-emerald-400 select-none shadow-[0_0_8px_rgba(16,185,129,0.15)]">
+                                Activated
+                              </span>
+                            ) : (
+                              <span className="text-[9px] font-display font-extrabold uppercase tracking-widest px-1.5 py-0.5 rounded border bg-hades-red/5 border-hades-red/20 text-hades-red select-none">
+                                Deactivated
+                              </span>
+                            );
+                          })()}
                         </div>
                       </div>
                     </div>
@@ -385,19 +391,38 @@ export function ArcanaSidebar({
                       <FormattedEffectText text={hoveredCard.effect} />
                     </div>
                   </div>
-                  {hoveredCard.cost === 0 && (
-                    <div className="mt-3.5 pt-3 border-t border-red-950/45 text-xs font-sans text-gray-400">
-                      <div className="flex flex-col gap-1.5 bg-red-950/10 p-2.5 rounded border border-red-900/20">
-                        <div className="flex items-start gap-2">
-                          <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
-                          <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Requirements</span>
-                        </div>
-                        <div className="pl-5.5 text-xs text-gray-300 leading-normal font-medium">
-                          <FormattedEffectText text={hoveredCard.awakening || getActivationCondition(hoveredCard.number)} />
+                  {hoveredCard.cost === 0 && (() => {
+                    const cardIndex = ARCANA_CARDS.findIndex(c => c.id === hoveredCard.id) + 1;
+                    const isCardActive = activeArcana.includes(cardIndex);
+                    
+                    return (
+                      <div className="mt-3 text-xs font-sans text-gray-400 transition-all duration-300">
+                        <div className={`flex flex-col gap-1.5 p-2.5 rounded border transition-all duration-300 ${
+                          isCardActive 
+                            ? 'bg-emerald-950/10 border-emerald-500/20 text-gray-400' 
+                            : 'bg-red-950/10 border-red-900/20'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              {isCardActive ? (
+                                <LockKeyholeOpen className="w-3.5 h-3.5 text-emerald-400/85 flex-shrink-0" />
+                              ) : (
+                                <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0" />
+                              )}
+                              <span className={`font-semibold flex-shrink-0 transition-colors ${
+                                isCardActive ? 'text-emerald-400/80' : 'text-red-400/80'
+                              }`}>
+                                {isCardActive ? 'Unlocked Requirements' : 'Locked Requirements'}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="pl-5.5 text-xs leading-normal font-medium transition-all duration-300 text-gray-300">
+                            <FormattedEffectText text={hoveredCard.awakening || getActivationCondition(hoveredCard.number)} />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    );
+                  })()}
                 </motion.div>
               </motion.div>
             ) : (
