@@ -9,9 +9,18 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'P22 Underground SC';
+  src: url('/fonts/P22Underground-SCp.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: "Lato", ui-sans-serif, system-ui, sans-serif;
   --font-display: "P22 Underground", "Outfit", sans-serif;
+  --font-sc: "P22 Underground SC", "Outfit", sans-serif;
 
   --color-hades-bg: #06060a;
   --color-hades-bg-dark: #0c0c14;

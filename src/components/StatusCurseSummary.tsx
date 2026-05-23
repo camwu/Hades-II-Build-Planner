@@ -101,9 +101,20 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
         {activeCurses.length === 0 ? (
           <span className="text-[11px] text-gray-500 font-display">No Active Curses</span>
         ) : (
-          activeCurses.map((curse) => {
+          activeCurses.map((curse, index) => {
           const mainGod = curse.gods[0];
           const godColor = mainGod ? (GOD_COLORS[mainGod] || 'text-gray-400') : 'text-gray-400';
+          
+          let tooltipPositionClass = "left-1/2 -translate-x-1/2 mt-2";
+          if (index === 0) {
+            tooltipPositionClass = "left-0 mt-2";
+          } else if (index === activeCurses.length - 1) {
+            tooltipPositionClass = "right-0 mt-2";
+          } else if (index === 1 && activeCurses.length > 3) {
+            tooltipPositionClass = "left-0 mt-2";
+          } else if (index === activeCurses.length - 2 && activeCurses.length > 3) {
+            tooltipPositionClass = "right-0 mt-2";
+          }
           
           return (
             <div
@@ -119,12 +130,12 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                   <Skull className="w-3.5 h-3.5" />
                 </div>
               )}
-              <span className="text-sm font-bold font-display text-gray-200">
+              <span className={`text-sm font-bold text-gray-200 ${/\d/.test(curse.name) ? 'font-display' : 'font-sc normal-case'}`}>
                 {curse.name}
               </span>
               
               {/* Tooltip */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className={`absolute top-full ${tooltipPositionClass} w-72 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50`}>
                 <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
                   <div className="flex items-center gap-2">
                     {mainGod ? (
@@ -136,7 +147,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                         <Skull className="w-4 h-4" />
                       </div>
                     )}
-                    <span className="text-sm font-bold uppercase tracking-widest text-gray-200 font-display">{curse.name}</span>
+                    <span className={`text-sm font-bold tracking-widest text-gray-200 ${/\d/.test(curse.name) ? 'font-display' : 'font-sc normal-case'}`}>{curse.name}</span>
                   </div>
                   <span className="text-[11px] font-bold font-display px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 capitalize">
                     {curse.duration || 'Active'}
@@ -164,7 +175,9 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                                   <GodIcon god={boon.gods[0]} className="w-full h-full object-contain" />
                                 </div>
                               )}
-                              <span className="font-bold text-gray-200 truncate text-xs">{boon.name}</span>
+                              <span className="font-bold text-gray-200 truncate text-xs font-sc">
+                                {boon.name}
+                              </span>
                             </div>
                             <span className="text-[10px] text-gray-400 font-display flex-shrink-0">{boon.type}</span>
                           </div>
@@ -197,9 +210,9 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
           </div>
 
           <div className="flex flex-col justify-center">
-            <span className={`text-[10px] font-bold uppercase tracking-wider font-display ${
+            <span className={`text-[10px] font-bold tracking-wider ${
               isOriginationActive ? 'text-amber-400' : 'text-gray-500'
-            }`}>
+            } ${/\d/.test('Origination') ? 'font-display' : 'font-sc normal-case'}`}>
               Origination
             </span>
           </div>
@@ -212,7 +225,7 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
               <div className="flex items-center gap-2">
                 <img src="/assets/ui/Origination_Active_Icon.webp" className="w-5.5 h-5.5 object-contain" style={{ width: '22px', height: '22px' }} alt="Origination" referrerPolicy="no-referrer" />
                 <div className="flex flex-col leading-tight">
-                  <span className="text-sm font-bold uppercase tracking-widest text-amber-400 font-display">
+                  <span className={`text-sm font-bold tracking-widest text-amber-400 ${/\d/.test('Origination') ? 'font-display' : 'font-sc normal-case'}`}>
                     Origination
                   </span>
                 </div>
@@ -252,7 +265,9 @@ export function StatusCurseSummary({ coreBuild, additionalBoons }: StatusCurseSu
                               <GodIcon god={boon.gods[0]} className="w-full h-full object-contain" />
                             </div>
                           )}
-                          <span className="font-bold text-gray-200 truncate text-xs">{boon.name}</span>
+                          <span className="font-bold text-gray-200 truncate text-xs font-sc">
+                            {boon.name}
+                          </span>
                         </div>
                         <span className="text-[10px] text-gray-400 font-display flex-shrink-0">{boon.type}</span>
                       </div>

@@ -189,7 +189,7 @@ export function StaticBoonListItem({
         
         <div className={`flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5 ${isLocked ? 'opacity-50' : ''}`}>
           <div className="flex items-center justify-between gap-2">
-            <h4 className={`text-base font-bold uppercase tracking-wide truncate font-display leading-tight ${getBoonColor(boon.type)}`}>
+            <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${getBoonColor(boon.type)}`}>
               {boon.name}
             </h4>
             <span className={`text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${

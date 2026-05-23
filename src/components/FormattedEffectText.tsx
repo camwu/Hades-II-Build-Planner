@@ -214,7 +214,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
                       <img 
                         src="/assets/ui/Dice.webp" 
                         alt="Change of Fate" 
-                        className="inline-block h-[14px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        className="inline-block h-[18px] w-auto object-contain align-middle relative -top-[1px] mr-1" 
                         referrerPolicy="no-referrer"
                       />
                       {p}
@@ -224,7 +224,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
                   return (
                     <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
                       <img 
-                        src="/assets/ui/Grasp.webp" 
+                        src="/assets/ui/Grasp.png" 
                         alt="Grasp" 
                         className="inline-block h-[14px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
                         referrerPolicy="no-referrer"

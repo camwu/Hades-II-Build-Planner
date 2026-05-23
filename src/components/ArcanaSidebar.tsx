@@ -97,7 +97,12 @@ export function ArcanaSidebar({
         <div className="px-6 py-5 border-b border-hades-border-light bg-hades-panel flex-shrink-0">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-hades-accent" />
+              <img 
+                src="/assets/ui/Grasp.png" 
+                alt="Grasp" 
+                className="w-4 h-4 object-contain" 
+                referrerPolicy="no-referrer"
+              />
               <h2 className="text-sm font-semibold uppercase tracking-wider text-hades-accent font-display">
                 Altar of Ashes
               </h2>
@@ -188,7 +193,7 @@ export function ArcanaSidebar({
                       <span className="text-[#e3b869] font-display text-xs font-bold tracking-wider leading-none">
                         {cardData.number}
                       </span>
-                      <span className="text-[7.5px] text-gray-400 uppercase font-sans text-center mt-1 scale-90 leading-tight line-clamp-2 px-0.5">
+                      <span className="text-[7.5px] text-gray-400 font-bold normal-case font-sc text-center mt-1 scale-90 leading-tight line-clamp-2 px-0.5">
                         {cardData.name}
                       </span>
                     </div>
@@ -224,14 +229,24 @@ export function ArcanaSidebar({
                       <span className="text-xs font-bold font-display text-hades-accent border border-hades-accent/30 px-1.5 py-0.5 rounded bg-hades-accent/5">
                         {hoveredCard.number}
                       </span>
-                      <span className="text-base font-bold font-display text-gray-100 uppercase tracking-wide leading-tight">
+                      <span className="text-base font-bold font-sc text-gray-100 normal-case tracking-wide leading-tight">
                         {hoveredCard.name}
                       </span>
                     </div>
-                    {hoveredCard.cost === 0 && (
+                    {hoveredCard.cost === 0 ? (
                       <span className="text-[10px] font-bold uppercase tracking-wider text-hades-accent">
                         Auto-activated
                       </span>
+                    ) : (
+                      <div className="flex items-center gap-1 text-[#2ab5a3] text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
+                        <img 
+                          src="/assets/ui/Grasp.png" 
+                          alt="Grasp" 
+                          className="h-[14px] w-auto object-contain relative -top-[0.5px]" 
+                          referrerPolicy="no-referrer"
+                        />
+                        <span>{hoveredCard.cost} Grasp</span>
+                      </div>
                     )}
                   </div>
                   <div className="text-[12px] font-sans text-gray-400 font-medium leading-normal max-h-[74px] overflow-y-auto custom-scrollbar pr-1 whitespace-normal">

@@ -49,9 +49,20 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
         <span className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold">Elemental Essences</span>
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px]">
-        {ALL_ELEMENTS.map((el) => {
+        {ALL_ELEMENTS.map((el, index) => {
           const count = counts[el];
           const boons = contributingBoons[el] || [];
+          
+          let tooltipPositionClass = "left-1/2 -translate-x-1/2 mt-2";
+          if (index === 0) {
+            tooltipPositionClass = "left-0 mt-2";
+          } else if (index === ALL_ELEMENTS.length - 1) {
+            tooltipPositionClass = "right-0 mt-2";
+          } else if (index === 1 && ALL_ELEMENTS.length > 3) {
+            tooltipPositionClass = "left-0 mt-2";
+          } else if (index === ALL_ELEMENTS.length - 2 && ALL_ELEMENTS.length > 3) {
+            tooltipPositionClass = "right-0 mt-2";
+          }
           
           return (
             <div key={el} className="group relative flex items-center gap-2 cursor-help">
@@ -67,13 +78,13 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
               </span>
 
               {/* Element Tooltip */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className={`absolute top-full ${tooltipPositionClass} w-64 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50`}>
                 <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 ${ELEMENT_COLORS[el]}`}>
                       <ElementIcon element={el} className="w-full h-full" />
                     </div>
-                    <span className="text-sm font-bold uppercase tracking-widest text-gray-200 font-display">{el}</span>
+                    <span className={`text-sm font-bold tracking-widest text-gray-200 ${/\d/.test(el) ? 'font-display' : 'font-sc normal-case'}`}>{el}</span>
                   </div>
                   <span className={`text-[11px] font-bold font-display px-1.5 py-0.5 rounded ${
                     count > 0 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-white/5 text-gray-500'
@@ -93,7 +104,9 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
                                 <GodIcon god={boon.gods[0]} className="w-full h-full object-contain" />
                               </div>
                             )}
-                            <span className="font-bold text-gray-200 truncate text-xs">{boon.name}</span>
+                            <span className="font-bold text-gray-200 truncate text-xs font-sc">
+                              {boon.name}
+                            </span>
                           </div>
                           <span className="text-[10px] text-gray-400 font-display flex-shrink-0">{boon.type}</span>
                         </div>

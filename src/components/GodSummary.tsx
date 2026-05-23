@@ -137,10 +137,21 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
         {godData.length === 0 ? (
           <span className="text-[11px] text-gray-500 font-display">No Gods in Pool</span>
         ) : (
-          godData.map(([god, count]) => {
+          godData.map(([god, count], index) => {
             const godColor = GOD_COLORS[god] || 'text-gray-400';
             const boons = godBoons[god] || [];
             const isExcluded = EXCLUDED_GODS.includes(god);
+            
+            let tooltipPositionClass = "left-1/2 -translate-x-1/2 mt-2";
+            if (index === 0) {
+              tooltipPositionClass = "left-0 mt-2";
+            } else if (index === godData.length - 1) {
+              tooltipPositionClass = "right-0 mt-2";
+            } else if (index === 1 && godData.length > 3) {
+              tooltipPositionClass = "left-0 mt-2";
+            } else if (index === godData.length - 2 && godData.length > 3) {
+              tooltipPositionClass = "right-0 mt-2";
+            }
             
             return (
               <div key={god} className="group relative flex items-center gap-2 cursor-help">
@@ -152,13 +163,13 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
                 </span>
 
                 {/* God Tooltip */}
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className={`absolute top-full ${tooltipPositionClass} w-64 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50`}>
                   <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
                     <div className="flex items-center gap-2">
                       <div className={`w-4 h-4 ${godColor}`}>
                         <GodIcon god={god} className="w-full h-full object-contain" />
                       </div>
-                      <span className="text-sm font-bold uppercase tracking-widest text-gray-200 font-display">{god}</span>
+                      <span className={`text-sm font-bold tracking-widest text-gray-200 ${/\d/.test(god) ? 'font-display' : 'font-sc normal-case'}`}>{god}</span>
                     </div>
                     <span className="text-[11px] font-bold font-display px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400">
                       {count} {count === 1 ? 'Boon' : 'Boons'}
@@ -176,7 +187,9 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
                                 <ElementIcon element={boon.element} className="w-full h-full" />
                               </div>
                             )}
-                            <span className="font-bold text-gray-200 truncate text-xs">{boon.name}</span>
+                            <span className="font-bold text-gray-200 truncate text-xs font-sc">
+                              {boon.name}
+                            </span>
                           </div>
                           <span className="text-[10px] text-gray-400 font-display flex-shrink-0">{boon.type}</span>
                         </div>
