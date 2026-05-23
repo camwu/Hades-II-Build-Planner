@@ -112,7 +112,9 @@ export function ArcanaSidebar({
           : 480, // Expanded width for larger cards and tight grid
       }}
       transition={{ type: 'spring', damping: 30, stiffness: 350 }}
-      className="border-l border-hades-border bg-hades-panel flex flex-col h-full z-30 relative flex-shrink-0"
+      className={`border-hades-border bg-hades-panel flex flex-col h-full z-30 relative flex-shrink-0 ${
+        isArcanaCollapsed ? 'border-l-0' : 'border-l'
+      }`}
     >
       {/* Toggle Button on Left Edge of the right sidebar */}
       <button
@@ -124,7 +126,7 @@ export function ArcanaSidebar({
         onMouseLeave={() => setIsButtonHovered(false)}
         className={`absolute top-[44px] z-50 w-6 h-10 flex items-center justify-center transition-all duration-200 group border shadow-2xl ${
           isArcanaCollapsed
-            ? '-left-6 rounded-l bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]'
+            ? 'right-4 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]'
             : '-left-3 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]'
         }`}
         title={isArcanaCollapsed ? "Expand Altar of Ashes" : "Collapse Altar of Ashes"}
