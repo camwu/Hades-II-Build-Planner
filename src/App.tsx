@@ -249,6 +249,24 @@ export default function App() {
 
   const [isArcanaCollapsed, setIsArcanaCollapsed] = useState(false);
   const [isArcanaButtonHovered, setIsArcanaButtonHovered] = useState(false);
+  const [graspLimitError, setGraspLimitError] = useState(0);
+
+  const [maxGrasp, setMaxGrasp] = useState<number>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const graspParam = params.get('mg');
+    if (graspParam) {
+      const parsed = parseInt(graspParam, 10);
+      if (!isNaN(parsed) && parsed >= 1 && parsed <= 30) {
+        return parsed;
+      }
+    } else if (savedState && typeof savedState.maxGrasp === 'number') {
+      const saved = savedState.maxGrasp;
+      if (saved >= 1 && saved <= 30) {
+        return saved;
+      }
+    }
+    return 30; // default 30
+  });
 
   const [activeArcana, setActiveArcana] = useState<number[]>(() => {
     const params = new URLSearchParams(window.location.search);
@@ -272,7 +290,16 @@ export default function App() {
       const nextManual = manualOnly.includes(cardNumber)
         ? manualOnly.filter(n => n !== cardNumber)
         : [...manualOnly, cardNumber];
-      return resolveAllActiveArcana(nextManual);
+      
+      const resolved = resolveAllActiveArcana(nextManual);
+      const totalCost = resolved.reduce((sum, num) => sum + (ARCANA_COSTS[num] || 0), 0);
+      
+      if (totalCost > maxGrasp && !manualOnly.includes(cardNumber)) {
+        // Exceeds max grasp limit, do not toggle it on
+        setGraspLimitError(e => e + 1);
+        return prev;
+      }
+      return resolved;
     });
   };
 
@@ -424,6 +451,11 @@ export default function App() {
         params.set('ar', activeArcana.join(','));
       }
 
+      // Max Grasp
+      if (maxGrasp !== 30) {
+        params.set('mg', maxGrasp.toString());
+      }
+
       const newUrl = params.toString() 
         ? `${window.location.pathname}?${params.toString()}`
         : window.location.pathname;
@@ -446,7 +478,8 @@ export default function App() {
           buildName,
           hideAssigned,
           limitToGodPool,
-          activeArcana
+          activeArcana,
+          maxGrasp
         };
 
         localStorage.setItem('hades_build_planner_state', JSON.stringify(stateToSave));
@@ -458,7 +491,7 @@ export default function App() {
     return () => {
       clearTimeout(handler);
     };
-  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool, pinnedBoonIds, activeArcana]);
+  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool, pinnedBoonIds, activeArcana, maxGrasp]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -925,12 +958,14 @@ export default function App() {
           <ArcanaSidebar
             activeArcana={activeArcana}
             toggleArcana={toggleArcana}
-            selectAllArcana={selectAllArcana}
             clearAllArcana={clearAllArcana}
             isArcanaCollapsed={isArcanaCollapsed}
             setIsArcanaCollapsed={setIsArcanaCollapsed}
             isButtonHovered={isArcanaButtonHovered}
             setIsButtonHovered={setIsArcanaButtonHovered}
+            maxGrasp={maxGrasp}
+            setMaxGrasp={setMaxGrasp}
+            graspLimitError={graspLimitError}
           />
         </main>
 

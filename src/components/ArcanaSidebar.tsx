@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Sparkles, Trash2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sparkles, X, Hand, MessageCircle, Lock } from 'lucide-react';
 import { ARCANA_CARDS } from '../data/arcanaData';
 import { ArcanaCard } from '../types';
 import { FormattedEffectText } from './FormattedEffectText';
@@ -27,26 +27,75 @@ const getActivationCondition = (num: string) => {
 interface ArcanaSidebarProps {
   activeArcana: number[];
   toggleArcana: (cardNumber: number) => void;
-  selectAllArcana: () => void;
   clearAllArcana: () => void;
   isArcanaCollapsed: boolean;
   setIsArcanaCollapsed: (val: boolean) => void;
   isButtonHovered: boolean;
   setIsButtonHovered: (val: boolean) => void;
+  maxGrasp: number;
+  setMaxGrasp: (val: number) => void;
+  graspLimitError: number;
 }
 
 export function ArcanaSidebar({
   activeArcana,
   toggleArcana,
-  selectAllArcana,
   clearAllArcana,
   isArcanaCollapsed,
   setIsArcanaCollapsed,
   isButtonHovered,
   setIsButtonHovered,
+  maxGrasp,
+  setMaxGrasp,
+  graspLimitError,
 }: ArcanaSidebarProps) {
   const [hoveredCard, setHoveredCard] = useState<ArcanaCard | null>(null);
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [isErrorActive, setIsErrorActive] = useState(false);
+  const [pulseActive, setPulseActive] = useState(false);
+  const [shakeTrigger, setShakeTrigger] = useState(0);
+
+  React.useEffect(() => {
+    if (graspLimitError > 0) {
+      setIsErrorActive(true);
+      const timer = setTimeout(() => setIsErrorActive(false), 450);
+      return () => clearTimeout(timer);
+    }
+  }, [graspLimitError]);
+
+  React.useEffect(() => {
+    setShakeTrigger(0);
+  }, [hoveredCard?.id]);
+
+  const handleClearClick = () => {
+    if (!showClearConfirm) {
+      setShowClearConfirm(true);
+      setTimeout(() => setShowClearConfirm(false), 3000);
+    } else {
+      clearAllArcana();
+      setShowClearConfirm(false);
+    }
+  };
+
+  const currentGrasp = activeArcana.reduce((sum, cardNumber) => {
+    const card = ARCANA_CARDS[cardNumber - 1];
+    return sum + (card ? card.cost : 0);
+  }, 0);
+
+  const prevGraspRef = React.useRef(currentGrasp);
+
+  // Initialize and track grasp counts to trigger green pulse conditionally
+  React.useEffect(() => {
+    if (prevGraspRef.current !== currentGrasp) {
+      prevGraspRef.current = currentGrasp;
+      if (!isErrorActive) {
+        setPulseActive(true);
+        const timer = setTimeout(() => setPulseActive(false), 300);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [currentGrasp, isErrorActive]);
 
   // Pad numbers with zero, e.g., 1 -> "01"
   const getCardImageSrc = (cardNumber: number, isActive: boolean) => {
@@ -95,38 +144,89 @@ export function ArcanaSidebar({
       >
         {/* Header Section */}
         <div className="px-6 py-5 border-b border-hades-border-light bg-hades-panel flex-shrink-0">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <img 
-                src="/assets/ui/Grasp.png" 
-                alt="Grasp" 
-                className="w-4 h-4 object-contain" 
-                referrerPolicy="no-referrer"
+          <div className="flex items-center justify-between">
+            {/* Left Column: Title and horizontal controls below it */}
+            <div className="flex flex-col gap-3">
+              {/* Title Row */}
+              <div className="flex items-center gap-2">
+                <Hand className="w-4 h-4 text-hades-accent" />
+                <h2 className="text-sm font-semibold uppercase tracking-wider text-hades-accent font-display">
+                  Altar of Ashes
+                </h2>
+              </div>
+
+              {/* Controls Row */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleClearClick}
+                  className={`h-[26px] py-1 px-3 rounded text-[10px] uppercase font-display tracking-wider transition-all duration-200 flex items-center justify-center gap-1.5 border ${
+                    showClearConfirm
+                      ? 'bg-hades-red text-white border-white/20 animate-pulse'
+                      : 'text-hades-red bg-red-400/5 hover:bg-red-400/15 border-red-400/25 hover:border-red-400/50'
+                  }`}
+                >
+                  <X className={`w-3 h-3 ${showClearConfirm ? 'animate-bounce' : ''}`} />
+                  {showClearConfirm ? 'Confirm Reset?' : 'Reset Arcana'}
+                </button>
+              </div>
+            </div>
+
+            {/* Right Column: Prominent circular gauge with change animations */}
+            <motion.div 
+              key="grasp-gauge"
+              animate={isErrorActive ? {
+                x: [0, -2, 2, -1.5, 1.5, 0],
+                scale: [1, 1.04, 1],
+              } : pulseActive ? { 
+                scale: [1, 1.12, 1],
+              } : {
+                x: 0,
+                scale: 1,
+              }}
+              transition={isErrorActive ? { duration: 0.35, ease: 'easeInOut' } : { duration: 0.25, ease: 'easeInOut' }}
+              className="relative w-[58px] h-[58px] flex-shrink-0 flex items-center justify-center"
+            >
+              {/* Soft borderless ambient pulsing glow */}
+              {isErrorActive && (
+                <motion.div
+                  key={`error-glow-${graspLimitError}`}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ 
+                    opacity: [0, 0.35, 0],
+                    scale: [0.9, 1.15, 1.25],
+                  }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                  className="absolute inset-0 rounded-full blur-md bg-red-500/30 pointer-events-none"
+                />
+              )}
+              {pulseActive && (
+                <motion.div
+                  key={`pulse-glow-${currentGrasp}`}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ 
+                    opacity: [0, 0.5, 0],
+                    scale: [0.9, 1.15, 1.25],
+                  }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  className="absolute inset-0 rounded-full blur-md bg-hades-accent/20 pointer-events-none"
+                />
+              )}
+              <MessageCircle 
+                className={`w-full h-full -rotate-45 transition-colors ${
+                  isErrorActive 
+                    ? 'duration-150 text-red-500/60 fill-red-500/5 drop-shadow-[0_1px_4px_rgba(239,68,68,0.1)]' 
+                    : 'duration-300 text-hades-accent/50 fill-hades-accent/5 drop-shadow-[0_1px_4px_rgba(16,185,129,0.08)]'
+                }`}
+                strokeWidth={isErrorActive ? 1.4 : 1.25}
               />
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-hades-accent font-display">
-                Altar of Ashes
-              </h2>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-sans font-semibold text-gray-400">
-                Active: {activeArcana.length}/25
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 mt-3">
-            <button
-              onClick={selectAllArcana}
-              className="flex-1 py-1 px-2.5 bg-hades-accent/5 hover:bg-hades-accent/15 border border-hades-accent/20 hover:border-hades-accent/50 rounded text-[10px] uppercase font-display tracking-wider text-hades-accent transition-all duration-200"
-            >
-              Activate All
-            </button>
-            <button
-              onClick={clearAllArcana}
-              className="flex-1 py-1 px-2.5 bg-red-400/5 hover:bg-red-400/15 border border-red-400/25 hover:border-red-400/50 rounded text-[10px] uppercase font-display tracking-wider text-hades-red transition-all duration-200 flex items-center justify-center gap-1.5"
-            >
-              <Trash2 className="w-3 h-3" />
-              Deselect All
-            </button>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <span className={`text-[18px] font-sans font-black leading-none tracking-tight transition-colors ${
+                  isErrorActive ? 'duration-150 text-red-200/90' : 'duration-300 text-white'
+                }`}>
+                  {currentGrasp}
+                </span>
+              </div>
+            </motion.div>
           </div>
         </div>
 
@@ -149,12 +249,20 @@ export function ArcanaSidebar({
               return (
                 <button
                   key={cardNumber}
-                  onClick={() => !isZeroCost && toggleArcana(cardNumber)}
+                  onClick={() => {
+                    if (isZeroCost) {
+                      if (!isActive) {
+                        setShakeTrigger(prev => prev + 1);
+                      }
+                    } else {
+                      toggleArcana(cardNumber);
+                    }
+                  }}
                   onMouseEnter={() => setHoveredCard(cardData)}
                   onMouseLeave={() => setHoveredCard(null)}
                   className={`group relative outline-none bg-transparent aspect-[219/341] w-full rounded-md overflow-hidden transition-all duration-300 transform-gpu cursor-pointer ${
                     isZeroCost
-                      ? 'cursor-default opacity-80 hover:opacity-100'
+                      ? 'opacity-80 hover:opacity-100 font-sc'
                       : 'hover:scale-[1.08]'
                   } ${
                     isActive
@@ -201,7 +309,7 @@ export function ArcanaSidebar({
 
                   {/* High contrast Roman numeral overlay on card hover */}
                   <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                    <span className="text-white text-xs font-bold font-display tracking-widest px-1.5 py-0.5 border border-white/20 rounded">
+                    <span className="text-white text-sm font-bold font-display tracking-widest">
                       {cardData.number}
                     </span>
                   </div>
@@ -221,43 +329,63 @@ export function ArcanaSidebar({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -5 }}
                 transition={{ duration: 0.15 }}
-                className="flex flex-col h-full justify-between"
+                className="w-full flex-shrink-0"
               >
-                <div>
-                  <div className="flex items-start justify-between mb-1 pb-1.5 border-b border-white/[0.06]">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold font-display text-hades-accent border border-hades-accent/30 px-1.5 py-0.5 rounded bg-hades-accent/5">
-                        {hoveredCard.number}
-                      </span>
-                      <span className="text-base font-bold font-sc text-gray-100 normal-case tracking-wide leading-tight">
-                        {hoveredCard.name}
-                      </span>
-                    </div>
-                    {hoveredCard.cost === 0 ? (
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-hades-accent">
-                        Auto-activated
-                      </span>
-                    ) : (
-                      <div className="flex items-center gap-1 text-[#2ab5a3] text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
-                        <img 
-                          src="/assets/ui/Grasp.png" 
-                          alt="Grasp" 
-                          className="h-[14px] w-auto object-contain relative -top-[0.5px]" 
-                          referrerPolicy="no-referrer"
-                        />
-                        <span>{hoveredCard.cost} Grasp</span>
+                <motion.div
+                  key={shakeTrigger}
+                  animate={{
+                    x: shakeTrigger > 0 ? [0, -6, 6, -5, 5, -3, 3, 0] : 0
+                  }}
+                  transition={{ duration: 0.35, ease: 'easeInOut' }}
+                  className="p-3.5 rounded-xl bg-hades-bg-dark/80 border border-white/10 hover:border-white/15 shadow-xl flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex flex-col gap-2 pb-2.5 border-b border-white/[0.06]">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-base font-bold normal-case tracking-wide truncate font-sc leading-tight text-white">
+                            {hoveredCard.name}
+                          </h4>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-x-2.5">
+                          {hoveredCard.cost === 0 ? (
+                            <span className="text-[10px] font-display text-hades-accent/80 uppercase tracking-wider leading-none">
+                              Auto-activated
+                            </span>
+                          ) : (
+                            <div className="flex items-center gap-1.5 text-hades-accent text-[10px] uppercase font-bold tracking-wider leading-none select-none">
+                              <img 
+                                src="/assets/ui/Grasp.png" 
+                                alt="Grasp" 
+                                className="h-3.5 w-auto object-contain relative -top-[0.5px]" 
+                                referrerPolicy="no-referrer"
+                              />
+                              <span>{hoveredCard.cost} Grasp</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    )}
+                    </div>
+
+                    <div className="text-[12px] font-sans text-gray-400 font-medium leading-normal mt-3.5 max-h-[74px] overflow-y-auto custom-scrollbar pr-1 whitespace-normal">
+                      <FormattedEffectText text={hoveredCard.effect} />
+                    </div>
                   </div>
-                  <div className="text-[12px] font-sans text-gray-400 font-medium leading-normal max-h-[74px] overflow-y-auto custom-scrollbar pr-1 whitespace-normal">
-                    <FormattedEffectText text={hoveredCard.effect} />
-                  </div>
-                </div>
-                {hoveredCard.cost === 0 && (
-                  <div className="mt-1.5 text-[10px] text-hades-accent bg-hades-accent/10 px-2 py-1 rounded border border-hades-accent/20 font-medium font-sans">
-                    ⚡ Awakening: {hoveredCard.awakening || getActivationCondition(hoveredCard.number)}
-                  </div>
-                )}
+                  {hoveredCard.cost === 0 && (
+                    <div className="mt-3.5 pt-3 border-t border-red-950/45 text-xs font-sans text-gray-400">
+                      <div className="flex flex-col gap-1.5 bg-red-950/10 p-2.5 rounded border border-red-900/20">
+                        <div className="flex items-start gap-2">
+                          <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
+                          <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Requirements</span>
+                        </div>
+                        <div className="pl-5.5 text-xs text-gray-300 leading-normal font-medium">
+                          <FormattedEffectText text={hoveredCard.awakening || getActivationCondition(hoveredCard.number)} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
               </motion.div>
             ) : (
               <motion.div
