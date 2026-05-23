@@ -51,6 +51,7 @@ export interface ArcanaCard {
   effect: string;
   cost: number;
   icon?: string;
+  awakening?: string;
 }
 
 export const ALL_ELEMENTS: ElementType[] = ['Earth', 'Water', 'Air', 'Fire', 'Aether'];

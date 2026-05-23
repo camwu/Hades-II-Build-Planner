@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Sparkles, Trash2, HelpCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sparkles, Trash2 } from 'lucide-react';
 import { ARCANA_CARDS } from '../data/arcanaData';
 import { ArcanaCard } from '../types';
+import { FormattedBoonEffect } from './FormattedBoonEffect';
 
 const getActivationCondition = (num: string) => {
   switch (num) {
@@ -158,15 +159,30 @@ export function ArcanaSidebar({
                   aria-label={`${cardData.number}. ${cardData.name}`}
                 >
                   {!hasFailed ? (
-                    <img
-                      src={getCardImageSrc(cardNumber, isActive)}
-                      alt={`${cardData.number}. ${cardData.name}`}
-                      className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none transition-all duration-200"
-                      referrerPolicy="no-referrer"
-                      onError={() => {
-                        setImageErrors(prev => ({ ...prev, [cardNumber]: true }));
-                      }}
-                    />
+                    <div className="absolute inset-0 w-full h-full select-none pointer-events-none">
+                      {/* Inactive card image background */}
+                      <img
+                        src={getCardImageSrc(cardNumber, false)}
+                        alt={`${cardData.number}. ${cardData.name} Inactive`}
+                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                        style={{ opacity: isActive ? 0 : 1 }}
+                        referrerPolicy="no-referrer"
+                        onError={() => {
+                          setImageErrors(prev => ({ ...prev, [cardNumber]: true }));
+                        }}
+                      />
+                      {/* Active card image crossfade */}
+                      <img
+                        src={getCardImageSrc(cardNumber, true)}
+                        alt={`${cardData.number}. ${cardData.name} Active`}
+                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                        style={{ opacity: isActive ? 1 : 0 }}
+                        referrerPolicy="no-referrer"
+                        onError={() => {
+                          setImageErrors(prev => ({ ...prev, [cardNumber]: true }));
+                        }}
+                      />
+                    </div>
                   ) : (
                     <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c24] to-[#0d0d12] flex flex-col items-center justify-center border border-hades-accent/30 p-1.5 select-none pointer-events-none">
                       <span className="text-[#e3b869] font-display text-xs font-bold tracking-wider leading-none">
@@ -205,26 +221,26 @@ export function ArcanaSidebar({
                 <div>
                   <div className="flex items-start justify-between mb-1 pb-1.5 border-b border-white/[0.06]">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-bold font-display text-hades-accent border border-hades-accent/30 px-1 py-0.2 rounded bg-hades-accent/5">
+                      <span className="text-xs font-bold font-display text-hades-accent border border-hades-accent/30 px-1.5 py-0.5 rounded bg-hades-accent/5">
                         {hoveredCard.number}
                       </span>
-                      <span className="text-xs font-bold font-display text-gray-100 uppercase tracking-wide">
+                      <span className="text-base font-bold font-display text-gray-100 uppercase tracking-wide leading-tight">
                         {hoveredCard.name}
                       </span>
                     </div>
                     {hoveredCard.cost === 0 && (
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-hades-accent">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-hades-accent">
                         Auto-activated
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] font-sans text-gray-300 leading-normal max-h-[70px] overflow-y-auto custom-scrollbar pr-1">
-                    {hoveredCard.effect}
-                  </p>
+                  <div className="text-[12px] font-sans text-gray-300 font-medium leading-normal max-h-[74px] overflow-y-auto custom-scrollbar pr-1 whitespace-normal">
+                    <FormattedBoonEffect text={hoveredCard.effect} />
+                  </div>
                 </div>
                 {hoveredCard.cost === 0 && (
-                  <div className="mt-1.5 text-[10px] text-hades-accent bg-hades-accent/10 px-2 py-1 rounded border border-hades-accent/20 font-medium">
-                    ⚡ {getActivationCondition(hoveredCard.number)}
+                  <div className="mt-1.5 text-[10px] text-hades-accent bg-hades-accent/10 px-2 py-1 rounded border border-hades-accent/20 font-medium font-sans">
+                    ⚡ Awakening: {hoveredCard.awakening || getActivationCondition(hoveredCard.number)}
                   </div>
                 )}
               </motion.div>
@@ -236,12 +252,11 @@ export function ArcanaSidebar({
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center text-center py-4"
               >
-                <HelpCircle className="w-5 h-5 text-gray-500 mb-1.5 animate-pulse" />
-                <span className="text-[10px] font-display uppercase tracking-widest text-gray-400">
-                  Hover cards for details
+                <span className="text-xs font-sans font-semibold text-gray-400">
+                  hover over card for details
                 </span>
-                <span className="text-[9px] font-sans text-gray-500 mt-0.5">
-                  Click a card to toggle activate
+                <span className="text-xs font-sans font-semibold text-gray-500 mt-1">
+                  Click a card to toggle activation status
                 </span>
               </motion.div>
             )}

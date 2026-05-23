@@ -316,12 +316,14 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
         ];
 
         const getRarityColor = (p: string): string | undefined => {
-          const trimmed = p.trim();
-          if (trimmed === 'Common' || trimmed === 'Commons') return rarityColors[0];
-          if (trimmed === 'Rare' || trimmed === 'Rares') return rarityColors[1];
-          if (trimmed === 'Epic' || trimmed === 'Epics') return rarityColors[2];
-          if (trimmed === 'Heroic' || trimmed === 'Heroics') return rarityColors[3];
-          if (trimmed.toLowerCase() === 'infusion' || trimmed.toLowerCase() === 'infusions') return '#ED4AF1';
+          const trimmed = p.trim().toLowerCase();
+          if (trimmed === 'common' || trimmed === 'commons') return rarityColors[0];
+          if (trimmed === 'rare' || trimmed === 'rares') return rarityColors[1];
+          if (trimmed === 'epic' || trimmed === 'epics') return rarityColors[2];
+          if (trimmed === 'heroic' || trimmed === 'heroics') return rarityColors[3];
+          if (trimmed === 'infusion' || trimmed === 'infusions') return '#ED4AF1';
+          if (trimmed === 'duo' || trimmed === 'duos') return '#C5F24D';
+          if (trimmed === 'legendary' || trimmed === 'legendaries') return '#FD8D00';
           return undefined;
         };
        
@@ -428,6 +430,10 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
           
           if (isBold) {
             const innerText = part.slice(1, -1);
+            const isInnerRange = innerText.includes('/') && /\d/.test(innerText);
+            if (isInnerRange) {
+              return renderRange(innerText, i);
+            }
             const rarityColor = getRarityColor(innerText);
             if (rarityColor) {
               return (
@@ -445,6 +451,10 @@ export function FormattedBoonEffect({ text, className }: FormattedBoonEffectProp
 
           if (isItalic) {
             const innerText = part.slice(1, -1);
+            const isInnerRange = innerText.includes('/') && /\d/.test(innerText);
+            if (isInnerRange) {
+              return renderRange(innerText, i);
+            }
             const rarityColor = getRarityColor(innerText);
             if (rarityColor) {
               return (
