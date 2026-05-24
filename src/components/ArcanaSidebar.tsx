@@ -109,7 +109,7 @@ export function ArcanaSidebar({
       animate={{
         width: isArcanaCollapsed
           ? (isButtonHovered ? 24 : 0)
-          : 480, // Expanded width for larger cards and tight grid
+          : 450, // Resized to 450px
       }}
       transition={{ type: 'spring', damping: 30, stiffness: 350 }}
       className={`border-hades-border bg-hades-panel flex flex-col h-full z-30 relative flex-shrink-0 ${
@@ -140,7 +140,7 @@ export function ArcanaSidebar({
 
       {/* Main Container Content */}
       <div
-        className={`h-full w-[480px] flex flex-col overflow-hidden will-change-transform justify-between ${
+        className={`h-full w-[450px] flex flex-col overflow-hidden will-change-transform justify-between ${
           isArcanaCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'
         }`}
       >
@@ -233,7 +233,7 @@ export function ArcanaSidebar({
         </div>
 
         {/* 5x5 Matrix Grid Section */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar px-6 py-4 flex items-center justify-center bg-hades-bg-dark/10">
+        <div className="flex-1 overflow-y-auto custom-scrollbar px-5 py-4 flex items-center justify-center bg-hades-bg-dark/10">
           <div className="grid grid-cols-5 gap-1.5 w-full self-start">
             {Array.from({ length: 25 }, (_, i) => {
               const cardNumber = i + 1;
@@ -306,11 +306,11 @@ export function ArcanaSidebar({
                         />
                       </div>
                     ) : (
-                      <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c24] to-[#0d0d12] flex flex-col items-center justify-center border border-hades-accent/30 p-1.5 select-none pointer-events-none">
-                        <span className="text-[#e3b869] font-display text-xs font-bold tracking-wider leading-none">
+                      <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c24] to-[#0d0d12] flex flex-col items-center justify-center border border-hades-accent/30 p-1 select-none pointer-events-none">
+                        <span className="text-[#e3b869] font-display text-[10px] font-bold tracking-wider leading-none">
                           {cardData.number}
                         </span>
-                        <span className="text-[7.5px] text-gray-400 font-bold normal-case font-sc text-center mt-1 scale-90 leading-tight line-clamp-2 px-0.5">
+                        <span className="text-[7px] text-gray-400 font-bold normal-case font-sc text-center mt-0.5 scale-90 leading-tight line-clamp-2 px-0.5">
                           {cardData.name}
                         </span>
                       </div>
@@ -318,7 +318,7 @@ export function ArcanaSidebar({
 
                     {/* High contrast Roman numeral overlay on card hover */}
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                      <span className="text-white text-sm font-bold font-display tracking-widest">
+                      <span className="text-white text-[11px] font-bold font-display tracking-widest">
                         {cardData.number}
                       </span>
                     </div>
@@ -326,13 +326,13 @@ export function ArcanaSidebar({
 
                   {/* Grasp Cost Badge positioned خارج button to avoid overflow-hidden clipping */}
                   <div 
-                    className={`absolute -top-1.5 -right-1.5 w-[26px] h-[26px] rounded-full flex items-center justify-center z-20 select-none shadow-md transition-all duration-300 pointer-events-none ${
+                    className={`absolute -top-1 -right-1 w-[22px] h-[22px] rounded-full flex items-center justify-center z-20 select-none shadow-md transition-all duration-300 pointer-events-none ${
                       isActive 
                         ? 'bg-[#030712] border border-hades-accent text-hades-accent shadow-[0_0_8px_rgba(16,185,129,0.35)]' 
                         : 'bg-[#0e0e14]/95 border border-white/15 text-gray-400'
                     }`}
                   >
-                    <span className="text-[13px] font-sans font-extrabold leading-none flex items-center justify-center h-full w-full text-center">
+                    <span className="text-[10.5px] font-sans font-extrabold leading-none flex items-center justify-center h-full w-full text-center">
                       {cardData.cost}
                     </span>
                   </div>
