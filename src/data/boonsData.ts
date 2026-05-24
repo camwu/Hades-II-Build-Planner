@@ -2,7 +2,7 @@ import { Boon } from '../types';
 
 export const BOONS: Boon[] = [
   {
-    id: "0ff1be85-e334-5742-a00a-226facaa13f1",
+    id: "air_quality",
     name: "Air Quality",
     type: "Infusion",
     gods: ["Zeus"],
@@ -19,7 +19,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "8a7e45a9-f976-59f5-aed9-a45bec173935",
+    id: "all_together",
     name: "All Together",
     type: "Legendary",
     gods: ["Hera"],
@@ -29,15 +29,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
-          "4df66a2a-6baa-5935-97a8-0dee45b63c36", // Bridal Glow
-          "5c80fb6b-7386-5217-8e29-9a9b66c64415", // Uncommon Grace
-          "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d", // Fine Line
-          "8ebe032e-3ef0-5208-9ba2-91b2c875c9c8", // Hereditary Bane
-          "c771858f-175d-5a0c-924e-4e5f1fc6a1e1"  // Rousing Reception
+          "sworn_strike", // Sworn Strike
+          "sworn_flourish", // Sworn Flourish
+          "engagement_ring", // Engagement Ring
+          "nexus_rush", // Nexus Rush
+          "bridal_glow", // Bridal Glow
+          "uncommon_grace", // Uncommon Grace
+          "fine_line", // Fine Line
+          "hereditary_bane", // Hereditary Bane
+          "rousing_reception"  // Rousing Reception
         ],
         any: true,
         description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Bridal Glow, Uncommon Grace, Fine Line, Hereditary Bane, or Rousing Reception"
@@ -45,7 +45,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "9341e2b7-38a7-5684-8bbd-a9978b055726",
+    id: "anvil_ring",
     name: "Anvil Ring",
     type: "Cast",
     gods: ["Hephaestus"],
@@ -54,7 +54,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Anvil_Ring.webp"
   },
   {
-    id: "e70d8b09-a94a-5b8d-90f1-874b355051b4",
+    id: "arc_flash",
     name: "Arc Flash",
     type: "Non-Core",
     gods: ["Zeus"],
@@ -64,8 +64,8 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e"  // Heaven Flourish
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish"  // Heaven Flourish
         ],
         any: true,
         description: "Requires Heaven Strike or Heaven Flourish"
@@ -73,7 +73,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "0760776f-5eaa-534a-833c-8d8dd3ded47c",
+    id: "arctic_gale",
     name: "Arctic Gale",
     type: "Non-Core",
     gods: ["Demeter"],
@@ -83,7 +83,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "gust"
   },
   {
-    id: "e8e876fb-519e-5b75-bfe6-5f05079f62c1",
+    id: "arctic_ring",
     name: "Arctic Ring",
     type: "Cast",
     gods: ["Demeter"],
@@ -93,7 +93,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "freeze"
   },
   {
-    id: "3cc47d40-d0d9-5d2a-8e40-e8f9f3b7c44e",
+    id: "arterial_spray",
     name: "Arterial Spray",
     type: "Duo",
     gods: ["Poseidon", "Ares"],
@@ -103,19 +103,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
-          "ba9f445b-b3fc-54e4-a63b-782f09b28860", // Vicious Flourish
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "d477b146-1783-5971-bf9f-16a9e50b4ff4", // Stabbing Rush
-          "e48529f3-4dfc-5349-92e0-e5c717ce684f"  // Grisly Gain
+          "vicious_strike", // Vicious Strike
+          "vicious_flourish", // Vicious Flourish
+          "sword_ring", // Sword Ring
+          "stabbing_rush", // Stabbing Rush
+          "grisly_gain"  // Grisly Gain
         ],
         any: true,
         description: "Requires Vicious Strike, Vicious Flourish, Sword Ring, Stabbing Rush, or Grisly Gain"
       },
       {
         boonIds: [
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
-          "33734633-ed5b-526f-acb1-4662f97893e2"  // Wave Flourish
+          "wave_strike", // Wave Strike
+          "wave_flourish"  // Wave Flourish
         ],
         any: true,
         description: "Requires Wave Strike or Wave Flourish"
@@ -123,7 +123,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "fbe7a0b7-94e3-5c60-a593-06210f26053d",
+    id: "back_burner",
     name: "Back Burner",
     type: "Non-Core",
     gods: ["Apollo"],
@@ -133,10 +133,10 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
-          "b16d3778-57f6-5f4c-b33b-25364fc0238c", // Dazzling Display
-          "abde81b0-8578-5373-b6c8-f49ab73f6a98"  // Light Smite
+          "solar_ring", // Solar Ring
+          "blinding_rush", // Blinding Rush
+          "dazzling_display", // Dazzling Display
+          "light_smite"  // Light Smite
         ],
         any: true,
         description: "Requires Solar Ring, Blinding Rush, Dazzling Display, or Light Smite"
@@ -144,7 +144,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "a530eb3d-8188-5895-8f3a-fb5e28933c2b",
+    id: "beach_ball",
     name: "Beach Ball",
     type: "Duo",
     gods: ["Poseidon", "Apollo"],
@@ -154,28 +154,28 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
-          "677ad451-8bea-54fc-94c9-82953d9044e8", // Nova Flourish
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+          "nova_strike", // Nova Strike
+          "nova_flourish", // Nova Flourish
+          "solar_ring", // Solar Ring
+          "lucid_gain"  // Lucid Gain
         ],
         any: true,
         description: "Requires Nova Strike, Nova Flourish, Solar Ring, or Lucid Gain"
       },
       {
         boonIds: [
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
-          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
-          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3"  // Flood Gain
+          "wave_strike", // Wave Strike
+          "wave_flourish", // Wave Flourish
+          "tidal_ring", // Tidal Ring
+          "flood_gain"  // Flood Gain
         ],
         any: true,
         description: "Requires Wave Strike, Wave Flourish, Tidal Ring, or Flood Gain"
       },
       {
         boonIds: [
-          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
-          "3d9b7234-b439-502a-8dae-581fc3ad6359"  // Breaker Rush
+          "blinding_rush", // Blinding Rush
+          "breaker_rush"  // Breaker Rush
         ],
         any: true,
         description: "Requires Blinding Rush or Breaker Rush"
@@ -183,7 +183,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "9f297b05-6e18-537a-8845-79c082317b9d",
+    id: "blinding_rush",
     name: "Blinding Rush",
     type: "Sprint",
     gods: ["Apollo"],
@@ -193,7 +193,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "daze"
   },
   {
-    id: "e625b64a-23d8-5b20-bbef-e9e3056331a2",
+    id: "blood_spree",
     name: "Blood Spree",
     type: "Non-Core",
     gods: ["Ares"],
@@ -202,7 +202,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/ares/Blood_Spree.webp"
   },
   {
-    id: "da411c4d-69ec-5427-8d4e-a7101c649833",
+    id: "born_gain",
     name: "Born Gain",
     type: "Magick",
     gods: ["Hera"],
@@ -211,7 +211,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hera/Born_Gain.webp"
   },
   {
-    id: "600d8550-c4f7-5863-9bdf-62a1c4799f6f",
+    id: "brave_face",
     name: "Brave Face",
     type: "Duo",
     gods: ["Hera", "Hephaestus"],
@@ -221,23 +221,23 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "b31bb575-4b1f-5d32-8df7-c94c003ca593", // Grand Caldera
-          "8a425f0d-0b7f-5876-816f-214497762e3b", // Molten Touch
-          "c71088b5-8a65-589d-aeea-80912b32c25b", // Heavy Metal
-          "d998f057-e8f8-5ecd-872f-6ef808c1fdd7", // Trusty Shield
-          "f0b5c570-1b9e-5daf-8454-9c6bec471d69", // Uncanny Fortitude
-          "0ace7aad-68c9-5b65-9a31-899364d9d6c1"  // Furnace Blast
+          "grand_caldera", // Grand Caldera
+          "molten_touch", // Molten Touch
+          "heavy_metal", // Heavy Metal
+          "trusty_shield", // Trusty Shield
+          "uncanny_fortitude", // Uncanny Fortitude
+          "furnace_blast"  // Furnace Blast
         ],
         any: true,
         description: "Requires Grand Caldera, Molten Touch, Heavy Metal, Trusty Shield, Uncanny Fortitude, or Furnace Blast"
       },
       {
         boonIds: [
-          "7785b010-246d-55b5-88db-633ad19320a2", // Extended Family
-          "47ac15fa-ca9c-50b1-9199-9f7feffb96d8", // Dying Wish
-          "8ebe032e-3ef0-5208-9ba2-91b2c875c9c8", // Hereditary Bane
-          "c771858f-175d-5a0c-924e-4e5f1fc6a1e1", // Rousing Reception
-          "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d"  // Fine Line
+          "extended_family", // Extended Family
+          "dying_wish", // Dying Wish
+          "hereditary_bane", // Hereditary Bane
+          "rousing_reception", // Rousing Reception
+          "fine_line"  // Fine Line
         ],
         any: true,
         description: "Requires Extended Family, Dying Wish, Hereditary Bane, Rousing Reception, or Fine Line"
@@ -245,7 +245,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "3d9b7234-b439-502a-8dae-581fc3ad6359",
+    id: "breaker_rush",
     name: "Breaker Rush",
     type: "Sprint",
     gods: ["Poseidon"],
@@ -254,7 +254,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/Breaker_Rush.webp"
   },
   {
-    id: "4df66a2a-6baa-5935-97a8-0dee45b63c36",
+    id: "bridal_glow",
     name: "Bridal Glow",
     type: "Non-Core",
     gods: ["Hera"],
@@ -263,7 +263,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hera/Bridal_Glow.webp"
   },
   {
-    id: "b9e84fce-bfbb-5ee7-a821-f55fa8b6b984",
+    id: "broken_resolve",
     name: "Broken Resolve",
     type: "Non-Core",
     gods: ["Aphrodite"],
@@ -273,9 +273,9 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
-          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+          "rapture_ring", // Rapture Ring
+          "passion_rush", // Passion Rush
+          "glamour_gain"  // Glamour Gain
         ],
         any: true,
         description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
@@ -283,7 +283,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "be5d5870-6628-523b-b174-1166d7ae9ab1",
+    id: "buried_treasure",
     name: "Buried Treasure",
     type: "Non-Core",
     gods: ["Poseidon"],
@@ -292,7 +292,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/Buried_Treasure.webp"
   },
   {
-    id: "0bdd993c-bb6f-5f9c-a103-9699cec5a0c8",
+    id: "burning_desire",
     name: "Burning Desire",
     type: "Duo",
     gods: ["Aphrodite", "Hestia"],
@@ -302,18 +302,18 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
-          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+          "rapture_ring", // Rapture Ring
+          "passion_rush", // Passion Rush
+          "glamour_gain"  // Glamour Gain
         ],
         any: true,
         description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
       },
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+          "flame_strike", // Flame Strike
+          "flame_flourish", // Flame Flourish
+          "smolder_ring"  // Smolder Ring
         ],
         any: true,
         description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
@@ -321,7 +321,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "cb343fe8-09fb-5cda-9361-9fb6cd40085d",
+    id: "cardio_gain",
     name: "Cardio Gain",
     type: "Magick",
     gods: ["Hestia"],
@@ -330,7 +330,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hestia/Cardio_Gain.webp"
   },
   {
-    id: "539357ea-08b6-5a0a-a77c-0514e035d04b",
+    id: "carnal_pleasure",
     name: "Carnal Pleasure",
     type: "Duo",
     gods: ["Aphrodite", "Ares"],
@@ -340,20 +340,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
-          "5d4dcdca-fb70-5019-84f9-78964ad23d72", // Flutter Flourish
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
-          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+          "flutter_strike", // Flutter Strike
+          "flutter_flourish", // Flutter Flourish
+          "rapture_ring", // Rapture Ring
+          "passion_rush", // Passion Rush
+          "glamour_gain"  // Glamour Gain
         ],
         any: true,
         description: "Requires Flutter Strike, Flutter Flourish, Rapture Ring, Passion Rush, or Glamour Gain"
       },
       {
         boonIds: [
-          "e48529f3-4dfc-5349-92e0-e5c717ce684f", // Grisly Gain
-          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4", // Visceral Impact
-          "c6036ec2-ad36-5f5c-8ac4-225dc0e7d919"  // Profuse Bleeding
+          "grisly_gain", // Grisly Gain
+          "visceral_impact", // Visceral Impact
+          "profuse_bleeding"  // Profuse Bleeding
         ],
         any: true,
         description: "Requires Grisly Gain, Visceral Impact, or Profuse Bleeding"
@@ -361,7 +361,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "c25813a6-179c-5dc7-b672-739644a10ee5",
+    id: "chain_reaction",
     name: "Chain Reaction",
     type: "Duo",
     gods: ["Hephaestus", "Hestia"],
@@ -371,19 +371,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883"  // Volcanic Flourish
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish"  // Volcanic Flourish
         ],
         any: true,
         description: "Requires Volcanic Strike or Volcanic Flourish"
       },
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "ed08770d-871a-5322-a96b-25c501a4992f", // Heat Rush
-          "cb343fe8-09fb-5cda-9361-9fb6cd40085d"  // Cardio Gain
+          "flame_strike", // Flame Strike
+          "flame_flourish", // Flame Flourish
+          "smolder_ring", // Smolder Ring
+          "heat_rush", // Heat Rush
+          "cardio_gain"  // Cardio Gain
         ],
         any: true,
         description: "Requires Flame Strike, Flame Flourish, Smolder Ring, Heat Rush, or Cardio Gain"
@@ -391,7 +391,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "84858a87-0956-510a-98f6-4225cb5da59b",
+    id: "cherished_heirloom",
     name: "Cherished Heirloom",
     type: "Duo",
     gods: ["Hera", "Demeter"],
@@ -401,22 +401,22 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "16265777-2471-507d-9457-ef385a9a5a47", // Tranquil Gain
-          "f4b3601e-b839-5f04-a1ae-675a1431b640"  // Frigid Rush
+          "ice_strike", // Ice Strike
+          "ice_flourish", // Ice Flourish
+          "arctic_ring", // Arctic Ring
+          "tranquil_gain", // Tranquil Gain
+          "frigid_rush"  // Frigid Rush
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Tranquil Gain, or Frigid Rush"
       },
       {
         boonIds: [
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
-          "da411c4d-69ec-5427-8d4e-a7101c649833"  // Born Gain
+          "sworn_strike", // Sworn Strike
+          "sworn_flourish", // Sworn Flourish
+          "engagement_ring", // Engagement Ring
+          "nexus_rush", // Nexus Rush
+          "born_gain"  // Born Gain
         ],
         any: true,
         description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, or Born Gain"
@@ -424,7 +424,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "70b1e974-f320-591f-88bc-e130786f070d",
+    id: "coffin_nail",
     name: "Coffin Nail",
     type: "Duo",
     gods: ["Hephaestus", "Ares"],
@@ -434,20 +434,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "d477b146-1783-5971-bf9f-16a9e50b4ff4", // Stabbing Rush
-          "b430f1b7-3cca-5861-8357-5a3bdc7b7399"  // Cut Above
+          "sword_ring", // Sword Ring
+          "stabbing_rush", // Stabbing Rush
+          "cut_above"  // Cut Above
         ],
         any: true,
         description: "Requires Sword Ring, Stabbing Rush, or Cut Above"
       },
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
-          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
-          "018617cf-bd49-59ed-8d7b-42bfc1e0a651", // Smithy Rush
-          "f3b24e95-48e4-5813-8b41-01674038821d"  // Tough Gain
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish", // Volcanic Flourish
+          "anvil_ring", // Anvil Ring
+          "smithy_rush", // Smithy Rush
+          "tough_gain"  // Tough Gain
         ],
         any: true,
         description: "Requires Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, or Tough Gain"
@@ -455,7 +455,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "d0893ae2-19ec-5134-b642-0173cb99988b",
+    id: "cold_storage",
     name: "Cold Storage",
     type: "Non-Core",
     gods: ["Demeter"],
@@ -465,9 +465,9 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1"  // Arctic Ring
+          "ice_strike", // Ice Strike
+          "ice_flourish", // Ice Flourish
+          "arctic_ring"  // Arctic Ring
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, or Arctic Ring"
@@ -475,7 +475,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "7d37d809-d43f-5660-ae21-25b7aba0378d",
+    id: "controlled_burn",
     name: "Controlled Burn",
     type: "Non-Core",
     gods: ["Hestia"],
@@ -484,7 +484,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hestia/Controlled_Burn.webp"
   },
   {
-    id: "0f89a67a-e5f5-514b-86bd-1b006fd775ad",
+    id: "cryo_pounder",
     name: "Cryo Pounder",
     type: "Duo",
     gods: ["Demeter", "Hephaestus"],
@@ -494,18 +494,18 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1"  // Arctic Ring
+          "ice_strike", // Ice Strike
+          "ice_flourish", // Ice Flourish
+          "arctic_ring"  // Arctic Ring
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, or Arctic Ring"
       },
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
-          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish", // Volcanic Flourish
+          "smithy_rush"  // Smithy Rush
         ],
         any: true,
         description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
@@ -513,7 +513,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "b430f1b7-3cca-5861-8357-5a3bdc7b7399",
+    id: "cut_above",
     name: "Cut Above",
     type: "Non-Core",
     gods: ["Ares"],
@@ -522,7 +522,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/ares/Cut_Above.webp"
   },
   {
-    id: "2f9a6474-c322-501e-912d-7d55f97108e4",
+    id: "cutting_edge",
     name: "Cutting Edge",
     type: "Duo",
     gods: ["Apollo", "Ares"],
@@ -532,20 +532,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
-          "677ad451-8bea-54fc-94c9-82953d9044e8", // Nova Flourish
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
-          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+          "nova_strike", // Nova Strike
+          "nova_flourish", // Nova Flourish
+          "solar_ring", // Solar Ring
+          "blinding_rush", // Blinding Rush
+          "lucid_gain"  // Lucid Gain
         ],
         any: true,
         description: "Requires Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, or Lucid Gain"
       },
       {
         boonIds: [
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "d477b146-1783-5971-bf9f-16a9e50b4ff4", // Stabbing Rush
-          "b430f1b7-3cca-5861-8357-5a3bdc7b7399"  // Cut Above
+          "sword_ring", // Sword Ring
+          "stabbing_rush", // Stabbing Rush
+          "cut_above"  // Cut Above
         ],
         any: true,
         description: "Requires Sword Ring, Stabbing Rush, or Cut Above"
@@ -553,7 +553,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "b16d3778-57f6-5f4c-b33b-25364fc0238c",
+    id: "dazzling_display",
     name: "Dazzling Display",
     type: "Non-Core",
     gods: ["Apollo"],
@@ -563,13 +563,13 @@ export const BOONS: Boon[] = [
     inflictsCurse: "daze",
     prerequisites: [
       {
-        boonIds: ["bc4205cb-d68d-50c7-9cfc-47f75316dd7c"], // Nova Strike
+        boonIds: ["nova_strike"], // Nova Strike
         description: "Requires Nova Strike"
       }
     ]
   },
   {
-    id: "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5",
+    id: "divine_vengeance",
     name: "Divine Vengeance",
     type: "Non-Core",
     gods: ["Zeus"],
@@ -578,7 +578,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/zeus/Divine_Vengeance.webp"
   },
   {
-    id: "f2522999-ebeb-5b4d-83a8-748cb58d90d7",
+    id: "double_strike",
     name: "Double Strike",
     type: "Non-Core",
     gods: ["Zeus"],
@@ -588,13 +588,13 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
-          "732a8b3d-4cfa-5e61-b67d-2bec0982dc57", // Power Surge
-          "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5", // Divine Vengeance
-          "2bd56797-3ab2-5ed8-95d5-6cdd5a3a4f28"  // Lightning Lance
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish", // Heaven Flourish
+          "storm_ring", // Storm Ring
+          "thunder_rush", // Thunder Rush
+          "power_surge", // Power Surge
+          "divine_vengeance", // Divine Vengeance
+          "lightning_lance"  // Lightning Lance
         ],
         any: true,
         description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Power Surge, Divine Vengeance, or Lightning Lance"
@@ -602,7 +602,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "47ac15fa-ca9c-50b1-9199-9f7feffb96d8",
+    id: "dying_wish",
     name: "Dying Wish",
     type: "Non-Core",
     gods: ["Hera"],
@@ -612,10 +612,10 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "25a736fc-b220-55cd-a713-e05a01b4dbfa"  // Nexus Rush
+          "sworn_strike", // Sworn Strike
+          "sworn_flourish", // Sworn Flourish
+          "engagement_ring", // Engagement Ring
+          "nexus_rush"  // Nexus Rush
         ],
         any: true,
         description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Nexus Rush"
@@ -623,7 +623,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "bb8bc27f-2498-52f1-9c6f-ae7e8034703f",
+    id: "ecstatic_obsession",
     name: "Ecstatic Obsession",
     type: "Duo",
     gods: ["Hera", "Aphrodite"],
@@ -633,19 +633,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
-          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+          "rapture_ring", // Rapture Ring
+          "passion_rush", // Passion Rush
+          "glamour_gain"  // Glamour Gain
         ],
         any: true,
         description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
       },
       {
         boonIds: [
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "25a736fc-b220-55cd-a713-e05a01b4dbfa"  // Nexus Rush
+          "sworn_strike", // Sworn Strike
+          "sworn_flourish", // Sworn Flourish
+          "engagement_ring", // Engagement Ring
+          "nexus_rush"  // Nexus Rush
         ],
         any: true,
         description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Nexus Rush"
@@ -653,7 +653,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "e8201d88-05cf-5aae-ad8a-392a6128b01b",
+    id: "electric_overload",
     name: "Electric Overload",
     type: "Non-Core",
     gods: ["Zeus"],
@@ -663,7 +663,7 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "20342519-7937-5ea2-874d-be411bc7da52"  // Static Shock
+          "static_shock"  // Static Shock
         ],
         any: true,
         description: "Requires Static Shock"
@@ -671,7 +671,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "b9a505d1-2f12-57f1-9d18-b40f98a70a71",
+    id: "engagement_ring",
     name: "Engagement Ring",
     type: "Cast",
     gods: ["Hera"],
@@ -681,7 +681,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "hitch"
   },
   {
-    id: "28daab2f-4165-57b0-981f-abb6478d61c0",
+    id: "exceptional_talent",
     name: "Exceptional Talent",
     type: "Legendary",
     gods: ["Apollo"],
@@ -691,27 +691,27 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
-          "677ad451-8bea-54fc-94c9-82953d9044e8"  // Nova Flourish
+          "nova_strike", // Nova Strike
+          "nova_flourish"  // Nova Flourish
         ],
         any: true,
         description: "Requires Nova Strike or Nova Flourish"
       },
       {
         boonIds: [
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
-          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+          "solar_ring", // Solar Ring
+          "blinding_rush", // Blinding Rush
+          "lucid_gain"  // Lucid Gain
         ],
         any: true,
         description: "Requires Solar Ring, Blinding Rush, or Lucid Gain"
       },
       {
         boonIds: [
-          "70eb8b0d-cb4e-536e-a306-cc32b6e055e8", // Extra Dose
-          "09fcd20a-2b99-5492-841d-db0f338e1ae1", // Super Nova
-          "fbe7a0b7-94e3-5c60-a593-06210f26053d", // Back Burner
-          "8355f4f2-d521-5794-8e4b-6ca89243bb52"  // Prominence Flare
+          "extra_dose", // Extra Dose
+          "super_nova", // Super Nova
+          "back_burner", // Back Burner
+          "prominence_flare"  // Prominence Flare
         ],
         any: true,
         description: "Requires Extra Dose, Super Nova, Back Burner, or Prominence Flare"
@@ -719,7 +719,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "7785b010-246d-55b5-88db-633ad19320a2",
+    id: "extended_family",
     name: "Extended Family",
     type: "Non-Core",
     gods: ["Hera"],
@@ -728,7 +728,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hera/Extended_Family.webp"
   },
   {
-    id: "70eb8b0d-cb4e-536e-a306-cc32b6e055e8",
+    id: "extra_dose",
     name: "Extra Dose",
     type: "Non-Core",
     gods: ["Apollo"],
@@ -738,15 +738,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273"  // Wave Strike
+          "flame_strike", // Flame Strike
+          "flutter_strike", // Flutter Strike
+          "heaven_strike", // Heaven Strike
+          "ice_strike", // Ice Strike
+          "nova_strike", // Nova Strike
+          "sworn_strike", // Sworn Strike
+          "vicious_strike", // Vicious Strike
+          "volcanic_strike", // Volcanic Strike
+          "wave_strike"  // Wave Strike
         ],
         any: true,
         description: "Requires any Attack Boon"
@@ -754,7 +754,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d",
+    id: "fine_line",
     name: "Fine Line",
     type: "Non-Core",
     gods: ["Hera"],
@@ -763,7 +763,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hera/Fine_Line.webp"
   },
   {
-    id: "06705458-7d89-583c-b64f-fcad79dd9646",
+    id: "fire_away",
     name: "Fire Away",
     type: "Legendary",
     gods: ["Hestia"],
@@ -774,13 +774,13 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "7854f04e-79bd-5de0-8f93-9bf87c4e31f3", // Flash Fry
-          "88e98262-78db-54df-a6dc-b1896a133415", // Hot Pot
-          "5d0b83d6-ae4a-5a02-a8ab-1d7ac5237f8a", // Pyro Technique
-          "935fc01c-9916-5ff9-aeff-efa3dcc2266e", // Highly Flammable
-          "e022fec1-5de0-5dba-b7f9-d89f502ef7bd", // Glowing Coal
-          "7d37d809-d43f-5660-ae21-25b7aba0378d"  // Controlled Burn
+          "smolder_ring", // Smolder Ring
+          "flash_fry", // Flash Fry
+          "hot_pot", // Hot Pot
+          "pyro_technique", // Pyro Technique
+          "highly_flammable", // Highly Flammable
+          "glowing_coal", // Glowing Coal
+          "controlled_burn"  // Controlled Burn
         ],
         any: true,
         description: "Requires Smolder Ring, Flash Fry, Hot Pot, Pyro Technique, Highly Flammable, Glowing Coal, or Controlled Burn"
@@ -788,7 +788,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "f67e501c-5277-588f-a274-d0216437c764",
+    id: "flame_flourish",
     name: "Flame Flourish",
     type: "Special",
     gods: ["Hestia"],
@@ -798,7 +798,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "scorch"
   },
   {
-    id: "ed24b45a-d7bc-57d9-817d-989521fc5bf3",
+    id: "flame_strike",
     name: "Flame Strike",
     type: "Attack",
     gods: ["Hestia"],
@@ -808,7 +808,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "scorch"
   },
   {
-    id: "7854f04e-79bd-5de0-8f93-9bf87c4e31f3",
+    id: "flash_fry",
     name: "Flash Fry",
     type: "Non-Core",
     gods: ["Hestia"],
@@ -817,7 +817,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hestia/Flash_Fry.webp"
   },
   {
-    id: "e47cd742-6e4c-53cc-9da5-f08e381d7eb3",
+    id: "flood_gain",
     name: "Flood Gain",
     type: "Magick",
     gods: ["Poseidon"],
@@ -826,7 +826,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/Flood_Gain.webp"
   },
   {
-    id: "5d4dcdca-fb70-5019-84f9-78964ad23d72",
+    id: "flutter_flourish",
     name: "Flutter Flourish",
     type: "Special",
     gods: ["Aphrodite"],
@@ -835,7 +835,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/aphrodite/Flutter_Flourish.webp"
   },
   {
-    id: "8f7c231f-6687-525c-bc01-033c5fd4ae5d",
+    id: "flutter_strike",
     name: "Flutter Strike",
     type: "Attack",
     gods: ["Aphrodite"],
@@ -844,7 +844,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/aphrodite/Flutter_Strike.webp"
   },
   {
-    id: "dedb7d2d-ba78-5acb-b591-5d410d5f8793",
+    id: "fourth_degree",
     name: "Fourth Degree",
     type: "Duo",
     gods: ["Hestia", "Ares"],
@@ -855,19 +855,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
-          "ba9f445b-b3fc-54e4-a63b-782f09b28860", // Vicious Flourish
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "d477b146-1783-5971-bf9f-16a9e50b4ff4", // Stabbing Rush
-          "e48529f3-4dfc-5349-92e0-e5c717ce684f"  // Grisly Gain
+          "vicious_strike", // Vicious Strike
+          "vicious_flourish", // Vicious Flourish
+          "sword_ring", // Sword Ring
+          "stabbing_rush", // Stabbing Rush
+          "grisly_gain"  // Grisly Gain
         ],
         any: true,
         description: "Requires Vicious Strike, Vicious Flourish, Sword Ring, Stabbing Rush, or Grisly Gain"
       },
       {
         boonIds: [
-          "7d37d809-d43f-5660-ae21-25b7aba0378d", // Controlled Burn
-          "e022fec1-5de0-5dba-b7f9-d89f502ef7bd"  // Glowing Coal
+          "controlled_burn", // Controlled Burn
+          "glowing_coal"  // Glowing Coal
         ],
         any: true,
         description: "Requires Controlled Burn or Glowing Coal"
@@ -875,7 +875,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "495481f4-c2de-5bc7-a420-fd6e5c43880c",
+    id: "freezer_burn",
     name: "Freezer Burn",
     type: "Duo",
     gods: ["Demeter", "Hestia"],
@@ -885,18 +885,18 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1"  // Arctic Ring
+          "ice_strike", // Ice Strike
+          "ice_flourish", // Ice Flourish
+          "arctic_ring"  // Arctic Ring
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, or Arctic Ring"
       },
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+          "flame_strike", // Flame Strike
+          "flame_flourish", // Flame Flourish
+          "smolder_ring"  // Smolder Ring
         ],
         any: true,
         description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
@@ -904,7 +904,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "f4b3601e-b839-5f04-a1ae-675a1431b640",
+    id: "frigid_rush",
     name: "Frigid Rush",
     type: "Sprint",
     gods: ["Demeter"],
@@ -914,7 +914,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "gust"
   },
   {
-    id: "915939ec-15c7-5be6-96a5-22949b009bb8",
+    id: "frosty_veneer",
     name: "Frosty Veneer",
     type: "Infusion",
     gods: ["Demeter"],
@@ -931,7 +931,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "0ace7aad-68c9-5b65-9a31-899364d9d6c1",
+    id: "furnace_blast",
     name: "Furnace Blast",
     type: "Non-Core",
     gods: ["Hephaestus"],
@@ -942,9 +942,9 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
-          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish", // Volcanic Flourish
+          "smithy_rush"  // Smithy Rush
         ],
         any: true,
         description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
@@ -952,7 +952,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "6e1d031a-7fda-55bb-86f5-06e4322d11c5",
+    id: "geyser_spout",
     name: "Geyser Spout",
     type: "Non-Core",
     gods: ["Poseidon"],
@@ -962,15 +962,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+          "anvil_ring", // Anvil Ring
+          "arctic_ring", // Arctic Ring
+          "engagement_ring", // Engagement Ring
+          "rapture_ring", // Rapture Ring
+          "smolder_ring", // Smolder Ring
+          "solar_ring", // Solar Ring
+          "storm_ring", // Storm Ring
+          "sword_ring", // Sword Ring
+          "tidal_ring"  // Tidal Ring
         ],
         any: true,
         description: "Requires any Cast Boon"
@@ -978,7 +978,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "936e899f-cc41-5003-bdb9-66a6ebae52a1",
+    id: "glamour_gain",
     name: "Glamour Gain",
     type: "Magick",
     gods: ["Aphrodite"],
@@ -988,7 +988,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "weak"
   },
   {
-    id: "b0fb61c9-819d-5be4-8be4-5612ce6209af",
+    id: "glorious_disaster",
     name: "Glorious Disaster",
     type: "Duo",
     gods: ["Zeus", "Apollo"],
@@ -997,15 +997,15 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/duo/Glorious_Disaster.webp",
     prerequisites: [
       {
-        boonIds: ["8355f4f2-d521-5794-8e4b-6ca89243bb52"], // Prominence Flare
+        boonIds: ["prominence_flare"], // Prominence Flare
         description: "Requires Prominence Flare"
       },
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63"  // Thunder Rush
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish", // Heaven Flourish
+          "storm_ring", // Storm Ring
+          "thunder_rush"  // Thunder Rush
         ],
         any: true,
         description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, or Thunder Rush"
@@ -1013,7 +1013,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "e022fec1-5de0-5dba-b7f9-d89f502ef7bd",
+    id: "glowing_coal",
     name: "Glowing Coal",
     type: "Non-Core",
     gods: ["Hestia"],
@@ -1022,7 +1022,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hestia/Glowing_Coal.webp"
   },
   {
-    id: "b31bb575-4b1f-5d32-8df7-c94c003ca593",
+    id: "grand_caldera",
     name: "Grand Caldera",
     type: "Non-Core",
     gods: ["Hephaestus"],
@@ -1032,9 +1032,9 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
-          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish", // Volcanic Flourish
+          "smithy_rush"  // Smithy Rush
         ],
         any: true,
         description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
@@ -1042,7 +1042,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "35f07f53-05cd-5013-9f26-4a92a50c68b3",
+    id: "grievous_blow",
     name: "Grievous Blow",
     type: "Non-Core",
     gods: ["Ares"],
@@ -1052,8 +1052,8 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
-          "ba9f445b-b3fc-54e4-a63b-782f09b28860"  // Vicious Flourish
+          "vicious_strike", // Vicious Strike
+          "vicious_flourish"  // Vicious Flourish
         ],
         any: true,
         description: "Requires Vicious Strike or Vicious Flourish"
@@ -1061,7 +1061,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "e48529f3-4dfc-5349-92e0-e5c717ce684f",
+    id: "grisly_gain",
     name: "Grisly Gain",
     type: "Magick",
     gods: ["Ares"],
@@ -1070,7 +1070,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/ares/Grisly_Gain.webp"
   },
   {
-    id: "f2578c62-a331-5087-a700-805a456651ad",
+    id: "hail_storm",
     name: "Hail Storm",
     type: "Duo",
     gods: ["Zeus", "Demeter"],
@@ -1080,20 +1080,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1"  // Arctic Ring
+          "ice_strike", // Ice Strike
+          "ice_flourish", // Ice Flourish
+          "arctic_ring"  // Arctic Ring
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, or Arctic Ring"
       },
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "11076cc9-5d5b-530c-be32-749753510ced", // Ionic Gain
-          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63"  // Thunder Rush
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish", // Heaven Flourish
+          "storm_ring", // Storm Ring
+          "ionic_gain", // Ionic Gain
+          "thunder_rush"  // Thunder Rush
         ],
         any: true,
         description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Ionic Gain, or Thunder Rush"
@@ -1101,7 +1101,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "8c1e6524-c456-57be-96a6-01b398e0e76d",
+    id: "healthy_rebound",
     name: "Healthy Rebound",
     type: "Non-Core",
     gods: ["Aphrodite"],
@@ -1110,13 +1110,13 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/aphrodite/Healthy_Rebound.webp",
     prerequisites: [
       {
-        boonIds: ["8a0ecab3-8591-587d-9aac-bf3ebefb1867"],
+        boonIds: ["shameless_attitude"],
         description: "Requires Shameless Attitude"
       }
     ]
   },
   {
-    id: "0a10c1fd-89af-5dec-8dd5-d20ba7f1aaf6",
+    id: "heart_breaker",
     name: "Heart Breaker",
     type: "Non-Core",
     gods: ["Aphrodite"],
@@ -1125,7 +1125,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/aphrodite/Heart_Breaker.webp"
   },
   {
-    id: "8823c145-2f1d-5ce7-9d29-98aa3d348f6d",
+    id: "hearty_appetite",
     name: "Hearty Appetite",
     type: "Duo",
     gods: ["Demeter", "Aphrodite"],
@@ -1135,22 +1135,22 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
-          "5d4dcdca-fb70-5019-84f9-78964ad23d72", // Flutter Flourish
-          "936e899f-cc41-5003-bdb9-66a6ebae52a1", // Glamour Gain
-          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
-          "8c1e6524-c456-57be-96a6-01b398e0e76d"  // Healthy Rebound
+          "flutter_strike", // Flutter Strike
+          "flutter_flourish", // Flutter Flourish
+          "glamour_gain", // Glamour Gain
+          "passion_rush", // Passion Rush
+          "healthy_rebound"  // Healthy Rebound
         ],
         any: true,
         description: "Requires Flutter Strike, Flutter Flourish, Glamour Gain, Passion Rush, or Healthy Rebound"
       },
       {
         boonIds: [
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
-          "16265777-2471-507d-9457-ef385a9a5a47", // Tranquil Gain
-          "f4b3601e-b839-5f04-a1ae-675a1431b640", // Frigid Rush
-          "a947883b-7f61-5123-9eb8-4ade0773ab2b"  // Plentiful Forage
+          "ice_strike", // Ice Strike
+          "ice_flourish", // Ice Flourish
+          "tranquil_gain", // Tranquil Gain
+          "frigid_rush", // Frigid Rush
+          "plentiful_forage"  // Plentiful Forage
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, Tranquil Gain, Frigid Rush, or Plentiful Forage"
@@ -1158,7 +1158,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "ed08770d-871a-5322-a96b-25c501a4992f",
+    id: "heat_rush",
     name: "Heat Rush",
     type: "Sprint",
     gods: ["Hestia"],
@@ -1167,7 +1167,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hestia/Heat_Rush.webp"
   },
   {
-    id: "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e",
+    id: "heaven_flourish",
     name: "Heaven Flourish",
     type: "Special",
     gods: ["Zeus"],
@@ -1177,7 +1177,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "blitz"
   },
   {
-    id: "d830b8f9-7744-5114-a60e-a0f738d3e4b0",
+    id: "heaven_strike",
     name: "Heaven Strike",
     type: "Attack",
     gods: ["Zeus"],
@@ -1187,7 +1187,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "blitz"
   },
   {
-    id: "c71088b5-8a65-589d-aeea-80912b32c25b",
+    id: "heavy_metal",
     name: "Heavy Metal",
     type: "Non-Core",
     gods: ["Hephaestus"],
@@ -1196,7 +1196,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Heavy_Metal.webp"
   },
   {
-    id: "dc39ccef-c983-5d4a-b162-02230f19d7ef",
+    id: "heinous_affront",
     name: "Heinous Affront",
     type: "Duo",
     gods: ["Zeus", "Ares"],
@@ -1206,28 +1206,28 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
-          "ba9f445b-b3fc-54e4-a63b-782f09b28860"  // Vicious Flourish
+          "vicious_strike", // Vicious Strike
+          "vicious_flourish"  // Vicious Flourish
         ],
         any: true,
         description: "Requires Vicious Strike or Vicious Flourish"
       },
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
-          "11076cc9-5d5b-530c-be32-749753510ced"  // Ionic Gain
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish", // Heaven Flourish
+          "storm_ring", // Storm Ring
+          "thunder_rush", // Thunder Rush
+          "ionic_gain"  // Ionic Gain
         ],
         any: true,
         description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, or Ionic Gain"
       },
       {
         boonIds: [
-          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4", // Visceral Impact
-          "abde81b0-8578-5373-b6c8-f49ab73f6a98", // Light Smite
-          "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5"  // Divine Vengeance
+          "visceral_impact", // Visceral Impact
+          "light_smite", // Light Smite
+          "divine_vengeance"  // Divine Vengeance
         ],
         any: true,
         description: "Requires Visceral Impact, Light Smite, or Divine Vengeance"
@@ -1235,7 +1235,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "8ebe032e-3ef0-5208-9ba2-91b2c875c9c8",
+    id: "hereditary_bane",
     name: "Hereditary Bane",
     type: "Non-Core",
     gods: ["Hera"],
@@ -1245,10 +1245,10 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "25a736fc-b220-55cd-a713-e05a01b4dbfa"  // Nexus Rush
+          "sworn_strike", // Sworn Strike
+          "sworn_flourish", // Sworn Flourish
+          "engagement_ring", // Engagement Ring
+          "nexus_rush"  // Nexus Rush
         ],
         any: true,
         description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Nexus Rush"
@@ -1256,7 +1256,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "87bb8bea-c036-5da7-93f0-f5ba17f9f7ac",
+    id: "high_surf",
     name: "High Surf",
     type: "Non-Core",
     gods: ["Poseidon"],
@@ -1265,7 +1265,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/High_Surf.webp"
   },
   {
-    id: "935fc01c-9916-5ff9-aeff-efa3dcc2266e",
+    id: "highly_flammable",
     name: "Highly Flammable",
     type: "Non-Core",
     gods: ["Hestia"],
@@ -1275,9 +1275,9 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+          "flame_strike", // Flame Strike
+          "flame_flourish", // Flame Flourish
+          "smolder_ring"  // Smolder Ring
         ],
         any: true,
         description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
@@ -1285,7 +1285,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "d332032a-0b34-55c5-bc7b-cf2b98d03614",
+    id: "hostile_environment",
     name: "Hostile Environment",
     type: "Duo",
     gods: ["Demeter", "Ares"],
@@ -1295,19 +1295,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "c59cf862-1162-598d-b2a1-4b8fc24fb04f"  // Meat Grinder
+          "sword_ring", // Sword Ring
+          "meat_grinder"  // Meat Grinder
         ],
         any: true,
         description: "Requires Sword Ring or Meat Grinder"
       },
       {
         boonIds: [
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "f4b3601e-b839-5f04-a1ae-675a1431b640", // Frigid Rush
-          "16265777-2471-507d-9457-ef385a9a5a47"  // Tranquil Gain
+          "ice_strike", // Ice Strike
+          "ice_flourish", // Ice Flourish
+          "arctic_ring", // Arctic Ring
+          "frigid_rush", // Frigid Rush
+          "tranquil_gain"  // Tranquil Gain
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, or Tranquil Gain"
@@ -1315,7 +1315,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "88e98262-78db-54df-a6dc-b1896a133415",
+    id: "hot_pot",
     name: "Hot Pot",
     type: "Non-Core",
     gods: ["Hestia"],
@@ -1325,9 +1325,9 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+          "flame_strike", // Flame Strike
+          "flame_flourish", // Flame Flourish
+          "smolder_ring"  // Smolder Ring
         ],
         any: true,
         description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
@@ -1335,7 +1335,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "ecba3103-31ac-5524-84aa-20b32cece0b8",
+    id: "hydraulic_might",
     name: "Hydraulic Might",
     type: "Non-Core",
     gods: ["Poseidon"],
@@ -1344,7 +1344,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/Hydraulic_Might.webp"
   },
   {
-    id: "4d1aeefa-5aac-5a9a-9b25-18d6695550e7",
+    id: "ice_flourish",
     name: "Ice Flourish",
     type: "Special",
     gods: ["Demeter"],
@@ -1354,7 +1354,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "freeze"
   },
   {
-    id: "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6",
+    id: "ice_strike",
     name: "Ice Strike",
     type: "Attack",
     gods: ["Demeter"],
@@ -1364,7 +1364,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "freeze"
   },
   {
-    id: "c574f032-ec8d-5490-b2cd-5cf374236df8",
+    id: "incandescent_aura",
     name: "Incandescent Aura",
     type: "Duo",
     gods: ["Hera", "Hestia"],
@@ -1373,7 +1373,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/duo/Incandescent_Aura.webp"
   },
   {
-    id: "11076cc9-5d5b-530c-be32-749753510ced",
+    id: "ionic_gain",
     name: "Ionic Gain",
     type: "Magick",
     gods: ["Zeus"],
@@ -1382,7 +1382,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/zeus/Ionic_Gain.webp"
   },
   {
-    id: "000580d0-519e-50b5-bc62-48bd67557667",
+    id: "island_getaway",
     name: "Island Getaway",
     type: "Duo",
     gods: ["Poseidon", "Aphrodite"],
@@ -1392,19 +1392,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
-          "5d4dcdca-fb70-5019-84f9-78964ad23d72"  // Flutter Flourish
+          "flutter_strike", // Flutter Strike
+          "flutter_flourish"  // Flutter Flourish
         ],
         any: true,
         description: "Requires Flutter Strike or Flutter Flourish"
       },
       {
         boonIds: [
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
-          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
-          "3d9b7234-b439-502a-8dae-581fc3ad6359", // Breaker Rush
-          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3"  // Flood Gain
+          "wave_strike", // Wave Strike
+          "wave_flourish", // Wave Flourish
+          "tidal_ring", // Tidal Ring
+          "breaker_rush", // Breaker Rush
+          "flood_gain"  // Flood Gain
         ],
         any: true,
         description: "Requires Wave Strike, Wave Flourish, Tidal Ring, Breaker Rush, or Flood Gain"
@@ -1412,7 +1412,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "c6a28c11-b12a-5e08-ab4f-f3bbb301ccb0",
+    id: "killer_current",
     name: "Killer Current",
     type: "Duo",
     gods: ["Zeus", "Poseidon"],
@@ -1422,20 +1422,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
-          "498ee15c-c5af-5ea7-bbd1-f1a23d42f5e8"  // Slippery Slope
+          "tidal_ring", // Tidal Ring
+          "slippery_slope"  // Slippery Slope
         ],
         any: true,
         description: "Requires Tidal Ring or Slippery Slope"
       },
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
-          "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5", // Divine Vengeance
-          "2bd56797-3ab2-5ed8-95d5-6cdd5a3a4f28"  // Lightning Lance
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish", // Heaven Flourish
+          "storm_ring", // Storm Ring
+          "thunder_rush", // Thunder Rush
+          "divine_vengeance", // Divine Vengeance
+          "lightning_lance"  // Lightning Lance
         ],
         any: true,
         description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Divine Vengeance, or Lightning Lance"
@@ -1443,7 +1443,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "8a3c3979-faa3-5b2c-9453-534aa7b6b0f2",
+    id: "king_tide",
     name: "King Tide",
     type: "Legendary",
     gods: ["Poseidon"],
@@ -1453,15 +1453,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
-          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
-          "3d9b7234-b439-502a-8dae-581fc3ad6359", // Breaker Rush
-          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3", // Flood Gain
-          "6e1d031a-7fda-55bb-86f5-06e4322d11c5", // Geyser Spout
-          "ecba3103-31ac-5524-84aa-20b32cece0b8", // Hydraulic Might
-          "8d78a6cd-cb71-51cc-bdfd-73a3cf1c76de", // Ocean Swell
-          "498ee15c-c5af-5ea7-bbd1-f1a23d42f5e8", // Slippery Slope
-          "87bb8bea-c036-5da7-93f0-f5ba17f9f7ac"  // High Surf
+          "wave_strike", // Wave Strike
+          "wave_flourish", // Wave Flourish
+          "breaker_rush", // Breaker Rush
+          "flood_gain", // Flood Gain
+          "geyser_spout", // Geyser Spout
+          "hydraulic_might", // Hydraulic Might
+          "ocean_swell", // Ocean Swell
+          "slippery_slope", // Slippery Slope
+          "high_surf"  // High Surf
         ],
         any: true,
         description: "Requires Wave Strike, Wave Flourish, Breaker Rush, Flood Gain, Geyser Spout, Hydraulic Might, Ocean Swell, Slippery Slope, or High Surf"
@@ -1469,7 +1469,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "52793db5-16ff-5038-ae93-b3b4986c0ca0",
+    id: "king_s_ransom",
     name: "King's Ransom",
     type: "Duo",
     gods: ["Zeus", "Hera"],
@@ -1479,20 +1479,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
-          "11076cc9-5d5b-530c-be32-749753510ced"  // Ionic Gain
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish", // Heaven Flourish
+          "storm_ring", // Storm Ring
+          "thunder_rush", // Thunder Rush
+          "ionic_gain"  // Ionic Gain
         ],
         any: true,
         description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, or Ionic Gain"
       },
       {
         boonIds: [
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "da411c4d-69ec-5427-8d4e-a7101c649833", // Born Gain
-          "25a736fc-b220-55cd-a713-e05a01b4dbfa"  // Nexus Rush
+          "engagement_ring", // Engagement Ring
+          "born_gain", // Born Gain
+          "nexus_rush"  // Nexus Rush
         ],
         any: true,
         description: "Requires Engagement Ring, Born Gain, or Nexus Rush"
@@ -1500,7 +1500,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "abde81b0-8578-5373-b6c8-f49ab73f6a98",
+    id: "light_smite",
     name: "Light Smite",
     type: "Non-Core",
     gods: ["Apollo"],
@@ -1510,7 +1510,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "daze"
   },
   {
-    id: "2bd56797-3ab2-5ed8-95d5-6cdd5a3a4f28",
+    id: "lightning_lance",
     name: "Lightning Lance",
     type: "Non-Core",
     gods: ["Zeus"],
@@ -1520,15 +1520,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+          "anvil_ring", // Anvil Ring
+          "arctic_ring", // Arctic Ring
+          "engagement_ring", // Engagement Ring
+          "rapture_ring", // Rapture Ring
+          "smolder_ring", // Smolder Ring
+          "solar_ring", // Solar Ring
+          "storm_ring", // Storm Ring
+          "sword_ring", // Sword Ring
+          "tidal_ring"  // Tidal Ring
         ],
         any: true,
         description: "Requires any Cast Boon"
@@ -1536,7 +1536,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "eb911316-de2f-5477-9971-4de3fc976558",
+    id: "local_climate",
     name: "Local Climate",
     type: "Non-Core",
     gods: ["Demeter"],
@@ -1546,15 +1546,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+          "anvil_ring", // Anvil Ring
+          "arctic_ring", // Arctic Ring
+          "engagement_ring", // Engagement Ring
+          "rapture_ring", // Rapture Ring
+          "smolder_ring", // Smolder Ring
+          "solar_ring", // Solar Ring
+          "storm_ring", // Storm Ring
+          "sword_ring", // Sword Ring
+          "tidal_ring"  // Tidal Ring
         ],
         any: true,
         description: "Requires any Cast Boon"
@@ -1562,7 +1562,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "109c9744-e80a-586d-81b9-f59544c48942",
+    id: "love_handles",
     name: "Love Handles",
     type: "Duo",
     gods: ["Aphrodite", "Hephaestus"],
@@ -1572,20 +1572,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
-          "5d4dcdca-fb70-5019-84f9-78964ad23d72", // Flutter Flourish
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
-          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+          "flutter_strike", // Flutter Strike
+          "flutter_flourish", // Flutter Flourish
+          "rapture_ring", // Rapture Ring
+          "passion_rush", // Passion Rush
+          "glamour_gain"  // Glamour Gain
         ],
         any: true,
         description: "Requires Flutter Strike, Flutter Flourish, Rapture Ring, Passion Rush, or Glamour Gain"
       },
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
-          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish", // Volcanic Flourish
+          "smithy_rush"  // Smithy Rush
         ],
         any: true,
         description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
@@ -1593,7 +1593,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "ac3b5773-96b3-5e4d-bbda-4fff994aed86",
+    id: "lucid_gain",
     name: "Lucid Gain",
     type: "Magick",
     gods: ["Apollo"],
@@ -1602,7 +1602,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/apollo/Lucid_Gain.webp"
   },
   {
-    id: "524bf92f-83c5-5030-8d22-b1ed12cfd831",
+    id: "martial_art",
     name: "Martial Art",
     type: "Infusion",
     gods: ["Hephaestus"],
@@ -1619,7 +1619,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "71b37756-29a9-57bc-80f9-333886131be8",
+    id: "master_conductor",
     name: "Master Conductor",
     type: "Duo",
     gods: ["Zeus", "Hephaestus"],
@@ -1629,18 +1629,18 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
-          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
-          "018617cf-bd49-59ed-8d7b-42bfc1e0a651", // Smithy Rush
-          "f3b24e95-48e4-5813-8b41-01674038821d"  // Tough Gain
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish", // Volcanic Flourish
+          "anvil_ring", // Anvil Ring
+          "smithy_rush", // Smithy Rush
+          "tough_gain"  // Tough Gain
         ],
         any: true,
         description: "Requires Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, or Tough Gain"
       },
       {
         boonIds: [
-          "20342519-7937-5ea2-874d-be411bc7da52"  // Static Shock
+          "static_shock"  // Static Shock
         ],
         any: true,
         description: "Requires Static Shock"
@@ -1648,7 +1648,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "c59cf862-1162-598d-b2a1-4b8fc24fb04f",
+    id: "meat_grinder",
     name: "Meat Grinder",
     type: "Non-Core",
     gods: ["Ares"],
@@ -1658,15 +1658,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363"  // Sword Ring
+          "rapture_ring", // Rapture Ring
+          "solar_ring", // Solar Ring
+          "arctic_ring", // Arctic Ring
+          "anvil_ring", // Anvil Ring
+          "engagement_ring", // Engagement Ring
+          "smolder_ring", // Smolder Ring
+          "tidal_ring", // Tidal Ring
+          "storm_ring", // Storm Ring
+          "sword_ring"  // Sword Ring
         ],
         any: true,
         description: "Requires Rapture Ring, Solar Ring, Arctic Ring, Anvil Ring, Engagement Ring, Smolder Ring, Tidal Ring, Storm Ring, or Sword Ring"
@@ -1674,7 +1674,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "8a425f0d-0b7f-5876-816f-214497762e3b",
+    id: "molten_touch",
     name: "Molten Touch",
     type: "Non-Core",
     gods: ["Hephaestus"],
@@ -1683,7 +1683,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Molten_Touch.webp"
   },
   {
-    id: "acb822d6-5987-5567-bb7a-683b77ff3ef4",
+    id: "mutual_destruction",
     name: "Mutual Destruction",
     type: "Non-Core",
     gods: ["Ares"],
@@ -1692,7 +1692,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/ares/Mutual_Destruction.webp"
   },
   {
-    id: "019f3771-b618-5038-8696-b2dc3d0b57e4",
+    id: "natural_selection",
     name: "Natural Selection",
     type: "Duo",
     gods: ["Poseidon", "Demeter"],
@@ -1702,32 +1702,32 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "f4b3601e-b839-5f04-a1ae-675a1431b640", // Frigid Rush
-          "16265777-2471-507d-9457-ef385a9a5a47"  // Tranquil Gain
+          "ice_strike", // Ice Strike
+          "ice_flourish", // Ice Flourish
+          "arctic_ring", // Arctic Ring
+          "frigid_rush", // Frigid Rush
+          "tranquil_gain"  // Tranquil Gain
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, or Tranquil Gain"
       },
       {
         boonIds: [
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
-          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
-          "3d9b7234-b439-502a-8dae-581fc3ad6359", // Breaker Rush
-          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3"  // Flood Gain
+          "wave_strike", // Wave Strike
+          "wave_flourish", // Wave Flourish
+          "tidal_ring", // Tidal Ring
+          "breaker_rush", // Breaker Rush
+          "flood_gain"  // Flood Gain
         ],
         any: true,
         description: "Requires Wave Strike, Wave Flourish, Tidal Ring, Breaker Rush, or Flood Gain"
       },
       {
         boonIds: [
-          "be5d5870-6628-523b-b174-1166d7ae9ab1", // Buried Treasure
-          "392e298e-c9e0-5914-abc3-ec063ac52d97", // Sea Star
-          "ec639226-5b7f-573f-aed5-924d6ebb8b2d", // Steady Growth
-          "a947883b-7f61-5123-9eb8-4ade0773ab2b"  // Plentiful Forage
+          "buried_treasure", // Buried Treasure
+          "sea_star", // Sea Star
+          "steady_growth", // Steady Growth
+          "plentiful_forage"  // Plentiful Forage
         ],
         any: true,
         description: "Requires Buried Treasure, Sea Star, Steady Growth, or Plentiful Forage"
@@ -1735,7 +1735,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "7da44f9e-9d03-576e-9a2f-0d3773af3518",
+    id: "nervous_wreck",
     name: "Nervous Wreck",
     type: "Legendary",
     gods: ["Aphrodite"],
@@ -1745,27 +1745,27 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "b9e84fce-bfbb-5ee7-a821-f55fa8b6b984", // Broken Resolve
-          "39706212-eaea-552d-800f-d1671ddfc8cc", // Sweet Surrender
-          "8a0ecab3-8591-587d-9aac-bf3ebefb1867", // Shameless Attitude
-          "db1be79a-686e-5905-b3f5-0f9bb748e8ea"  // Secret Crush
+          "broken_resolve", // Broken Resolve
+          "sweet_surrender", // Sweet Surrender
+          "shameless_attitude", // Shameless Attitude
+          "secret_crush"  // Secret Crush
         ],
         any: true,
         description: "Requires Broken Resolve, Sweet Surrender, Shameless Attitude, or Secret Crush"
       },
       {
         boonIds: [
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
-          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+          "rapture_ring", // Rapture Ring
+          "passion_rush", // Passion Rush
+          "glamour_gain"  // Glamour Gain
         ],
         any: true,
         description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
       },
       {
         boonIds: [
-          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
-          "5d4dcdca-fb70-5019-84f9-78964ad23d72"  // Flutter Flourish
+          "flutter_strike", // Flutter Strike
+          "flutter_flourish"  // Flutter Flourish
         ],
         any: true,
         description: "Requires Flutter Strike or Flutter Flourish"
@@ -1773,7 +1773,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "25a736fc-b220-55cd-a713-e05a01b4dbfa",
+    id: "nexus_rush",
     name: "Nexus Rush",
     type: "Sprint",
     gods: ["Hera"],
@@ -1783,7 +1783,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "hitch"
   },
   {
-    id: "677ad451-8bea-54fc-94c9-82953d9044e8",
+    id: "nova_flourish",
     name: "Nova Flourish",
     type: "Special",
     gods: ["Apollo"],
@@ -1792,7 +1792,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/apollo/Nova_Flourish.webp"
   },
   {
-    id: "bc4205cb-d68d-50c7-9cfc-47f75316dd7c",
+    id: "nova_strike",
     name: "Nova Strike",
     type: "Attack",
     gods: ["Apollo"],
@@ -1801,7 +1801,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/apollo/Nova_Strike.webp"
   },
   {
-    id: "8d78a6cd-cb71-51cc-bdfd-73a3cf1c76de",
+    id: "ocean_swell",
     name: "Ocean Swell",
     type: "Non-Core",
     gods: ["Poseidon"],
@@ -1810,7 +1810,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/Ocean_Swell.webp"
   },
   {
-    id: "5ff82219-40a3-5149-818a-bb093674c43b",
+    id: "passion_rush",
     name: "Passion Rush",
     type: "Sprint",
     gods: ["Aphrodite"],
@@ -1820,7 +1820,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "weak"
   },
   {
-    id: "96e5a954-5856-5fd4-9ecb-228df17f2385",
+    id: "perfect_image",
     name: "Perfect Image",
     type: "Non-Core",
     gods: ["Apollo"],
@@ -1829,7 +1829,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/apollo/Perfect_Image.webp"
   },
   {
-    id: "a947883b-7f61-5123-9eb8-4ade0773ab2b",
+    id: "plentiful_forage",
     name: "Plentiful Forage",
     type: "Non-Core",
     gods: ["Demeter"],
@@ -1838,7 +1838,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/demeter/Plentiful_Forage.webp"
   },
   {
-    id: "732a8b3d-4cfa-5e61-b67d-2bec0982dc57",
+    id: "power_surge",
     name: "Power Surge",
     type: "Non-Core",
     gods: ["Zeus"],
@@ -1847,7 +1847,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/zeus/Power_Surge.webp"
   },
   {
-    id: "e99f34c3-bd0d-58da-9bed-dc3655da0d30",
+    id: "premium_service",
     name: "Premium Service",
     type: "Legendary",
     gods: ["Hephaestus"],
@@ -1857,14 +1857,14 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
-          "018617cf-bd49-59ed-8d7b-42bfc1e0a651", // Smithy Rush
-          "c71088b5-8a65-589d-aeea-80912b32c25b", // Heavy Metal
-          "d998f057-e8f8-5ecd-872f-6ef808c1fdd7", // Trusty Shield
-          "b31bb575-4b1f-5d32-8df7-c94c003ca593", // Grand Caldera
-          "8a425f0d-0b7f-5876-816f-214497762e3b", // Molten Touch
-          "0ace7aad-68c9-5b65-9a31-899364d9d6c1"  // Furnace Blast
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish", // Volcanic Flourish
+          "smithy_rush", // Smithy Rush
+          "heavy_metal", // Heavy Metal
+          "trusty_shield", // Trusty Shield
+          "grand_caldera", // Grand Caldera
+          "molten_touch", // Molten Touch
+          "furnace_blast"  // Furnace Blast
         ],
         any: true,
         description: "Requires Volcanic Strike, Volcanic Flourish, Smithy Rush, Heavy Metal, Trusty Shield, Grand Caldera, Molten Touch, or Furnace Blast"
@@ -1872,7 +1872,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "c6036ec2-ad36-5f5c-8ac4-225dc0e7d919",
+    id: "profuse_bleeding",
     name: "Profuse Bleeding",
     type: "Non-Core",
     gods: ["Ares"],
@@ -1882,10 +1882,10 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
-          "ba9f445b-b3fc-54e4-a63b-782f09b28860", // Vicious Flourish
-          "e48529f3-4dfc-5349-92e0-e5c717ce684f", // Grisly Gain
-          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4"  // Visceral Impact
+          "vicious_strike", // Vicious Strike
+          "vicious_flourish", // Vicious Flourish
+          "grisly_gain", // Grisly Gain
+          "visceral_impact"  // Visceral Impact
         ],
         any: true,
         description: "Requires Vicious Strike, Vicious Flourish, Grisly Gain, or Visceral Impact"
@@ -1893,7 +1893,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "8355f4f2-d521-5794-8e4b-6ca89243bb52",
+    id: "prominence_flare",
     name: "Prominence Flare",
     type: "Non-Core",
     gods: ["Apollo"],
@@ -1903,15 +1903,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+          "anvil_ring", // Anvil Ring
+          "arctic_ring", // Arctic Ring
+          "engagement_ring", // Engagement Ring
+          "rapture_ring", // Rapture Ring
+          "smolder_ring", // Smolder Ring
+          "solar_ring", // Solar Ring
+          "storm_ring", // Storm Ring
+          "sword_ring", // Sword Ring
+          "tidal_ring"  // Tidal Ring
         ],
         any: true,
         description: "Requires any Cast Boon"
@@ -1919,7 +1919,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "d860babc-cd19-5e8d-af1f-4f4c8d037eb8",
+    id: "proper_upbringing",
     name: "Proper Upbringing",
     type: "Infusion",
     gods: ["Hera"],
@@ -1954,7 +1954,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "5d0b83d6-ae4a-5a02-a8ab-1d7ac5237f8a",
+    id: "pyro_technique",
     name: "Pyro Technique",
     type: "Non-Core",
     gods: ["Hestia"],
@@ -1964,9 +1964,9 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+          "flame_strike", // Flame Strike
+          "flame_flourish", // Flame Flourish
+          "smolder_ring"  // Smolder Ring
         ],
         any: true,
         description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
@@ -1974,7 +1974,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "02e3602a-1e89-5b47-be38-b1f263d28ca0",
+    id: "queen_s_ransom",
     name: "Queen's Ransom",
     type: "Duo",
     gods: ["Hera", "Zeus"],
@@ -1984,20 +1984,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
-          "da411c4d-69ec-5427-8d4e-a7101c649833"  // Born Gain
+          "sworn_strike", // Sworn Strike
+          "sworn_flourish", // Sworn Flourish
+          "engagement_ring", // Engagement Ring
+          "nexus_rush", // Nexus Rush
+          "born_gain"  // Born Gain
         ],
         any: true,
         description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, or Born Gain"
       },
       {
         boonIds: [
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "11076cc9-5d5b-530c-be32-749753510ced", // Ionic Gain
-          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63"  // Thunder Rush
+          "storm_ring", // Storm Ring
+          "ionic_gain", // Ionic Gain
+          "thunder_rush"  // Thunder Rush
         ],
         any: true,
         description: "Requires Storm Ring, Ionic Gain, or Thunder Rush"
@@ -2005,7 +2005,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "82604a41-1de6-51fd-92ff-63112e33f5a0",
+    id: "rallying_cry",
     name: "Rallying Cry",
     type: "Infusion",
     gods: ["Ares"],
@@ -2022,7 +2022,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "f879486a-3356-5538-b340-3140a893bdba",
+    id: "rapture_ring",
     name: "Rapture Ring",
     type: "Cast",
     gods: ["Aphrodite"],
@@ -2032,7 +2032,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "weak"
   },
   {
-    id: "4da2a419-4972-5b2e-93f9-3d3b4cd876e5",
+    id: "ripple_effect",
     name: "Ripple Effect",
     type: "Duo",
     gods: ["Hera", "Poseidon"],
@@ -2042,28 +2042,28 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d"  // Fine Line
+          "sworn_strike", // Sworn Strike
+          "sworn_flourish", // Sworn Flourish
+          "engagement_ring", // Engagement Ring
+          "fine_line"  // Fine Line
         ],
         any: true,
         description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Fine Line"
       },
       {
         boonIds: [
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
-          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
-          "8d78a6cd-cb71-51cc-bdfd-73a3cf1c76de"  // Ocean Swell
+          "wave_strike", // Wave Strike
+          "wave_flourish", // Wave Flourish
+          "tidal_ring", // Tidal Ring
+          "ocean_swell"  // Ocean Swell
         ],
         any: true,
         description: "Requires Wave Strike, Wave Flourish, Tidal Ring, or Ocean Swell"
       },
       {
         boonIds: [
-          "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d", // Fine Line
-          "8d78a6cd-cb71-51cc-bdfd-73a3cf1c76de"  // Ocean Swell
+          "fine_line", // Fine Line
+          "ocean_swell"  // Ocean Swell
         ],
         any: true,
         description: "Requires Fine Line or Ocean Swell"
@@ -2071,7 +2071,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "18437a44-8ee7-5fab-ae04-ec20d55a23fb",
+    id: "romantic_spark",
     name: "Romantic Spark",
     type: "Duo",
     gods: ["Zeus", "Aphrodite"],
@@ -2081,19 +2081,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
-          "5d4dcdca-fb70-5019-84f9-78964ad23d72", // Flutter Flourish
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
-          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+          "flutter_strike", // Flutter Strike
+          "flutter_flourish", // Flutter Flourish
+          "rapture_ring", // Rapture Ring
+          "passion_rush", // Passion Rush
+          "glamour_gain"  // Glamour Gain
         ],
         any: true,
         description: "Requires Flutter Strike, Flutter Flourish, Rapture Ring, Passion Rush, or Glamour Gain"
       },
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e"  // Heaven Flourish
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish"  // Heaven Flourish
         ],
         any: true,
         description: "Requires Heaven Strike or Heaven Flourish"
@@ -2101,7 +2101,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "c771858f-175d-5a0c-924e-4e5f1fc6a1e1",
+    id: "rousing_reception",
     name: "Rousing Reception",
     type: "Non-Core",
     gods: ["Hera"],
@@ -2111,15 +2111,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+          "anvil_ring", // Anvil Ring
+          "arctic_ring", // Arctic Ring
+          "engagement_ring", // Engagement Ring
+          "rapture_ring", // Rapture Ring
+          "smolder_ring", // Smolder Ring
+          "solar_ring", // Solar Ring
+          "storm_ring", // Storm Ring
+          "sword_ring", // Sword Ring
+          "tidal_ring"  // Tidal Ring
         ],
         any: true,
         description: "Requires any Cast Boon"
@@ -2127,7 +2127,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "6b6584b4-83c7-53fb-bb1d-f95fa21c370b",
+    id: "rude_awakening",
     name: "Rude Awakening",
     type: "Duo",
     gods: ["Apollo", "Hephaestus"],
@@ -2137,19 +2137,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
-          "abde81b0-8578-5373-b6c8-f49ab73f6a98", // Light Smite
-          "b16d3778-57f6-5f4c-b33b-25364fc0238c"  // Dazzling Display
+          "solar_ring", // Solar Ring
+          "blinding_rush", // Blinding Rush
+          "light_smite", // Light Smite
+          "dazzling_display"  // Dazzling Display
         ],
         any: true,
         description: "Requires Solar Ring, Blinding Rush, Light Smite, or Dazzling Display"
       },
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
-          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish", // Volcanic Flourish
+          "smithy_rush"  // Smithy Rush
         ],
         any: true,
         description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
@@ -2157,7 +2157,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "176c7b4e-e3e0-5430-a378-5974e62311fa",
+    id: "sanguinary_savor",
     name: "Sanguinary Savor",
     type: "Legendary",
     gods: ["Ares"],
@@ -2167,30 +2167,30 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
-          "ba9f445b-b3fc-54e4-a63b-782f09b28860", // Vicious Flourish
-          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
-          "d477b146-1783-5971-bf9f-16a9e50b4ff4"  // Stabbing Rush
+          "vicious_strike", // Vicious Strike
+          "vicious_flourish", // Vicious Flourish
+          "sword_ring", // Sword Ring
+          "stabbing_rush"  // Stabbing Rush
         ],
         any: true,
         description: "Requires Vicious Strike, Vicious Flourish, Sword Ring, or Stabbing Rush"
       },
       {
         boonIds: [
-          "e48529f3-4dfc-5349-92e0-e5c717ce684f", // Grisly Gain
-          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4", // Visceral Impact
-          "c6036ec2-ad36-5f5c-8ac4-225dc0e7d919"  // Profuse Bleeding
+          "grisly_gain", // Grisly Gain
+          "visceral_impact", // Visceral Impact
+          "profuse_bleeding"  // Profuse Bleeding
         ],
         any: true,
         description: "Requires Grisly Gain, Visceral Impact, or Profuse Bleeding"
       },
       {
         boonIds: [
-          "c59cf862-1162-598d-b2a1-4b8fc24fb04f", // Meat Grinder
-          "35f07f53-05cd-5013-9f26-4a92a50c68b3", // Grievous Blow
-          "acb822d6-5987-5567-bb7a-683b77ff3ef4", // Mutual Destruction
-          "e625b64a-23d8-5b20-bbef-e9e3056331a2", // Blood Spree
-          "b430f1b7-3cca-5861-8357-5a3bdc7b7399"  // Cut Above
+          "meat_grinder", // Meat Grinder
+          "grievous_blow", // Grievous Blow
+          "mutual_destruction", // Mutual Destruction
+          "blood_spree", // Blood Spree
+          "cut_above"  // Cut Above
         ],
         any: true,
         description: "Requires Meat Grinder, Grievous Blow, Mutual Destruction, Blood Spree, or Cut Above"
@@ -2198,7 +2198,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "2d50a954-6f32-5d44-9fec-360ba95c169b",
+    id: "scalding_vapor",
     name: "Scalding Vapor",
     type: "Duo",
     gods: ["Poseidon", "Hestia"],
@@ -2208,19 +2208,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "935fc01c-9916-5ff9-aeff-efa3dcc2266e", // Highly Flammable
-          "7d37d809-d43f-5660-ae21-25b7aba0378d", // Controlled Burn
-          "e022fec1-5de0-5dba-b7f9-d89f502ef7bd"  // Glowing Coal
+          "flame_strike", // Flame Strike
+          "flame_flourish", // Flame Flourish
+          "smolder_ring", // Smolder Ring
+          "highly_flammable", // Highly Flammable
+          "controlled_burn", // Controlled Burn
+          "glowing_coal"  // Glowing Coal
         ],
         any: true,
         description: "Requires Flame Strike, Flame Flourish, Smolder Ring, Highly Flammable, Controlled Burn, or Glowing Coal"
       },
       {
         boonIds: [
-          "498ee15c-c5af-5ea7-bbd1-f1a23d42f5e8"  // Slippery Slope
+          "slippery_slope"  // Slippery Slope
         ],
         any: true,
         description: "Requires Slippery Slope"
@@ -2228,7 +2228,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "392e298e-c9e0-5914-abc3-ec063ac52d97",
+    id: "sea_star",
     name: "Sea Star",
     type: "Non-Core",
     gods: ["Poseidon"],
@@ -2237,7 +2237,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/Sea_Star.webp"
   },
   {
-    id: "db1be79a-686e-5905-b3f5-0f9bb748e8ea",
+    id: "secret_crush",
     name: "Secret Crush",
     type: "Non-Core",
     gods: ["Aphrodite"],
@@ -2246,7 +2246,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/aphrodite/Secret_Crush.webp"
   },
   {
-    id: "4f1896e0-582b-51fa-9369-c9b3972babb0",
+    id: "security_system",
     name: "Security System",
     type: "Non-Core",
     gods: ["Hephaestus"],
@@ -2255,7 +2255,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Security_System.webp"
   },
   {
-    id: "b0a4f2a0-80ff-5c0e-8619-42de204f41ef",
+    id: "seismic_servo",
     name: "Seismic Servo",
     type: "Duo",
     gods: ["Poseidon", "Hephaestus"],
@@ -2265,20 +2265,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
-          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+          "volcanic_strike", // Volcanic Strike
+          "volcanic_flourish", // Volcanic Flourish
+          "smithy_rush"  // Smithy Rush
         ],
         any: true,
         description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
       },
       {
         boonIds: [
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
-          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
-          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
-          "3d9b7234-b439-502a-8dae-581fc3ad6359", // Breaker Rush
-          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3"  // Flood Gain
+          "wave_strike", // Wave Strike
+          "wave_flourish", // Wave Flourish
+          "tidal_ring", // Tidal Ring
+          "breaker_rush", // Breaker Rush
+          "flood_gain"  // Flood Gain
         ],
         any: true,
         description: "Requires Wave Strike, Wave Flourish, Tidal Ring, Breaker Rush, or Flood Gain"
@@ -2286,7 +2286,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "0d859595-638f-5d15-bb16-56e24969bf89",
+    id: "self_healing",
     name: "Self Healing",
     type: "Infusion",
     gods: ["Apollo"],
@@ -2303,7 +2303,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "8a0ecab3-8591-587d-9aac-bf3ebefb1867",
+    id: "shameless_attitude",
     name: "Shameless Attitude",
     type: "Non-Core",
     gods: ["Aphrodite"],
@@ -2312,7 +2312,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/aphrodite/Shameless_Attitude.webp"
   },
   {
-    id: "026cd254-d4ec-5e68-a943-cddd4b37454d",
+    id: "shocking_loss",
     name: "Shocking Loss",
     type: "Legendary",
     gods: ["Zeus"],
@@ -2322,18 +2322,18 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
-          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
-          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
-          "11076cc9-5d5b-530c-be32-749753510ced", // Ionic Gain
-          "20342519-7937-5ea2-874d-be411bc7da52", // Static Shock
-          "732a8b3d-4cfa-5e61-b67d-2bec0982dc57", // Power Surge
-          "2bd56797-3ab2-5ed8-95d5-6cdd5a3a4f28", // Lightning Lance
-          "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5", // Divine Vengeance
-          "e70d8b09-a94a-5b8d-90f1-874b355051b4", // Arc Flash
-          "f2522999-ebeb-5b4d-83a8-748cb58d90d7", // Double Strike
-          "e8201d88-05cf-5aae-ad8a-392a6128b01b"  // Electric Overload
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish", // Heaven Flourish
+          "storm_ring", // Storm Ring
+          "thunder_rush", // Thunder Rush
+          "ionic_gain", // Ionic Gain
+          "static_shock", // Static Shock
+          "power_surge", // Power Surge
+          "lightning_lance", // Lightning Lance
+          "divine_vengeance", // Divine Vengeance
+          "arc_flash", // Arc Flash
+          "double_strike", // Double Strike
+          "electric_overload"  // Electric Overload
         ],
         any: true,
         description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Ionic Gain, Static Shock, Power Surge, Lightning Lance, Divine Vengeance, Arc Flash, Double Strike, or Electric Overload"
@@ -2341,7 +2341,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "498ee15c-c5af-5ea7-bbd1-f1a23d42f5e8",
+    id: "slippery_slope",
     name: "Slippery Slope",
     type: "Non-Core",
     gods: ["Poseidon"],
@@ -2352,8 +2352,8 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
-          "33734633-ed5b-526f-acb1-4662f97893e2"  // Wave Flourish
+          "wave_strike", // Wave Strike
+          "wave_flourish"  // Wave Flourish
         ],
         any: true,
         description: "Requires Wave Strike or Wave Flourish"
@@ -2361,7 +2361,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "16427bf1-ec92-5b08-91d9-24ce6f55b69a",
+    id: "slow_cooker",
     name: "Slow Cooker",
     type: "Infusion",
     gods: ["Hestia"],
@@ -2378,7 +2378,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "018617cf-bd49-59ed-8d7b-42bfc1e0a651",
+    id: "smithy_rush",
     name: "Smithy Rush",
     type: "Sprint",
     gods: ["Hephaestus"],
@@ -2387,7 +2387,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Smithy_Rush.webp"
   },
   {
-    id: "785016d2-a36a-5b74-a067-0aa4a1d3d116",
+    id: "smolder_ring",
     name: "Smolder Ring",
     type: "Cast",
     gods: ["Hestia"],
@@ -2397,7 +2397,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "scorch"
   },
   {
-    id: "467bc2c3-8cd4-53e8-84b6-0f9f8e45ecd2",
+    id: "snow_queen",
     name: "Snow Queen",
     type: "Non-Core",
     gods: ["Demeter"],
@@ -2406,7 +2406,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/demeter/Snow_Queen.webp"
   },
   {
-    id: "99a05be1-6e24-537f-880d-3c087556a4f0",
+    id: "snuffed_candle",
     name: "Snuffed Candle",
     type: "Non-Core",
     gods: ["Hestia"],
@@ -2415,7 +2415,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hestia/Snuffed_Candle.webp"
   },
   {
-    id: "705fdb01-ac8d-5025-b121-4d837c11b35f",
+    id: "solar_ring",
     name: "Solar Ring",
     type: "Cast",
     gods: ["Apollo"],
@@ -2425,7 +2425,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "daze"
   },
   {
-    id: "da004d70-d8bb-5868-a665-a45ca980589f",
+    id: "spiritual_affirmation",
     name: "Spiritual Affirmation",
     type: "Non-Core",
     gods: ["Aphrodite"],
@@ -2434,7 +2434,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/aphrodite/Spiritual_Affirmation.webp"
   },
   {
-    id: "d477b146-1783-5971-bf9f-16a9e50b4ff4",
+    id: "stabbing_rush",
     name: "Stabbing Rush",
     type: "Sprint",
     gods: ["Ares"],
@@ -2443,7 +2443,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/ares/Stabbing_Rush.webp"
   },
   {
-    id: "20342519-7937-5ea2-874d-be411bc7da52",
+    id: "static_shock",
     name: "Static Shock",
     type: "Non-Core",
     gods: ["Zeus"],
@@ -2452,7 +2452,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/zeus/Static_Shock.webp"
   },
   {
-    id: "ec639226-5b7f-573f-aed5-924d6ebb8b2d",
+    id: "steady_growth",
     name: "Steady Growth",
     type: "Non-Core",
     gods: ["Demeter"],
@@ -2467,7 +2467,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "befdf2bb-8636-53b8-9032-61dea93f92cb",
+    id: "storm_ring",
     name: "Storm Ring",
     type: "Cast",
     gods: ["Zeus"],
@@ -2476,7 +2476,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/zeus/Storm_Ring.webp"
   },
   {
-    id: "7c7d2a9c-0768-551a-be38-c3de75e4b378",
+    id: "sun_worshiper",
     name: "Sun Worshiper",
     type: "Duo",
     gods: ["Hera", "Apollo"],
@@ -2486,18 +2486,18 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
-          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+          "solar_ring", // Solar Ring
+          "blinding_rush", // Blinding Rush
+          "lucid_gain"  // Lucid Gain
         ],
         any: true,
         description: "Requires Solar Ring, Blinding Rush, or Lucid Gain"
       },
       {
         boonIds: [
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
-          "da411c4d-69ec-5427-8d4e-a7101c649833"  // Born Gain
+          "engagement_ring", // Engagement Ring
+          "nexus_rush", // Nexus Rush
+          "born_gain"  // Born Gain
         ],
         any: true,
         description: "Requires Engagement Ring, Nexus Rush, or Born Gain"
@@ -2505,7 +2505,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "41d2708d-2d25-572e-b145-abd2152f7874",
+    id: "sunny_disposition",
     name: "Sunny Disposition",
     type: "Duo",
     gods: ["Apollo", "Aphrodite"],
@@ -2515,18 +2515,18 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "0a10c1fd-89af-5dec-8dd5-d20ba7f1aaf6"  // Heart Breaker
+          "heart_breaker"  // Heart Breaker
         ],
         any: true,
         description: "Requires Heart Breaker"
       },
       {
         boonIds: [
-          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
-          "677ad451-8bea-54fc-94c9-82953d9044e8", // Nova Flourish
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
-          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+          "nova_strike", // Nova Strike
+          "nova_flourish", // Nova Flourish
+          "solar_ring", // Solar Ring
+          "blinding_rush", // Blinding Rush
+          "lucid_gain"  // Lucid Gain
         ],
         any: true,
         description: "Requires Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, or Lucid Gain"
@@ -2534,7 +2534,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "09fcd20a-2b99-5492-841d-db0f338e1ae1",
+    id: "super_nova",
     name: "Super Nova",
     type: "Non-Core",
     gods: ["Apollo"],
@@ -2543,7 +2543,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/apollo/Super_Nova.webp"
   },
   {
-    id: "39706212-eaea-552d-800f-d1671ddfc8cc",
+    id: "sweet_surrender",
     name: "Sweet Surrender",
     type: "Non-Core",
     gods: ["Aphrodite"],
@@ -2553,9 +2553,9 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
-          "5ff82219-40a3-5149-818a-bb093674c43b", // Passion Rush
-          "936e899f-cc41-5003-bdb9-66a6ebae52a1"  // Glamour Gain
+          "rapture_ring", // Rapture Ring
+          "passion_rush", // Passion Rush
+          "glamour_gain"  // Glamour Gain
         ],
         any: true,
         description: "Requires Rapture Ring, Passion Rush, or Glamour Gain"
@@ -2563,7 +2563,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "4b08ee45-008d-5f11-a89a-8a2dc68ff363",
+    id: "sword_ring",
     name: "Sword Ring",
     type: "Cast",
     gods: ["Ares"],
@@ -2572,7 +2572,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/ares/Sword_Ring.webp"
   },
   {
-    id: "6b5ce82f-7776-54f3-afd1-1625119b2020",
+    id: "sworn_flourish",
     name: "Sworn Flourish",
     type: "Special",
     gods: ["Hera"],
@@ -2582,7 +2582,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "hitch"
   },
   {
-    id: "b13b119a-0570-534b-8a30-abf4c38b0da5",
+    id: "sworn_strike",
     name: "Sworn Strike",
     type: "Attack",
     gods: ["Hera"],
@@ -2592,7 +2592,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "hitch"
   },
   {
-    id: "7ab48430-8d7a-5daa-827d-f91ddc154548",
+    id: "thermal_dynamics",
     name: "Thermal Dynamics",
     type: "Duo",
     gods: ["Zeus", "Hestia"],
@@ -2603,17 +2603,17 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+          "flame_strike", // Flame Strike
+          "flame_flourish", // Flame Flourish
+          "smolder_ring"  // Smolder Ring
         ],
         any: true,
         description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
       },
       {
         boonIds: [
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e"  // Heaven Flourish
+          "heaven_strike", // Heaven Strike
+          "heaven_flourish"  // Heaven Flourish
         ],
         any: true,
         description: "Requires Heaven Strike or Heaven Flourish"
@@ -2621,7 +2621,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "13f515f5-6415-51e1-a45f-6fb7f2eb2b63",
+    id: "thunder_rush",
     name: "Thunder Rush",
     type: "Sprint",
     gods: ["Zeus"],
@@ -2630,7 +2630,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/zeus/Thunder_Rush.webp"
   },
   {
-    id: "5ce45cef-32e6-5a80-9d69-f48ef53f07de",
+    id: "tidal_ring",
     name: "Tidal Ring",
     type: "Cast",
     gods: ["Poseidon"],
@@ -2640,7 +2640,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "froth"
   },
   {
-    id: "f3b24e95-48e4-5813-8b41-01674038821d",
+    id: "tough_gain",
     name: "Tough Gain",
     type: "Magick",
     gods: ["Hephaestus"],
@@ -2649,7 +2649,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Tough_Gain.webp"
   },
   {
-    id: "16265777-2471-507d-9457-ef385a9a5a47",
+    id: "tranquil_gain",
     name: "Tranquil Gain",
     type: "Magick",
     gods: ["Demeter"],
@@ -2658,7 +2658,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/demeter/Tranquil_Gain.webp"
   },
   {
-    id: "859ea719-7400-5149-9e2d-33da488fbde7",
+    id: "tropical_cyclone",
     name: "Tropical Cyclone",
     type: "Duo",
     gods: ["Demeter", "Apollo"],
@@ -2668,19 +2668,19 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
-          "677ad451-8bea-54fc-94c9-82953d9044e8", // Nova Flourish
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
-          "ac3b5773-96b3-5e4d-bbda-4fff994aed86"  // Lucid Gain
+          "nova_strike", // Nova Strike
+          "nova_flourish", // Nova Flourish
+          "solar_ring", // Solar Ring
+          "blinding_rush", // Blinding Rush
+          "lucid_gain"  // Lucid Gain
         ],
         any: true,
         description: "Requires Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, or Lucid Gain"
       },
       {
         boonIds: [
-          "f4b3601e-b839-5f04-a1ae-675a1431b640", // Frigid Rush
-          "0760776f-5eaa-534a-833c-8d8dd3ded47c"  // Arctic Gale
+          "frigid_rush", // Frigid Rush
+          "arctic_gale"  // Arctic Gale
         ],
         any: true,
         description: "Requires Frigid Rush or Arctic Gale"
@@ -2688,7 +2688,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "d998f057-e8f8-5ecd-872f-6ef808c1fdd7",
+    id: "trusty_shield",
     name: "Trusty Shield",
     type: "Non-Core",
     gods: ["Hephaestus"],
@@ -2697,7 +2697,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Trusty_Shield.webp"
   },
   {
-    id: "f0b5c570-1b9e-5daf-8454-9c6bec471d69",
+    id: "uncanny_fortitude",
     name: "Uncanny Fortitude",
     type: "Non-Core",
     gods: ["Hephaestus"],
@@ -2706,7 +2706,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Uncanny_Fortitude.webp"
   },
   {
-    id: "5c80fb6b-7386-5217-8e29-9a9b66c64415",
+    id: "uncommon_grace",
     name: "Uncommon Grace",
     type: "Non-Core",
     gods: ["Hera"],
@@ -2715,7 +2715,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hera/Uncommon_Grace.webp"
   },
   {
-    id: "a085af6b-c870-57ab-92fe-f74116143174",
+    id: "universal_donor",
     name: "Universal Donor",
     type: "Duo",
     gods: ["Hera", "Ares"],
@@ -2725,20 +2725,20 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "e48529f3-4dfc-5349-92e0-e5c717ce684f", // Grisly Gain
-          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4", // Visceral Impact
-          "c6036ec2-ad36-5f5c-8ac4-225dc0e7d919"  // Profuse Bleeding
+          "grisly_gain", // Grisly Gain
+          "visceral_impact", // Visceral Impact
+          "profuse_bleeding"  // Profuse Bleeding
         ],
         any: true,
         description: "Requires Grisly Gain, Visceral Impact, or Profuse Bleeding"
       },
       {
         boonIds: [
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
-          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
-          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
-          "da411c4d-69ec-5427-8d4e-a7101c649833"  // Born Gain
+          "sworn_strike", // Sworn Strike
+          "sworn_flourish", // Sworn Flourish
+          "engagement_ring", // Engagement Ring
+          "nexus_rush", // Nexus Rush
+          "born_gain"  // Born Gain
         ],
         any: true,
         description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, or Born Gain"
@@ -2746,7 +2746,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "ba9f445b-b3fc-54e4-a63b-782f09b28860",
+    id: "vicious_flourish",
     name: "Vicious Flourish",
     type: "Special",
     gods: ["Ares"],
@@ -2756,7 +2756,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "wounds"
   },
   {
-    id: "5eb0886b-24f5-5bb1-b2ba-9208e0212339",
+    id: "vicious_strike",
     name: "Vicious Strike",
     type: "Attack",
     gods: ["Ares"],
@@ -2766,7 +2766,7 @@ export const BOONS: Boon[] = [
     inflictsCurse: "wounds"
   },
   {
-    id: "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4",
+    id: "visceral_impact",
     name: "Visceral Impact",
     type: "Non-Core",
     gods: ["Ares"],
@@ -2775,7 +2775,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/ares/Visceral_Impact.webp"
   },
   {
-    id: "936cb120-f32e-532f-ab9b-61777652f883",
+    id: "volcanic_flourish",
     name: "Volcanic Flourish",
     type: "Special",
     gods: ["Hephaestus"],
@@ -2784,7 +2784,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Volcanic_Flourish.webp"
   },
   {
-    id: "798575af-a5a4-5b8f-bb3d-a29714214e98",
+    id: "volcanic_strike",
     name: "Volcanic Strike",
     type: "Attack",
     gods: ["Hephaestus"],
@@ -2793,7 +2793,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Volcanic_Strike.webp"
   },
   {
-    id: "21738f02-be41-5c81-87a3-fc183d862a2f",
+    id: "warm_breeze",
     name: "Warm Breeze",
     type: "Duo",
     gods: ["Apollo", "Hestia"],
@@ -2803,21 +2803,21 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
-          "9f297b05-6e18-537a-8845-79c082317b9d", // Blinding Rush
-          "abde81b0-8578-5373-b6c8-f49ab73f6a98", // Light Smite
-          "b16d3778-57f6-5f4c-b33b-25364fc0238c"  // Dazzling Display
+          "solar_ring", // Solar Ring
+          "blinding_rush", // Blinding Rush
+          "light_smite", // Light Smite
+          "dazzling_display"  // Dazzling Display
         ],
         any: true,
         description: "Requires Solar Ring, Blinding Rush, Light Smite, or Dazzling Display"
       },
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
-          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
-          "ed08770d-871a-5322-a96b-25c501a4992f", // Heat Rush
-          "cb343fe8-09fb-5cda-9361-9fb6cd40085d"  // Cardio Gain
+          "flame_strike", // Flame Strike
+          "flame_flourish", // Flame Flourish
+          "smolder_ring", // Smolder Ring
+          "heat_rush", // Heat Rush
+          "cardio_gain"  // Cardio Gain
         ],
         any: true,
         description: "Requires Flame Strike, Flame Flourish, Smolder Ring, Heat Rush, or Cardio Gain"
@@ -2825,7 +2825,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "f35ccd65-627c-5556-b865-6ef1adf19aea",
+    id: "water_fitness",
     name: "Water Fitness",
     type: "Infusion",
     gods: ["Poseidon"],
@@ -2842,7 +2842,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "33734633-ed5b-526f-acb1-4662f97893e2",
+    id: "wave_flourish",
     name: "Wave Flourish",
     type: "Special",
     gods: ["Poseidon"],
@@ -2851,7 +2851,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/Wave_Flourish.webp"
   },
   {
-    id: "f43cb7a0-733f-5797-87f2-e1dcfea27273",
+    id: "wave_strike",
     name: "Wave Strike",
     type: "Attack",
     gods: ["Poseidon"],
@@ -2860,7 +2860,7 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/Wave_Strike.webp"
   },
   {
-    id: "32284885-da4d-506c-862a-81a47a311753",
+    id: "weed_killer",
     name: "Weed Killer",
     type: "Non-Core",
     gods: ["Demeter"],
@@ -2870,15 +2870,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
-          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
-          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
-          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
-          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
-          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
-          "f43cb7a0-733f-5797-87f2-e1dcfea27273"  // Wave Strike
+          "flame_strike", // Flame Strike
+          "flutter_strike", // Flutter Strike
+          "heaven_strike", // Heaven Strike
+          "ice_strike", // Ice Strike
+          "nova_strike", // Nova Strike
+          "sworn_strike", // Sworn Strike
+          "vicious_strike", // Vicious Strike
+          "volcanic_strike", // Volcanic Strike
+          "wave_strike"  // Wave Strike
         ],
         any: true,
         description: "Requires any Attack Boon"
@@ -2886,7 +2886,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "6907f2a1-cf77-5df5-8374-dc0e23f0a2c0",
+    id: "winter_harvest",
     name: "Winter Harvest",
     type: "Legendary",
     gods: ["Demeter"],
@@ -2896,15 +2896,15 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
-          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
-          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
-          "a947883b-7f61-5123-9eb8-4ade0773ab2b", // Plentiful Forage
-          "467bc2c3-8cd4-53e8-84b6-0f9f8e45ecd2", // Snow Queen
-          "ec639226-5b7f-573f-aed5-924d6ebb8b2d", // Steady Growth
-          "32284885-da4d-506c-862a-81a47a311753", // Weed Killer
-          "d0893ae2-19ec-5134-b642-0173cb99988b", // Cold Storage
-          "eb911316-de2f-5477-9971-4de3fc976558"  // Local Climate
+          "ice_strike", // Ice Strike
+          "ice_flourish", // Ice Flourish
+          "arctic_ring", // Arctic Ring
+          "plentiful_forage", // Plentiful Forage
+          "snow_queen", // Snow Queen
+          "steady_growth", // Steady Growth
+          "weed_killer", // Weed Killer
+          "cold_storage", // Cold Storage
+          "local_climate"  // Local Climate
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Plentiful Forage, Snow Queen, Steady Growth, Weed Killer, Cold Storage, or Local Climate"
@@ -2912,7 +2912,7 @@ export const BOONS: Boon[] = [
     ]
   },
   {
-    id: "d5eb1eea-d7e2-5efe-bf20-e1fa48c1ddfc",
+    id: "wispy_wiles",
     name: "Wispy Wiles",
     type: "Infusion",
     gods: ["Aphrodite"],
