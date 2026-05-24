@@ -25,7 +25,24 @@ export const BOONS: Boon[] = [
     gods: ["Hera"],
     element: "Aether",
     effect: "Gain Earth, Water, Air, and Fire Essence, and *1* Infusion Boon for each. \n ▸ Essences Gained per Element: +1",
-    icon: "/assets/boons/hera/All_Together.webp"
+    icon: "/assets/boons/hera/All_Together.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
+          "4df66a2a-6baa-5935-97a8-0dee45b63c36", // Bridal Glow
+          "5c80fb6b-7386-5217-8e29-9a9b66c64415", // Uncommon Grace
+          "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d", // Fine Line
+          "8ebe032e-3ef0-5208-9ba2-91b2c875c9c8", // Hereditary Bane
+          "c771858f-175d-5a0c-924e-4e5f1fc6a1e1"  // Rousing Reception
+        ],
+        any: true,
+        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Bridal Glow, Uncommon Grace, Fine Line, Hereditary Bane, or Rousing Reception"
+      }
+    ]
   },
   {
     id: "9341e2b7-38a7-5684-8bbd-a9978b055726",
@@ -43,7 +60,17 @@ export const BOONS: Boon[] = [
     gods: ["Zeus"],
     element: "Air",
     effect: "Damage from Ω Moves immediately activates Blitz effects and makes them stronger. \n ▸ Omega-Blitz Bonus Damage: +30%/+40%/+50%/+60%",
-    icon: "/assets/boons/zeus/Arc_Flash.webp"
+    icon: "/assets/boons/zeus/Arc_Flash.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e"  // Heaven Flourish
+        ],
+        any: true,
+        description: "Requires Heaven Strike or Heaven Flourish"
+      }
+    ]
   },
   {
     id: "0760776f-5eaa-534a-833c-8d8dd3ded47c",
@@ -72,7 +99,28 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon", "Ares"],
     element: "Aether",
     effect: "Your splash effects from Poseidon may hit *2* times _(and take the color of the River Styx)_. \n ▸ Double Splash Chance: 25%",
-    icon: "/assets/boons/duo/Arterial_Spray.webp"
+    icon: "/assets/boons/duo/Arterial_Spray.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
+          "ba9f445b-b3fc-54e4-a63b-782f09b28860", // Vicious Flourish
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "d477b146-1783-5971-bf9f-16a9e50b4ff4", // Stabbing Rush
+          "e48529f3-4dfc-5349-92e0-e5c717ce684f"  // Grisly Gain
+        ],
+        any: true,
+        description: "Requires Vicious Strike, Vicious Flourish, Sword Ring, Stabbing Rush, or Grisly Gain"
+      },
+      {
+        boonIds: [
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
+          "33734633-ed5b-526f-acb1-4662f97893e2"  // Wave Flourish
+        ],
+        any: true,
+        description: "Requires Wave Strike or Wave Flourish"
+      }
+    ]
   },
   {
     id: "fbe7a0b7-94e3-5c60-a593-06210f26053d",
@@ -169,7 +217,32 @@ export const BOONS: Boon[] = [
     gods: ["Hera", "Hephaestus"],
     element: "Aether",
     effect: "Automatically use Magick to resist up to *30%* of any damage. \n ▸ Magic Cost per Damage Point: 10 Magick",
-    icon: "/assets/boons/duo/Brave_Face.webp"
+    icon: "/assets/boons/duo/Brave_Face.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "b31bb575-4b1f-5d32-8df7-c94c003ca593", // Grand Caldera
+          "8a425f0d-0b7f-5876-816f-214497762e3b", // Molten Touch
+          "c71088b5-8a65-589d-aeea-80912b32c25b", // Heavy Metal
+          "d998f057-e8f8-5ecd-872f-6ef808c1fdd7", // Trusty Shield
+          "f0b5c570-1b9e-5daf-8454-9c6bec471d69", // Uncanny Fortitude
+          "0ace7aad-68c9-5b65-9a31-899364d9d6c1"  // Furnace Blast
+        ],
+        any: true,
+        description: "Requires Grand Caldera, Molten Touch, Heavy Metal, Trusty Shield, Uncanny Fortitude, or Furnace Blast"
+      },
+      {
+        boonIds: [
+          "7785b010-246d-55b5-88db-633ad19320a2", // Extended Family
+          "47ac15fa-ca9c-50b1-9199-9f7feffb96d8", // Dying Wish
+          "8ebe032e-3ef0-5208-9ba2-91b2c875c9c8", // Hereditary Bane
+          "c771858f-175d-5a0c-924e-4e5f1fc6a1e1", // Rousing Reception
+          "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d"  // Fine Line
+        ],
+        any: true,
+        description: "Requires Extended Family, Dying Wish, Hereditary Bane, Rousing Reception, or Fine Line"
+      }
+    ]
   },
   {
     id: "3d9b7234-b439-502a-8dae-581fc3ad6359",
@@ -294,7 +367,28 @@ export const BOONS: Boon[] = [
     gods: ["Hephaestus", "Hestia"],
     element: "Aether",
     effect: "If you use your blast effects from Hephaestus just after they recharge, they fire *2* times. \n ▸ Double Blast Timing: 2 Sec.",
-    icon: "/assets/boons/duo/Chain_Reaction.webp"
+    icon: "/assets/boons/duo/Chain_Reaction.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883"  // Volcanic Flourish
+        ],
+        any: true,
+        description: "Requires Volcanic Strike or Volcanic Flourish"
+      },
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "ed08770d-871a-5322-a96b-25c501a4992f", // Heat Rush
+          "cb343fe8-09fb-5cda-9361-9fb6cd40085d"  // Cardio Gain
+        ],
+        any: true,
+        description: "Requires Flame Strike, Flame Flourish, Smolder Ring, Heat Rush, or Cardio Gain"
+      }
+    ]
   },
   {
     id: "84858a87-0956-510a-98f6-4225cb5da59b",
@@ -303,7 +397,31 @@ export const BOONS: Boon[] = [
     gods: ["Hera", "Demeter"],
     element: "Aether",
     effect: "Your Keepsakes are stronger this night _(if possible)_. \n ▸ Bonus Keepsake Ranks: +1",
-    icon: "/assets/boons/duo/Cherished_Heirloom.webp"
+    icon: "/assets/boons/duo/Cherished_Heirloom.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "16265777-2471-507d-9457-ef385a9a5a47", // Tranquil Gain
+          "f4b3601e-b839-5f04-a1ae-675a1431b640"  // Frigid Rush
+        ],
+        any: true,
+        description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Tranquil Gain, or Frigid Rush"
+      },
+      {
+        boonIds: [
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
+          "da411c4d-69ec-5427-8d4e-a7101c649833"  // Born Gain
+        ],
+        any: true,
+        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, or Born Gain"
+      }
+    ]
   },
   {
     id: "70b1e974-f320-591f-88bc-e130786f070d",
@@ -312,7 +430,29 @@ export const BOONS: Boon[] = [
     gods: ["Hephaestus", "Ares"],
     element: "Aether",
     effect: "Your falling blades from Ares fall immediately and deal more damage. \n ▸ Blade Bonus Damage: +25",
-    icon: "/assets/boons/duo/Coffin_Nail.webp"
+    icon: "/assets/boons/duo/Coffin_Nail.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "d477b146-1783-5971-bf9f-16a9e50b4ff4", // Stabbing Rush
+          "b430f1b7-3cca-5861-8357-5a3bdc7b7399"  // Cut Above
+        ],
+        any: true,
+        description: "Requires Sword Ring, Stabbing Rush, or Cut Above"
+      },
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
+          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
+          "018617cf-bd49-59ed-8d7b-42bfc1e0a651", // Smithy Rush
+          "f3b24e95-48e4-5813-8b41-01674038821d"  // Tough Gain
+        ],
+        any: true,
+        description: "Requires Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, or Tough Gain"
+      }
+    ]
   },
   {
     id: "d0893ae2-19ec-5134-b642-0173cb99988b",
@@ -321,7 +461,18 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Water",
     effect: "Your Freeze effects last longer. \n ▸ Freeze Duration: +2 Sec./+3 Sec./+4 Sec./+5 Sec.",
-    icon: "/assets/boons/demeter/Cold_Storage.webp"
+    icon: "/assets/boons/demeter/Cold_Storage.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1"  // Arctic Ring
+        ],
+        any: true,
+        description: "Requires Ice Strike, Ice Flourish, or Arctic Ring"
+      }
+    ]
   },
   {
     id: "7d37d809-d43f-5660-ae21-25b7aba0378d",
@@ -339,7 +490,27 @@ export const BOONS: Boon[] = [
     gods: ["Demeter", "Hephaestus"],
     element: "Aether",
     effect: "Your blasts from Hephaestus deal more damage to Freeze-afflicted foes. \n ▸ Bonus Blast Damage: +50%",
-    icon: "/assets/boons/duo/Cryo_Pounder.webp"
+    icon: "/assets/boons/duo/Cryo_Pounder.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1"  // Arctic Ring
+        ],
+        any: true,
+        description: "Requires Ice Strike, Ice Flourish, or Arctic Ring"
+      },
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
+          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+        ],
+        any: true,
+        description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
+      }
+    ]
   },
   {
     id: "b430f1b7-3cca-5861-8357-5a3bdc7b7399",
@@ -413,7 +584,22 @@ export const BOONS: Boon[] = [
     gods: ["Zeus"],
     element: "Air",
     effect: "Your lightning bolt effects may strike *2* times. \n ▸ Bonus Bolt Chance: +10%/15%/20%/25%",
-    icon: "/assets/boons/zeus/Double_Strike.webp"
+    icon: "/assets/boons/zeus/Double_Strike.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
+          "732a8b3d-4cfa-5e61-b67d-2bec0982dc57", // Power Surge
+          "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5", // Divine Vengeance
+          "2bd56797-3ab2-5ed8-95d5-6cdd5a3a4f28"  // Lightning Lance
+        ],
+        any: true,
+        description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Power Surge, Divine Vengeance, or Lightning Lance"
+      }
+    ]
   },
   {
     id: "47ac15fa-ca9c-50b1-9199-9f7feffb96d8",
@@ -422,7 +608,19 @@ export const BOONS: Boon[] = [
     gods: ["Hera"],
     element: "Air",
     effect: "Whenever Hitch-afflicted foes are slain, damage all other Hitch-afflicted foes. \n ▸ Hitch Death Damage: 40/60/80/100",
-    icon: "/assets/boons/hera/Dying_Wish.webp"
+    icon: "/assets/boons/hera/Dying_Wish.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "25a736fc-b220-55cd-a713-e05a01b4dbfa"  // Nexus Rush
+        ],
+        any: true,
+        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Nexus Rush"
+      }
+    ]
   },
   {
     id: "bb8bc27f-2498-52f1-9c6f-ae7e8034703f",
@@ -461,7 +659,16 @@ export const BOONS: Boon[] = [
     gods: ["Zeus"],
     element: "Air",
     effect: "Your chain-lightning deals more damage and bounces up to *+3* times. \n ▸ Chain-Lightning Damage: +20%/+30%/+40%/+50%",
-    icon: "/assets/boons/zeus/Electric_Overload.webp"
+    icon: "/assets/boons/zeus/Electric_Overload.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "20342519-7937-5ea2-874d-be411bc7da52"  // Static Shock
+        ],
+        any: true,
+        description: "Requires Static Shock"
+      }
+    ]
   },
   {
     id: "b9a505d1-2f12-57f1-9d18-b40f98a70a71",
@@ -563,7 +770,22 @@ export const BOONS: Boon[] = [
     element: "Fire",
     effect: "Your Casts destroy many foes' ranged shots, and inflict Scorch on the attacking foes. \n ▸ Scorch Damage (every 3 Sec.): 400",
     icon: "/assets/boons/hestia/Fire_Away.webp",
-    inflictsCurse: "scorch"
+    inflictsCurse: "scorch",
+    prerequisites: [
+      {
+        boonIds: [
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "7854f04e-79bd-5de0-8f93-9bf87c4e31f3", // Flash Fry
+          "88e98262-78db-54df-a6dc-b1896a133415", // Hot Pot
+          "5d0b83d6-ae4a-5a02-a8ab-1d7ac5237f8a", // Pyro Technique
+          "935fc01c-9916-5ff9-aeff-efa3dcc2266e", // Highly Flammable
+          "e022fec1-5de0-5dba-b7f9-d89f502ef7bd", // Glowing Coal
+          "7d37d809-d43f-5660-ae21-25b7aba0378d"  // Controlled Burn
+        ],
+        any: true,
+        description: "Requires Smolder Ring, Flash Fry, Hot Pot, Pyro Technique, Highly Flammable, Glowing Coal, or Controlled Burn"
+      }
+    ]
   },
   {
     id: "f67e501c-5277-588f-a274-d0216437c764",
@@ -629,7 +851,28 @@ export const BOONS: Boon[] = [
     element: "Aether",
     effect: "Your fireball effects from Hestia inflict Wounds with even greater Power. \n ▸ Fireball Wounds Bonus Power: +250",
     icon: "/assets/boons/duo/Fourth_Degree.webp",
-    inflictsCurse: "wounds"
+    inflictsCurse: "wounds",
+    prerequisites: [
+      {
+        boonIds: [
+          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
+          "ba9f445b-b3fc-54e4-a63b-782f09b28860", // Vicious Flourish
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "d477b146-1783-5971-bf9f-16a9e50b4ff4", // Stabbing Rush
+          "e48529f3-4dfc-5349-92e0-e5c717ce684f"  // Grisly Gain
+        ],
+        any: true,
+        description: "Requires Vicious Strike, Vicious Flourish, Sword Ring, Stabbing Rush, or Grisly Gain"
+      },
+      {
+        boonIds: [
+          "7d37d809-d43f-5660-ae21-25b7aba0378d", // Controlled Burn
+          "e022fec1-5de0-5dba-b7f9-d89f502ef7bd"  // Glowing Coal
+        ],
+        any: true,
+        description: "Requires Controlled Burn or Glowing Coal"
+      }
+    ]
   },
   {
     id: "495481f4-c2de-5bc7-a420-fd6e5c43880c",
@@ -638,7 +881,27 @@ export const BOONS: Boon[] = [
     gods: ["Demeter", "Hestia"],
     element: "Aether",
     effect: "Whenever you inflict Freeze, on a foe with Scorch, deal damage and remove Scorch. \n ▸ Damage from Scorch: 200%",
-    icon: "/assets/boons/duo/Freezer_Burn.webp"
+    icon: "/assets/boons/duo/Freezer_Burn.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1"  // Arctic Ring
+        ],
+        any: true,
+        description: "Requires Ice Strike, Ice Flourish, or Arctic Ring"
+      },
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+        ],
+        any: true,
+        description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
+      }
+    ]
   },
   {
     id: "f4b3601e-b839-5f04-a1ae-675a1431b640",
@@ -675,7 +938,18 @@ export const BOONS: Boon[] = [
     element: "Fire",
     effect: "Your blast effects from Hephaestus also inflict Glow on foes. \n ▸ Glow Bonus Damage: +15%/+19%/+25%/+26%",
     icon: "/assets/boons/hephaestus/Furnace_Blast.webp",
-    inflictsCurse: "glow"
+    inflictsCurse: "glow",
+    prerequisites: [
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
+          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+        ],
+        any: true,
+        description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
+      }
+    ]
   },
   {
     id: "6e1d031a-7fda-55bb-86f5-06e4322d11c5",
@@ -684,7 +958,24 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon"],
     element: "Water",
     effect: "Your \u03a9 Cast gains Power and knocks foes away. \n ▸ Omega Cast Power: +150/+200/+250/+300",
-    icon: "/assets/boons/poseidon/Geyser_Spout.webp"
+    icon: "/assets/boons/poseidon/Geyser_Spout.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+        ],
+        any: true,
+        description: "Requires any Cast Boon"
+      }
+    ]
   },
   {
     id: "936e899f-cc41-5003-bdb9-66a6ebae52a1",
@@ -737,7 +1028,18 @@ export const BOONS: Boon[] = [
     gods: ["Hephaestus"],
     element: "Fire",
     effect: "Your blast effects from Hephaestus deal more damage and are *50%* larger. \n ▸ Bonus Blast Damage: +75/+100/+125/+150",
-    icon: "/assets/boons/hephaestus/Grand_Caldera.webp"
+    icon: "/assets/boons/hephaestus/Grand_Caldera.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
+          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+        ],
+        any: true,
+        description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
+      }
+    ]
   },
   {
     id: "35f07f53-05cd-5013-9f26-4a92a50c68b3",
@@ -746,7 +1048,17 @@ export const BOONS: Boon[] = [
     gods: ["Ares"],
     element: "Earth",
     effect: "Foes with Wounds may suffer *200%* damage when struck. \n ▸ Double Damage Chance: +10%/+15%/+20%/+25%",
-    icon: "/assets/boons/ares/Grievous_Blow.webp"
+    icon: "/assets/boons/ares/Grievous_Blow.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
+          "ba9f445b-b3fc-54e4-a63b-782f09b28860"  // Vicious Flourish
+        ],
+        any: true,
+        description: "Requires Vicious Strike or Vicious Flourish"
+      }
+    ]
   },
   {
     id: "e48529f3-4dfc-5349-92e0-e5c717ce684f",
@@ -764,7 +1076,29 @@ export const BOONS: Boon[] = [
     gods: ["Zeus", "Demeter"],
     element: "Aether",
     effect: "Your Freeze effects also cause lightning bolts to repeatedly strike afflicted foes. \n ▸ Lightning Damage (every 0.5 Sec.): 30",
-    icon: "/assets/boons/duo/Hail_Storm.webp"
+    icon: "/assets/boons/duo/Hail_Storm.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1"  // Arctic Ring
+        ],
+        any: true,
+        description: "Requires Ice Strike, Ice Flourish, or Arctic Ring"
+      },
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "11076cc9-5d5b-530c-be32-749753510ced", // Ionic Gain
+          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63"  // Thunder Rush
+        ],
+        any: true,
+        description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Ionic Gain, or Thunder Rush"
+      }
+    ]
   },
   {
     id: "8c1e6524-c456-57be-96a6-01b398e0e76d",
@@ -868,7 +1202,37 @@ export const BOONS: Boon[] = [
     gods: ["Zeus", "Ares"],
     element: "Aether",
     effect: "Inflicting Wounds also can inflict all your _'after you take damage'_ effects. \n ▸ Recharge Time per Foe: 6 Sec.",
-    icon: "/assets/boons/duo/Heinous_Affront.webp"
+    icon: "/assets/boons/duo/Heinous_Affront.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
+          "ba9f445b-b3fc-54e4-a63b-782f09b28860"  // Vicious Flourish
+        ],
+        any: true,
+        description: "Requires Vicious Strike or Vicious Flourish"
+      },
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
+          "11076cc9-5d5b-530c-be32-749753510ced"  // Ionic Gain
+        ],
+        any: true,
+        description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, or Ionic Gain"
+      },
+      {
+        boonIds: [
+          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4", // Visceral Impact
+          "abde81b0-8578-5373-b6c8-f49ab73f6a98", // Light Smite
+          "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5"  // Divine Vengeance
+        ],
+        any: true,
+        description: "Requires Visceral Impact, Light Smite, or Divine Vengeance"
+      }
+    ]
   },
   {
     id: "8ebe032e-3ef0-5208-9ba2-91b2c875c9c8",
@@ -877,7 +1241,19 @@ export const BOONS: Boon[] = [
     gods: ["Hera"],
     element: "Water",
     effect: "Your Hitch effects deal more damage and last *+5 Sec.* \n ▸ Hitch Damage: +10%/+15%/+20%/+25%",
-    icon: "/assets/boons/hera/Hereditary_Bane.webp"
+    icon: "/assets/boons/hera/Hereditary_Bane.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "25a736fc-b220-55cd-a713-e05a01b4dbfa"  // Nexus Rush
+        ],
+        any: true,
+        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Nexus Rush"
+      }
+    ]
   },
   {
     id: "87bb8bea-c036-5da7-93f0-f5ba17f9f7ac",
@@ -895,7 +1271,18 @@ export const BOONS: Boon[] = [
     gods: ["Hestia"],
     element: "Fire",
     effect: "Whenever you inflict Scorch on a foe for the first time, inflict more. \n ▸ First-Time Scorch Damage: +80/+120/+160/+200",
-    icon: "/assets/boons/hestia/Highly_Flammable.webp"
+    icon: "/assets/boons/hestia/Highly_Flammable.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+        ],
+        any: true,
+        description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
+      }
+    ]
   },
   {
     id: "d332032a-0b34-55c5-bc7b-cf2b98d03614",
@@ -904,7 +1291,28 @@ export const BOONS: Boon[] = [
     gods: ["Demeter", "Ares"],
     element: "Aether",
     effect: "Your \u03a9 Cast is stronger and follows you, even as you start to Channel it. \n ▸ Omega Cast Damage: +100%",
-    icon: "/assets/boons/duo/Hostile_Environment.webp"
+    icon: "/assets/boons/duo/Hostile_Environment.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "c59cf862-1162-598d-b2a1-4b8fc24fb04f"  // Meat Grinder
+        ],
+        any: true,
+        description: "Requires Sword Ring or Meat Grinder"
+      },
+      {
+        boonIds: [
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "f4b3601e-b839-5f04-a1ae-675a1431b640", // Frigid Rush
+          "16265777-2471-507d-9457-ef385a9a5a47"  // Tranquil Gain
+        ],
+        any: true,
+        description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, or Tranquil Gain"
+      }
+    ]
   },
   {
     id: "88e98262-78db-54df-a6dc-b1896a133415",
@@ -913,7 +1321,18 @@ export const BOONS: Boon[] = [
     gods: ["Hestia"],
     element: "Fire",
     effect: "Gain a chance to Dodge, which is doubled against Scorch-afflicted foes. \n ▸ Bonus Dodge Chance: +4%/+5%/+6%/+7%",
-    icon: "/assets/boons/hestia/Hot_Pot.webp"
+    icon: "/assets/boons/hestia/Hot_Pot.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+        ],
+        any: true,
+        description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
+      }
+    ]
   },
   {
     id: "ecba3103-31ac-5524-84aa-20b32cece0b8",
@@ -999,7 +1418,29 @@ export const BOONS: Boon[] = [
     gods: ["Zeus", "Poseidon"],
     element: "Aether",
     effect: "Your lightning deals more damage to Froth-afflicted foes. \n ▸ Bonus Lightning Damage: +30%",
-    icon: "/assets/boons/duo/Killer_Current.webp"
+    icon: "/assets/boons/duo/Killer_Current.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
+          "498ee15c-c5af-5ea7-bbd1-f1a23d42f5e8"  // Slippery Slope
+        ],
+        any: true,
+        description: "Requires Tidal Ring or Slippery Slope"
+      },
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
+          "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5", // Divine Vengeance
+          "2bd56797-3ab2-5ed8-95d5-6cdd5a3a4f28"  // Lightning Lance
+        ],
+        any: true,
+        description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Divine Vengeance, or Lightning Lance"
+      }
+    ]
   },
   {
     id: "8a3c3979-faa3-5b2c-9453-534aa7b6b0f2",
@@ -1008,7 +1449,24 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon"],
     element: "Water",
     effect: "Your splash effects from Poseidon are larger, and deal more damage to Guardians. \n ▸ Splash Damage vs. Guardians: +200%",
-    icon: "/assets/boons/poseidon/King_Tide.webp"
+    icon: "/assets/boons/poseidon/King_Tide.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
+          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
+          "3d9b7234-b439-502a-8dae-581fc3ad6359", // Breaker Rush
+          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3", // Flood Gain
+          "6e1d031a-7fda-55bb-86f5-06e4322d11c5", // Geyser Spout
+          "ecba3103-31ac-5524-84aa-20b32cece0b8", // Hydraulic Might
+          "8d78a6cd-cb71-51cc-bdfd-73a3cf1c76de", // Ocean Swell
+          "498ee15c-c5af-5ea7-bbd1-f1a23d42f5e8", // Slippery Slope
+          "87bb8bea-c036-5da7-93f0-f5ba17f9f7ac"  // High Surf
+        ],
+        any: true,
+        description: "Requires Wave Strike, Wave Flourish, Breaker Rush, Flood Gain, Geyser Spout, Hydraulic Might, Ocean Swell, Slippery Slope, or High Surf"
+      }
+    ]
   },
   {
     id: "52793db5-16ff-5038-ae93-b3b4986c0ca0",
@@ -1017,7 +1475,29 @@ export const BOONS: Boon[] = [
     gods: ["Zeus", "Hera"],
     element: "Aether",
     effect: "Give up _all_ your Boons of Hera. For each, raise Lv. for _all_ your Boons of Zeus. \n ▸ Bonus Lv. per Hera Boon: +4",
-    icon: "/assets/boons/duo/King's_Ransom.webp"
+    icon: "/assets/boons/duo/King's_Ransom.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
+          "11076cc9-5d5b-530c-be32-749753510ced"  // Ionic Gain
+        ],
+        any: true,
+        description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, or Ionic Gain"
+      },
+      {
+        boonIds: [
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "da411c4d-69ec-5427-8d4e-a7101c649833", // Born Gain
+          "25a736fc-b220-55cd-a713-e05a01b4dbfa"  // Nexus Rush
+        ],
+        any: true,
+        description: "Requires Engagement Ring, Born Gain, or Nexus Rush"
+      }
+    ]
   },
   {
     id: "abde81b0-8578-5373-b6c8-f49ab73f6a98",
@@ -1036,7 +1516,24 @@ export const BOONS: Boon[] = [
     gods: ["Zeus"],
     element: "Air",
     effect: "Hold Cast to aim where the binding circle appears. Foes within are struck by lightning. \n ▸ Bolt Damage: 50/70/90/110",
-    icon: "/assets/boons/zeus/Lightning_Lance.webp"
+    icon: "/assets/boons/zeus/Lightning_Lance.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+        ],
+        any: true,
+        description: "Requires any Cast Boon"
+      }
+    ]
   },
   {
     id: "eb911316-de2f-5477-9971-4de3fc976558",
@@ -1045,7 +1542,24 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Earth",
     effect: "Your \u03a9 Cast deals more damage. If you are in the binding circle, the bonus is doubled. \n ▸ Omega Cast Bonus Damage: +20%/+30%/+40%/+50%",
-    icon: "/assets/boons/demeter/Local_Climate.webp"
+    icon: "/assets/boons/demeter/Local_Climate.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+        ],
+        any: true,
+        description: "Requires any Cast Boon"
+      }
+    ]
   },
   {
     id: "109c9744-e80a-586d-81b9-f59544c48942",
@@ -1094,7 +1608,15 @@ export const BOONS: Boon[] = [
     gods: ["Hephaestus"],
     element: null,
     effect: "Your Attack and Special deal more damage for each Earth Essence you have. \n ▸ Damage per Earth Essence: +5%",
-    icon: "/assets/boons/hephaestus/Martial_Art.webp"
+    icon: "/assets/boons/hephaestus/Martial_Art.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 2 Earth Essence",
+        element: "Earth",
+        elementCount: 2
+      }
+    ]
   },
   {
     id: "71b37756-29a9-57bc-80f9-333886131be8",
@@ -1103,7 +1625,27 @@ export const BOONS: Boon[] = [
     gods: ["Zeus", "Hephaestus"],
     element: "Aether",
     effect: "Your chain-lightning can bounce off of you and deals increasing damage to foes. \n ▸ Damage per Bounce: +15%",
-    icon: "/assets/boons/duo/Master_Conductor.webp"
+    icon: "/assets/boons/duo/Master_Conductor.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
+          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
+          "018617cf-bd49-59ed-8d7b-42bfc1e0a651", // Smithy Rush
+          "f3b24e95-48e4-5813-8b41-01674038821d"  // Tough Gain
+        ],
+        any: true,
+        description: "Requires Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, or Tough Gain"
+      },
+      {
+        boonIds: [
+          "20342519-7937-5ea2-874d-be411bc7da52"  // Static Shock
+        ],
+        any: true,
+        description: "Requires Static Shock"
+      }
+    ]
   },
   {
     id: "c59cf862-1162-598d-b2a1-4b8fc24fb04f",
@@ -1112,7 +1654,24 @@ export const BOONS: Boon[] = [
     gods: ["Ares"],
     element: "Earth",
     effect: "Your \u03a9 Cast also creates a Blade Rift in the binding circle. \n ▸ Rift Damage (every 1 Sec.): 30/40/50/60",
-    icon: "/assets/boons/ares/Meat_Grinder.webp"
+    icon: "/assets/boons/ares/Meat_Grinder.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363"  // Sword Ring
+        ],
+        any: true,
+        description: "Requires Rapture Ring, Solar Ring, Arctic Ring, Anvil Ring, Engagement Ring, Smolder Ring, Tidal Ring, Storm Ring, or Sword Ring"
+      }
+    ]
   },
   {
     id: "8a425f0d-0b7f-5876-816f-214497762e3b",
@@ -1139,7 +1698,41 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon", "Demeter"],
     element: "Aether",
     effect: "Your *Boon(s)* in the leftmost column gain increased *Lv.* spread across however many you have. \n ▸ Total Bonus Lv. for Main Boon(s): +8",
-    icon: "/assets/boons/duo/Natural_Selection.webp"
+    icon: "/assets/boons/duo/Natural_Selection.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "f4b3601e-b839-5f04-a1ae-675a1431b640", // Frigid Rush
+          "16265777-2471-507d-9457-ef385a9a5a47"  // Tranquil Gain
+        ],
+        any: true,
+        description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, or Tranquil Gain"
+      },
+      {
+        boonIds: [
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
+          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
+          "3d9b7234-b439-502a-8dae-581fc3ad6359", // Breaker Rush
+          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3"  // Flood Gain
+        ],
+        any: true,
+        description: "Requires Wave Strike, Wave Flourish, Tidal Ring, Breaker Rush, or Flood Gain"
+      },
+      {
+        boonIds: [
+          "be5d5870-6628-523b-b174-1166d7ae9ab1", // Buried Treasure
+          "392e298e-c9e0-5914-abc3-ec063ac52d97", // Sea Star
+          "ec639226-5b7f-573f-aed5-924d6ebb8b2d", // Steady Growth
+          "a947883b-7f61-5123-9eb8-4ade0773ab2b"  // Plentiful Forage
+        ],
+        any: true,
+        description: "Requires Buried Treasure, Sea Star, Steady Growth, or Plentiful Forage"
+      }
+    ]
   },
   {
     id: "7da44f9e-9d03-576e-9a2f-0d3773af3518",
@@ -1260,7 +1853,23 @@ export const BOONS: Boon[] = [
     gods: ["Hephaestus"],
     element: "Earth",
     effect: "Your Aspect of the Nocturnal Arms is even stronger. \n ▸ Aspect Bonus Ranks: +1",
-    icon: "/assets/boons/hephaestus/Premium_Service.webp"
+    icon: "/assets/boons/hephaestus/Premium_Service.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
+          "018617cf-bd49-59ed-8d7b-42bfc1e0a651", // Smithy Rush
+          "c71088b5-8a65-589d-aeea-80912b32c25b", // Heavy Metal
+          "d998f057-e8f8-5ecd-872f-6ef808c1fdd7", // Trusty Shield
+          "b31bb575-4b1f-5d32-8df7-c94c003ca593", // Grand Caldera
+          "8a425f0d-0b7f-5876-816f-214497762e3b", // Molten Touch
+          "0ace7aad-68c9-5b65-9a31-899364d9d6c1"  // Furnace Blast
+        ],
+        any: true,
+        description: "Requires Volcanic Strike, Volcanic Flourish, Smithy Rush, Heavy Metal, Trusty Shield, Grand Caldera, Molten Touch, or Furnace Blast"
+      }
+    ]
   },
   {
     id: "c6036ec2-ad36-5f5c-8ac4-225dc0e7d919",
@@ -1269,7 +1878,19 @@ export const BOONS: Boon[] = [
     gods: ["Ares"],
     element: "Earth",
     effect: "Whenever you inflict Wounds or collect Plasma, create a falling blade over a surrounding foe. \n ▸ Blade Damage: 30/50/70/90",
-    icon: "/assets/boons/ares/Profuse_Bleeding.webp"
+    icon: "/assets/boons/ares/Profuse_Bleeding.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
+          "ba9f445b-b3fc-54e4-a63b-782f09b28860", // Vicious Flourish
+          "e48529f3-4dfc-5349-92e0-e5c717ce684f", // Grisly Gain
+          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4"  // Visceral Impact
+        ],
+        any: true,
+        description: "Requires Vicious Strike, Vicious Flourish, Grisly Gain, or Visceral Impact"
+      }
+    ]
   },
   {
     id: "8355f4f2-d521-5794-8e4b-6ca89243bb52",
@@ -1339,7 +1960,18 @@ export const BOONS: Boon[] = [
     gods: ["Hestia"],
     element: "Fire",
     effect: "Your Scorch effects deal damage faster. \n ▸ Scorch Damage Rate: +50%/+75%/+100%/+125%",
-    icon: "/assets/boons/hestia/Pyro_Technique.webp"
+    icon: "/assets/boons/hestia/Pyro_Technique.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+        ],
+        any: true,
+        description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
+      }
+    ]
   },
   {
     id: "02e3602a-1e89-5b47-be38-b1f263d28ca0",
@@ -1348,7 +1980,29 @@ export const BOONS: Boon[] = [
     gods: ["Hera", "Zeus"],
     element: "Aether",
     effect: "Give up _all_ your Boons of Zeus. For each, raise Lv. for _all_ your Boons of Hera. \n ▸ Bonus Lv. per Zeus Boon: +4",
-    icon: "/assets/boons/duo/Queen's_Ransom.webp"
+    icon: "/assets/boons/duo/Queen's_Ransom.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
+          "da411c4d-69ec-5427-8d4e-a7101c649833"  // Born Gain
+        ],
+        any: true,
+        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, or Born Gain"
+      },
+      {
+        boonIds: [
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "11076cc9-5d5b-530c-be32-749753510ced", // Ionic Gain
+          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63"  // Thunder Rush
+        ],
+        any: true,
+        description: "Requires Storm Ring, Ionic Gain, or Thunder Rush"
+      }
+    ]
   },
   {
     id: "82604a41-1de6-51fd-92ff-63112e33f5a0",
@@ -1356,7 +2010,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Ares"],
     element: null,
-    effect: "While you have at least 8 Earth Essences, any of your damaging effects from Olympians are stronger. \n ▸ Olympian Bonus Damage: +50%.",
+    effect: "While you have at least *8* Earth Essences, any of your damaging effects from Olympians are stronger. \n ▸ Olympian Bonus Damage: +50%.",
     icon: "/assets/boons/ares/Rallying_Cry.webp",
     prerequisites: [
       {
@@ -1384,7 +2038,37 @@ export const BOONS: Boon[] = [
     gods: ["Hera", "Poseidon"],
     element: "Aether",
     effect: "Your effects from Fine Line and Ocean Swell have a chance to fire *2* times. \n ▸ Bonus Fire Chance: +30%",
-    icon: "/assets/boons/duo/Ripple_Effect.webp"
+    icon: "/assets/boons/duo/Ripple_Effect.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d"  // Fine Line
+        ],
+        any: true,
+        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Fine Line"
+      },
+      {
+        boonIds: [
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
+          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
+          "8d78a6cd-cb71-51cc-bdfd-73a3cf1c76de"  // Ocean Swell
+        ],
+        any: true,
+        description: "Requires Wave Strike, Wave Flourish, Tidal Ring, or Ocean Swell"
+      },
+      {
+        boonIds: [
+          "89c8b9d6-24c4-56d1-bc0c-58c2fbe1799d", // Fine Line
+          "8d78a6cd-cb71-51cc-bdfd-73a3cf1c76de"  // Ocean Swell
+        ],
+        any: true,
+        description: "Requires Fine Line or Ocean Swell"
+      }
+    ]
   },
   {
     id: "18437a44-8ee7-5fab-ae04-ec20d55a23fb",
@@ -1423,7 +2107,24 @@ export const BOONS: Boon[] = [
     gods: ["Hera"],
     element: "Air",
     effect: "Your Casts damage any foes as they join the Encounter, wherever they appear. \n ▸ On-Spawn Damage: 60/80/100/120",
-    icon: "/assets/boons/hera/Rousing_Reception.webp"
+    icon: "/assets/boons/hera/Rousing_Reception.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "9341e2b7-38a7-5684-8bbd-a9978b055726", // Anvil Ring
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "f879486a-3356-5538-b340-3140a893bdba", // Rapture Ring
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "705fdb01-ac8d-5025-b121-4d837c11b35f", // Solar Ring
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de"  // Tidal Ring
+        ],
+        any: true,
+        description: "Requires any Cast Boon"
+      }
+    ]
   },
   {
     id: "6b6584b4-83c7-53fb-bb1d-f95fa21c370b",
@@ -1462,7 +2163,39 @@ export const BOONS: Boon[] = [
     gods: ["Ares"],
     element: "Earth",
     effect: "You inflict Wounds with greater Power, and spilled BloodDrop is drawn to you automatically. \n ▸ Wounds Bonus Power: +100",
-    icon: "/assets/boons/ares/Sanguinary_Savor.webp"
+    icon: "/assets/boons/ares/Sanguinary_Savor.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
+          "ba9f445b-b3fc-54e4-a63b-782f09b28860", // Vicious Flourish
+          "4b08ee45-008d-5f11-a89a-8a2dc68ff363", // Sword Ring
+          "d477b146-1783-5971-bf9f-16a9e50b4ff4"  // Stabbing Rush
+        ],
+        any: true,
+        description: "Requires Vicious Strike, Vicious Flourish, Sword Ring, or Stabbing Rush"
+      },
+      {
+        boonIds: [
+          "e48529f3-4dfc-5349-92e0-e5c717ce684f", // Grisly Gain
+          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4", // Visceral Impact
+          "c6036ec2-ad36-5f5c-8ac4-225dc0e7d919"  // Profuse Bleeding
+        ],
+        any: true,
+        description: "Requires Grisly Gain, Visceral Impact, or Profuse Bleeding"
+      },
+      {
+        boonIds: [
+          "c59cf862-1162-598d-b2a1-4b8fc24fb04f", // Meat Grinder
+          "35f07f53-05cd-5013-9f26-4a92a50c68b3", // Grievous Blow
+          "acb822d6-5987-5567-bb7a-683b77ff3ef4", // Mutual Destruction
+          "e625b64a-23d8-5b20-bbef-e9e3056331a2", // Blood Spree
+          "b430f1b7-3cca-5861-8357-5a3bdc7b7399"  // Cut Above
+        ],
+        any: true,
+        description: "Requires Meat Grinder, Grievous Blow, Mutual Destruction, Blood Spree, or Cut Above"
+      }
+    ]
   },
   {
     id: "2d50a954-6f32-5d44-9fec-360ba95c169b",
@@ -1471,7 +2204,28 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon", "Hestia"],
     element: "Aether",
     effect: "If foes with Froth are struck by your fire effects from Hestia, they are engulfed in Steam. \n ▸ Steam Damage (every 0.2 Sec.): 20",
-    icon: "/assets/boons/duo/Scalding_Vapor.webp"
+    icon: "/assets/boons/duo/Scalding_Vapor.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116", // Smolder Ring
+          "935fc01c-9916-5ff9-aeff-efa3dcc2266e", // Highly Flammable
+          "7d37d809-d43f-5660-ae21-25b7aba0378d", // Controlled Burn
+          "e022fec1-5de0-5dba-b7f9-d89f502ef7bd"  // Glowing Coal
+        ],
+        any: true,
+        description: "Requires Flame Strike, Flame Flourish, Smolder Ring, Highly Flammable, Controlled Burn, or Glowing Coal"
+      },
+      {
+        boonIds: [
+          "498ee15c-c5af-5ea7-bbd1-f1a23d42f5e8"  // Slippery Slope
+        ],
+        any: true,
+        description: "Requires Slippery Slope"
+      }
+    ]
   },
   {
     id: "392e298e-c9e0-5914-abc3-ec063ac52d97",
@@ -1507,7 +2261,29 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon", "Hephaestus"],
     element: "Aether",
     effect: "Any Boon effects that recharge over time now recharge faster. \n ▸ Recharge Speed: +35%",
-    icon: "/assets/boons/duo/Seismic_Servo.webp"
+    icon: "/assets/boons/duo/Seismic_Servo.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "936cb120-f32e-532f-ab9b-61777652f883", // Volcanic Flourish
+          "018617cf-bd49-59ed-8d7b-42bfc1e0a651"  // Smithy Rush
+        ],
+        any: true,
+        description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
+      },
+      {
+        boonIds: [
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
+          "33734633-ed5b-526f-acb1-4662f97893e2", // Wave Flourish
+          "5ce45cef-32e6-5a80-9d69-f48ef53f07de", // Tidal Ring
+          "3d9b7234-b439-502a-8dae-581fc3ad6359", // Breaker Rush
+          "e47cd742-6e4c-53cc-9da5-f08e381d7eb3"  // Flood Gain
+        ],
+        any: true,
+        description: "Requires Wave Strike, Wave Flourish, Tidal Ring, Breaker Rush, or Flood Gain"
+      }
+    ]
   },
   {
     id: "0d859595-638f-5d15-bb16-56e24969bf89",
@@ -1515,14 +2291,14 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Apollo"],
     element: null,
-    effect: "While you have at least 2 Fire Essences, whenever you take damage, restore some Health. \n ▸ Damage Recovered (over 5 Sec.): 30%",
+    effect: "While you have at least *3* Fire Essences, whenever you take damage, restore some Health. \n ▸ Damage Recovered (over 5 Sec.): 30%",
     icon: "/assets/boons/apollo/Self_Healing.webp",
     prerequisites: [
       {
         boonIds: [],
-        description: "Requires 2 Fire Essences",
+        description: "Requires 3 Fire Essences",
         element: "Fire",
-        elementCount: 2
+        elementCount: 3
       }
     ]
   },
@@ -1542,7 +2318,27 @@ export const BOONS: Boon[] = [
     gods: ["Zeus"],
     element: "Air",
     effect: "Whenever you first deal damage to susceptible foes, you may destroy them outright. \n ▸ Instant Destruction Chance: 25%",
-    icon: "/assets/boons/zeus/Shocking_Loss.webp"
+    icon: "/assets/boons/zeus/Shocking_Loss.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e", // Heaven Flourish
+          "befdf2bb-8636-53b8-9032-61dea93f92cb", // Storm Ring
+          "13f515f5-6415-51e1-a45f-6fb7f2eb2b63", // Thunder Rush
+          "11076cc9-5d5b-530c-be32-749753510ced", // Ionic Gain
+          "20342519-7937-5ea2-874d-be411bc7da52", // Static Shock
+          "732a8b3d-4cfa-5e61-b67d-2bec0982dc57", // Power Surge
+          "2bd56797-3ab2-5ed8-95d5-6cdd5a3a4f28", // Lightning Lance
+          "4ef5f5ac-c6b7-5668-a2b6-63be6f3198a5", // Divine Vengeance
+          "e70d8b09-a94a-5b8d-90f1-874b355051b4", // Arc Flash
+          "f2522999-ebeb-5b4d-83a8-748cb58d90d7", // Double Strike
+          "e8201d88-05cf-5aae-ad8a-392a6128b01b"  // Electric Overload
+        ],
+        any: true,
+        description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Ionic Gain, Static Shock, Power Surge, Lightning Lance, Divine Vengeance, Arc Flash, Double Strike, or Electric Overload"
+      }
+    ]
   },
   {
     id: "498ee15c-c5af-5ea7-bbd1-f1a23d42f5e8",
@@ -1552,7 +2348,17 @@ export const BOONS: Boon[] = [
     element: "Water",
     effect: "Your splash effects from Poseidon also inflict Froth, and Froth deals more damage. \n ▸ Froth Damage: +20%/+50%/+80%/+110%",
     icon: "/assets/boons/poseidon/Slippery_Slope.webp",
-    inflictsCurse: "froth"
+    inflictsCurse: "froth",
+    prerequisites: [
+      {
+        boonIds: [
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273", // Wave Strike
+          "33734633-ed5b-526f-acb1-4662f97893e2"  // Wave Flourish
+        ],
+        any: true,
+        description: "Requires Wave Strike or Wave Flourish"
+      }
+    ]
   },
   {
     id: "16427bf1-ec92-5b08-91d9-24ce6f55b69a",
@@ -1561,7 +2367,15 @@ export const BOONS: Boon[] = [
     gods: ["Hestia"],
     element: null,
     effect: "Your Attacks and Specials gain Power the more Fire Essences you have. \n ▸ Power per Fire Essence: +2",
-    icon: "/assets/boons/hestia/Slow_Cooker.webp"
+    icon: "/assets/boons/hestia/Slow_Cooker.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 2 Fire Essences",
+        element: "Fire",
+        elementCount: 2
+      }
+    ]
   },
   {
     id: "018617cf-bd49-59ed-8d7b-42bfc1e0a651",
@@ -1644,7 +2458,13 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Earth",
     effect: "Whenever you clear enough Encounters, a random Boon you have gains Rarity. \n ▸ Encounters per Rarity Upgrade: 6/5/4/3",
-    icon: "/assets/boons/demeter/Steady_Growth.webp"
+    icon: "/assets/boons/demeter/Steady_Growth.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires at least one Boon that is not Heroic rarity"
+      }
+    ]
   },
   {
     id: "befdf2bb-8636-53b8-9032-61dea93f92cb",
@@ -1779,7 +2599,26 @@ export const BOONS: Boon[] = [
     element: "Aether",
     effect: "Your Blitz effects also inflict Scorch whenever they deal damage. \n ▸ Scorch Damage: 160",
     icon: "/assets/boons/duo/Thermal_Dynamics.webp",
-    inflictsCurse: "scorch"
+    inflictsCurse: "scorch",
+    prerequisites: [
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "f67e501c-5277-588f-a274-d0216437c764", // Flame Flourish
+          "785016d2-a36a-5b74-a067-0aa4a1d3d116"  // Smolder Ring
+        ],
+        any: true,
+        description: "Requires Flame Strike, Flame Flourish, or Smolder Ring"
+      },
+      {
+        boonIds: [
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0bbfcd7a-d21e-5efe-8ad9-367e57f17a1e"  // Heaven Flourish
+        ],
+        any: true,
+        description: "Requires Heaven Strike or Heaven Flourish"
+      }
+    ]
   },
   {
     id: "13f515f5-6415-51e1-a45f-6fb7f2eb2b63",
@@ -1882,7 +2721,29 @@ export const BOONS: Boon[] = [
     gods: ["Hera", "Ares"],
     element: "Aether",
     effect: "Whenever you exit a Location, keep some of your Plasma bonuses. \n ▸ Max Plasma Bonus Retained: 20%",
-    icon: "/assets/boons/duo/Universal_Donor.webp"
+    icon: "/assets/boons/duo/Universal_Donor.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "e48529f3-4dfc-5349-92e0-e5c717ce684f", // Grisly Gain
+          "05ff4a99-ecf6-5ce8-80e8-742ab1d4def4", // Visceral Impact
+          "c6036ec2-ad36-5f5c-8ac4-225dc0e7d919"  // Profuse Bleeding
+        ],
+        any: true,
+        description: "Requires Grisly Gain, Visceral Impact, or Profuse Bleeding"
+      },
+      {
+        boonIds: [
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "6b5ce82f-7776-54f3-afd1-1625119b2020", // Sworn Flourish
+          "b9a505d1-2f12-57f1-9d18-b40f98a70a71", // Engagement Ring
+          "25a736fc-b220-55cd-a713-e05a01b4dbfa", // Nexus Rush
+          "da411c4d-69ec-5427-8d4e-a7101c649833"  // Born Gain
+        ],
+        any: true,
+        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, or Born Gain"
+      }
+    ]
   },
   {
     id: "ba9f445b-b3fc-54e4-a63b-782f09b28860",
@@ -1970,7 +2831,15 @@ export const BOONS: Boon[] = [
     gods: ["Poseidon"],
     element: null,
     effect: "Gain Max Health for each Water Essence you have. \n ▸ Max Life per Water Essence: +15",
-    icon: "/assets/boons/poseidon/Water_Fitness.webp"
+    icon: "/assets/boons/poseidon/Water_Fitness.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 2 Water Essences",
+        element: "Water",
+        elementCount: 2
+      }
+    ]
   },
   {
     id: "33734633-ed5b-526f-acb1-4662f97893e2",
@@ -1997,7 +2866,24 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Earth",
     effect: "Your \u03a9 Attack deals more damage, but uses +10 Magick. \n ▸ Omega Attack Damage: +50%/+75%/+100%/+125%",
-    icon: "/assets/boons/demeter/Weed_Killer.webp"
+    icon: "/assets/boons/demeter/Weed_Killer.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "ed24b45a-d7bc-57d9-817d-989521fc5bf3", // Flame Strike
+          "8f7c231f-6687-525c-bc01-033c5fd4ae5d", // Flutter Strike
+          "d830b8f9-7744-5114-a60e-a0f738d3e4b0", // Heaven Strike
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "bc4205cb-d68d-50c7-9cfc-47f75316dd7c", // Nova Strike
+          "b13b119a-0570-534b-8a30-abf4c38b0da5", // Sworn Strike
+          "5eb0886b-24f5-5bb1-b2ba-9208e0212339", // Vicious Strike
+          "798575af-a5a4-5b8f-bb3d-a29714214e98", // Volcanic Strike
+          "f43cb7a0-733f-5797-87f2-e1dcfea27273"  // Wave Strike
+        ],
+        any: true,
+        description: "Requires any Attack Boon"
+      }
+    ]
   },
   {
     id: "6907f2a1-cf77-5df5-8374-dc0e23f0a2c0",
@@ -2006,7 +2892,24 @@ export const BOONS: Boon[] = [
     gods: ["Demeter"],
     element: "Earth",
     effect: "Freeze-afflicted foes shatter at 10% Health, dealing damage in the area. \n ▸ Shatter Area Damage: 100",
-    icon: "/assets/boons/demeter/Winter_Harvest.webp"
+    icon: "/assets/boons/demeter/Winter_Harvest.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "0ec0f7c7-6ada-5db2-b76f-5fc97bbd71f6", // Ice Strike
+          "4d1aeefa-5aac-5a9a-9b25-18d6695550e7", // Ice Flourish
+          "e8e876fb-519e-5b75-bfe6-5f05079f62c1", // Arctic Ring
+          "a947883b-7f61-5123-9eb8-4ade0773ab2b", // Plentiful Forage
+          "467bc2c3-8cd4-53e8-84b6-0f9f8e45ecd2", // Snow Queen
+          "ec639226-5b7f-573f-aed5-924d6ebb8b2d", // Steady Growth
+          "32284885-da4d-506c-862a-81a47a311753", // Weed Killer
+          "d0893ae2-19ec-5134-b642-0173cb99988b", // Cold Storage
+          "eb911316-de2f-5477-9971-4de3fc976558"  // Local Climate
+        ],
+        any: true,
+        description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Plentiful Forage, Snow Queen, Steady Growth, Weed Killer, Cold Storage, or Local Climate"
+      }
+    ]
   },
   {
     id: "d5eb1eea-d7e2-5efe-bf20-e1fa48c1ddfc",
