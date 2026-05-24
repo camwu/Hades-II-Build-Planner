@@ -32,12 +32,13 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
   const isExpanded = false || isOver || isHovered;
 
   const renderIcon = () => {
+    const isSlotGlowActive = isActive || shouldHighlight || isPotentialTarget;
     if (typeof icon === 'string') {
       return (
         <img 
           src={icon} 
           alt={name} 
-          className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-200" 
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-200 ${isSlotGlowActive ? 'opacity-100' : 'opacity-70 group-hover:opacity-100'}`} 
           referrerPolicy="no-referrer" 
         />
       );
@@ -45,7 +46,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
     const IconComponent = icon;
     return (
       <div className={`absolute inset-0 flex items-center justify-center p-5 ${BOON_BORDER_WIDTH} border-white/5 ${BOON_ICON_ROUNDING}`}>
-        <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
+        <IconComponent className={`w-full h-full transition-all duration-100 text-gray-500 ${isSlotGlowActive ? 'opacity-80 text-emerald-400' : 'opacity-30 group-hover:opacity-50'}`} />
       </div>
     );
   };
@@ -64,10 +65,10 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
             width: isExpanded ? SLOT_EXPANDED_WIDTH : SLOT_COLLAPSED_WIDTH,
             height: isExpanded ? 'auto' : SLOT_COLLAPSED_WIDTH
           }}
-          transition={{ duration: 0.1, ease: "easeOut" }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
           whileHover={{ scale: 1 }}
           whileTap={{ scale: 1 }}
-          className={`relative flex items-start gap-4 cursor-pointer transition-all duration-300 ${
+          className={`relative flex items-start gap-4 cursor-pointer transition-[background-color,border-radius] duration-200 ${
             isExpanded ? 'bg-hades-bg-dark/40 rounded-2xl' : 'pointer-events-auto'
           }`}
         >
@@ -78,26 +79,30 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
+                transition={{ duration: 0.2 }}
                 className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5" 
               />
             )}
           </AnimatePresence>
-
+ 
           <div 
             style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
-             shouldHighlight 
-               ? 'bg-white/10 ring-[3px] ring-white/40 shadow-[0_0_40px_rgba(255,255,255,0.4)] z-50' 
-               : isPotentialTarget
-                 ? 'bg-white/5 ring-[3px] ring-white/20 ring-dashed animate-pulse z-40'
-                 : isActive 
-                   ? 'bg-emerald-950/20 shadow-[0_0_16px_rgba(16,185,129,0.6)] animate-ring-pulse z-50' 
-                   : ''
-          }`}>
-            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden`}>
+            className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-[background-color,box-shadow,ring] duration-200`}
+          >
+            <AnimatePresence>
+              {(shouldHighlight || isActive || isPotentialTarget) && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
+                  className="absolute inset-0 rounded-[inherit] bg-emerald-950/30 ring-[3px] ring-emerald-500 shadow-[0_0_24px_rgba(16,185,129,0.8)] animate-ring-pulse z-20 pointer-events-none"
+                />
+              )}
+            </AnimatePresence>
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden z-30`}>
               {renderIcon()}
             </div>
           </div>

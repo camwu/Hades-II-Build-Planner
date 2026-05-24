@@ -70,10 +70,10 @@ export function BoonDisplayCard({ boon, onRemove, isSorting }: BoonDisplayCardPr
             width: isHovered ? SLOT_EXPANDED_WIDTH : SLOT_COLLAPSED_WIDTH,
             height: isHovered ? 'auto' : SLOT_COLLAPSED_WIDTH
           }}
-          transition={{ duration: 0.1, ease: "easeOut" }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
           whileHover={{ scale: 1 }}
           whileTap={{ scale: 1 }}
-          className={`relative flex items-start gap-4 transition-all duration-300 ${
+          className={`relative flex items-start gap-4 transition-[background-color,border-radius] duration-200 ${
             isHovered ? 'bg-hades-bg-dark/40 rounded-2xl' : 'pointer-events-auto'
           }`}
         >
@@ -84,7 +84,7 @@ export function BoonDisplayCard({ boon, onRemove, isSorting }: BoonDisplayCardPr
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
+                transition={{ duration: 0.2 }}
                 className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5 shadow-2xl" 
               />
             )}
@@ -93,7 +93,7 @@ export function BoonDisplayCard({ boon, onRemove, isSorting }: BoonDisplayCardPr
           {/* Icon Container */}
           <div 
             style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
-            className="relative flex-shrink-0 transition-all duration-300 border-0"
+            className="relative flex-shrink-0 transition-none border-0"
           >
             <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
               <img 

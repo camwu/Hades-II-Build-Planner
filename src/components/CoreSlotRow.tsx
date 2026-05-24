@@ -63,16 +63,18 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
       const rarityGlow = '';
       
       return (
-        <div className={`absolute inset-0 ${BOON_ICON_ROUNDING}`}>
-          <motion.img 
-            key={boon.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            src={boon.icon} 
-            alt={boon.name} 
-            className="w-full h-full object-contain relative z-10" 
-            referrerPolicy="no-referrer" 
-          />
+        <div className="absolute inset-0">
+          <div className={`absolute inset-0 ${BOON_ICON_ROUNDING} overflow-hidden`}>
+            <motion.img 
+              key={boon.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              src={boon.icon} 
+              alt={boon.name} 
+              className="w-full h-full object-contain relative z-10" 
+              referrerPolicy="no-referrer" 
+            />
+          </div>
           {/* Overlapping Icons */}
           <div className={`absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border-2 ${getBoonBorderColor(boon.type)} transition-colors`}>
             <GodIcon god={boon.gods[0]} className="w-full h-full" />
@@ -94,19 +96,23 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
     }
     
     if (typeof slot.icon === 'string') {
+      const isSlotGlowActive = isActive || shouldHighlight || isPotentialTarget;
       return (
-        <img 
-          src={slot.icon} 
-          alt={slot.name} 
-          className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-200" 
-          referrerPolicy="no-referrer" 
-        />
+        <div className={`absolute inset-0 ${BOON_ICON_ROUNDING} overflow-hidden`}>
+          <img 
+            src={slot.icon} 
+            alt={slot.name} 
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-200 ${isSlotGlowActive ? 'opacity-100' : 'opacity-70 group-hover:opacity-100'}`} 
+            referrerPolicy="no-referrer" 
+          />
+        </div>
       );
     }
     const IconComponent = slot.icon;
+    const isSlotGlowActive = isActive || shouldHighlight || isPotentialTarget;
     return (
-      <div className={`absolute inset-0 flex items-center justify-center p-5 ${BOON_BORDER_WIDTH} border-white/5 ${BOON_ICON_ROUNDING}`}>
-        <IconComponent className="w-full h-full opacity-30 group-hover:opacity-50 transition-all duration-100 text-gray-500" />
+      <div className={`absolute inset-0 flex items-center justify-center p-5 ${BOON_BORDER_WIDTH} border-white/5 ${BOON_ICON_ROUNDING} overflow-hidden`}>
+        <IconComponent className={`w-full h-full transition-all duration-100 text-gray-500 ${isSlotGlowActive ? 'opacity-80 text-emerald-400' : 'opacity-30 group-hover:opacity-50'}`} />
       </div>
     );
   };
@@ -127,10 +133,10 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
             width: isExpanded ? SLOT_EXPANDED_WIDTH : SLOT_COLLAPSED_WIDTH,
             height: isExpanded ? 'auto' : SLOT_COLLAPSED_WIDTH
           }}
-          transition={{ duration: 0.1, ease: "easeOut" }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
           whileHover={{ scale: 1 }}
           whileTap={{ scale: 1 }}
-          className={`relative flex items-start gap-4 cursor-pointer transition-all duration-300 ${
+          className={`relative flex items-start gap-4 cursor-pointer transition-[background-color,border-radius] duration-200 ${
             isExpanded ? 'bg-hades-bg-dark/40 rounded-2xl' : 'pointer-events-auto'
           }`}
         >
@@ -141,7 +147,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
+                transition={{ duration: 0.2 }}
                 className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5" 
               />
             )}
@@ -156,16 +162,20 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
             }}
             {...attributes}
             {...listeners}
-            className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-all duration-300 ${
-            shouldHighlight 
-              ? 'bg-white/10 ring-[3px] ring-white/40 shadow-[0_0_40px_rgba(255,255,255,0.4)] z-50' 
-              : isPotentialTarget
-                ? 'bg-white/5 ring-[3px] ring-white/20 ring-dashed animate-pulse z-40'
-                : isActive
-                  ? 'bg-emerald-950/20 shadow-[0_0_16px_rgba(16,185,129,0.6)] animate-ring-pulse z-50'
-                  : ''
-          }`}>
-            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
+            className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-[background-color,box-shadow,ring] duration-200`}
+          >
+            <AnimatePresence>
+              {(shouldHighlight || isActive || isPotentialTarget) && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
+                  className="absolute inset-0 rounded-[inherit] bg-emerald-950/30 ring-[3px] ring-emerald-500 shadow-[0_0_24px_rgba(16,185,129,0.8)] animate-ring-pulse z-20 pointer-events-none"
+                />
+              )}
+            </AnimatePresence>
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} z-30`}>
               {renderSlotIcon()}
             </div>
           </div>
