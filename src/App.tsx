@@ -716,6 +716,7 @@ export default function App() {
   }, [searchTerm, activeSlot, hideAssigned, selectedBoonIds, limitToGodPool, activeStandardOlympians, pinnedBoonIds]);
 
   const selectBoon = (boon: Boon, slotId: string) => {
+    if (!isValidForSlot(boon, slotId)) return;
     if (slotId === 'NonCore') {
       setAdditionalBoons(prev => [...prev, boon]);
     } else {
@@ -834,6 +835,8 @@ export default function App() {
       // If we're hovering over an existing sortable item, we treat it as being over the 'NonCore' slot
       if (over.data.current?.type === 'sortable') {
         targetSlotId = 'NonCore';
+      } else if (over.data.current?.type === 'core') {
+        targetSlotId = over.data.current.slot;
       }
       
       if (boon && isValidForSlot(boon, targetSlotId) && !selectedBoonIds.has(boon.id)) {

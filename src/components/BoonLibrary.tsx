@@ -8,6 +8,7 @@ import { GodIcon, ElementIcon } from './Icons';
 import { BOONS } from '../data/boonsData';
 import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { isValidForSlot } from '../utils/boonUtils';
 
 interface BoonLibraryProps {
   isPanelCollapsed: boolean;
@@ -85,8 +86,8 @@ function SortablePinnedBoonItem({
     >
       <DraggableBoonListItem
         boon={boon}
-        onClick={() => activeSlot && selectBoon(boon, activeSlot)}
-        isSelectable={!!activeSlot}
+        onClick={() => activeSlot && isValidForSlot(boon, activeSlot) && selectBoon(boon, activeSlot)}
+        isSelectable={!!activeSlot && isValidForSlot(boon, activeSlot)}
         isLocked={isLocked}
         prerequisitesStatus={prerequisitesStatus}
         isPinned={true}
