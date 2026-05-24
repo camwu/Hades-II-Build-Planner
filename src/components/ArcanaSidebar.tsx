@@ -253,8 +253,8 @@ export function ArcanaSidebar({
                   key={cardNumber} 
                   className={`relative group/card-wrapper w-full transition-all duration-300 transform-gpu ${
                     isZeroCost 
-                      ? '' 
-                      : 'hover:scale-[1.08]'
+                      ? 'hover:z-30' 
+                      : 'hover:scale-[1.08] hover:z-30'
                   }`}
                 >
                   <button
@@ -315,7 +315,7 @@ export function ArcanaSidebar({
                         </span>
                       </div>
                     )}
-
+ 
                     {/* High contrast Roman numeral overlay on card hover */}
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
                       <span className="text-white text-[11px] font-bold font-display tracking-widest">
@@ -323,16 +323,16 @@ export function ArcanaSidebar({
                       </span>
                     </div>
                   </button>
-
-                  {/* Grasp Cost Badge positioned خارج button to avoid overflow-hidden clipping */}
+ 
+                  {/* Grasp Cost Badge positioned on vertex with hover overlapping resolved by z-index */}
                   <div 
-                    className={`absolute -top-1 -right-1 w-[22px] h-[22px] rounded-full flex items-center justify-center z-20 select-none shadow-md transition-all duration-300 pointer-events-none ${
+                    className={`absolute -top-0.5 -right-0.5 w-[24px] h-[24px] rounded-full flex items-center justify-center z-20 select-none shadow-md transition-all duration-300 pointer-events-none ${
                       isActive 
                         ? 'bg-[#030712] border border-hades-accent text-hades-accent shadow-[0_0_8px_rgba(16,185,129,0.35)]' 
                         : 'bg-[#0e0e14]/95 border border-white/15 text-gray-400'
                     }`}
                   >
-                    <span className="text-[10.5px] font-sans font-extrabold leading-none flex items-center justify-center h-full w-full text-center">
+                    <span className="text-[12px] font-sans font-extrabold leading-none flex items-center justify-center h-full w-full text-center">
                       {cardData.cost}
                     </span>
                   </div>
