@@ -29,7 +29,7 @@ import {
   CORE_SLOTS, 
   SLOT_EXPANDED_WIDTH 
 } from './constants';
-import { isValidForSlot } from './utils/boonUtils';
+import { isValidForSlot, getIncompatibleBoonInSelection } from './utils/boonUtils';
 import { StaticBoonListItem } from './components/BoonListItem';
 import { CoreSlotRow } from './components/CoreSlotRow';
 import { SortableBoonDisplayCard } from './components/BoonDisplayCard';
@@ -717,6 +717,10 @@ export default function App() {
 
   const selectBoon = (boon: Boon, slotId: string) => {
     if (!isValidForSlot(boon, slotId)) return;
+
+    // Safety check for incompatible boons (Glowing Coal, Lightning Lance, and Hostile Environment)
+    if (getIncompatibleBoonInSelection(boon.id, selectedBoonIds)) return;
+
     if (slotId === 'NonCore') {
       setAdditionalBoons(prev => [...prev, boon]);
     } else {

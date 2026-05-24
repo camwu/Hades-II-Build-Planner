@@ -8,7 +8,7 @@ import { GodIcon, ElementIcon } from './Icons';
 import { BOONS } from '../data/boonsData';
 import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { isValidForSlot } from '../utils/boonUtils';
+import { isValidForSlot, getIncompatibleBoonInSelection } from '../utils/boonUtils';
 
 interface BoonLibraryProps {
   isPanelCollapsed: boolean;
@@ -536,6 +536,18 @@ export function BoonLibrary({
                       });
                     }
 
+                    const incompatibleBoon = getIncompatibleBoonInSelection(boon.id, selectedBoonIds);
+                    if (incompatibleBoon) {
+                      isLocked = true;
+                      prerequisitesStatus.push({
+                        prereq: {
+                          boonIds: [],
+                          description: `Requires removing incompatible ${incompatibleBoon.name}`
+                        },
+                        met: false
+                      });
+                    }
+
                     return (
                       <SortablePinnedBoonItem
                         key={boon.id}
@@ -620,6 +632,18 @@ export function BoonLibrary({
                     isLocked = true;
                   }
                   prerequisitesStatus.push({ prereq, met });
+                });
+              }
+
+              const incompatibleBoon = getIncompatibleBoonInSelection(boon.id, selectedBoonIds);
+              if (incompatibleBoon) {
+                isLocked = true;
+                prerequisitesStatus.push({
+                  prereq: {
+                    boonIds: [],
+                    description: `Requires removing incompatible ${incompatibleBoon.name}`
+                  },
+                  met: false
                 });
               }
 

@@ -18,6 +18,12 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
       description = description.slice(9);
     }
   }
+
+  // Capitalize first letter of description
+  if (description.length > 0) {
+    description = description.charAt(0).toUpperCase() + description.slice(1);
+  }
+
   const requiredBoons = prereq.boonIds
     .map(id => BOONS.find(b => b.id === id))
     .filter((b): b is Boon => !!b);
@@ -25,16 +31,27 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
   const requiredBoonNames = requiredBoons.map(b => b.name);
   const uniqueGods = isDuo ? Array.from(new Set(requiredBoons.flatMap(b => b.gods))) : [];
 
-  // Parse pattern for highlighting
-  const pattern = requiredBoonNames.length > 0 
-    ? new RegExp(`(${requiredBoonNames.map(name => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g')
-    : null;
-  const parts = pattern ? description.split(pattern) : [];
+  const slotKeywords = ['Attack', 'Special', 'Cast', 'Sprint', 'Magick'];
+  const allBoonNames = BOONS.map(b => b.name);
 
-  // Pre-process parts so trailing commas are enclosed with the preceding boon name
+  // Combine custom required boon names, all boon names, and slot names
+  const keywordsToHighlight = Array.from(new Set([
+    ...requiredBoonNames,
+    ...allBoonNames,
+    ...slotKeywords
+  ])).sort((a, b) => b.length - a.length);
+
+  // Parse pattern for highlighting
+  const pattern = keywordsToHighlight.length > 0 
+    ? new RegExp(`(${keywordsToHighlight.map(name => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g')
+    : null;
+  const parts = pattern ? description.split(pattern) : [description];
+
+  // Pre-process parts so trailing commas are enclosed with the preceding keyword
   interface ProcessedPart {
     text: string;
-    isBoon: boolean;
+    isKeyword: boolean;
+    isRequiredBoon: boolean;
     extraSuffix?: string;
   }
   const processedParts: ProcessedPart[] = [];
@@ -44,17 +61,18 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
     const text = mutableParts[i];
     if (text === undefined) continue;
     
-    const isBoon = requiredBoonNames.includes(text);
-    if (isBoon) {
+    const isKeyword = keywordsToHighlight.includes(text);
+    if (isKeyword) {
+      const isRequiredBoon = requiredBoonNames.includes(text);
       let extraSuffix = "";
       if (i + 1 < mutableParts.length && mutableParts[i + 1].startsWith(",")) {
         extraSuffix = ",";
         mutableParts[i + 1] = mutableParts[i + 1].slice(1);
       }
-      processedParts.push({ text, isBoon, extraSuffix });
+      processedParts.push({ text, isKeyword, isRequiredBoon, extraSuffix });
     } else {
       if (text !== "") {
-        processedParts.push({ text, isBoon: false });
+        processedParts.push({ text, isKeyword: false, isRequiredBoon: false });
       }
     }
   }
@@ -69,29 +87,27 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
           <div className="text-xs text-gray-300 leading-normal font-medium flex items-start gap-1.5">
             <span className="text-gray-500 select-none">▸</span>
             <span className="flex-1 leading-normal">
-              {requiredBoonNames.length === 0 ? (
-                <FormattedEffectText text={description.replace(/(\d+)/g, '*$1*')} />
-              ) : (
-                processedParts.map((part, index) => {
-                  if (part.isBoon) {
-                    const partBoon = requiredBoons.find(b => b.name === part.text);
-                    return (
-                      <span key={index} className="inline whitespace-nowrap mx-0.5 align-middle">
-                        {partBoon && partBoon.gods.map(god => (
-                          <span key={god} className="inline-block align-middle mr-0.5">
-                            <GodIcon god={god} className="w-3.5 h-3.5 object-contain inline" />
-                          </span>
-                        ))}
-                        <strong className="font-bold text-hades-text align-middle">
-                          {part.text}
-                        </strong>
-                        {part.extraSuffix}
-                      </span>
-                    );
-                  }
-                  return <span key={index} className="align-middle">{part.text}</span>;
-                })
-              )}
+              {processedParts.map((part, index) => {
+                if (part.isKeyword) {
+                  const partBoon = part.isRequiredBoon 
+                    ? requiredBoons.find(b => b.name === part.text)
+                    : null;
+                  return (
+                    <span key={index} className="inline whitespace-nowrap mx-0.5 align-middle">
+                      {partBoon && partBoon.gods.map(god => (
+                        <span key={god} className="inline-block align-middle mr-0.5">
+                          <GodIcon god={god} className="w-3.5 h-3.5 object-contain inline" />
+                        </span>
+                      ))}
+                      <strong className="font-bold text-hades-text align-middle">
+                        {part.text}
+                      </strong>
+                      {part.extraSuffix}
+                    </span>
+                  );
+                }
+                return <span key={index} className="align-middle">{part.text}</span>;
+              })}
             </span>
           </div>
         </div>
@@ -120,23 +136,19 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
         <div className="text-xs text-gray-300 leading-normal font-medium flex items-start gap-1.5">
           <span className="text-gray-500 select-none">▸</span>
           <span className="flex-1">
-            {requiredBoonNames.length === 0 ? (
-              <FormattedEffectText text={description.replace(/(\d+)/g, '*$1*')} />
-            ) : (
-              processedParts.map((part, index) => {
-                if (part.isBoon) {
-                  return (
-                    <span key={index} className="inline whitespace-nowrap align-middle">
-                      <strong className="font-bold text-hades-text">
-                        {part.text}
-                      </strong>
-                      {part.extraSuffix}
-                    </span>
-                  );
-                }
-                return <span key={index} className="align-middle">{part.text}</span>;
-              })
-            )}
+            {processedParts.map((part, index) => {
+              if (part.isKeyword) {
+                return (
+                  <span key={index} className="inline whitespace-nowrap align-middle">
+                    <strong className="font-bold text-hades-text">
+                      {part.text}
+                    </strong>
+                    {part.extraSuffix}
+                  </span>
+                );
+              }
+              return <span key={index} className="align-middle">{part.text}</span>;
+            })}
           </span>
         </div>
       </div>
@@ -160,23 +172,19 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
         <span className="text-gray-400 font-normal select-none">:</span>
       )}{' '}
       <span className="text-gray-300">
-        {requiredBoonNames.length === 0 ? (
-          <FormattedEffectText text={description.replace(/(\d+)/g, '*$1*')} />
-        ) : (
-          processedParts.map((part, index) => {
-            if (part.isBoon) {
-              return (
-                <span key={index} className="inline whitespace-nowrap align-middle">
-                  <strong className="font-bold text-hades-text">
-                    {part.text}
-                  </strong>
-                  {part.extraSuffix}
-                </span>
-              );
-            }
-            return <span key={index} className="align-middle">{part.text}</span>;
-          })
-        )}
+        {processedParts.map((part, index) => {
+          if (part.isKeyword) {
+            return (
+              <span key={index} className="inline whitespace-nowrap align-middle">
+                <strong className="font-bold text-hades-text">
+                  {part.text}
+                </strong>
+                {part.extraSuffix}
+              </span>
+            );
+          }
+          return <span key={index} className="align-middle">{part.text}</span>;
+        })}
       </span>
     </>
   );
