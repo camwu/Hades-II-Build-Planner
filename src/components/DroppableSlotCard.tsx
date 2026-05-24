@@ -94,7 +94,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
                : isPotentialTarget
                  ? 'bg-white/5 ring-[3px] ring-white/20 ring-dashed animate-pulse z-40'
                  : isActive 
-                   ? 'bg-white/5 ring-[3px] ring-white/40 z-50' 
+                   ? 'bg-emerald-950/20 shadow-[0_0_16px_rgba(16,185,129,0.6)] animate-ring-pulse z-50' 
                    : ''
           }`}>
             <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden`}>

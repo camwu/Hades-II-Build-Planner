@@ -37,6 +37,17 @@
   --color-hades-infusion: #ED4AF1;
   --color-hades-duo: #C5F24D;
   --color-hades-legendary: #FD8D00;
+
+  --animate-ring-pulse: ring-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  @keyframes ring-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.85), 0 0 16px rgba(16, 185, 129, 0.6);
+    }
+    50% {
+      box-shadow: 0 0 0 1.5px rgba(16, 185, 129, 0.35), 0 0 4px rgba(16, 185, 129, 0.15);
+    }
+  }
 }
 
 @layer base {
