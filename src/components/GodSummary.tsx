@@ -2,36 +2,17 @@ import React, { useMemo, useRef } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Boon, GOD_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
-import { BOON_ICON_ROUNDING } from '../constants';
+import { OriginationTracker } from './OriginationTracker';
 
 interface GodSummaryProps {
   coreBuild: Record<string, Boon | null>;
   additionalBoons: Boon[];
+  activeArcana?: number[];
 }
 
 const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades', 'Chaos', 'Raki', 'Twilight Curse'];
 
-const CANONICAL_ORDER = [
-  'Zeus',
-  'Poseidon',
-  'Demeter',
-  'Apollo',
-  'Hestia',
-  'Aphrodite',
-  'Hera',
-  'Hephaestus',
-  'Ares',
-  'Artemis',
-  'Hermes',
-  'Athena',
-  'Dionysus',
-  'Hades',
-  'Chaos',
-  'Raki',
-  'Twilight Curse'
-];
-
-export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
+export function GodSummary({ coreBuild, additionalBoons, activeArcana = [] }: GodSummaryProps) {
   const activeOrderRef = useRef<string[]>([]);
 
   const { godData, poolLimitExceeded, godBoons } = useMemo(() => {
@@ -104,7 +85,7 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-3 ml-1 h-6">
         <div className="flex items-center gap-2">
-          <img src="/assets/ui/BoonII.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
+          <img src="/assets/ui/Icon-Olympian.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
           <span className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold">God Pool</span>
           {poolLimitExceeded && (
             <div className="flex items-center gap-2 group relative">
@@ -132,6 +113,7 @@ export function GodSummary({ coreBuild, additionalBoons }: GodSummaryProps) {
             </div>
           )}
         </div>
+        <OriginationTracker coreBuild={coreBuild} additionalBoons={additionalBoons} activeArcana={activeArcana} />
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px] self-start w-fit">
         {godData.length === 0 ? (
