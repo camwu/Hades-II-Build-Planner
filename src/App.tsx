@@ -1011,7 +1011,7 @@ export default function App() {
         <DragOverlay>
           {draggedBoon ? (
             <div style={{ width: SLOT_EXPANDED_WIDTH }} className="pointer-events-none opacity-90 backdrop-blur-sm cursor-grabbing">
-              <StaticBoonListItem boon={draggedBoon} isOverlay />
+              <StaticBoonListItem boon={draggedBoon} isOverlay elementCounts={elementCounts} />
             </div>
           ) : null}
         </DragOverlay>

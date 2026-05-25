@@ -194,12 +194,14 @@ export function StaticBoonListItem({
   boon, 
   isOverlay = false, 
   isLocked = false, 
-  prerequisitesStatus = [] 
+  prerequisitesStatus = [],
+  elementCounts
 }: { 
   boon: Boon; 
   isOverlay?: boolean; 
   isLocked?: boolean; 
   prerequisitesStatus?: { prereq: BoonPrerequisite; met: boolean }[]; 
+  elementCounts?: Record<string, number>;
 }) {
   const borderColor = getBoonBorderColor(boon.type);
   
@@ -277,7 +279,93 @@ export function StaticBoonListItem({
 
       {isLocked && prerequisitesStatus.length > 0 && (
         <div className="mt-2.5 pt-2 border-t border-red-950/45 text-xs font-sans text-gray-400">
-          {prerequisitesStatus.length === 1 ? (
+          {boon.id === 'tall_order' ? (
+            <div className="flex flex-col gap-1.5 p-1">
+              <div className="flex items-start gap-2">
+                <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
+                <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Infusion:</span>
+              </div>
+              <div className="text-gray-400 text-xs mb-1 font-medium leading-relaxed normal-case">
+                Requires at least <span className="text-gray-200 font-bold">{boon.prerequisites?.[0]?.elementCount || 8} Essences</span> of any one of these elements:
+              </div>
+              <div className="grid grid-cols-2 gap-2 mt-1 select-none">
+                {boon.prerequisites?.map((prereq) => {
+                  const element = prereq.element;
+                  if (!element) return null;
+                  const count = elementCounts?.[element] || 0;
+                  const totalRequired = prereq.elementCount || 8;
+                  const met = count >= totalRequired;
+                  return (
+                    <div 
+                      key={element} 
+                      className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg border transition-all duration-150 ${
+                        met 
+                          ? 'bg-emerald-950/20 border-emerald-800/40 text-emerald-300 shadow-sm' 
+                          : 'bg-zinc-950/40 border-zinc-900/60 text-gray-500/90'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <ElementIcon element={element} className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span className={`font-semibold tracking-wide text-[11px] truncate ${met ? 'text-emerald-400' : 'text-gray-400'}`}>
+                          {element}
+                        </span>
+                      </div>
+                      <span className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                        met 
+                          ? 'bg-emerald-500/10 text-emerald-400' 
+                          : 'bg-zinc-900 text-gray-500'
+                      }`}>
+                        {count}/{totalRequired}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : boon.id === 'proper_upbringing' ? (
+            <div className="flex flex-col gap-1.5 p-1">
+              <div className="flex items-start gap-2">
+                <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
+                <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Infusion:</span>
+              </div>
+              <div className="text-gray-400 text-xs mb-1 font-medium leading-relaxed normal-case">
+                Requires at least <span className="text-gray-200 font-bold">{boon.prerequisites?.[0]?.elementCount || 2} Essences</span> of all of these elements:
+              </div>
+              <div className="grid grid-cols-2 gap-2 mt-1 select-none">
+                {boon.prerequisites?.map((prereq) => {
+                  const element = prereq.element;
+                  if (!element) return null;
+                  const count = elementCounts?.[element] || 0;
+                  const totalRequired = prereq.elementCount || 2;
+                  const met = count >= totalRequired;
+                  return (
+                    <div 
+                      key={element} 
+                      className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg border transition-all duration-150 ${
+                        met 
+                          ? 'bg-emerald-950/20 border-emerald-800/40 text-emerald-300 shadow-sm' 
+                          : 'bg-zinc-950/40 border-zinc-900/60 text-gray-500/90'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <ElementIcon element={element} className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span className={`font-semibold tracking-wide text-[11px] truncate ${met ? 'text-emerald-400' : 'text-gray-400'}`}>
+                          {element}
+                        </span>
+                      </div>
+                      <span className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                        met 
+                          ? 'bg-emerald-500/10 text-emerald-400' 
+                          : 'bg-zinc-900 text-gray-500'
+                      }`}>
+                        {count}/{totalRequired}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : prerequisitesStatus.length === 1 ? (
             <div className={`flex items-start gap-2 ${prerequisitesStatus[0].met ? 'line-through opacity-45' : ''}`}>
               <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
               <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked:</span>
@@ -320,7 +408,8 @@ export function DraggableBoonListItem({
   isLocked = false,
   prerequisitesStatus = [],
   isPinned = false,
-  onPinToggle
+  onPinToggle,
+  elementCounts
 }: { 
   boon: Boon; 
   onClick?: () => void; 
@@ -329,6 +418,7 @@ export function DraggableBoonListItem({
   prerequisitesStatus?: { prereq: BoonPrerequisite; met: boolean }[];
   isPinned?: boolean;
   onPinToggle?: () => void;
+  elementCounts?: Record<string, number>;
   key?: any 
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -363,6 +453,7 @@ export function DraggableBoonListItem({
         boon={boon} 
         isLocked={isLocked} 
         prerequisitesStatus={prerequisitesStatus} 
+        elementCounts={elementCounts}
       />
       
       {/* Pin button on top left (hover/pinned active) */}

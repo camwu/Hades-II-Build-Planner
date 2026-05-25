@@ -637,7 +637,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Artemis"],
     element: "Air",
-    effect: "A piercing arrow fires towards any foe damaged by your *Cast*. \n ▸ Arrow Damage: *50/62/75/87*",
+    effect: "A piercing arrow fires towards any foe damaged by your *Ω Cast*. \n ▸ Arrow Damage: *50/62/75/87*",
     icon: "/assets/boons/artemis/Easy_Shot.webp"
   },
   {
@@ -2353,7 +2353,7 @@ export const BOONS: Boon[] = [
     type: "Non-Core",
     gods: ["Artemis"],
     element: "Air",
-    effect: "After you *Dash*, your *Ω Moves* may deal *Critical* damage for *2 Sec.* \n ▸ Omega Critical Chance: *+8%/+10%/+12%/+14%*",
+    effect: "After you *Dash*, your *Ω Moves* may deal *Critical* damage for *2 Sec.* \n ▸ Omega Critical Chance: *+10%/+12%/+14%/+16%*",
     icon: "/assets/boons/artemis/Shadow_Pounce.webp"
   },
   {
@@ -3012,6 +3012,189 @@ export const BOONS: Boon[] = [
         description: "Requires 2 Air Essences",
         element: "Air",
         elementCount: 2
+      }
+    ]
+  },
+  {
+    id: "nimble_limbs",
+    name: "Nimble Limbs",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Earth",
+    effect: "Your *Attack, Special,* and *Cast* are faster. \n ▸ Strike Speed: *+10%/+15%/+20%/+25%*",
+    icon: "/assets/boons/hermes/Nimble_Limbs.webp"
+  },
+  {
+    id: "racing_thoughts",
+    name: "Racing Thoughts",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Earth",
+    effect: "Your *Ω Moves* are faster. \n ▸ Omega Move Speed: *+15%/+20%/+25%/+30%*",
+    icon: "/assets/boons/hermes/Racing_Thoughts.webp"
+  },
+  {
+    id: "winners_circle",
+    name: "Winners Circle",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Earth",
+    effect: "You *Channel* your *Ω Cast* faster and your *Casts* deal damage and expire faster \n ▸ Cast Speed: *+40%/+50%/+60%/+70%*",
+    icon: "/assets/boons/hermes/Winner's_Circle.webp"
+  },
+  {
+    id: "nitro_boost",
+    name: "Nitro Boost",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Fire",
+    effect: "Your *Sprint* is *15%* faster and gives you a barrier that ignores instances of damage. \n ▸ Hits Blocked per Encounter: *1/2/3/4*",
+    icon: "/assets/boons/hermes/Nitro_Boost.webp"
+  },
+  {
+    id: "stutter_step",
+    name: "Stutter Step",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Earth",
+    effect: "You can *Dash* more frequently. \n ▸ Dash Recovery Speed: *+25%/+30%/+35%/+40%*",
+    icon: "/assets/boons/hermes/Stutter_Step.webp"
+  },
+  {
+    id: "hasty_retreat",
+    name: "Hasty Retreat",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Air",
+    effect: "Gain *Dodge* chance and move speed that increase the more *Boons* you have. \n ▸ Bonus per Boon: *+0.5%/+0.75%/+1%/+1.25%*",
+    icon: "/assets/boons/hermes/Hasty_Retreat.webp"
+  },
+  {
+    id: "hard_target",
+    name: "Hard Target",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Air",
+    effect: "Most foes' ranged shots are slower. \n ▸ Foe Projectile Speed: *-30%/-40%/-50%/-60%*",
+    icon: "/assets/boons/hermes/Hard_Target.webp"
+  },
+  {
+    id: "quick_buck",
+    name: "Quick Buck",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Air",
+    effect: "Any Gold you gain is worth more. Receive *+100 Gold* now, plus the bonus! \n ▸ Bonus Gold: *+20%/+30%/+40%/+50%*",
+    icon: "/assets/boons/hermes/Quick_Buck.webp"
+  },
+  {
+    id: "mean_streak",
+    name: "Mean Streak",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Air",
+    effect: "Whenever you slay a foe, deal more damage with your *Weapon* for the next *45 Sec.* \n ▸ Bonus Damage per Slain Foe: *+1%/+1.5%/+2%/+2.5%*",
+    icon: "/assets/boons/hermes/Mean_Streak.webp"
+  },
+  {
+    id: "travel_deal",
+    name: "Travel Deal",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Fire",
+    effect: "Your first purchase in each *Location* costs less *Gold*, and another item appears afterwards. \n ▸ First-Purchase Discount: *-5%/-10%/-15%/-20%*",
+    icon: "/assets/boons/hermes/Travel_Deal.webp"
+  },
+  {
+    id: "success_rate",
+    name: "Success Rate",
+    type: "Non-Core",
+    gods: ["Hermes"],
+    element: "Water",
+    effect: "Your chance-based effects are most likely to occur, except for *Dodge* or *Daze*. \n ▸ Greater Chances: *30%/40%/50%/60%*",
+    icon: "/assets/boons/hermes/Success_Rate.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "sea_star",
+          "divine_vengeance",
+          "double_strike",
+          "dazzling_display",
+          "extra_dose",
+          "pressure_points",
+          "vital_sign",
+          "lethal_snare",
+          "death_warrant",
+          "killing_stroke",
+          "grisly_gain",
+          "visceral_impact",
+          "mutual_destruction",
+          "grievous_blow",
+          "profuse_bleeding",
+          "arterial_spray"
+        ],
+        any: true,
+        description: "One of the following:\n- Poseidon: Sea Star\n- Zeus: Divine Vengeance, or Double Strike\n- Apollo: Dazzling Display, or Extra Dose\n- Artemis: Pressure Points, Vital Sign, Lethal Snare, Death Warrant, or Killing Stroke\n- Ares: Grisly Gain, Visceral Impact, Mutual Destruction, Grievous Blow, or Profuse Bleeding\n- Duo Boon (their duo): Arterial Spray"
+      }
+    ]
+  },
+  {
+    id: "tall_order",
+    name: "Tall Order",
+    type: "Infusion",
+    gods: ["Hermes"],
+    element: null,
+    effect: "While you have at least *8 Earth Essences*, *8 Water Essences*, *8 Air Essences*, *or *8 Fire Essences*, you deal more damage. \n ▸ Infused Damage: *+25%*",
+    icon: "/assets/boons/hermes/Tall_Order.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires 8 Earth Essences",
+        element: "Earth",
+        elementCount: 8
+      },
+      {
+        boonIds: [],
+        description: "Requires 8 Water Essences",
+        element: "Water",
+        elementCount: 8
+      },
+      {
+        boonIds: [],
+        description: "Requires 8 Air Essences",
+        element: "Air",
+        elementCount: 8
+      },
+      {
+        boonIds: [],
+        description: "Requires 8 Fire Essences",
+        element: "Fire",
+        elementCount: 8
+      }
+    ]
+  },
+  {
+    id: "paid_dues",
+    name: "Paid Dues",
+    type: "Legendary",
+    gods: ["Hermes"],
+    element: "Air",
+    effect: "Whenever you take damage, you lose *Gold* before you lose *Health*. \n ▸ Cost per Damage Point: *-3*",
+    icon: "/assets/boons/hermes/Paid_Dues.webp",
+    prerequisites: [
+      {
+        boonIds: [
+          "nimble_limbs",
+          "racing_thoughts",
+          "hard_target",
+          "winners_circle",
+          "stutter_step",
+          "hasty_retreat",
+          "mean_streak",
+          "nitro_boost"
+        ],
+        any: true,
+        description: "One of the following: Nimble Limbs, Racing Thoughts, Hard Target, Winners Circle, Stutter Step, Hasty Retreat, Mean Streak, or Nitro Boost"
       }
     ]
   }

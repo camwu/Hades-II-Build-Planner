@@ -71,7 +71,8 @@ export const GOD_COLORS: Record<string, string> = {
   Dionysus: 'text-purple-600',
   Hades: 'text-red-900',
   Raki: 'text-emerald-200',
-  'Twilight Curse': 'text-indigo-600'
+  'Twilight Curse': 'text-indigo-600',
+  Hermes: 'text-amber-400'
 };
 
 export const GOD_SYMBOLS: Record<string, string> = {
@@ -87,6 +88,7 @@ export const GOD_SYMBOLS: Record<string, string> = {
   Artemis: '/assets/gods/Artemis_symbol.webp',
   Dionysus: '/assets/gods/Dionysus_symbol.webp',
   Hades: '/assets/gods/Hades_symbol.webp',
+  Hermes: '/assets/gods/Hermes_symbol.webp',
 };
 
 export const ELEMENT_COLORS: Record<ElementType, string> = {

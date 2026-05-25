@@ -43,6 +43,7 @@ interface SortablePinnedBoonItemProps {
   activeSlot: string | null;
   selectBoon: (boon: Boon, slotId: string) => void;
   togglePin: (id: string) => void;
+  elementCounts?: Record<string, number>;
   key?: string | number;
 }
 
@@ -53,6 +54,7 @@ function SortablePinnedBoonItem({
   activeSlot,
   selectBoon,
   togglePin,
+  elementCounts,
 }: SortablePinnedBoonItemProps) {
   const {
     attributes,
@@ -92,6 +94,7 @@ function SortablePinnedBoonItem({
         prerequisitesStatus={prerequisitesStatus}
         isPinned={true}
         onPinToggle={() => togglePin(boon.id)}
+        elementCounts={elementCounts}
       />
     </div>
   );
@@ -519,21 +522,42 @@ export function BoonLibrary({
                     let isLocked = false;
                     const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
                     if (boon.prerequisites && boon.prerequisites.length > 0) {
-                      boon.prerequisites.forEach(prereq => {
-                        let met = false;
-                        if (prereq.element && prereq.elementCount) {
-                          const currentCount = elementCounts[prereq.element] || 0;
-                          met = currentCount >= prereq.elementCount;
-                        } else {
-                          met = prereq.any
-                            ? prereq.boonIds.some(id => selectedBoonIds.has(id))
-                            : prereq.boonIds.every(id => selectedBoonIds.has(id));
-                        }
-                        if (!met) {
+                      const isTallOrder = boon.id === 'tall_order';
+                      if (isTallOrder) {
+                        const metAny = boon.prerequisites.some(prereq => {
+                          if (prereq.element && prereq.elementCount) {
+                            const currentCount = elementCounts[prereq.element] || 0;
+                            return currentCount >= prereq.elementCount;
+                          }
+                          return false;
+                        });
+                        if (!metAny) {
                           isLocked = true;
                         }
-                        prerequisitesStatus.push({ prereq, met });
-                      });
+                        boon.prerequisites.forEach(prereq => {
+                          if (prereq.element && prereq.elementCount) {
+                            const currentCount = elementCounts[prereq.element] || 0;
+                            const met = currentCount >= prereq.elementCount;
+                            prerequisitesStatus.push({ prereq, met });
+                          }
+                        });
+                      } else {
+                        boon.prerequisites.forEach(prereq => {
+                          let met = false;
+                          if (prereq.element && prereq.elementCount) {
+                            const currentCount = elementCounts[prereq.element] || 0;
+                            met = currentCount >= prereq.elementCount;
+                          } else {
+                            met = prereq.any
+                              ? prereq.boonIds.some(id => selectedBoonIds.has(id))
+                              : prereq.boonIds.every(id => selectedBoonIds.has(id));
+                          }
+                          if (!met) {
+                            isLocked = true;
+                          }
+                          prerequisitesStatus.push({ prereq, met });
+                        });
+                      }
                     }
 
                     const incompatibleBoon = getIncompatibleBoonInSelection(boon.id, selectedBoonIds);
@@ -557,6 +581,7 @@ export function BoonLibrary({
                         activeSlot={activeSlot}
                         selectBoon={selectBoon}
                         togglePin={togglePin}
+                        elementCounts={elementCounts}
                       />
                     );
                   })}
@@ -618,21 +643,42 @@ export function BoonLibrary({
               let isLocked = false;
               const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
               if (boon.prerequisites && boon.prerequisites.length > 0) {
-                boon.prerequisites.forEach(prereq => {
-                  let met = false;
-                  if (prereq.element && prereq.elementCount) {
-                    const currentCount = elementCounts[prereq.element] || 0;
-                    met = currentCount >= prereq.elementCount;
-                  } else {
-                    met = prereq.any
-                      ? prereq.boonIds.some(id => selectedBoonIds.has(id))
-                      : prereq.boonIds.every(id => selectedBoonIds.has(id));
-                  }
-                  if (!met) {
+                const isTallOrder = boon.id === 'tall_order';
+                if (isTallOrder) {
+                  const metAny = boon.prerequisites.some(prereq => {
+                    if (prereq.element && prereq.elementCount) {
+                      const currentCount = elementCounts[prereq.element] || 0;
+                      return currentCount >= prereq.elementCount;
+                    }
+                    return false;
+                  });
+                  if (!metAny) {
                     isLocked = true;
                   }
-                  prerequisitesStatus.push({ prereq, met });
-                });
+                  boon.prerequisites.forEach(prereq => {
+                    if (prereq.element && prereq.elementCount) {
+                      const currentCount = elementCounts[prereq.element] || 0;
+                      const met = currentCount >= prereq.elementCount;
+                      prerequisitesStatus.push({ prereq, met });
+                    }
+                  });
+                } else {
+                  boon.prerequisites.forEach(prereq => {
+                    let met = false;
+                    if (prereq.element && prereq.elementCount) {
+                      const currentCount = elementCounts[prereq.element] || 0;
+                      met = currentCount >= prereq.elementCount;
+                    } else {
+                      met = prereq.any
+                        ? prereq.boonIds.some(id => selectedBoonIds.has(id))
+                        : prereq.boonIds.every(id => selectedBoonIds.has(id));
+                    }
+                    if (!met) {
+                      isLocked = true;
+                    }
+                    prerequisitesStatus.push({ prereq, met });
+                  });
+                }
               }
 
               const incompatibleBoon = getIncompatibleBoonInSelection(boon.id, selectedBoonIds);
@@ -657,6 +703,7 @@ export function BoonLibrary({
                   prerequisitesStatus={prerequisitesStatus}
                   isPinned={false}
                   onPinToggle={() => togglePin(boon.id)}
+                  elementCounts={elementCounts}
                 />
               );
             })}
