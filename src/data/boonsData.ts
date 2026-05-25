@@ -569,6 +569,15 @@ export const BOONS: Boon[] = [
     ]
   },
   {
+    id: "death_warrant",
+    name: "Death Warrant",
+    type: "Non-Core",
+    gods: ["Artemis"],
+    element: "Earth",
+    effect: "A random foe occasionally becomes *Marked*. If it takes *Critical* damage, this repeats. \n ▸ Time Between Marks: *20 Sec./18 Sec./16 Sec./14 Sec.*",
+    icon: "/assets/boons/artemis/Death_Warrant.webp"
+  },
+  {
     id: "divine_vengeance",
     name: "Divine Vengeance",
     type: "Non-Core",
@@ -621,6 +630,15 @@ export const BOONS: Boon[] = [
         description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Nexus Rush"
       }
     ]
+  },
+  {
+    id: "easy_shot",
+    name: "Easy Shot",
+    type: "Non-Core",
+    gods: ["Artemis"],
+    element: "Air",
+    effect: "A piercing arrow fires towards any foe damaged by your *Cast*. \n ▸ Arrow Damage: *50/62/75/87*",
+    icon: "/assets/boons/artemis/Easy_Shot.webp"
   },
   {
     id: "ecstatic_obsession",
@@ -1443,6 +1461,15 @@ export const BOONS: Boon[] = [
     ]
   },
   {
+    id: "killing_stroke",
+    name: "Killing Stroke",
+    type: "Non-Core",
+    gods: ["Artemis"],
+    element: "Air",
+    effect: "Your *Specials* may deal *Critical* damage, but you *Prime* *40 Magick*. \n ▸ Critical Specials Chance: *+10%/+12%/+14%/+16%*",
+    icon: "/assets/boons/artemis/Killing_Stroke.webp"
+  },
+  {
     id: "king_tide",
     name: "King Tide",
     type: "Legendary",
@@ -1498,6 +1525,15 @@ export const BOONS: Boon[] = [
         description: "Requires Engagement Ring, Born Gain, or Nexus Rush"
       }
     ]
+  },
+  {
+    id: "lethal_snare",
+    name: "Lethal Snare",
+    type: "Non-Core",
+    gods: ["Artemis"],
+    element: "Earth",
+    effect: "Foes in your *Casts* may take *Critical* damage from your *Attacks*. \n ▸ Critical Chance: *+10%/+13%/+16%/+19%*",
+    icon: "/assets/boons/artemis/Lethal_Snare.webp"
   },
   {
     id: "light_smite",
@@ -1870,6 +1906,15 @@ export const BOONS: Boon[] = [
         description: "Requires Volcanic Strike, Volcanic Flourish, Smithy Rush, Heavy Metal, Trusty Shield, Grand Caldera, Molten Touch, or Furnace Blast"
       }
     ]
+  },
+  {
+    id: "pressure_points",
+    name: "Pressure Points",
+    type: "Non-Core",
+    gods: ["Artemis"],
+    element: "Earth",
+    effect: "Any damage you deal may be *Critical*. \n ▸ Critical Chance: *+3%/+4%/+5%/+6%*",
+    icon: "/assets/boons/artemis/Pressure_Points.webp"
   },
   {
     id: "profuse_bleeding",
@@ -2303,6 +2348,15 @@ export const BOONS: Boon[] = [
     ]
   },
   {
+    id: "shadow_pounce",
+    name: "Shadow Pounce",
+    type: "Non-Core",
+    gods: ["Artemis"],
+    element: "Air",
+    effect: "After you *Dash*, your *Ω Moves* may deal *Critical* damage for *2 Sec.* \n ▸ Omega Critical Chance: *+8%/+10%/+12%/+14%*",
+    icon: "/assets/boons/artemis/Shadow_Pounce.webp"
+  },
+  {
     id: "shameless_attitude",
     name: "Shameless Attitude",
     type: "Non-Core",
@@ -2532,6 +2586,15 @@ export const BOONS: Boon[] = [
         description: "Requires Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, or Lucid Gain"
       }
     ]
+  },
+  {
+    id: "support_fire",
+    name: "Support Fire",
+    type: "Non-Core",
+    gods: ["Artemis"],
+    element: "Air",
+    effect: "After you hit with your *Attacks* or *Specials*, fire a seeking arrow. \n ▸ Arrow Damage: *10/15/20/25*",
+    icon: "/assets/boons/artemis/Support_Fire.webp"
   },
   {
     id: "super_nova",
@@ -2775,6 +2838,15 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/ares/Visceral_Impact.webp"
   },
   {
+    id: "vital_sign",
+    name: "Vital Sign",
+    type: "Non-Core",
+    gods: ["Artemis"],
+    element: "Earth",
+    effect: "Foes with at least *80% Health* or *80% Armor* may take *Critical* damage. \n ▸ Critical Chance: *+15%/+22%/+30%/+38%*",
+    icon: "/assets/boons/artemis/Vital_Sign.webp"
+  },
+  {
     id: "volcanic_flourish",
     name: "Volcanic Flourish",
     type: "Special",
@@ -2908,6 +2980,21 @@ export const BOONS: Boon[] = [
         ],
         any: true,
         description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Plentiful Forage, Snow Queen, Steady Growth, Weed Killer, Cold Storage, or Local Climate"
+      }
+    ]
+  },
+  {
+    id: "whispered_prayer",
+    name: "Whispered Prayer",
+    type: "Non-Core",
+    gods: ["Artemis"],
+    element: "Air",
+    effect: "Your *Hex* may deal *Critical* damage. \n ▸ Hex Critical Chance: *+30%/+35%/+40%/+45%*",
+    icon: "/assets/boons/artemis/Whispered_Prayer.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "Requires an offensive Hex (Selene): Twilight Curse, Lunar Ray, Wolf Howl, Total Eclipse, Dark Side, or Sky Fall"
       }
     ]
   },

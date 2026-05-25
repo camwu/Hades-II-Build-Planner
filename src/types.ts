@@ -32,7 +32,8 @@ export type BoonType =
   | 'Non-Core' 
   | 'Duo' 
   | 'Legendary' 
-  | 'Infusion';
+  | 'Infusion'
+  | 'Hex';
 
 export type ElementType = 'Air' | 'Fire' | 'Water' | 'Earth' | 'Aether';
 
