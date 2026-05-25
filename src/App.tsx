@@ -27,7 +27,11 @@ import { Boon, BoonType, ElementType } from './types';
 import { 
   SLOT_PRIORITY, 
   CORE_SLOTS, 
-  SLOT_EXPANDED_WIDTH 
+  SLOT_EXPANDED_WIDTH,
+  EXCLUDED_GODS,
+  STORAGE_KEYS,
+  SLOT_MAP,
+  SLOT_ABBR
 } from './constants';
 import { isValidForSlot, getIncompatibleBoonInSelection } from './utils/boonUtils';
 import { StaticBoonListItem } from './components/BoonListItem';
@@ -56,7 +60,7 @@ export default function App() {
   const savedState = useMemo(() => {
     if (hasUrlParams) return null;
     try {
-      const data = localStorage.getItem('hades_build_planner_state');
+      const data = localStorage.getItem(STORAGE_KEYS.BUILD_STATE);
       if (data) {
         return JSON.parse(data);
       }
@@ -78,14 +82,10 @@ export default function App() {
     };
     if (coreParam) {
       // Handle both old full UUIDs and new short codes
-      const slotMap: Record<string, string> = {
-        at: 'Attack', sp: 'Special', ca: 'Cast', sr: 'Sprint', ma: 'Magick'
-      };
-      
       coreParam.split(',').forEach(pair => {
         const [slotKey, code] = pair.split(':');
         if (slotKey && code) {
-          const slotName = slotMap[slotKey] || slotKey;
+          const slotName = SLOT_MAP[slotKey] || slotKey;
           let boon;
           if (code.length > 20) { // Likely a UUID
             boon = BOONS.find(b => b.id === code);
@@ -254,7 +254,7 @@ export default function App() {
       return [];
     }
     try {
-      const data = localStorage.getItem('hades_build_planner_pinned_boons');
+      const data = localStorage.getItem(STORAGE_KEYS.PINNED_BOONS);
       if (data) {
         return JSON.parse(data);
       }
@@ -266,7 +266,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('hades_build_planner_pinned_boons', JSON.stringify(pinnedBoonIds));
+      localStorage.setItem(STORAGE_KEYS.PINNED_BOONS, JSON.stringify(pinnedBoonIds));
     } catch (e) {
       console.error('Failed to save pinned boons:', e);
     }
@@ -298,15 +298,12 @@ export default function App() {
 
       // Core
       const coreParts: string[] = [];
-      const slotAbbr: Record<string, string> = {
-        Attack: 'at', Special: 'sp', Cast: 'ca', Sprint: 'sr', Magick: 'ma'
-      };
       
       Object.entries(coreBuild).forEach(([slot, boon]) => {
         if (boon) {
           const index = BOONS.findIndex(b => b.id === (boon as Boon).id);
           if (index !== -1) {
-            coreParts.push(`${slotAbbr[slot] || slot}:${index.toString(36)}`);
+            coreParts.push(`${SLOT_ABBR[slot] || slot}:${index.toString(36)}`);
           }
         }
       });
@@ -385,7 +382,7 @@ export default function App() {
           maxGrasp
         };
 
-        localStorage.setItem('hades_build_planner_state', JSON.stringify(stateToSave));
+        localStorage.setItem(STORAGE_KEYS.BUILD_STATE, JSON.stringify(stateToSave));
       } catch (e) {
         console.error('Failed to save build state to localStorage:', e);
       }
@@ -507,7 +504,6 @@ export default function App() {
   }, [coreBuild, additionalBoons]);
 
   const activeStandardOlympians = useMemo(() => {
-    const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades', 'Chaos', 'Raki', 'Twilight Curse'];
     const active = new Set<string>();
     
     Object.values(coreBuild).forEach(b => {
@@ -556,7 +552,6 @@ export default function App() {
 
       // Limit to God Pool filter
       if (limitToGodPool && activeStandardOlympians.length >= 4) {
-        const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades', 'Chaos', 'Raki', 'Twilight Curse'];
         const hasLockedOlympian = boon.gods.some(god => 
           !EXCLUDED_GODS.includes(god) && !activeStandardOlympians.includes(god)
         );

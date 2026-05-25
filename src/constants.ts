@@ -19,6 +19,29 @@ export const SIDEBAR_WIDTH = 400;
 export const SLOT_COLLAPSED_WIDTH = '84px';
 export const SLOT_EXPANDED_WIDTH = '440px';
 
+export const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades'];
+
+export const STORAGE_KEYS = {
+  BUILD_STATE: 'hades_build_planner_state',
+  PINNED_BOONS: 'hades_build_planner_pinned_boons',
+};
+
+export const SLOT_ABBR: Record<string, string> = {
+  Attack: 'at',
+  Special: 'sp',
+  Cast: 'ca',
+  Sprint: 'sr',
+  Magick: 'ma',
+};
+
+export const SLOT_MAP: Record<string, string> = {
+  at: 'Attack',
+  sp: 'Special',
+  ca: 'Cast',
+  sr: 'Sprint',
+  ma: 'Magick',
+};
+
 export const BOON_KEYWORDS = [
   // Slots
   'Attack', 'Special', 'Cast', 'Sprint', 'Magick', 'Dash', 'Hex', 
