@@ -29,18 +29,30 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "sworn_strike", // Sworn Strike
-          "sworn_flourish", // Sworn Flourish
-          "engagement_ring", // Engagement Ring
-          "nexus_rush", // Nexus Rush
-          "bridal_glow", // Bridal Glow
-          "uncommon_grace", // Uncommon Grace
-          "fine_line", // Fine Line
-          "hereditary_bane", // Hereditary Bane
-          "rousing_reception"  // Rousing Reception
+          "sworn_strike",
+          "sworn_flourish",
+          "engagement_ring",
+          "nexus_rush"
         ],
         any: true,
-        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Bridal Glow, Uncommon Grace, Fine Line, Hereditary Bane, or Rousing Reception"
+        description: "Requires Sworn Strike, Sworn Flourish, Engagement Ring, or Nexus Rush"
+      },
+      {
+        boonIds: [
+          "bridal_glow",
+          "uncommon_grace",
+          "fine_line"
+        ],
+        any: true,
+        description: "Requires Bridal Glow, Uncommon Grace, or Fine Line"
+      },
+      {
+        boonIds: [
+          "hereditary_bane",
+          "rousing_reception"
+        ],
+        any: true,
+        description: "Requires Hereditary Bane or Rousing Reception"
       }
     ]
   },
@@ -791,17 +803,19 @@ export const BOONS: Boon[] = [
     inflictsCurse: "scorch",
     prerequisites: [
       {
-        boonIds: [
-          "smolder_ring", // Smolder Ring
-          "flash_fry", // Flash Fry
-          "hot_pot", // Hot Pot
-          "pyro_technique", // Pyro Technique
-          "highly_flammable", // Highly Flammable
-          "glowing_coal", // Glowing Coal
-          "controlled_burn"  // Controlled Burn
-        ],
+        boonIds: ["smolder_ring"],
         any: true,
-        description: "Requires Smolder Ring, Flash Fry, Hot Pot, Pyro Technique, Highly Flammable, Glowing Coal, or Controlled Burn"
+        description: "Requires Smolder Ring"
+      },
+      {
+        boonIds: ["flash_fry", "hot_pot", "pyro_technique", "highly_flammable"],
+        any: true,
+        description: "Requires Flash Fry, Hot Pot, Pyro Technique, or Highly Flammable"
+      },
+      {
+        boonIds: ["glowing_coal", "controlled_burn"],
+        any: true,
+        description: "Requires Glowing Coal or Controlled Burn"
       }
     ]
   },
@@ -1479,19 +1493,19 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/poseidon/King_Tide.webp",
     prerequisites: [
       {
-        boonIds: [
-          "wave_strike", // Wave Strike
-          "wave_flourish", // Wave Flourish
-          "breaker_rush", // Breaker Rush
-          "flood_gain", // Flood Gain
-          "geyser_spout", // Geyser Spout
-          "hydraulic_might", // Hydraulic Might
-          "ocean_swell", // Ocean Swell
-          "slippery_slope", // Slippery Slope
-          "high_surf"  // High Surf
-        ],
+        boonIds: ["wave_strike", "wave_flourish"],
         any: true,
-        description: "Requires Wave Strike, Wave Flourish, Breaker Rush, Flood Gain, Geyser Spout, Hydraulic Might, Ocean Swell, Slippery Slope, or High Surf"
+        description: "Requires Wave Strike or Wave Flourish"
+      },
+      {
+        boonIds: ["breaker_rush", "flood_gain", "geyser_spout"],
+        any: true,
+        description: "Requires Breaker Rush, Flood Gain, or Geyser Spout"
+      },
+      {
+        boonIds: ["hydraulic_might", "ocean_swell", "slippery_slope", "high_surf"],
+        any: true,
+        description: "Requires Hydraulic Might, Ocean Swell, Slippery Slope, or High Surf"
       }
     ]
   },
@@ -1892,18 +1906,19 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/hephaestus/Premium_Service.webp",
     prerequisites: [
       {
-        boonIds: [
-          "volcanic_strike", // Volcanic Strike
-          "volcanic_flourish", // Volcanic Flourish
-          "smithy_rush", // Smithy Rush
-          "heavy_metal", // Heavy Metal
-          "trusty_shield", // Trusty Shield
-          "grand_caldera", // Grand Caldera
-          "molten_touch", // Molten Touch
-          "furnace_blast"  // Furnace Blast
-        ],
+        boonIds: ["volcanic_strike", "volcanic_flourish", "smithy_rush"],
         any: true,
-        description: "Requires Volcanic Strike, Volcanic Flourish, Smithy Rush, Heavy Metal, Trusty Shield, Grand Caldera, Molten Touch, or Furnace Blast"
+        description: "Requires Volcanic Strike, Volcanic Flourish, or Smithy Rush"
+      },
+      {
+        boonIds: ["heavy_metal", "trusty_shield"],
+        any: true,
+        description: "Requires Heavy Metal or Trusty Shield"
+      },
+      {
+        boonIds: ["grand_caldera", "molten_touch", "furnace_blast"],
+        any: true,
+        description: "Requires Grand Caldera, Molten Touch, or Furnace Blast"
       }
     ]
   },
@@ -2376,21 +2391,33 @@ export const BOONS: Boon[] = [
     prerequisites: [
       {
         boonIds: [
-          "heaven_strike", // Heaven Strike
-          "heaven_flourish", // Heaven Flourish
-          "storm_ring", // Storm Ring
-          "thunder_rush", // Thunder Rush
-          "ionic_gain", // Ionic Gain
-          "static_shock", // Static Shock
-          "power_surge", // Power Surge
-          "lightning_lance", // Lightning Lance
-          "divine_vengeance", // Divine Vengeance
-          "arc_flash", // Arc Flash
-          "double_strike", // Double Strike
-          "electric_overload"  // Electric Overload
+          "heaven_strike",
+          "heaven_flourish",
+          "storm_ring",
+          "thunder_rush",
+          "ionic_gain"
         ],
         any: true,
-        description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Ionic Gain, Static Shock, Power Surge, Lightning Lance, Divine Vengeance, Arc Flash, Double Strike, or Electric Overload"
+        description: "Requires Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, or Ionic Gain"
+      },
+      {
+        boonIds: [
+          "static_shock",
+          "power_surge",
+          "lightning_lance",
+          "divine_vengeance"
+        ],
+        any: true,
+        description: "Requires Static Shock, Power Surge, Lightning Lance, or Divine Vengeance"
+      },
+      {
+        boonIds: [
+          "arc_flash",
+          "double_strike",
+          "electric_overload"
+        ],
+        any: true,
+        description: "Requires Arc Flash, Double Strike, or Electric Overload"
       }
     ]
   },
@@ -2967,19 +2994,19 @@ export const BOONS: Boon[] = [
     icon: "/assets/boons/demeter/Winter_Harvest.webp",
     prerequisites: [
       {
-        boonIds: [
-          "ice_strike", // Ice Strike
-          "ice_flourish", // Ice Flourish
-          "arctic_ring", // Arctic Ring
-          "plentiful_forage", // Plentiful Forage
-          "snow_queen", // Snow Queen
-          "steady_growth", // Steady Growth
-          "weed_killer", // Weed Killer
-          "cold_storage", // Cold Storage
-          "local_climate"  // Local Climate
-        ],
+        boonIds: ["ice_strike", "ice_flourish", "arctic_ring"],
         any: true,
-        description: "Requires Ice Strike, Ice Flourish, Arctic Ring, Plentiful Forage, Snow Queen, Steady Growth, Weed Killer, Cold Storage, or Local Climate"
+        description: "Requires Ice Strike, Ice Flourish, or Arctic Ring"
+      },
+      {
+        boonIds: ["plentiful_forage", "snow_queen", "steady_growth"],
+        any: true,
+        description: "Requires Plentiful Forage, Snow Queen, or Steady Growth"
+      },
+      {
+        boonIds: ["weed_killer", "cold_storage", "local_climate"],
+        any: true,
+        description: "Requires Weed Killer, Cold Storage, or Local Climate"
       }
     ]
   },

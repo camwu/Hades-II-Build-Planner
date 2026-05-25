@@ -2,12 +2,75 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
 import { Lock, Check, X, Pin } from 'lucide-react';
-import { Boon, BoonPrerequisite, ELEMENT_COLORS } from '../types';
+import { Boon, BoonPrerequisite, ELEMENT_COLORS, GOD_COLORS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedEffectText } from './FormattedEffectText';
 import { BOON_ICON_ROUNDING, BOON_BORDER_WIDTH } from '../constants';
 import { BOONS } from '../data/boonsData';
+
+export function HighlightedText({ text }: { text: string }) {
+  if (!text) return null;
+
+  const GOD_NAMES = Object.keys(GOD_COLORS);
+  const BOON_NAMES = BOONS.map(b => b.name);
+  const SLOT_KEYWORDS = ['Attack', 'Special', 'Cast', 'Sprint', 'Dash', 'Gain', 'Dodge', 'Magick', 'Mana'];
+  const SPECIAL_WORDS = ['Duo Boon', 'Duo', 'Boon', 'Boons', 'Requirement', 'Requirements', 'Locked', 'Infusion', 'Essences', 'Essence'];
+
+  const ALL_HIGHLIGHT_KEYWORDS = Array.from(new Set([
+    ...SPECIAL_WORDS,
+    ...SLOT_KEYWORDS,
+    ...GOD_NAMES,
+    ...BOON_NAMES
+  ])).sort((a, b) => b.length - a.length);
+
+  const pattern = new RegExp(`(${ALL_HIGHLIGHT_KEYWORDS.map(name => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g');
+
+  const parts = text.split(pattern);
+
+  return (
+    <>
+      {parts.map((part, index) => {
+        if (GOD_NAMES.includes(part)) {
+          return (
+            <span key={index} className="text-zinc-100 font-bold">
+              {part}
+            </span>
+          );
+        }
+        if (BOON_NAMES.includes(part)) {
+          return (
+            <span key={index} className="text-zinc-100 font-bold font-sans">
+              {part}
+            </span>
+          );
+        }
+        if (SLOT_KEYWORDS.includes(part)) {
+          return (
+            <span key={index} className="text-zinc-100 font-bold">
+              {part}
+            </span>
+          );
+        }
+        if (part === 'Duo' || part === 'Duo Boon') {
+          return (
+            <span key={index} className="text-zinc-100 font-bold">
+              {part}
+            </span>
+          );
+        }
+        if (SPECIAL_WORDS.includes(part)) {
+          return (
+            <span key={index} className="text-zinc-200 font-semibold">
+              {part}
+            </span>
+          );
+        }
+        return <span key={index}>{part}</span>;
+      })}
+    </>
+  );
+}
 
 function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, removeRequires = false) {
   let description = prereq.description;
@@ -31,7 +94,7 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
   const requiredBoonNames = requiredBoons.map(b => b.name);
   const uniqueGods = isDuo ? Array.from(new Set(requiredBoons.flatMap(b => b.gods))) : [];
 
-  const slotKeywords = ['Attack', 'Special', 'Cast', 'Sprint', 'Magick'];
+  const slotKeywords = ['Attack', 'Special', 'Cast', 'Sprint', 'Dash', 'Gain', 'Dodge', 'Magick', 'Mana'];
   const allBoonNames = BOONS.map(b => b.name);
 
   // Combine custom required boon names, all boon names, and slot names
@@ -190,18 +253,53 @@ function formatPrerequisiteDescription(prereq: BoonPrerequisite, isDuo = false, 
   );
 }
 
+export const SUCCESS_RATE_GROUPS = [
+  {
+    gods: ['Poseidon'],
+    boonIds: ['sea_star'],
+    label: 'Poseidon: Sea Star'
+  },
+  {
+    gods: ['Zeus'],
+    boonIds: ['divine_vengeance', 'double_strike'],
+    label: 'Zeus: Divine Vengeance, or Double Strike'
+  },
+  {
+    gods: ['Apollo'],
+    boonIds: ['dazzling_display', 'extra_dose'],
+    label: 'Apollo: Dazzling Display, or Extra Dose'
+  },
+  {
+    gods: ['Artemis'],
+    boonIds: ['pressure_points', 'vital_sign', 'lethal_snare', 'death_warrant', 'killing_stroke'],
+    label: 'Artemis: Pressure Points, Vital Sign, Lethal Snare, Death Warrant, or Killing Stroke'
+  },
+  {
+    gods: ['Ares'],
+    boonIds: ['grisly_gain', 'visceral_impact', 'mutual_destruction', 'grievous_blow', 'profuse_bleeding'],
+    label: 'Ares: Grisly Gain, Visceral Impact, Mutual Destruction, Grievous Blow, or Profuse Bleeding'
+  },
+  {
+    gods: ['Poseidon', 'Ares'],
+    boonIds: ['arterial_spray'],
+    label: 'Duo Boon: Arterial Spray'
+  }
+];
+
 export function StaticBoonListItem({ 
   boon, 
   isOverlay = false, 
   isLocked = false, 
   prerequisitesStatus = [],
-  elementCounts
+  elementCounts,
+  selectedBoonIds
 }: { 
   boon: Boon; 
   isOverlay?: boolean; 
   isLocked?: boolean; 
   prerequisitesStatus?: { prereq: BoonPrerequisite; met: boolean }[]; 
   elementCounts?: Record<string, number>;
+  selectedBoonIds?: Set<string>;
 }) {
   const borderColor = getBoonBorderColor(boon.type);
   
@@ -365,34 +463,119 @@ export function StaticBoonListItem({
                 })}
               </div>
             </div>
-          ) : prerequisitesStatus.length === 1 ? (
-            <div className={`flex items-start gap-2 ${prerequisitesStatus[0].met ? 'line-through opacity-45' : ''}`}>
-              <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
-              <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked:</span>
-              <div className="flex-1 text-xs text-gray-400 leading-normal font-medium">
-                {formatPrerequisiteDescription(prerequisitesStatus[0].prereq, boon.type === 'Duo')}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-1.5">
+          ) : boon.id === 'success_rate' ? (
+            <div className="flex flex-col gap-2 p-1">
               <div className="flex items-start gap-2">
                 <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
                 <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Requirements:</span>
               </div>
-              <ul className="pl-0 space-y-1.5 text-gray-400 leading-normal">
-                {prerequisitesStatus.map(({ prereq, met }, index) => (
-                  <li key={index} className={`flex items-start gap-2.5 ${met ? 'line-through opacity-45 text-gray-500/95' : ''}`}>
-                    {met ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-500/60 flex-shrink-0 mt-0.5" />
-                    ) : (
-                      <X className="w-3.5 h-3.5 text-red-500/70 flex-shrink-0 mt-0.5" />
-                    )}
-                    <div className="flex-1 text-xs text-gray-300 leading-normal font-medium">
-                      {formatPrerequisiteDescription(prereq, boon.type === 'Duo', true)}
+              <div className="text-gray-400 text-xs mb-1 font-medium leading-relaxed normal-case">
+                Requires at least <span className="text-gray-200 font-bold">one</span> of the following boons:
+              </div>
+              <div className="flex flex-col gap-1.5 select-none">
+                {SUCCESS_RATE_GROUPS.map((group, index) => {
+                  const met = group.boonIds.some(id => selectedBoonIds?.has(id));
+                  return (
+                    <div 
+                      key={index} 
+                      className={`flex items-start gap-2.5 px-2.5 py-1.5 rounded-lg border transition-all duration-150 ${
+                        met 
+                          ? 'bg-emerald-950/25 border-emerald-800/40 text-gray-300 shadow-sm' 
+                          : 'bg-zinc-950/45 border-zinc-900/60 text-gray-500/95'
+                      }`}
+                    >
+                      {met ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-[2px]" />
+                      ) : (
+                        <X className="w-3.5 h-3.5 text-red-500/50 flex-shrink-0 mt-[2px]" />
+                      )}
+                      
+                      <div className="flex items-start gap-2 min-w-0 flex-1">
+                        <div className="flex items-center gap-0.5 shrink-0 mt-[1px]">
+                          {group.gods.map((god) => (
+                            <span key={god} className="inline-block shrink-0">
+                              <GodIcon god={god} className="w-4 h-4 object-contain" />
+                            </span>
+                          ))}
+                        </div>
+                        <span className={`text-[11px] font-semibold leading-[18px] ${met ? 'text-gray-300' : 'text-gray-400'}`}>
+                          <HighlightedText text={group.label} />
+                        </span>
+                      </div>
                     </div>
-                  </li>
-                ))}
-              </ul>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2 p-1">
+              <div className="flex items-start gap-2">
+                <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
+                <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Requirements:</span>
+              </div>
+              <div className="text-gray-400 text-xs mb-1 font-medium leading-relaxed normal-case pl-5 -mt-1">
+                {prerequisitesStatus.length > 1 ? (
+                  <>Requires <span className="text-gray-200 font-bold">all</span> of the following condition groups:</>
+                ) : (
+                  <>Requires the following condition:</>
+                )}
+              </div>
+              <div className="flex flex-col gap-1.5 select-none pl-5">
+                {prerequisitesStatus.map((status, index) => {
+                  const met = status.met;
+                  const prereq = status.prereq;
+                  const requiredBoons = prereq.boonIds
+                    .map(id => BOONS.find(b => b.id === id))
+                    .filter((b): b is Boon => !!b);
+                  const gods = Array.from(new Set(requiredBoons.flatMap(b => b.gods)));
+
+                  let cleanDesc = prereq.description;
+                  if (cleanDesc.startsWith('Requires ')) {
+                    cleanDesc = cleanDesc.slice(9);
+                  } else if (cleanDesc.startsWith('requires ')) {
+                    cleanDesc = cleanDesc.slice(9);
+                  }
+                  if (cleanDesc.length > 0) {
+                    cleanDesc = cleanDesc.charAt(0).toUpperCase() + cleanDesc.slice(1);
+                  }
+
+                  const isGenericSlotBoon = /any (attack|special|cast|sprint|dash|gain)\b/i.test(cleanDesc);
+                  const godPrefix = (gods.length > 0 && !isGenericSlotBoon) ? `${gods.join(' or ')}: ` : '';
+                  const fullDesc = `${godPrefix}${cleanDesc}`;
+
+                  return (
+                    <div 
+                      key={index} 
+                      className={`flex items-start gap-2.5 px-2.5 py-1.5 rounded-lg border transition-all duration-150 ${
+                        met 
+                          ? 'bg-emerald-950/25 border-emerald-800/40 text-gray-300 shadow-sm' 
+                          : 'bg-zinc-950/45 border-zinc-900/60 text-gray-500/95'
+                      }`}
+                    >
+                      {met ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-[2px]" />
+                      ) : (
+                        <X className="w-3.5 h-3.5 text-red-500/50 flex-shrink-0 mt-[2px]" />
+                      )}
+                      
+                      <div className="flex items-start gap-2 min-w-0 flex-1">
+                        {!isGenericSlotBoon && gods.length > 0 && (
+                          <div className="flex items-center gap-0.5 shrink-0 mt-[1px]">
+                            {gods.map((god) => (
+                              <span key={god} className="inline-block shrink-0">
+                                <GodIcon god={god} className="w-4 h-4 object-contain" />
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <span className={`text-[11px] font-semibold leading-[18px] ${met ? 'text-gray-300' : 'text-gray-400'}`}>
+                          <HighlightedText text={fullDesc} />
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
@@ -409,7 +592,8 @@ export function DraggableBoonListItem({
   prerequisitesStatus = [],
   isPinned = false,
   onPinToggle,
-  elementCounts
+  elementCounts,
+  selectedBoonIds
 }: { 
   boon: Boon; 
   onClick?: () => void; 
@@ -419,6 +603,7 @@ export function DraggableBoonListItem({
   isPinned?: boolean;
   onPinToggle?: () => void;
   elementCounts?: Record<string, number>;
+  selectedBoonIds?: Set<string>;
   key?: any 
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -435,9 +620,9 @@ export function DraggableBoonListItem({
       whileHover={isLocked ? { x: [0, -3, 3, -3, 3, 0], transition: { duration: 0.3, ease: 'easeInOut' } } : { x: 6 }}
       whileTap={isLocked ? {} : { scale: 0.98 }}
       transition={{ 
-        type: 'spring', 
-        stiffness: 500,
-        damping: 30
+         type: 'spring', 
+         stiffness: 500,
+         damping: 30
       }}
       className={`relative group transition-opacity duration-150 ${
         isDragging 
@@ -454,6 +639,7 @@ export function DraggableBoonListItem({
         isLocked={isLocked} 
         prerequisitesStatus={prerequisitesStatus} 
         elementCounts={elementCounts}
+        selectedBoonIds={selectedBoonIds}
       />
       
       {/* Pin button on top left (hover/pinned active) */}

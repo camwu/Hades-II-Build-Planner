@@ -44,6 +44,7 @@ interface SortablePinnedBoonItemProps {
   selectBoon: (boon: Boon, slotId: string) => void;
   togglePin: (id: string) => void;
   elementCounts?: Record<string, number>;
+  selectedBoonIds?: Set<string>;
   key?: string | number;
 }
 
@@ -55,6 +56,7 @@ function SortablePinnedBoonItem({
   selectBoon,
   togglePin,
   elementCounts,
+  selectedBoonIds,
 }: SortablePinnedBoonItemProps) {
   const {
     attributes,
@@ -95,6 +97,7 @@ function SortablePinnedBoonItem({
         isPinned={true}
         onPinToggle={() => togglePin(boon.id)}
         elementCounts={elementCounts}
+        selectedBoonIds={selectedBoonIds}
       />
     </div>
   );
@@ -582,6 +585,7 @@ export function BoonLibrary({
                         selectBoon={selectBoon}
                         togglePin={togglePin}
                         elementCounts={elementCounts}
+                        selectedBoonIds={selectedBoonIds}
                       />
                     );
                   })}
@@ -704,6 +708,7 @@ export function BoonLibrary({
                   isPinned={false}
                   onPinToggle={() => togglePin(boon.id)}
                   elementCounts={elementCounts}
+                  selectedBoonIds={selectedBoonIds}
                 />
               );
             })}
