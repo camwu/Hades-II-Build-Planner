@@ -391,7 +391,7 @@ export function BoonLibrary({
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>
-                        <span>Slot (Attack, Special, Non-Core, etc.)</span>
+                        <span>Slot (Attack, Special, Passive, etc.)</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>

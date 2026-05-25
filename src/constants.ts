@@ -6,7 +6,7 @@ export const SLOT_PRIORITY: Record<string, number> = {
   'Cast': 3,
   'Sprint': 4,
   'Magick': 5,
-  'Non-Core': 6,
+  'Passive': 6,
   'Infusion': 7,
   'Legendary': 8,
   'Duo': 9,

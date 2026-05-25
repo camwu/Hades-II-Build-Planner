@@ -29,7 +29,7 @@ export type BoonType =
   | 'Cast' 
   | 'Sprint' 
   | 'Magick' 
-  | 'Non-Core' 
+  | 'Passive' 
   | 'Duo' 
   | 'Legendary' 
   | 'Infusion'

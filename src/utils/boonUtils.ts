@@ -22,8 +22,8 @@ export const isValidForSlot = (boon: Boon, slot: string) => {
   if (['Attack', 'Special', 'Cast', 'Sprint', 'Magick'].includes(slot)) {
     return boon.type === slot;
   }
-  if (slot === 'NonCore') {
-    return ['Non-Core', 'Legendary', 'Duo', 'Infusion'].includes(boon.type);
+  if (slot === 'Passive') {
+    return ['Passive', 'Legendary', 'Duo', 'Infusion'].includes(boon.type);
   }
   return false;
 };

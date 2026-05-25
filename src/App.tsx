@@ -571,8 +571,6 @@ export default function App() {
                check(boon.effect) ||
                boon.gods.some(god => check(god)) ||
                check(boon.type) ||
-               (boon.type === 'Non-Core' && check('support')) ||
-               (['Attack', 'Special', 'Cast', 'Sprint', 'Magick'].includes(boon.type) && check('core')) ||
                (boon.element && check(boon.element));
       });
       
@@ -597,7 +595,7 @@ export default function App() {
     // Safety check for incompatible boons (Glowing Coal, Lightning Lance, and Hostile Environment)
     if (getIncompatibleBoonInSelection(boon.id, selectedBoonIds)) return;
 
-    if (slotId === 'NonCore') {
+    if (slotId === 'Passive') {
       setAdditionalBoons(prev => [...prev, boon]);
     } else {
       setCoreBuild(prev => ({ ...prev, [slotId]: boon }));
@@ -616,7 +614,7 @@ export default function App() {
   };
 
   const removeBoon = (slotId: string, index?: number) => {
-    if (slotId === 'NonCore' && index !== undefined) {
+    if (slotId === 'Passive' && index !== undefined) {
       // Logic for removing additional boons is handled by removeAdditionalBoon
     } else {
       setCoreBuild(prev => ({ ...prev, [slotId]: null }));
@@ -712,9 +710,9 @@ export default function App() {
       const boon = BOONS.find(b => b.id === active.id);
       let targetSlotId = over.id as string;
 
-      // If we're hovering over an existing sortable item, we treat it as being over the 'NonCore' slot
+      // If we're hovering over an existing sortable item, we treat it as being over the 'Passive' slot
       if (over.data.current?.type === 'sortable') {
-        targetSlotId = 'NonCore';
+        targetSlotId = 'Passive';
       } else if (over.data.current?.type === 'core') {
         targetSlotId = over.data.current.slot;
       }
@@ -824,7 +822,7 @@ export default function App() {
                 <div className="flex-1 w-full lg:pl-8 lg:border-l lg:border-white/10">
                   <div className="w-full">
                     <div className="flex flex-col gap-12">
-                      {/* Unified Boons Grid Area with Purge Pool and Non-Core Slot */}
+                      {/* Unified Boons Grid Area with Purge Pool and Passive Slot */}
                       <div className="flex items-start gap-16">
                         <div className="grid grid-flow-col grid-rows-5 gap-x-5 gap-y-5 auto-cols-max items-start">
                           {/* Selected Boons */}
@@ -841,17 +839,17 @@ export default function App() {
                             ))}
                           </SortableContext>
                           
-                          {/* Unified Non-Core Slot */}
+                          {/* Unified Passive Slot */}
                           <div>
                             <DroppableSlotCard 
-                              id="NonCore"
-                              slot="NonCore"
-                              name="Non-Core Slot"
+                              id="Passive"
+                              slot="Passive"
+                              name="Passive Slot"
                               icon={Plus}
-                              isActive={activeSlot === 'NonCore'}
-                              onClick={() => toggleActiveSlot('NonCore')}
+                              isActive={activeSlot === 'Passive'}
+                              onClick={() => toggleActiveSlot('Passive')}
                               draggedBoon={draggedBoon}
-                              isValid={draggedBoon ? isValidForSlot(draggedBoon, 'NonCore') && !selectedBoonIds.has(draggedBoon.id) : true}
+                              isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Passive') && !selectedBoonIds.has(draggedBoon.id) : true}
                             />
                           </div>
                         </div>

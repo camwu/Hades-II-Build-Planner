@@ -68,7 +68,7 @@ export const BOONS: Boon[] = [
   {
     id: "arc_flash",
     name: "Arc Flash",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Zeus"],
     element: "Air",
     effect: "Damage from Ω Moves immediately activates Blitz effects and makes them stronger. \n ▸ Omega-Blitz Bonus Damage: +30%/+40%/+50%/+60%",
@@ -87,7 +87,7 @@ export const BOONS: Boon[] = [
   {
     id: "arctic_gale",
     name: "Arctic Gale",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Demeter"],
     element: "Water",
     effect: "Your Casts also create a Gust at the binding circle. \n ▸ Gust Area Damage (every 0.25 Sec.): 4/8/12/16",
@@ -137,7 +137,7 @@ export const BOONS: Boon[] = [
   {
     id: "back_burner",
     name: "Back Burner",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Apollo"],
     element: "Fire",
     effect: "Foes with Daze take more damage if struck from behind. \n ▸ Backstab Damage: +50%/+75%/+100%/+125%",
@@ -207,7 +207,7 @@ export const BOONS: Boon[] = [
   {
     id: "blood_spree",
     name: "Blood Spree",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Ares"],
     element: "Earth",
     effect: "While you have less than 40 Health, your Attacks and Specials restore Health. \n ▸ Life Restored per Hit: 1/2/3/4",
@@ -268,7 +268,7 @@ export const BOONS: Boon[] = [
   {
     id: "bridal_glow",
     name: "Bridal Glow",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hera"],
     element: "Water",
     effect: "Make *1* random Boon become Heroic and give it Lv. \n ▸ Bonus Lv.:+1/+2/+3/+4",
@@ -277,7 +277,7 @@ export const BOONS: Boon[] = [
   {
     id: "broken_resolve",
     name: "Broken Resolve",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Aphrodite"],
     element: "Water",
     effect: "Your Weak effects are more potent. \n ▸ Weak Damage Reduction: +10%/+12%/+14%/+16%",
@@ -297,7 +297,7 @@ export const BOONS: Boon[] = [
   {
     id: "buried_treasure",
     name: "Buried Treasure",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Poseidon"],
     element: "Water",
     effect: "Any Minor Finds and Gold Crowns are worth more, and you receive Gold, Healing, and Bones now. \n ▸ Reward Value: +50%/+75%/+100%/+125%",
@@ -469,7 +469,7 @@ export const BOONS: Boon[] = [
   {
     id: "cold_storage",
     name: "Cold Storage",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Demeter"],
     element: "Water",
     effect: "Your Freeze effects last longer. \n ▸ Freeze Duration: +2 Sec./+3 Sec./+4 Sec./+5 Sec.",
@@ -489,7 +489,7 @@ export const BOONS: Boon[] = [
   {
     id: "controlled_burn",
     name: "Controlled Burn",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hestia"],
     element: "Fire",
     effect: "Your \u03a9 Special also launches a fireball, but uses +10 Magick. \n ▸ Fireball Blast Damage: 100/150/200/250",
@@ -527,7 +527,7 @@ export const BOONS: Boon[] = [
   {
     id: "cut_above",
     name: "Cut Above",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Ares"],
     element: "Earth",
     effect: "Your \u03a9 Moves also cause a falling blade to appear over each foe stroke, but use +5 Magick. \n ▸ Blade Damage: 90/120/150/180",
@@ -567,7 +567,7 @@ export const BOONS: Boon[] = [
   {
     id: "dazzling_display",
     name: "Dazzling Display",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Apollo"],
     element: "Fire",
     effect: "Your attacks may inflict Daze. \n ▸ Daze Chance: +10%/+15%/+20%/+25%",
@@ -583,7 +583,7 @@ export const BOONS: Boon[] = [
   {
     id: "death_warrant",
     name: "Death Warrant",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Artemis"],
     element: "Earth",
     effect: "A random foe occasionally becomes *Marked*. If it takes *Critical* damage, this repeats. \n ▸ Time Between Marks: *20 Sec./18 Sec./16 Sec./14 Sec.*",
@@ -592,7 +592,7 @@ export const BOONS: Boon[] = [
   {
     id: "divine_vengeance",
     name: "Divine Vengeance",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Zeus"],
     element: "Air",
     effect: "After you take damage, your foe is struck by lightning, and again *50%* of the time. \n ▸ Bolt Damage: 100 (up to: 2/3/4/5 times)",
@@ -601,7 +601,7 @@ export const BOONS: Boon[] = [
   {
     id: "double_strike",
     name: "Double Strike",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Zeus"],
     element: "Air",
     effect: "Your lightning bolt effects may strike *2* times. \n ▸ Bonus Bolt Chance: +10%/15%/20%/25%",
@@ -625,7 +625,7 @@ export const BOONS: Boon[] = [
   {
     id: "dying_wish",
     name: "Dying Wish",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hera"],
     element: "Air",
     effect: "Whenever Hitch-afflicted foes are slain, damage all other Hitch-afflicted foes. \n ▸ Hitch Death Damage: 40/60/80/100",
@@ -646,7 +646,7 @@ export const BOONS: Boon[] = [
   {
     id: "easy_shot",
     name: "Easy Shot",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Artemis"],
     element: "Air",
     effect: "A piercing arrow fires towards any foe damaged by your *Ω Cast*. \n ▸ Arrow Damage: *50/62/75/87*",
@@ -685,7 +685,7 @@ export const BOONS: Boon[] = [
   {
     id: "electric_overload",
     name: "Electric Overload",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Zeus"],
     element: "Air",
     effect: "Your chain-lightning deals more damage and bounces up to *+3* times. \n ▸ Chain-Lightning Damage: +20%/+30%/+40%/+50%",
@@ -751,7 +751,7 @@ export const BOONS: Boon[] = [
   {
     id: "extended_family",
     name: "Extended Family",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hera"],
     element: "Fire",
     effect: "Your damaging effects from Olympians are stronger for each Boon-giver you have. \n ▸ Bonus Effect Damage per God(dess): +3%/+4%/+5%/+6%",
@@ -760,7 +760,7 @@ export const BOONS: Boon[] = [
   {
     id: "extra_dose",
     name: "Extra Dose",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Apollo"],
     element: "Air",
     effect: "Your Attack has a chance to hit *2* times. \n ▸ Double Strike Chance: +5%/+8%/+10%/+13%",
@@ -786,7 +786,7 @@ export const BOONS: Boon[] = [
   {
     id: "fine_line",
     name: "Fine Line",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hera"],
     element: "Earth",
     effect: "Your Ω Moves create a fissure that deals damage in a long line, but use +15 Magick. \n ▸ Rift Damage: 120/150/180/210",
@@ -842,7 +842,7 @@ export const BOONS: Boon[] = [
   {
     id: "flash_fry",
     name: "Flash Fry",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hestia"],
     element: "Fire",
     effect: "Your foes perish in a blast that damages any surrounding foes. \n ▸ Blast Damage When Slain: 60/90/120/150",
@@ -965,7 +965,7 @@ export const BOONS: Boon[] = [
   {
     id: "furnace_blast",
     name: "Furnace Blast",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hephaestus"],
     element: "Fire",
     effect: "Your blast effects from Hephaestus also inflict Glow on foes. \n ▸ Glow Bonus Damage: +15%/+19%/+25%/+26%",
@@ -986,7 +986,7 @@ export const BOONS: Boon[] = [
   {
     id: "geyser_spout",
     name: "Geyser Spout",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Poseidon"],
     element: "Water",
     effect: "Your \u03a9 Cast gains Power and knocks foes away. \n ▸ Omega Cast Power: +150/+200/+250/+300",
@@ -1047,7 +1047,7 @@ export const BOONS: Boon[] = [
   {
     id: "glowing_coal",
     name: "Glowing Coal",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hestia"],
     element: "Fire",
     effect: "Hold Cast to aim a fireball that explodes on impact. The binding circle forms there. \n ▸ Fireball Blast Damage: 60/90/120/150",
@@ -1056,7 +1056,7 @@ export const BOONS: Boon[] = [
   {
     id: "grand_caldera",
     name: "Grand Caldera",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hephaestus"],
     element: "Fire",
     effect: "Your blast effects from Hephaestus deal more damage and are *50%* larger. \n ▸ Bonus Blast Damage: +75/+100/+125/+150",
@@ -1076,7 +1076,7 @@ export const BOONS: Boon[] = [
   {
     id: "grievous_blow",
     name: "Grievous Blow",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Ares"],
     element: "Earth",
     effect: "Foes with Wounds may suffer *200%* damage when struck. \n ▸ Double Damage Chance: +10%/+15%/+20%/+25%",
@@ -1135,7 +1135,7 @@ export const BOONS: Boon[] = [
   {
     id: "healthy_rebound",
     name: "Healthy Rebound",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Aphrodite"],
     element: "Water",
     effect: "Whenever you exit a Location, restore 100% Health if you have not lost too much. \n ▸ Min Life for Full Recovery: 80%/70%/60%/50%",
@@ -1150,7 +1150,7 @@ export const BOONS: Boon[] = [
   {
     id: "heart_breaker",
     name: "Heart Breaker",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Aphrodite"],
     element: "Water",
     effect: "Whenever you use 40 Magick, create a Heartthrob. \n ▸ Heartthrob Blast Damage: 80/100/120/140",
@@ -1221,7 +1221,7 @@ export const BOONS: Boon[] = [
   {
     id: "heavy_metal",
     name: "Heavy Metal",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hephaestus"],
     element: "Earth",
     effect: "Your Weapon deals more damage based on *20%* of your Armor, and you gain some now. \n ▸ Armor Gained: +50/+75/+100/+125",
@@ -1269,7 +1269,7 @@ export const BOONS: Boon[] = [
   {
     id: "hereditary_bane",
     name: "Hereditary Bane",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hera"],
     element: "Water",
     effect: "Your Hitch effects deal more damage and last *+5 Sec.* \n ▸ Hitch Damage: +10%/+15%/+20%/+25%",
@@ -1290,7 +1290,7 @@ export const BOONS: Boon[] = [
   {
     id: "high_surf",
     name: "High Surf",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Poseidon"],
     element: "Water",
     effect: "Hit surrounding foes with a powerful splash as they start to strike, but you Prime 30 Magick. \n ▸ Splash Damage: 40/60/80/100",
@@ -1299,7 +1299,7 @@ export const BOONS: Boon[] = [
   {
     id: "highly_flammable",
     name: "Highly Flammable",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hestia"],
     element: "Fire",
     effect: "Whenever you inflict Scorch on a foe for the first time, inflict more. \n ▸ First-Time Scorch Damage: +80/+120/+160/+200",
@@ -1349,7 +1349,7 @@ export const BOONS: Boon[] = [
   {
     id: "hot_pot",
     name: "Hot Pot",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hestia"],
     element: "Fire",
     effect: "Gain a chance to Dodge, which is doubled against Scorch-afflicted foes. \n ▸ Bonus Dodge Chance: +4%/+5%/+6%/+7%",
@@ -1369,7 +1369,7 @@ export const BOONS: Boon[] = [
   {
     id: "hydraulic_might",
     name: "Hydraulic Might",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Poseidon"],
     element: "Water",
     effect: "At the start of each Encounter, your Attacks and Specials are stronger for *10 Sec.* \n ▸ Initial Damage Bonus: +100%/+133%/+166%/+200%",
@@ -1477,7 +1477,7 @@ export const BOONS: Boon[] = [
   {
     id: "killing_stroke",
     name: "Killing Stroke",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Artemis"],
     element: "Air",
     effect: "Your *Specials* may deal *Critical* damage, but you *Prime* *40 Magick*. \n ▸ Critical Specials Chance: *+10%/+12%/+14%/+16%*",
@@ -1543,7 +1543,7 @@ export const BOONS: Boon[] = [
   {
     id: "lethal_snare",
     name: "Lethal Snare",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Artemis"],
     element: "Earth",
     effect: "Foes in your *Casts* may take *Critical* damage from your *Attacks*. \n ▸ Critical Chance: *+10%/+13%/+16%/+19%*",
@@ -1552,7 +1552,7 @@ export const BOONS: Boon[] = [
   {
     id: "light_smite",
     name: "Light Smite",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Apollo"],
     element: "Fire",
     effect: "After you take damage, automatically damage and Daze _all_ foes in the vicinity. \n ▸ Revenge Damage: 50/75/100/125",
@@ -1562,7 +1562,7 @@ export const BOONS: Boon[] = [
   {
     id: "lightning_lance",
     name: "Lightning Lance",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Zeus"],
     element: "Air",
     effect: "Hold Cast to aim where the binding circle appears. Foes within are struck by lightning. \n ▸ Bolt Damage: 50/70/90/110",
@@ -1588,7 +1588,7 @@ export const BOONS: Boon[] = [
   {
     id: "local_climate",
     name: "Local Climate",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Demeter"],
     element: "Earth",
     effect: "Your \u03a9 Cast deals more damage. If you are in the binding circle, the bonus is doubled. \n ▸ Omega Cast Bonus Damage: +20%/+30%/+40%/+50%",
@@ -1700,7 +1700,7 @@ export const BOONS: Boon[] = [
   {
     id: "meat_grinder",
     name: "Meat Grinder",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Ares"],
     element: "Earth",
     effect: "Your \u03a9 Cast also creates a Blade Rift in the binding circle. \n ▸ Rift Damage (every 1 Sec.): 30/40/50/60",
@@ -1726,7 +1726,7 @@ export const BOONS: Boon[] = [
   {
     id: "molten_touch",
     name: "Molten Touch",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hephaestus"],
     element: "Fire",
     effect: "Your Attacks and Specials deal bonus damage to Armor. \n ▸ Damage vs. Armor: +40%/+60%/+80%/+100%",
@@ -1735,7 +1735,7 @@ export const BOONS: Boon[] = [
   {
     id: "mutual_destruction",
     name: "Mutual Destruction",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Ares"],
     element: "Earth",
     effect: "Gain a chance to deal *200%* damage that increases the less Health you have remaining. \n ▸ Chance per Missing Life Point: 0.1%/0.12%/0.14%/0.16%",
@@ -1853,7 +1853,7 @@ export const BOONS: Boon[] = [
   {
     id: "ocean_swell",
     name: "Ocean Swell",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Poseidon"],
     element: "Water",
     effect: "Your \u03a9 Moves also launch a wide wave ahead that knocks foes away, but use +5 Magick. \n ▸ Wave Damage: 40/60/80/100",
@@ -1872,7 +1872,7 @@ export const BOONS: Boon[] = [
   {
     id: "perfect_image",
     name: "Perfect Image",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Apollo"],
     element: "Air",
     effect: "You deal more damage until you take damage. If you take no more for *15 Sec.*, regain this. \n ▸ No-Hit Bonus Damage: +10%/+15%/+20%/+25%",
@@ -1881,7 +1881,7 @@ export const BOONS: Boon[] = [
   {
     id: "plentiful_forage",
     name: "Plentiful Forage",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Demeter"],
     element: "Earth",
     effect: "Whenever you gather resources from a Location, restore some Health. Gain *+1 Mystery Seed* now. \n ▸ Life Restored from Gathering: 10%/12%/14%/16%",
@@ -1890,7 +1890,7 @@ export const BOONS: Boon[] = [
   {
     id: "power_surge",
     name: "Power Surge",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Zeus"],
     element: "Air",
     effect: "Whenever you use Magick, a random surrounding foe is struck by lightning. \n ▸ Bolt Damage: 30/40/50/60",
@@ -1925,7 +1925,7 @@ export const BOONS: Boon[] = [
   {
     id: "pressure_points",
     name: "Pressure Points",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Artemis"],
     element: "Earth",
     effect: "Any damage you deal may be *Critical*. \n ▸ Critical Chance: *+3%/+4%/+5%/+6%*",
@@ -1934,7 +1934,7 @@ export const BOONS: Boon[] = [
   {
     id: "profuse_bleeding",
     name: "Profuse Bleeding",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Ares"],
     element: "Earth",
     effect: "Whenever you inflict Wounds or collect Plasma, create a falling blade over a surrounding foe. \n ▸ Blade Damage: 30/50/70/90",
@@ -1955,7 +1955,7 @@ export const BOONS: Boon[] = [
   {
     id: "prominence_flare",
     name: "Prominence Flare",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Apollo"],
     element: "Fire",
     effect: "After your \u03a9 Cast expires, rapidly deal damage in the area for *2 Sec.* \n ▸ Omega Cast Damage (every 0.13 Sec.): 10/12/14/16",
@@ -2016,7 +2016,7 @@ export const BOONS: Boon[] = [
   {
     id: "pyro_technique",
     name: "Pyro Technique",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hestia"],
     element: "Fire",
     effect: "Your Scorch effects deal damage faster. \n ▸ Scorch Damage Rate: +50%/+75%/+100%/+125%",
@@ -2163,7 +2163,7 @@ export const BOONS: Boon[] = [
   {
     id: "rousing_reception",
     name: "Rousing Reception",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hera"],
     element: "Air",
     effect: "Your Casts damage any foes as they join the Encounter, wherever they appear. \n ▸ On-Spawn Damage: 60/80/100/120",
@@ -2290,7 +2290,7 @@ export const BOONS: Boon[] = [
   {
     id: "sea_star",
     name: "Sea Star",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Poseidon"],
     element: "Water",
     effect: "Whenever you claim rewards other than Boons, Daedalus Hammers, or rare resources, a copy may appear. \n ▸ Double Reward Chance: 25%/30%/35%/40%",
@@ -2299,7 +2299,7 @@ export const BOONS: Boon[] = [
   {
     id: "secret_crush",
     name: "Secret Crush",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Aphrodite"],
     element: "Air",
     effect: "Your Attacks gain Power, but you Prime 20 Magick. \n ▸ Bonus Power: +5/+7/+9/+11",
@@ -2308,7 +2308,7 @@ export const BOONS: Boon[] = [
   {
     id: "security_system",
     name: "Security System",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hephaestus"],
     element: "Earth",
     effect: "At the start of each Encounter, you gain Armor that lasts for *7 Sec.* \n ▸ Temporary Starting Armor: 75/100/125/150",
@@ -2365,7 +2365,7 @@ export const BOONS: Boon[] = [
   {
     id: "shadow_pounce",
     name: "Shadow Pounce",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Artemis"],
     element: "Air",
     effect: "After you *Dash*, your *Ω Moves* may deal *Critical* damage for *2 Sec.* \n ▸ Omega Critical Chance: *+10%/+12%/+14%/+16%*",
@@ -2374,7 +2374,7 @@ export const BOONS: Boon[] = [
   {
     id: "shameless_attitude",
     name: "Shameless Attitude",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Aphrodite"],
     element: "Air",
     effect: "You deal more damage. While you have at least 80% Health, the bonus is doubled. \n ▸ Bonus Damage: +5%/+7%/+9%/+11%",
@@ -2424,7 +2424,7 @@ export const BOONS: Boon[] = [
   {
     id: "slippery_slope",
     name: "Slippery Slope",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Poseidon"],
     element: "Water",
     effect: "Your splash effects from Poseidon also inflict Froth, and Froth deals more damage. \n ▸ Froth Damage: +20%/+50%/+80%/+110%",
@@ -2480,7 +2480,7 @@ export const BOONS: Boon[] = [
   {
     id: "snow_queen",
     name: "Snow Queen",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Demeter"],
     element: "Earth",
     effect: "Gain a barrier that stops *1* instance of damage in each Location, but you Prime Magick. \n ▸ Magick Primed: 25/20/15/10",
@@ -2489,7 +2489,7 @@ export const BOONS: Boon[] = [
   {
     id: "snuffed_candle",
     name: "Snuffed Candle",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hestia"],
     element: "Fire",
     effect: "You deal more damage to foes that are nowhere near other foes. \n ▸ Damage to Isolated Foes: +15%/+18%/+21%/+24%",
@@ -2508,7 +2508,7 @@ export const BOONS: Boon[] = [
   {
     id: "spiritual_affirmation",
     name: "Spiritual Affirmation",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Aphrodite"],
     element: "Air",
     effect: "Gain Max Health and Max Magick now and for the rest of this night. \n ▸ Bonus Life & Magick Gain: +15%/+20%/+25%/+30%",
@@ -2526,7 +2526,7 @@ export const BOONS: Boon[] = [
   {
     id: "static_shock",
     name: "Static Shock",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Zeus"],
     element: "Air",
     effect: "Your strikes emit chain-lightning that bounces up to *4* times, but you Prime 50 Magick. \n ▸ Chain-Lightning Damage: 10/15/20/25",
@@ -2535,7 +2535,7 @@ export const BOONS: Boon[] = [
   {
     id: "steady_growth",
     name: "Steady Growth",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Demeter"],
     element: "Earth",
     effect: "Whenever you clear enough Encounters, a random Boon you have gains Rarity. \n ▸ Encounters per Rarity Upgrade: 6/5/4/3",
@@ -2617,7 +2617,7 @@ export const BOONS: Boon[] = [
   {
     id: "support_fire",
     name: "Support Fire",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Artemis"],
     element: "Air",
     effect: "After you hit with your *Attacks* or *Specials*, fire a seeking arrow. \n ▸ Arrow Damage: *10/15/20/25*",
@@ -2626,7 +2626,7 @@ export const BOONS: Boon[] = [
   {
     id: "super_nova",
     name: "Super Nova",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Apollo"],
     element: "Air",
     effect: "Your Casts expand in size until they expire. \n ▸ Max Cast Size: 40%/50%/60%/70%",
@@ -2635,7 +2635,7 @@ export const BOONS: Boon[] = [
   {
     id: "sweet_surrender",
     name: "Sweet Surrender",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Aphrodite"],
     element: "Water",
     effect: "Weak-afflicted foes take more damage. \n ▸ Damage vs. Weak: +10%/+15%/+20%/+25%",
@@ -2780,7 +2780,7 @@ export const BOONS: Boon[] = [
   {
     id: "trusty_shield",
     name: "Trusty Shield",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hephaestus"],
     element: "Earth",
     effect: "Whenever you enter a Location, gain Armor for that Location, but you Prime 30 Magick. \n ▸ Starting Armor: +10/+15/+20/+25",
@@ -2789,7 +2789,7 @@ export const BOONS: Boon[] = [
   {
     id: "uncanny_fortitude",
     name: "Uncanny Fortitude",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hephaestus"],
     element: "Earth",
     effect: "Gain bonus Max Health based on your Magick limit. \n ▸ Max Life from Magick: +20%/+30%/+40%/+50%",
@@ -2798,7 +2798,7 @@ export const BOONS: Boon[] = [
   {
     id: "uncommon_grace",
     name: "Uncommon Grace",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hera"],
     element: "Fire",
     effect: "While none of your other Boons are Common, deal more damage. \n ▸ Common-Less Bonus Damage: +10%/+15%/+20%/+25%",
@@ -2858,7 +2858,7 @@ export const BOONS: Boon[] = [
   {
     id: "visceral_impact",
     name: "Visceral Impact",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Ares"],
     element: "Earth",
     effect: "After you take damage or a foe is slain, spill Plasma, sometimes twice. \n ▸ Bonus Plasma Chance: 25%/35%/45%/55%",
@@ -2867,7 +2867,7 @@ export const BOONS: Boon[] = [
   {
     id: "vital_sign",
     name: "Vital Sign",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Artemis"],
     element: "Earth",
     effect: "Foes with at least *80% Health* or *80% Armor* may take *Critical* damage. \n ▸ Critical Chance: *+15%/+22%/+30%/+38%*",
@@ -2961,7 +2961,7 @@ export const BOONS: Boon[] = [
   {
     id: "weed_killer",
     name: "Weed Killer",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Demeter"],
     element: "Earth",
     effect: "Your \u03a9 Attack deals more damage, but uses +10 Magick. \n ▸ Omega Attack Damage: +50%/+75%/+100%/+125%",
@@ -3013,7 +3013,7 @@ export const BOONS: Boon[] = [
   {
     id: "whispered_prayer",
     name: "Whispered Prayer",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Artemis"],
     element: "Air",
     effect: "Your *Hex* may deal *Critical* damage. \n ▸ Hex Critical Chance: *+30%/+35%/+40%/+45%*",
@@ -3045,7 +3045,7 @@ export const BOONS: Boon[] = [
   {
     id: "nimble_limbs",
     name: "Nimble Limbs",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Earth",
     effect: "Your *Attack, Special,* and *Cast* are faster. \n ▸ Strike Speed: *+10%/+15%/+20%/+25%*",
@@ -3054,7 +3054,7 @@ export const BOONS: Boon[] = [
   {
     id: "racing_thoughts",
     name: "Racing Thoughts",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Earth",
     effect: "Your *Ω Moves* are faster. \n ▸ Omega Move Speed: *+15%/+20%/+25%/+30%*",
@@ -3063,7 +3063,7 @@ export const BOONS: Boon[] = [
   {
     id: "winners_circle",
     name: "Winners Circle",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Earth",
     effect: "You *Channel* your *Ω Cast* faster and your *Casts* deal damage and expire faster \n ▸ Cast Speed: *+40%/+50%/+60%/+70%*",
@@ -3072,7 +3072,7 @@ export const BOONS: Boon[] = [
   {
     id: "nitro_boost",
     name: "Nitro Boost",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Fire",
     effect: "Your *Sprint* is *15%* faster and gives you a barrier that ignores instances of damage. \n ▸ Hits Blocked per Encounter: *1/2/3/4*",
@@ -3081,7 +3081,7 @@ export const BOONS: Boon[] = [
   {
     id: "stutter_step",
     name: "Stutter Step",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Earth",
     effect: "You can *Dash* more frequently. \n ▸ Dash Recovery Speed: *+25%/+30%/+35%/+40%*",
@@ -3090,7 +3090,7 @@ export const BOONS: Boon[] = [
   {
     id: "hasty_retreat",
     name: "Hasty Retreat",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Air",
     effect: "Gain *Dodge* chance and move speed that increase the more *Boons* you have. \n ▸ Bonus per Boon: *+0.5%/+0.75%/+1%/+1.25%*",
@@ -3099,7 +3099,7 @@ export const BOONS: Boon[] = [
   {
     id: "hard_target",
     name: "Hard Target",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Air",
     effect: "Most foes' ranged shots are slower. \n ▸ Foe Projectile Speed: *-30%/-40%/-50%/-60%*",
@@ -3108,7 +3108,7 @@ export const BOONS: Boon[] = [
   {
     id: "quick_buck",
     name: "Quick Buck",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Air",
     effect: "Any Gold you gain is worth more. Receive *+100 Gold* now, plus the bonus! \n ▸ Bonus Gold: *+20%/+30%/+40%/+50%*",
@@ -3117,7 +3117,7 @@ export const BOONS: Boon[] = [
   {
     id: "mean_streak",
     name: "Mean Streak",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Air",
     effect: "Whenever you slay a foe, deal more damage with your *Weapon* for the next *45 Sec.* \n ▸ Bonus Damage per Slain Foe: *+1%/+1.5%/+2%/+2.5%*",
@@ -3126,7 +3126,7 @@ export const BOONS: Boon[] = [
   {
     id: "travel_deal",
     name: "Travel Deal",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Fire",
     effect: "Your first purchase in each *Location* costs less *Gold*, and another item appears afterwards. \n ▸ First-Purchase Discount: *-5%/-10%/-15%/-20%*",
@@ -3135,7 +3135,7 @@ export const BOONS: Boon[] = [
   {
     id: "success_rate",
     name: "Success Rate",
-    type: "Non-Core",
+    type: "Passive",
     gods: ["Hermes"],
     element: "Water",
     effect: "Your chance-based effects are most likely to occur, except for *Dodge* or *Daze*. \n ▸ Greater Chances: *30%/40%/50%/60%*",
