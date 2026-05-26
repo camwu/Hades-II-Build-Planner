@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react';
 import { AlertTriangle } from 'lucide-react';
-import { Boon, GOD_COLORS } from '../types';
+import { Boon } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { OriginationTracker } from './OriginationTracker';
 
@@ -10,7 +10,7 @@ interface GodSummaryProps {
   activeArcana?: number[];
 }
 
-const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades', 'Chaos', 'Raki', 'Twilight Curse'];
+const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades'];
 
 export function GodSummary({ coreBuild, additionalBoons, activeArcana = [] }: GodSummaryProps) {
   const activeOrderRef = useRef<string[]>([]);
@@ -88,7 +88,6 @@ export function GodSummary({ coreBuild, additionalBoons, activeArcana = [] }: Go
   }, [godData]);
 
   const renderGodItem = (god: string, count: number, index: number, total: number) => {
-    const godColor = GOD_COLORS[god] || 'text-gray-400';
     const boons = godBoons[god] || [];
     
     let tooltipPositionClass = "left-1/2 -translate-x-1/2 mt-2";
@@ -104,7 +103,7 @@ export function GodSummary({ coreBuild, additionalBoons, activeArcana = [] }: Go
 
     return (
       <div key={god} className="group relative flex items-center gap-2 cursor-help">
-        <div className={`w-6 h-6 flex items-center justify-center z-20 transition-all duration-300 ${godColor}`}>
+        <div className="w-6 h-6 flex items-center justify-center z-20">
           <GodIcon god={god} className="w-full h-full object-contain" />
         </div>
         <span className="text-sm font-bold font-display text-gray-200">
@@ -115,7 +114,7 @@ export function GodSummary({ coreBuild, additionalBoons, activeArcana = [] }: Go
         <div className={`absolute top-full ${tooltipPositionClass} w-64 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50`}>
           <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
             <div className="flex items-center gap-2">
-              <div className={`w-4 h-4 ${godColor}`}>
+              <div className="w-4 h-4">
                 <GodIcon god={god} className="w-full h-full object-contain" />
               </div>
               <span className={`text-sm font-bold tracking-widest text-gray-200 ${/\d/.test(god) ? 'font-display' : 'font-sc normal-case'}`}>{god}</span>

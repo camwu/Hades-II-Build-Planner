@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Skull } from 'lucide-react';
-import { Boon, GOD_COLORS } from '../types';
+import { Boon } from '../types';
 import { GodIcon } from './Icons';
 import { STATUS_CURSES } from '../data/statusCursesData';
 import { ARCANA_CARDS } from '../data/arcanaData';
@@ -14,6 +14,8 @@ interface OriginationTrackerProps {
 }
 
 export function OriginationTracker({ coreBuild, additionalBoons, activeArcana = [] }: OriginationTrackerProps) {
+  const activeOrderRef = useRef<string[]>([]);
+
   const activeBoons = useMemo(() => {
     const all = Object.values(coreBuild).filter((b): b is Boon => !!b);
     return [...all, ...additionalBoons];
@@ -24,10 +26,40 @@ export function OriginationTracker({ coreBuild, additionalBoons, activeArcana = 
   }, []);
 
   const activeCurses = useMemo(() => {
-    return STATUS_CURSES.filter(curse => {
-      return activeBoons.some(boon => boon.inflictsCurse === curse.id);
+    const currentlyActiveIds = new Set(
+      activeBoons
+        .map(boon => boon.inflictsCurse)
+        .filter((id): id is string => !!id)
+    );
+
+    const kept = activeOrderRef.current.filter(curseId => currentlyActiveIds.has(curseId));
+    const orderedNewCurses: string[] = [];
+
+    const recordNewCurse = (boon: Boon | null) => {
+      if (boon?.inflictsCurse) {
+        const curseId = boon.inflictsCurse;
+        if (currentlyActiveIds.has(curseId) && !kept.includes(curseId) && !orderedNewCurses.includes(curseId)) {
+          orderedNewCurses.push(curseId);
+        }
+      }
+    };
+
+    const slotsInOrder = ['Attack', 'Special', 'Cast', 'Sprint', 'Magick'];
+    slotsInOrder.forEach(slot => recordNewCurse(coreBuild[slot]));
+    additionalBoons.forEach(recordNewCurse);
+
+    const mergedOrder = [...kept, ...orderedNewCurses];
+    activeOrderRef.current = mergedOrder;
+
+    const matchedCurses = STATUS_CURSES.filter(curse => currentlyActiveIds.has(curse.id));
+    return [...matchedCurses].sort((a, b) => {
+      const indexA = mergedOrder.indexOf(a.id);
+      const indexB = mergedOrder.indexOf(b.id);
+      const valA = indexA === -1 ? 999 : indexA;
+      const valB = indexB === -1 ? 999 : indexB;
+      return valA - valB;
     });
-  }, [activeBoons]);
+  }, [activeBoons, coreBuild, additionalBoons]);
 
   const curseGods = useMemo(() => {
     const godsMap = new Map<string, string[]>();
@@ -155,14 +187,13 @@ export function OriginationTracker({ coreBuild, additionalBoons, activeArcana = 
               <div className="flex flex-col gap-2.5">
                 {originationContributingCurses.map(({ curse, boons }) => {
                   const mainGod = curse.god;
-                  const godColor = mainGod ? (GOD_COLORS[mainGod] || 'text-gray-400') : 'text-gray-400';
                   return (
                     <div key={curse.id} className="bg-white/[0.03] border border-white/5 rounded-xl p-2.5 flex flex-col gap-2">
                       {/* Curse Name Header */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 min-w-0">
                           {mainGod ? (
-                            <div className={`w-4 h-4 flex-shrink-0 ${godColor}`}>
+                            <div className="w-4 h-4 flex-shrink-0">
                               <GodIcon god={mainGod} className="w-full h-full object-contain" />
                             </div>
                           ) : (

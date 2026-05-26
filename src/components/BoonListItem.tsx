@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
 import { Lock, Check, X, Pin } from 'lucide-react';
-import { Boon, BoonPrerequisite, ELEMENT_COLORS, GOD_COLORS, GOD_SYMBOLS } from '../types';
+import { Boon, BoonPrerequisite, ELEMENT_COLORS, GOD_SYMBOLS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedEffectText } from './FormattedEffectText';
@@ -12,7 +12,7 @@ import { BOONS } from '../data/boonsData';
 export function HighlightedText({ text }: { text: string }) {
   if (!text) return null;
 
-  const GOD_NAMES = Object.keys(GOD_COLORS);
+  const GOD_NAMES = Object.keys(GOD_SYMBOLS);
   const BOON_NAMES = BOONS.map(b => b.name);
   const SLOT_KEYWORDS = ['Attack', 'Special', 'Cast', 'Sprint', 'Dash', 'Gain', 'Dodge', 'Magick', 'Mana'];
   const SPECIAL_WORDS = ['Duo Boon', 'Duo', 'Boon', 'Boons', 'Requirement', 'Requirements', 'Locked', 'Infusion', 'Essences', 'Essence'];

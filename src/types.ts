@@ -57,24 +57,6 @@ export interface ArcanaCard {
 
 export const ALL_ELEMENTS: ElementType[] = ['Earth', 'Water', 'Air', 'Fire', 'Aether'];
 
-export const GOD_COLORS: Record<string, string> = {
-  Zeus: 'text-yellow-400',
-  Poseidon: 'text-blue-400',
-  Demeter: 'text-cyan-300',
-  Apollo: 'text-orange-300',
-  Hestia: 'text-orange-600',
-  Aphrodite: 'text-pink-300',
-  Hera: 'text-purple-400',
-  Hephaestus: 'text-amber-700',
-  Ares: 'text-red-600',
-  Artemis: 'text-emerald-400',
-  Dionysus: 'text-purple-600',
-  Hades: 'text-red-900',
-  Raki: 'text-emerald-200',
-  'Twilight Curse': 'text-indigo-600',
-  Hermes: 'text-amber-400'
-};
-
 export const GOD_SYMBOLS: Record<string, string> = {
   Zeus: '/assets/gods/Zeus_symbol.webp',
   Poseidon: '/assets/gods/Poseidon_symbol.webp',
