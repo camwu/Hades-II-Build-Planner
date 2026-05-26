@@ -84,5 +84,12 @@ export const STATUS_CURSES: StatusCurse[] = [
     description: 'After taking *120* damage, afflicted foes get struck by lightning.',
     duration: '4 Sec.',
     god: 'Zeus'
+  },
+  {
+    id: 'scorn',
+    name: 'Scorn',
+    description: 'Afflicted foes take *+30% Attack* and *Special* damage.',
+    duration: '10 Sec.',
+    god: 'Hades'
   }
 ];

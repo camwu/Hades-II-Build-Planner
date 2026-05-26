@@ -598,7 +598,7 @@ export default function App() {
   const selectBoon = (boon: Boon, slotId: string) => {
     if (!isValidForSlot(boon, slotId)) return;
 
-    // Safety check for incompatible boons (Glowing Coal, Lightning Lance, and Hostile Environment)
+    // Safety check for incompatible boons (Glowing Coal, Lightning Lance, Hostile Environment, and Howling Soul)
     if (getIncompatibleBoonInSelection(boon.id, selectedBoonIds)) return;
 
     if (slotId === 'Passive') {

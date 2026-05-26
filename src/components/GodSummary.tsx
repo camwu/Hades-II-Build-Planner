@@ -167,7 +167,7 @@ export function GodSummary({ coreBuild, additionalBoons, activeArcana = [] }: Go
                   God Pool Warning
                 </div>
                 <div className="mb-1.5">Standard god pool exceeded!</div>
-                Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, and Hermes) are included in the god pool each night. See{' '}
+                Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, Hermes, and Hades) are included in the god pool each night. See{' '}
                 <a 
                   href="https://hades.fandom.com/wiki/Boons/Hades_II#God_Pool" 
                   target="_blank" 

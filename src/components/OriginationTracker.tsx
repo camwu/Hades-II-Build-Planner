@@ -4,6 +4,7 @@ import { Boon } from '../types';
 import { GodIcon } from './Icons';
 import { STATUS_CURSES } from '../data/statusCursesData';
 import { ARCANA_CARDS } from '../data/arcanaData';
+import { OLYMPIAN_GODS } from '../constants';
 import { FormattedEffectText } from './FormattedEffectText';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -87,24 +88,35 @@ export function OriginationTracker({ coreBuild, additionalBoons, activeArcana = 
   const uniqueGods = useMemo(() => {
     const gods = new Set<string>();
     activeCurses.forEach(curse => {
+      if (!OLYMPIAN_GODS.includes(curse.god)) return; // Only process Olympian curses
       const godsForCurse = curseGods.get(curse.id) || [];
-      godsForCurse.forEach(g => gods.add(g));
+      godsForCurse.forEach(g => {
+        if (OLYMPIAN_GODS.includes(g)) {
+          gods.add(g);
+        }
+      });
     });
     return Array.from(gods);
   }, [activeCurses, curseGods]);
+
+  const activeOlympianCursesCount = useMemo(() => {
+    return activeCurses.filter(curse => OLYMPIAN_GODS.includes(curse.god)).length;
+  }, [activeCurses]);
 
   const isArcanaActive = activeArcana.includes(14);
   const isOriginationActive = uniqueGods.length >= 2;
   const isOriginationEffectActive = isOriginationActive && isArcanaActive;
 
   const originationContributingCurses = useMemo(() => {
-    return activeCurses.map(curse => {
-      const contributingBoons = activeBoons.filter(boon => boon.inflictsCurse === curse.id);
-      return {
-        curse,
-        boons: contributingBoons
-      };
-    }).filter(item => item.boons.length > 0);
+    return activeCurses
+      .filter(curse => OLYMPIAN_GODS.includes(curse.god))
+      .map(curse => {
+        const contributingBoons = activeBoons.filter(boon => boon.inflictsCurse === curse.id);
+        return {
+          curse,
+          boons: contributingBoons
+        };
+      }).filter(item => item.boons.length > 0);
   }, [activeCurses, activeBoons]);
 
   return (
@@ -167,13 +179,13 @@ export function OriginationTracker({ coreBuild, additionalBoons, activeArcana = 
               </span>
             </div>
             <div className="flex justify-between text-[11px] text-gray-400">
-              <span>Active Curses:</span>
-              <span className={activeCurses.length >= 2 ? 'text-emerald-400 font-bold' : 'text-red-400 font-bold'}>
-                {activeCurses.length} / 2
+              <span>Active Olympian Curses:</span>
+              <span className={activeOlympianCursesCount >= 2 ? 'text-emerald-400 font-bold' : 'text-red-400 font-bold'}>
+                {activeOlympianCursesCount} / 2
               </span>
             </div>
             <div className="flex justify-between text-[11px] text-gray-400">
-              <span>Unique Gods:</span>
+              <span>Unique Olympian Gods:</span>
               <span className={isOriginationActive ? 'text-emerald-400 font-bold' : 'text-red-400 font-bold'}>
                 {uniqueGods.length} / 2
               </span>
@@ -202,7 +214,7 @@ export function OriginationTracker({ coreBuild, additionalBoons, activeArcana = 
                             </div>
                           )}
                           <span className="text-xs font-sc normal-case font-bold tracking-wide text-gray-200">
-                            {curse.name}
+                             {curse.name}
                           </span>
                         </div>
                         <span className="text-[9px] text-gray-400 font-display font-medium bg-white/5 px-1.5 py-0.5 rounded border border-white/5 flex-shrink-0">

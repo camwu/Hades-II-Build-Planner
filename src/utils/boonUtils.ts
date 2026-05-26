@@ -4,7 +4,8 @@ import { BOONS } from '../data/boonsData';
 export const INCOMPATIBLE_BOON_IDS = [
   "glowing_coal", // Glowing Coal
   "lightning_lance", // Lightning Lance
-  "hostile_environment"  // Hostile Environment
+  "hostile_environment",  // Hostile Environment
+  "howling_soul" // Howling Soul
 ];
 
 export const getIncompatibleBoonInSelection = (

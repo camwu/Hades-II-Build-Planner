@@ -3224,5 +3224,84 @@ export const BOONS: Boon[] = [
         description: "One of the following: Nimble Limbs, Racing Thoughts, Hard Target, Winners Circle, Stutter Step, Hasty Retreat, Mean Streak, or Nitro Boost"
       }
     ]
+  },
+  {
+    id: "life_tax",
+    name: "Life Tax",
+    type: "Passive",
+    gods: ["Hades"],
+    element: null,
+    effect: "Restore Health for *1%* of damage you deal, until you reach the limit. \n ▸ Max Total Life Restored: *150*",
+    icon: "/assets/boons/hades/Life_Tax.webp"
+  },
+  {
+    id: "howling_soul",
+    name: "Howling Soul",
+    type: "Passive",
+    gods: ["Hades"],
+    element: null,
+    effect: "Your *Casts* launch a projectile that seeks foes. The binding circle forms where it hits. \n ▸ Direct-Hit Damage: *200*",
+    icon: "/assets/boons/hades/Howling_Soul.webp"
+  },
+  {
+    id: "old_grudge",
+    name: "Old Grudge",
+    type: "Passive",
+    gods: ["Hades"],
+    element: null,
+    effect: "In your confrontation, *Chronos*/*Typhon* takes a burst of damage after the first *3 Sec.* \n ▸ Chronos/Typhon Life Reduced: *-20% Health*",
+    icon: "/assets/boons/hades/Old_Grudge.webp"
+  },
+  {
+    id: "deep_dissent",
+    name: "Deep Dissent",
+    type: "Passive",
+    gods: ["Hades"],
+    element: null,
+    effect: "In your confrontation, *Chronos*/*Typhon* summons fewer reinforcements. \n ▸ Chronos/Typhon Foes Summoned: *-50%*",
+    icon: "/assets/boons/hades/Deep_Dissent.webp"
+  },
+  {
+    id: "gigaros_dash",
+    name: "Gigaros Dash",
+    type: "Passive",
+    gods: ["Hades"],
+    element: null,
+    effect: "Your *Dash* strikes surrounding foes with a punishing sweep that inflicts *Scorn*. \n ▸ Sweep Damage: *50*",
+    icon: "/assets/boons/hades/Gigaros_Dash.webp",
+    inflictsCurse: "scorn"
+  },
+  {
+    id: "last_gasp",
+    name: "Last Gasp",
+    type: "Passive",
+    gods: ["Hades"],
+    element: null,
+    effect: "Deal more damage based on how many times you used *Death Defiance* this night. \n ▸ Damage per Death Defiance used: *+10%*",
+    icon: "/assets/boons/hades/Last_Gasp.webp",
+    prerequisites: [
+      {
+        boonIds: [],
+        description: "At least one Death Defiance"
+      }
+    ]
+  },
+  {
+    id: "cinerary_circle",
+    name: "Cinerary Circle",
+    type: "Passive",
+    gods: ["Hades"],
+    element: null,
+    effect: "Whenever you use *60 Magick*, summon *3 Soul Urns* around you. \n ▸ Soul Urn Damage: *200*",
+    icon: "/assets/boons/hades/Cinerary_Circle.webp"
+  },
+  {
+    id: "unseen_ire",
+    name: "Unseen Ire",
+    type: "Passive",
+    gods: ["Hades"],
+    element: null,
+    effect: "After you take damage, go *Dark* and deal more damage for the duration. \n ▸ Damage While Dark: *+70%*",
+    icon: "/assets/boons/hades/Unseen_Ire.webp"
   }
 ];

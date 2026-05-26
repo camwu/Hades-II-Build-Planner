@@ -21,6 +21,12 @@ export const SLOT_EXPANDED_WIDTH = '440px';
 
 export const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades'];
 
+export const OLYMPIAN_GODS = [
+  'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 
+  'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Hermes', 
+  'Artemis', 'Athena', 'Dionysus'
+];
+
 export const STORAGE_KEYS = {
   BUILD_STATE: 'hades_build_planner_state',
   PINNED_BOONS: 'hades_build_planner_pinned_boons',

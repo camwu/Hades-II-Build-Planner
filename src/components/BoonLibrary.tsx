@@ -597,7 +597,7 @@ export function BoonLibrary({
                         God Pool Mechanics
                       </p>
                       <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
-                        Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, and Hermes) are included in the god pool each night. If checked, once you have boons from four gods, all other gods' boons are filtered out.
+                        Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, Hermes, and Hades) are included in the god pool each night. If checked, once you have boons from four gods, all other gods' boons are filtered out.
                       </p>
                       {/* Triangular pointer pointing up */}
                       <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
