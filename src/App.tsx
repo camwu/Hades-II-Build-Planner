@@ -33,7 +33,7 @@ import {
   SLOT_MAP,
   SLOT_ABBR
 } from './constants';
-import { isValidForSlot, getIncompatibleBoonInSelection } from './utils/boonUtils';
+import { isValidForSlot, getIncompatibleBoonInSelection, parseSearchQuery, boonMatchesQuery } from './utils/boonUtils';
 import { StaticBoonListItem } from './components/BoonListItem';
 import { CoreSlotRow } from './components/CoreSlotRow';
 import { SortableBoonDisplayCard } from './components/BoonDisplayCard';
@@ -531,13 +531,8 @@ export default function App() {
   }, [coreBuild, additionalBoons]);
 
   const filteredBoons = useMemo(() => {
-    // Compute normalized terms once up front!
-    const searchTerms = searchTerm
-      .toLowerCase()
-      .replace(/Ω/g, 'omega')
-      .replace(/ω/g, 'omega')
-      .split(/\s+/)
-      .filter(t => t.length > 0);
+    // Compute normalized search query once up front, supporting complex logical searches (AND, OR, NOT, Phrases)
+    const searchQuery = parseSearchQuery(searchTerm);
 
     return BOONS.filter(boon => {
       // Don't show pinned boons in the main list since they are pinned to the top
@@ -560,15 +555,7 @@ export default function App() {
         }
       }
 
-      const matchesSearch = searchTerms.length === 0 || searchTerms.every(term => {
-        const check = (text: string) => text.toLowerCase().replace(/Ω/g, 'omega').replace(/ω/g, 'omega').includes(term);
-        return check(boon.name) || 
-               check(boon.effect) ||
-               boon.gods.some(god => check(god)) ||
-               check(boon.type) ||
-               (boon.element && check(boon.element));
-      });
-      
+      const matchesSearch = boonMatchesQuery(boon, searchQuery);
       const matchesType = (activeSlot ? isValidForSlot(boon, activeSlot) : true);
       
       return matchesSearch && matchesType;

@@ -371,35 +371,93 @@ export function BoonLibrary({
                     <Info className="w-3.5 h-3.5" />
                   </button>
                   {/* Tooltip */}
-                  <div className="absolute top-full right-0 mt-2.5 w-64 bg-hades-bg-dark border border-hades-border-light rounded-lg p-3.5 shadow-2xl opacity-0 scale-95 invisible group-hover/info:opacity-100 group-hover/info:scale-100 group-hover/info:visible transition-all duration-200 origin-top-right z-50 pointer-events-none">
+                  <div className="absolute top-full right-[-8px] mt-2.5 w-80 bg-hades-bg-dark border border-hades-border-light rounded-lg p-3.5 shadow-2xl opacity-0 scale-95 invisible group-hover/info:opacity-100 group-hover/info:scale-100 group-hover/info:visible transition-all duration-200 origin-top-right z-50 pointer-events-none group-hover/info:pointer-events-auto">
                     {/* Connector bridge to make hovering steady */}
-                    <div className="absolute left-0 right-0 bottom-full h-2.5" />
+                    <div className="absolute -top-[14px] left-0 right-0 h-[24px] bg-transparent pointer-events-auto" />
                     <p className="text-[10px] font-semibold text-hades-accent mb-1 uppercase tracking-wider font-display">
                       Search parameters
                     </p>
-                    <p className="text-[11px] font-sans text-hades-text/85 mb-1.5">
-                      You can search for boons by:
+                    <p className="text-[11px] font-sans text-hades-text/85 mb-2.5 leading-snug">
+                      Filter boons dynamically by name, description, god, slot (Attack, Special, etc.), or elemental essence.
                     </p>
-                    <ul className="text-[11px] font-sans text-hades-text/85 space-y-0.5">
-                      <li className="flex items-start gap-2">
-                        <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>
-                        <span>Boon name or description</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>
-                        <span>God</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>
-                        <span>Slot (Attack, Special, Passive, etc.)</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-hades-accent text-[8px] mt-1 flex-shrink-0 select-none">▶</span>
-                        <span>Elemental essence</span>
-                      </li>
-                    </ul>
+                    
+                    <div className="pt-2 border-t border-hades-border-light/25">
+                      <p className="text-[10px] font-semibold text-hades-accent mb-2 uppercase tracking-wider font-display">
+                        Search Operators
+                      </p>
+                      
+                      <table className="w-full text-left border-collapse text-[10px] text-hades-text/85">
+                        <thead>
+                          <tr className="border-b border-hades-border-light/15 text-[8.5px] uppercase font-display text-hades-text/50 tracking-wider">
+                            <th className="py-1 pb-1.5 font-semibold w-[65px]">Operator</th>
+                            <th className="py-1 pb-1.5 font-semibold pl-2">Description & Example</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-hades-border-light/10">
+                          <tr className="align-top">
+                            <td className="py-1.5 pr-1 text-left">
+                              <span className="inline-block px-1.5 py-0.5 rounded bg-hades-bg-dark border border-hades-border-light/25 text-hades-text/90 font-mono font-bold text-[9px] whitespace-nowrap">" "</span>
+                            </td>
+                            <td className="py-1.5 pl-2 leading-normal">
+                              <p className="text-hades-text/90 font-medium">Exact phrase match</p>
+                              <p className="text-[9.5px] text-hades-text/50 font-mono mt-0.5">
+                                <span className="bg-white/[0.03] px-1 py-0.5 rounded text-hades-text/80"><span className="text-hades-accent font-semibold">"</span>boons of hera<span className="text-hades-accent font-semibold">"</span></span>
+                              </p>
+                            </td>
+                          </tr>
+
+                          <tr className="align-top">
+                            <td className="py-1.5 pr-1 text-left">
+                              <span className="inline-block px-1.5 py-0.5 rounded bg-hades-bg-dark border border-hades-border-light/25 text-hades-text/90 font-mono font-bold text-[9px] whitespace-nowrap">AND</span>
+                            </td>
+                            <td className="py-1.5 pl-2 leading-normal">
+                              <p className="text-hades-text/90 font-medium">Matches both terms (capitalized)</p>
+                              <p className="text-[9.5px] text-hades-text/50 font-mono mt-0.5">
+                                <span className="bg-white/[0.03] px-1 py-0.5 rounded text-hades-text/80">zeus <span className="text-hades-accent font-semibold">AND</span> cast</span>
+                              </p>
+                            </td>
+                          </tr>
+
+                           <tr className="align-top">
+                            <td className="py-1.5 pr-1 text-left">
+                              <span className="inline-block px-1.5 py-0.5 rounded bg-hades-bg-dark border border-hades-border-light/25 text-hades-text/90 font-mono font-bold text-[9px] whitespace-nowrap">OR / |</span>
+                            </td>
+                            <td className="py-1.5 pl-2 leading-normal">
+                              <p className="text-hades-text/90 font-medium">Matches either term (capitalized)</p>
+                              <p className="text-[9.5px] text-hades-text/50 font-mono mt-0.5">
+                                <span className="bg-white/[0.03] px-1 py-0.5 rounded text-hades-text/80">hera <span className="text-hades-accent font-semibold">OR</span> demeter</span>
+                              </p>
+                            </td>
+                          </tr>
+
+                          <tr className="align-top">
+                            <td className="py-1.5 pr-1 text-left">
+                              <span className="inline-block px-1.5 py-0.5 rounded bg-hades-bg-dark border border-hades-border-light/25 text-hades-text/90 font-mono font-bold text-[9px] whitespace-nowrap">( )</span>
+                            </td>
+                            <td className="py-1.5 pl-2 leading-normal">
+                              <p className="text-hades-text/90 font-medium">Group terms for custom precedence</p>
+                              <p className="text-[9.5px] text-hades-text/50 font-mono mt-0.5">
+                                <span className="bg-white/[0.03] px-1 py-0.5 rounded text-hades-text/80"><span className="text-hades-accent font-semibold">(</span>poseidon <span className="text-hades-accent font-semibold">OR</span> hestia<span className="text-hades-accent font-semibold">) AND</span> duo</span>
+                              </p>
+                            </td>
+                          </tr>
+
+                          <tr className="align-top">
+                            <td className="py-1.5 pr-1 text-left">
+                              <span className="inline-block px-1.5 py-0.5 rounded bg-hades-bg-dark border border-hades-border-light/25 text-hades-text/90 font-mono font-bold text-[9px] whitespace-nowrap">NOT / -</span>
+                            </td>
+                            <td className="py-1.5 pl-2 leading-normal">
+                              <p className="text-hades-text/90 font-medium">Exclude term or phrase</p>
+                              <p className="text-[9.5px] text-hades-text/50 font-mono mt-0.5">
+                                <span className="bg-white/[0.03] px-1 py-0.5 rounded text-hades-text/80">zeus <span className="text-hades-accent font-semibold">NOT</span> strike</span> <span className="text-hades-text/40">or</span> <span className="bg-white/[0.03] px-1 py-0.5 rounded text-hades-text/80"><span className="text-hades-accent font-semibold">-</span>aphrodite</span>
+                              </p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                     {/* Triangular pointer pointing up */}
-                    <div className="absolute bottom-[calc(100%-4px)] right-3.5 w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                    <div className="absolute bottom-[calc(100%-4px)] right-[13px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
                   </div>
                 </div>
               </div>
