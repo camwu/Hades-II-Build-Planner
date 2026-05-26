@@ -9,6 +9,8 @@ export interface BoonPrerequisite {
   description: string; // User-facing description of the prerequisite
   element?: ElementType; // Optional element type prerequisite
   elementCount?: number; // Optional number of element types required
+  type?: string;         // Optional specific prerequisite type (e.g. death_defiance_min)
+  value?: number;        // Optional specific prerequisite value multiplier or threshold
 }
 
 export interface Boon {

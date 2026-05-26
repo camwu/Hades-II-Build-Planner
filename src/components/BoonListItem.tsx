@@ -292,7 +292,18 @@ export function StaticBoonListItem({
   isLocked = false, 
   prerequisitesStatus = [],
   elementCounts,
-  selectedBoonIds
+  selectedBoonIds,
+  activeArcana = [],
+  toggleArcana,
+  activeKeepsake = 'none',
+  setActiveKeepsake,
+  activeFamiliar = 'none',
+  setActiveFamiliar,
+  isHeartBondActive = false,
+  setIsHeartBondActive,
+  additionalBoons = [],
+  removeAdditionalBoon,
+  selectBoon
 }: { 
   boon: Boon; 
   isOverlay?: boolean; 
@@ -300,8 +311,31 @@ export function StaticBoonListItem({
   prerequisitesStatus?: { prereq: BoonPrerequisite; met: boolean }[]; 
   elementCounts?: Record<string, number>;
   selectedBoonIds?: Set<string>;
+  activeArcana?: number[];
+  toggleArcana?: (cardNumber: number) => void;
+  activeKeepsake?: string;
+  setActiveKeepsake?: (ks: string) => void;
+  activeFamiliar?: string;
+  setActiveFamiliar?: (fa: string) => void;
+  isHeartBondActive?: boolean;
+  setIsHeartBondActive?: (active: boolean) => void;
+  additionalBoons?: Boon[];
+  removeAdditionalBoon?: (boon: Boon, index: number) => void;
+  selectBoon?: (boon: Boon, slotId: string) => void;
 }) {
   const borderColor = getBoonBorderColor(boon.type);
+
+  const isDeathArcanaActive = activeArcana?.includes(12) ?? false;
+  const isLuckierToothActive = activeKeepsake === 'luckier_tooth';
+  const isEngravedPinActive = activeKeepsake === 'engraved_pin';
+  const isToulaHeartBondActive = activeFamiliar === 'toula' && isHeartBondActive;
+  const isStalwartStandActive = selectedBoonIds?.has('stalwart_stand') ?? false;
+
+  const totalDeathDefiance = (isDeathArcanaActive ? 1 : 0) +
+                             (isLuckierToothActive ? 1 : 0) +
+                             (isEngravedPinActive ? 1 : 0) +
+                             (isToulaHeartBondActive ? 1 : 0) +
+                             (isStalwartStandActive ? 1 : 0);
   
   return (
     <div className={`p-3 rounded-xl transition-all duration-150 ${
@@ -601,7 +635,18 @@ export function DraggableBoonListItem({
   isPinned = false,
   onPinToggle,
   elementCounts,
-  selectedBoonIds
+  selectedBoonIds,
+  activeArcana = [],
+  toggleArcana,
+  activeKeepsake = 'none',
+  setActiveKeepsake,
+  activeFamiliar = 'none',
+  setActiveFamiliar,
+  isHeartBondActive = false,
+  setIsHeartBondActive,
+  additionalBoons = [],
+  removeAdditionalBoon,
+  selectBoon
 }: { 
   boon: Boon; 
   onClick?: () => void; 
@@ -612,7 +657,18 @@ export function DraggableBoonListItem({
   onPinToggle?: () => void;
   elementCounts?: Record<string, number>;
   selectedBoonIds?: Set<string>;
-  key?: any 
+  key?: any;
+  activeArcana?: number[];
+  toggleArcana?: (cardNumber: number) => void;
+  activeKeepsake?: string;
+  setActiveKeepsake?: (ks: string) => void;
+  activeFamiliar?: string;
+  setActiveFamiliar?: (fa: string) => void;
+  isHeartBondActive?: boolean;
+  setIsHeartBondActive?: (active: boolean) => void;
+  additionalBoons?: Boon[];
+  removeAdditionalBoon?: (boon: Boon, index: number) => void;
+  selectBoon?: (boon: Boon, slotId: string) => void;
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: boon.id,
@@ -648,6 +704,17 @@ export function DraggableBoonListItem({
         prerequisitesStatus={prerequisitesStatus} 
         elementCounts={elementCounts}
         selectedBoonIds={selectedBoonIds}
+        activeArcana={activeArcana}
+        toggleArcana={toggleArcana}
+        activeKeepsake={activeKeepsake}
+        setActiveKeepsake={setActiveKeepsake}
+        activeFamiliar={activeFamiliar}
+        setActiveFamiliar={setActiveFamiliar}
+        isHeartBondActive={isHeartBondActive}
+        setIsHeartBondActive={setIsHeartBondActive}
+        additionalBoons={additionalBoons}
+        removeAdditionalBoon={removeAdditionalBoon}
+        selectBoon={selectBoon}
       />
       
       {/* Pin button on top left (hover/pinned active) */}

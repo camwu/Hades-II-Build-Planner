@@ -40,6 +40,12 @@ interface BoonLibraryProps {
   activeKeepsake?: string;
   activeFamiliar?: string;
   isHeartBondActive?: boolean;
+  toggleArcana?: (cardNumber: number) => void;
+  setActiveKeepsake?: (ks: string) => void;
+  setActiveFamiliar?: (fa: string) => void;
+  setIsHeartBondActive?: (active: boolean) => void;
+  additionalBoons?: Boon[];
+  removeAdditionalBoon?: (boon: Boon, index: number) => void;
 }
 
 interface SortablePinnedBoonItemProps {
@@ -52,6 +58,16 @@ interface SortablePinnedBoonItemProps {
   elementCounts?: Record<string, number>;
   selectedBoonIds?: Set<string>;
   key?: string | number;
+  activeArcana?: number[];
+  toggleArcana?: (cardNumber: number) => void;
+  activeKeepsake?: string;
+  setActiveKeepsake?: (ks: string) => void;
+  activeFamiliar?: string;
+  setActiveFamiliar?: (fa: string) => void;
+  isHeartBondActive?: boolean;
+  setIsHeartBondActive?: (active: boolean) => void;
+  additionalBoons?: Boon[];
+  removeAdditionalBoon?: (boon: Boon, index: number) => void;
 }
 
 function SortablePinnedBoonItem({
@@ -63,6 +79,16 @@ function SortablePinnedBoonItem({
   togglePin,
   elementCounts,
   selectedBoonIds,
+  activeArcana,
+  toggleArcana,
+  activeKeepsake,
+  setActiveKeepsake,
+  activeFamiliar,
+  setActiveFamiliar,
+  isHeartBondActive,
+  setIsHeartBondActive,
+  additionalBoons,
+  removeAdditionalBoon,
 }: SortablePinnedBoonItemProps) {
   const {
     attributes,
@@ -104,6 +130,17 @@ function SortablePinnedBoonItem({
         onPinToggle={() => togglePin(boon.id)}
         elementCounts={elementCounts}
         selectedBoonIds={selectedBoonIds}
+        activeArcana={activeArcana}
+        toggleArcana={toggleArcana}
+        activeKeepsake={activeKeepsake}
+        setActiveKeepsake={setActiveKeepsake}
+        activeFamiliar={activeFamiliar}
+        setActiveFamiliar={setActiveFamiliar}
+        isHeartBondActive={isHeartBondActive}
+        setIsHeartBondActive={setIsHeartBondActive}
+        additionalBoons={additionalBoons}
+        removeAdditionalBoon={removeAdditionalBoon}
+        selectBoon={selectBoon}
       />
     </div>
   );
@@ -138,7 +175,13 @@ export function BoonLibrary({
   activeArcana = [],
   activeKeepsake = 'none',
   activeFamiliar = 'none',
-  isHeartBondActive = false
+  isHeartBondActive = false,
+  toggleArcana,
+  setActiveKeepsake,
+  setActiveFamiliar,
+  setIsHeartBondActive,
+  additionalBoons = [],
+  removeAdditionalBoon
 }: BoonLibraryProps) {
 
   const isDeathArcanaActive = activeArcana.includes(12);
@@ -697,7 +740,10 @@ export function BoonLibrary({
                       } else {
                         boon.prerequisites.forEach(prereq => {
                           let met = false;
-                          if (prereq.description === "At least one Death Defiance") {
+                          if (prereq.type === 'death_defiance_min') {
+                            const minVal = prereq.value ?? 1;
+                            met = totalDeathDefiance >= minVal;
+                          } else if (prereq.description === "At least one Death Defiance") {
                             met = totalDeathDefiance >= 1;
                           } else if (prereq.element && prereq.elementCount) {
                             const currentCount = elementCounts[prereq.element] || 0;
@@ -738,6 +784,16 @@ export function BoonLibrary({
                         togglePin={togglePin}
                         elementCounts={elementCounts}
                         selectedBoonIds={selectedBoonIds}
+                        activeArcana={activeArcana}
+                        toggleArcana={toggleArcana}
+                        activeKeepsake={activeKeepsake}
+                        setActiveKeepsake={setActiveKeepsake}
+                        activeFamiliar={activeFamiliar}
+                        setActiveFamiliar={setActiveFamiliar}
+                        isHeartBondActive={isHeartBondActive}
+                        setIsHeartBondActive={setIsHeartBondActive}
+                        additionalBoons={additionalBoons}
+                        removeAdditionalBoon={removeAdditionalBoon}
                       />
                     );
                   })}
@@ -821,7 +877,10 @@ export function BoonLibrary({
                 } else {
                   boon.prerequisites.forEach(prereq => {
                     let met = false;
-                    if (prereq.description === "At least one Death Defiance") {
+                    if (prereq.type === 'death_defiance_min') {
+                      const minVal = prereq.value ?? 1;
+                      met = totalDeathDefiance >= minVal;
+                    } else if (prereq.description === "At least one Death Defiance") {
                       met = totalDeathDefiance >= 1;
                     } else if (prereq.element && prereq.elementCount) {
                       const currentCount = elementCounts[prereq.element] || 0;
@@ -863,6 +922,17 @@ export function BoonLibrary({
                   onPinToggle={() => togglePin(boon.id)}
                   elementCounts={elementCounts}
                   selectedBoonIds={selectedBoonIds}
+                  activeArcana={activeArcana}
+                  toggleArcana={toggleArcana}
+                  activeKeepsake={activeKeepsake}
+                  setActiveKeepsake={setActiveKeepsake}
+                  activeFamiliar={activeFamiliar}
+                  setActiveFamiliar={setActiveFamiliar}
+                  isHeartBondActive={isHeartBondActive}
+                  setIsHeartBondActive={setIsHeartBondActive}
+                  additionalBoons={additionalBoons}
+                  removeAdditionalBoon={removeAdditionalBoon}
+                  selectBoon={selectBoon}
                 />
               );
             })}

@@ -831,6 +831,12 @@ export default function App() {
             activeKeepsake={activeKeepsake}
             activeFamiliar={activeFamiliar}
             isHeartBondActive={isHeartBondActive}
+            toggleArcana={toggleArcana}
+            setActiveKeepsake={setActiveKeepsake}
+            setActiveFamiliar={setActiveFamiliar}
+            setIsHeartBondActive={setIsHeartBondActive}
+            additionalBoons={additionalBoons}
+            removeAdditionalBoon={removeAdditionalBoon}
           />
 
           {/* Right: Build View */}
