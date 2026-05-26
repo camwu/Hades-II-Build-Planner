@@ -44,7 +44,7 @@ export const SLOT_MAP: Record<string, string> = {
 
 export const BOON_KEYWORDS = [
   // Slots
-  'Attack', 'Special', 'Cast', 'Sprint', 'Magick', 'Dash', 
+  'Attack', 'Special', 'Cast', 'Sprint', 'Magick', 'Dash', 'Dash-Strike', 
   'Hex', 'Keepsake', 'Weapon', 'Aspect', 'Nocturnal Arms', 'Animal Familiar',
   // Gods
   'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Selene', 'Chaos', 'Hermes', 'Hades',

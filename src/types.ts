@@ -108,3 +108,15 @@ export interface WeaponAspect {
   icon: string;       // Path to active aspect icon
 }
 
+export interface WeaponHammer {
+  id: string;
+  weapon: string;          // e.g. "Witch's Staff"
+  name: string;
+  description: string;
+  icon: string;
+  incompatibleAspects?: string[]; // Aspect IDs (e.g. ["witchs_staff_anubis"])
+  onlyForAspect?: string;          // Aspect ID (e.g. "witchs_staff_anubis")
+  incompatibleHammers?: string[];  // Hammer IDs (e.g. ["rapid_thrasher"])
+  notes?: string[];               // General text notes of instructions
+}
+
