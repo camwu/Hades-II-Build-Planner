@@ -225,6 +225,17 @@ export default function App() {
     return true;
   });
 
+  const [hideAssignedSlots, setHideAssignedSlots] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('has')) {
+      return params.get('has') !== '0';
+    }
+    if (savedState && typeof savedState.hideAssignedSlots === 'boolean') {
+      return savedState.hideAssignedSlots;
+    }
+    return true;
+  });
+
   const [limitToGodPool, setLimitToGodPool] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.has('lp')) {
@@ -330,6 +341,9 @@ export default function App() {
       if (!hideAssigned) {
         params.set('ha', '0');
       }
+      if (!hideAssignedSlots) {
+        params.set('has', '0');
+      }
       if (!limitToGodPool) {
         params.set('lp', '0');
       }
@@ -377,6 +391,7 @@ export default function App() {
           additionalBoonIds,
           buildName,
           hideAssigned,
+          hideAssignedSlots,
           limitToGodPool,
           activeArcana,
           maxGrasp
@@ -391,7 +406,7 @@ export default function App() {
     return () => {
       clearTimeout(handler);
     };
-  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, limitToGodPool, pinnedBoonIds, activeArcana, maxGrasp]);
+  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, hideAssignedSlots, limitToGodPool, pinnedBoonIds, activeArcana, maxGrasp]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -548,6 +563,12 @@ export default function App() {
         return false;
       }
 
+      // Don't show slots that are already assigned if hideAssignedSlots is toggled
+      // Allow if activeSlot is currently focused on the same slot, so users can choose replacements
+      if (hideAssignedSlots && coreBuild[boon.type] && activeSlot !== boon.type) {
+        return false;
+      }
+
       // Limit to God Pool filter
       if (limitToGodPool && activeStandardOlympians.length >= 4) {
         const hasLockedOlympian = boon.gods.some(god => 
@@ -572,7 +593,7 @@ export default function App() {
       
       return a.name.localeCompare(b.name);
     });
-  }, [searchQuery, activeSlot, hideAssigned, selectedBoonIds, limitToGodPool, activeStandardOlympians, pinnedBoonIds]);
+  }, [searchQuery, activeSlot, hideAssigned, hideAssignedSlots, coreBuild, selectedBoonIds, limitToGodPool, activeStandardOlympians, pinnedBoonIds]);
 
   const selectBoon = (boon: Boon, slotId: string) => {
     if (!isValidForSlot(boon, slotId)) return;
@@ -744,6 +765,8 @@ export default function App() {
             setSearchTerm={setSearchTerm}
             hideAssigned={hideAssigned}
             setHideAssigned={setHideAssigned}
+            hideAssignedSlots={hideAssignedSlots}
+            setHideAssignedSlots={setHideAssignedSlots}
             limitToGodPool={limitToGodPool}
             setLimitToGodPool={setLimitToGodPool}
             activeStandardOlympians={activeStandardOlympians}

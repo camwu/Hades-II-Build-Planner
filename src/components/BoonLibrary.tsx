@@ -19,6 +19,8 @@ interface BoonLibraryProps {
   setSearchTerm: (val: string) => void;
   hideAssigned: boolean;
   setHideAssigned: (val: boolean) => void;
+  hideAssignedSlots: boolean;
+  setHideAssignedSlots: (val: boolean) => void;
   limitToGodPool: boolean;
   setLimitToGodPool: (val: boolean) => void;
   activeStandardOlympians: string[];
@@ -112,6 +114,8 @@ export function BoonLibrary({
   setSearchTerm,
   hideAssigned,
   setHideAssigned,
+  hideAssignedSlots,
+  setHideAssignedSlots,
   limitToGodPool,
   setLimitToGodPool,
   activeStandardOlympians,
@@ -483,6 +487,29 @@ export function BoonLibrary({
                 </div>
                 <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
                   Hide Assigned Boons
+                </span>
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer group px-1 w-fit">
+                <input 
+                  type="checkbox" 
+                  checked={hideAssignedSlots} 
+                  onChange={(e) => setHideAssignedSlots(e.target.checked)}
+                  className="sr-only"
+                />
+                <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                  hideAssignedSlots 
+                    ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                    : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                }`}>
+                  {hideAssignedSlots && (
+                    <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  )}
+                </div>
+                <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
+                  Hide Boons for Assigned Slots
                 </span>
               </label>
 
