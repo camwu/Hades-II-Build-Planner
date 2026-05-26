@@ -98,3 +98,13 @@ export const ELEMENT_COLORS: Record<ElementType, string> = {
   Earth: 'text-emerald-400',
   Aether: 'text-indigo-400'
 };
+
+export interface WeaponAspect {
+  id: string;
+  weapon: string; // e.g. "Witch's Staff", "Sister Blades", etc.
+  name: string;   // e.g. "Aspect of Melinoë", "Aspect of Circe"
+  description: string;
+  mechanics?: string; // Optional custom mechanics explanation
+  icon: string;       // Path to active aspect icon
+}
+

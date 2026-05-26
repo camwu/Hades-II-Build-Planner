@@ -799,6 +799,8 @@ export default function App() {
                 showPurgeConfirm={showPurgeConfirm}
               />
 
+
+
               {/* Elemental, God & Status Tracker */}
               <div className="mb-8 flex flex-wrap items-start gap-5 w-full">
                 <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />

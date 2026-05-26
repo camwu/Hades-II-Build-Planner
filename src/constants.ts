@@ -44,7 +44,8 @@ export const SLOT_MAP: Record<string, string> = {
 
 export const BOON_KEYWORDS = [
   // Slots
-  'Attack', 'Special', 'Cast', 'Sprint', 'Magick', 'Dash', 'Hex', 
+  'Attack', 'Special', 'Cast', 'Sprint', 'Magick', 'Dash', 
+  'Hex', 'Keepsake', 'Weapon', 'Aspect', 'Nocturnal Arms', 'Animal Familiar',
   // Gods
   'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Selene', 'Chaos', 'Hermes', 'Hades',
   // God keywords
@@ -54,12 +55,12 @@ export const BOON_KEYWORDS = [
   // Mechanics
   'Boon', 'Lv.', 'Rarity', 'Common', 'Rare', 'Epic', 'Heroic', 'Infusion', 'Legendary', 'Duo',
   'Prime', 'Power', 'Dodge', 'Rush', 'Rushing', 'Curse', 'Channel', 'Critical', 'Impervious', 
-  'Keepsake', 'Weapon', 'Aspect', 'Nocturnal Arms',
   'Health', 'Max Health', 'Healing', 'Max Magick', 'Armor',
   'Minor Find', 'Minor Finds', 'Major Find', 'Major Finds', 'Gold Crown', 'Gold Crowns', 'Gold', 'Bones', 'Mystery Seed', 'Daedalus Hammer', 'Daedalus Hammers',
   'Omega Moves', 'Ω Moves', 'Omega Move', 'Ω Move', 'Omega',
   'Location', 'Encounter', 'Guardians', 'Guardian', 'Guardian Encounter', 'Guardian Encounters', 'Location Reward', 'Location Rewards',
   'Grasp', 'Death Defiance', 'Change of Fate', 'Arcana Card', 'Arcana Cards',
+  'Psychic Leash', 'Lone Shades', 'Parry', 'Riposte', 'Blood Triad', 'Daybreaker ', 'Mortality', 'Berserk', 'Shell', 'Shells', 'Valkyrie', 'Sky Fall', 'Shine', 'Nightspawn', 'Destructive', 
   // Elements
   'Element', 'Elements', 'Essence', 'Essences',
   'Air', 'Earth', 'Fire', 'Water', 'Aether',
