@@ -312,7 +312,7 @@ export function BoonLibrary({
           : SIDEBAR_WIDTH,
       }}
       transition={{ type: 'spring', damping: 30, stiffness: 350 }}
-      className="border-r border-hades-border bg-hades-panel flex flex-col z-30 relative flex-shrink-0"
+      className="border-r border-hades-border bg-hades-panel flex flex-col z-40 relative flex-shrink-0"
     >
       {/* Toggle Button - High contrast background and accent border */}
       <button 
@@ -339,7 +339,7 @@ export function BoonLibrary({
       <div 
         ref={sidebarRef}
         style={{ width: SIDEBAR_WIDTH }}
-        className={`h-full flex flex-col overflow-hidden will-change-transform ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
+        className={`h-full flex flex-col overflow-visible will-change-transform ${isPanelCollapsed ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'}`}
       >
         <div 
           ref={filterHeaderRef}
@@ -467,51 +467,96 @@ export function BoonLibrary({
               </div>
             </div>
             <div className="flex flex-col gap-2 mt-1">
-              <label className="flex items-center gap-2 cursor-pointer group px-1 w-fit">
-                <input 
-                  type="checkbox" 
-                  checked={hideAssigned} 
-                  onChange={(e) => setHideAssigned(e.target.checked)}
-                  className="sr-only"
-                />
-                <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                  hideAssigned 
-                    ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                    : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                }`}>
-                  {hideAssigned && (
-                    <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                </div>
-                <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
-                  Hide Assigned Boons
-                </span>
-              </label>
+              <div className="flex items-center gap-2 px-1 w-fit">
+                <label className="flex items-center gap-2 cursor-pointer group select-none">
+                  <input 
+                    type="checkbox" 
+                    checked={hideAssigned} 
+                    onChange={(e) => setHideAssigned(e.target.checked)}
+                    className="sr-only"
+                  />
+                  <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                    hideAssigned 
+                      ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                      : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                  }`}>
+                    {hideAssigned && (
+                      <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
+                    Hide Assigned Boons
+                  </span>
+                </label>
 
-              <label className="flex items-center gap-2 cursor-pointer group px-1 w-fit">
-                <input 
-                  type="checkbox" 
-                  checked={hideAssignedSlots} 
-                  onChange={(e) => setHideAssignedSlots(e.target.checked)}
-                  className="sr-only"
-                />
-                <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                  hideAssignedSlots 
-                    ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                    : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                }`}>
-                  {hideAssignedSlots && (
-                    <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
+                <div className="flex items-center gap-1.5 ml-0.5">
+                  {/* Info Button with Stylized Tooltip */}
+                  <div className="relative group/tooltip inline-flex items-center">
+                    <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                    <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50 origin-top-left">
+                      {/* Connector bridge to make hovering steady */}
+                      <div className="absolute left-0 right-0 bottom-full h-2" />
+                      <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                        Assigned Boons Filter
+                      </p>
+                      <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
+                        If checked, boons that have already been assigned in your active build will be excluded from the library and will be hidden in search results.
+                      </p>
+                      {/* Triangular pointer pointing up */}
+                      <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                    </div>
+                  </div>
                 </div>
-                <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
-                  Hide Boons for Assigned Slots
-                </span>
-              </label>
+              </div>
+
+              <div className="flex items-center gap-2 px-1 w-fit">
+                <label className="flex items-center gap-2 cursor-pointer group select-none">
+                  <input 
+                    type="checkbox" 
+                    checked={hideAssignedSlots} 
+                    onChange={(e) => setHideAssignedSlots(e.target.checked)}
+                    className="sr-only"
+                  />
+                  <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                    hideAssignedSlots 
+                      ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                      : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                  }`}>
+                    {hideAssignedSlots && (
+                      <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
+                    Hide Replacement Boons for Assigned Core Slots
+                  </span>
+                </label>
+
+                <div className="flex items-center gap-1.5 ml-0.5">
+                  {/* Info Button with Stylized Tooltip */}
+                  <div className="relative group/tooltip inline-flex items-center">
+                    <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                    <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50 origin-top-left">
+                      {/* Connector bridge to make hovering steady */}
+                      <div className="absolute left-0 right-0 bottom-full h-2" />
+                      <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                        Assigned Slots Filter
+                      </p>
+                      <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
+                        If checked, boons that would replace a currently assigned core slot will not show up in the library and in search results.
+                        <span className="block mt-1.5 text-hades-text/60 italic">
+                          Example: if Flame Strike has already been assigned and this option is checked, Attack boons will no longer show up.
+                        </span>
+                      </p>
+                      {/* Triangular pointer pointing up */}
+                      <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div className="flex items-center gap-2 px-1 w-fit">
                 <label className="flex items-center gap-2 cursor-pointer group select-none">
@@ -545,7 +590,7 @@ export function BoonLibrary({
                   {/* Info Button with Stylized Tooltip */}
                   <div className="relative group/tooltip inline-flex items-center">
                     <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50 origin-top">
+                    <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50 origin-top-left">
                       {/* Connector bridge to make hovering steady */}
                       <div className="absolute left-0 right-0 bottom-full h-2" />
                       <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
@@ -555,7 +600,7 @@ export function BoonLibrary({
                         Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, and Hermes) are included in the god pool each night. If checked, once you have boons from four gods, all other gods' boons are filtered out.
                       </p>
                       {/* Triangular pointer pointing up */}
-                      <div className="absolute bottom-[calc(100%-4px)] left-1/2 -translate-x-1/2 w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                      <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
                     </div>
                   </div>
                 </div>
