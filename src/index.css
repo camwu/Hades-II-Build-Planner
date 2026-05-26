@@ -39,6 +39,7 @@
   --color-hades-legendary: #FD8D00;
 
   --animate-ring-pulse: ring-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-white-ring-pulse: white-ring-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
   @keyframes ring-pulse {
     0%, 100% {
@@ -46,6 +47,15 @@
     }
     50% {
       box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.55), 0 0 12px rgba(16, 185, 129, 0.45);
+    }
+  }
+
+  @keyframes white-ring-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.40), 0 0 24px rgba(255, 255, 255, 0.30);
+    }
+    50% {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.20), 0 0 12px rgba(255, 255, 255, 0.15);
     }
   }
 }

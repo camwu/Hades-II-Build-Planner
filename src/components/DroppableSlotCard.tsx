@@ -91,17 +91,12 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
             onMouseLeave={() => setIsHovered(false)}
             className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-[background-color,box-shadow,ring] duration-200`}
           >
-            <AnimatePresence>
-              {(shouldHighlight || isActive || isPotentialTarget) && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.18, ease: "easeOut" }}
-                  className="absolute inset-0 rounded-[inherit] bg-emerald-950/30 ring-[3px] ring-emerald-500 shadow-[0_0_24px_rgba(16,185,129,0.8)] animate-ring-pulse z-20 pointer-events-none"
-                />
-              )}
-            </AnimatePresence>
+            {/* Synchronized green pulse layer */}
+            <div
+              className={`absolute inset-0 rounded-[inherit] bg-emerald-950/30 ring-[3px] ring-emerald-500 shadow-[0_0_24px_rgba(16,185,129,0.8)] animate-ring-pulse z-20 pointer-events-none transition-opacity duration-200 ${
+                (shouldHighlight || isActive || isPotentialTarget) ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
             <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden z-30`}>
               {renderIcon()}
             </div>

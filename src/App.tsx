@@ -530,10 +530,13 @@ export default function App() {
     return Array.from(active);
   }, [coreBuild, additionalBoons]);
 
-  const filteredBoons = useMemo(() => {
-    // Compute normalized search query once up front, supporting complex logical searches (AND, OR, NOT, Phrases)
-    const searchQuery = parseSearchQuery(searchTerm);
+  const searchQuery = useMemo(() => {
+    return parseSearchQuery(searchTerm);
+  }, [searchTerm]);
 
+  const isSearchActive = searchTerm.trim().length > 0;
+
+  const filteredBoons = useMemo(() => {
     return BOONS.filter(boon => {
       // Don't show pinned boons in the main list since they are pinned to the top
       if (pinnedBoonIds.includes(boon.id)) {
@@ -564,12 +567,12 @@ export default function App() {
       const priorityB = SLOT_PRIORITY[b.type] || 99;
       
       if (priorityA !== priorityB) {
-        return priorityA - priorityB;
+         return priorityA - priorityB;
       }
       
       return a.name.localeCompare(b.name);
     });
-  }, [searchTerm, activeSlot, hideAssigned, selectedBoonIds, limitToGodPool, activeStandardOlympians, pinnedBoonIds]);
+  }, [searchQuery, activeSlot, hideAssigned, selectedBoonIds, limitToGodPool, activeStandardOlympians, pinnedBoonIds]);
 
   const selectBoon = (boon: Boon, slotId: string) => {
     if (!isValidForSlot(boon, slotId)) return;
@@ -785,18 +788,23 @@ export default function App() {
                 {/* Left Side: Core Boon Slots (Narrow Column) */}
                 <aside className="lg:sticky lg:top-8 flex-shrink-0 z-30 flex flex-col items-center">
                   <div className="flex flex-col gap-5 w-full items-center">
-                    {CORE_SLOTS.map((slot) => (
-                      <CoreSlotRow 
-                        key={slot.type}
-                        slot={slot}
-                        boon={coreBuild[slot.type]}
-                        isActive={activeSlot === slot.type}
-                        onClick={() => toggleActiveSlot(slot.type)}
-                        onRemove={() => removeBoon(slot.type)}
-                        draggedBoon={draggedBoon}
-                        isValid={draggedBoon ? isValidForSlot(draggedBoon, slot.type) && !selectedBoonIds.has(draggedBoon.id) : true}
-                      />
-                    ))}
+                    {CORE_SLOTS.map((slot) => {
+                      const slotBoon = coreBuild[slot.type];
+                      const isGlowingWhite = slotBoon ? (isSearchActive && hideAssigned && boonMatchesQuery(slotBoon, searchQuery)) : false;
+                      return (
+                        <CoreSlotRow 
+                          key={slot.type}
+                          slot={slot}
+                          boon={slotBoon}
+                          isActive={activeSlot === slot.type}
+                          onClick={() => toggleActiveSlot(slot.type)}
+                          onRemove={() => removeBoon(slot.type)}
+                          draggedBoon={draggedBoon}
+                          isValid={draggedBoon ? isValidForSlot(draggedBoon, slot.type) && !selectedBoonIds.has(draggedBoon.id) : true}
+                          shouldGlowWhite={isGlowingWhite}
+                        />
+                      );
+                    })}
                   </div>
                 </aside>
 
@@ -812,13 +820,17 @@ export default function App() {
                             items={additionalBoons.map(b => b.id)} 
                             strategy={rectSortingStrategy}
                           >
-                            {additionalBoons.map((boon, idx) => (
-                              <SortableBoonDisplayCard 
-                                key={boon.id}
-                                boon={boon} 
-                                onRemove={() => removeAdditionalBoon(boon, idx)}
-                              />
-                            ))}
+                            {additionalBoons.map((boon, idx) => {
+                              const isGlowingWhite = isSearchActive && hideAssigned && boonMatchesQuery(boon, searchQuery);
+                              return (
+                                <SortableBoonDisplayCard 
+                                  key={boon.id}
+                                  boon={boon} 
+                                  onRemove={() => removeAdditionalBoon(boon, idx)}
+                                  shouldGlowWhite={isGlowingWhite}
+                                />
+                              );
+                            })}
                           </SortableContext>
                           
                           {/* Unified Passive Slot */}

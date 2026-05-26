@@ -20,9 +20,10 @@ interface BoonDisplayCardProps {
   onRemove: () => void;
   isSorting?: boolean;
   key?: string | number;
+  shouldGlowWhite?: boolean;
 }
 
-export function SortableBoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps) {
+export function SortableBoonDisplayCard({ boon, onRemove, shouldGlowWhite }: BoonDisplayCardProps) {
   const {
     attributes,
     listeners,
@@ -47,12 +48,12 @@ export function SortableBoonDisplayCard({ boon, onRemove }: BoonDisplayCardProps
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <BoonDisplayCard boon={boon} onRemove={onRemove} isSorting={true} />
+      <BoonDisplayCard boon={boon} onRemove={onRemove} isSorting={true} shouldGlowWhite={shouldGlowWhite} />
     </div>
   );
 }
 
-export function BoonDisplayCard({ boon, onRemove, isSorting }: BoonDisplayCardProps) {
+export function BoonDisplayCard({ boon, onRemove, isSorting, shouldGlowWhite }: BoonDisplayCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const rarityGlow = '';
 
@@ -96,6 +97,12 @@ export function BoonDisplayCard({ boon, onRemove, isSorting }: BoonDisplayCardPr
             className="relative flex-shrink-0 transition-none border-0"
           >
             <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
+              {/* Synchronized white pulse layer */}
+              <div
+                className={`absolute inset-0 ${BOON_ICON_ROUNDING} bg-white/[0.02] ring-[3px] ring-white/30 shadow-[0_0_24px_rgba(255,255,255,0.30)] animate-white-ring-pulse z-20 pointer-events-none transition-opacity duration-200 ${
+                  shouldGlowWhite ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
               <img 
                 src={boon.icon} 
                 alt={boon.name} 
