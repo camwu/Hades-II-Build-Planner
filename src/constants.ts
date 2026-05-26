@@ -51,13 +51,13 @@ export const BOON_KEYWORDS = [
   // Gods
   'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Selene', 'Chaos', 'Hermes', 'Hades',
   // God keywords
-  'Plasma', 'Heartthrob', 'Blade Rift', 'Charm', 'Fine Line', 'Ocean Swell', 'Steam', 'Aether Font',
+  'Plasma', 'Heartthrob', 'Blade Rift', 'Charm', 'Fine Line', 'Ocean Swell', 'Steam', 'Aether Font', 'Soul Urn', 'Dark', 'Festive Fog', 'Grape Juice',
   // Status Curses
-  'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn',
+  'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn', 'Hangover', 
   // Mechanics
   'Boon', 'Lv.', 'Rarity', 'Common', 'Rare', 'Epic', 'Heroic', 'Infusion', 'Legendary', 'Duo',
   'Prime', 'Power', 'Dodge', 'Rush', 'Rushing', 'Curse', 'Channel', 'Critical', 'Impervious', 
-  'Health', 'Max Health', 'Healing', 'Max Magick', 'Armor',
+  'Health', 'Max Health', 'Healing', 'Max Magick', 'Armor', 'Death Defiance',
   'Minor Find', 'Minor Finds', 'Major Find', 'Major Finds', 'Gold Crown', 'Gold Crowns', 'Gold', 'Bones', 'Mystery Seed', 'Daedalus Hammer', 'Daedalus Hammers',
   'Omega Moves', 'Ω Moves', 'Omega Move', 'Ω Move', 'Omega',
   'Location', 'Encounter', 'Guardians', 'Guardian', 'Guardian Encounter', 'Guardian Encounters', 'Location Reward', 'Location Rewards',

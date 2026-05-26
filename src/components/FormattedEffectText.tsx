@@ -45,7 +45,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
           }
           
           // Ordered to match "Max Health" and "Max Magick" before "Health" and "Magick", and element boons before elements or plasma
-          const regex = /(\bMax\s+Healths?\b|\bHealths?\b|\bMax\s+Magicks?\b|\bmagicks?\b|\bplasmas?\b|\bmystery\s+seeds?\b|\bDaedalus\s+Hammers?\b|\bGold\s+Crowns?\b|\bGold\b|\bHealing\b|\bBones\b|\barmors?\b|\bshells?\b|\brarity?\b|\bDeath\s+Defiances?\b|\bChange\s+of\s+Fates?\b|\bGrasps?\b|\bairs?\s+(?:boons?|essences?|elements?)\b|\bearths?\s+(?:boons?|essences?|elements?)\b|\bfires?\s+(?:boons?|essences?|elements?)\b|\bwaters?\s+(?:boons?|essences?|elements?)\b|\baethers?\s+(?:boons?|essences?|elements?)\b|\bairs?\b|\bearths?\b|\bfires?\b|\bwaters?\b|\baethers?\b(?!\s+Fonts?\b)|\blv\.(?!\w))/gi;
+          const regex = /(\bMax\s+Healths?\b|\bHealths?\b|\bMax\s+Magicks?\b|\bmagicks?\b|\bplasmas?\b|\bGrape\s+Juices?\b|\bmystery\s+seeds?\b|\bDaedalus\s+Hammers?\b|\bGold\s+Crowns?\b|\bGold\b|\bHealing\b|\bBones\b|\barmors?\b|\bshells?\b|\brarity?\b|\bDeath\s+Defiances?\b|\bChange\s+of\s+Fates?\b|\bGrasps?\b|\bairs?\s+(?:boons?|essences?|elements?)\b|\bearths?\s+(?:boons?|essences?|elements?)\b|\bfires?\s+(?:boons?|essences?|elements?)\b|\bwaters?\s+(?:boons?|essences?|elements?)\b|\baethers?\s+(?:boons?|essences?|elements?)\b|\bairs?\b|\bearths?\b|\bfires?\b|\bwaters?\b|\baethers?\b(?!\s+Fonts?\b)|\blv\.(?!\w))/gi;
           const parts = inputText.split(regex);
           
           return (
@@ -107,6 +107,18 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
                         src="/assets/ui/BloodDrop.webp" 
                         alt="Plasma" 
                         className="inline-block h-[13px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'grape juice' || lower === 'grape juices') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/PowerDrinkDrop.webp" 
+                        alt="Grape Juice" 
+                        className="inline-block h-[15px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
                         referrerPolicy="no-referrer"
                       />
                       {p}

@@ -3305,5 +3305,78 @@ export const BOONS: Boon[] = [
     element: null,
     effect: "After you take damage, go *Dark* and deal more damage for the duration. \n ▸ Damage While Dark: *+70%*",
     icon: "/assets/boons/hades/Unseen_Ire.webp"
+  },
+  {
+    id: "bottomless_drink",
+    name: "Bottomless Drink",
+    type: "Passive",
+    gods: ["Dionysus"],
+    element: "Water",
+    effect: "In each *Encounter*, *Grape Juice* appears, in the area and grants *Power* when used. \n ▸ Reappearance Time: *10 Sec./9 Sec./8 Sec./7 Sec.* \n\n *Grape Juice*: Gives your very next move *+100 Power*, then later reappears in a random spot.",
+    icon: "/assets/boons/dionysus/Bottomless_Drink.webp"
+  },
+  {
+    id: "bounce_back",
+    name: "Bounce Back",
+    type: "Passive",
+    gods: ["Dionysus"],
+    element: "Water",
+    effect: "After each *Encounter*, restore some Health if you took any damage in that *Encounter*. \n ▸ Lost Life Restored: *50%/60%/70%/80%*",
+    icon: "/assets/boons/dionysus/Bounce_Back.webp"
+  },
+  {
+    id: "drunken_stupor",
+    name: "Drunken Stupor",
+    type: "Passive",
+    gods: ["Dionysus"],
+    element: "Water",
+    effect: "Your *Ω Moves* inflict *Hangover* the first time they strike foes. \n ▸ Hangover Damage _(every 0.5 Sec.)_: *50/75/100/125* \n\n *Hangover* (Curse): Afflicted foes take damage continuously. Lasts for *4 Sec.*",
+    icon: "/assets/boons/dionysus/Drunken_Stupor.webp",
+    inflictsCurse: "hangover"
+  },
+  {
+    id: "happy_haze",
+    name: "Happy Haze",
+    type: "Passive",
+    gods: ["Dionysus"],
+    element: "Water",
+    effect: "Every *8 Sec.* in each *Encounter*, *Festive Fog* appears, making you stronger while in it. \n ▸ In-Fog Bonus Damage: *+30%/+40%/+50%/+60%* \n\n *Festive Fog*: Emboldening vapors that repeatedly stuns susceptible foes. Lasts *5 Sec.*",
+    icon: "/assets/boons/dionysus/Happy_Haze.webp"
+  },
+  {
+    id: "personal_loan",
+    name: "Personal Loan",
+    type: "Passive",
+    gods: ["Dionysus"],
+    element: "Water",
+    effect: "Give up *all* your Gold now. After vanquishing the next *Guardian*, gain that much and more. \n ▸ Bonus Gold Earned, Soon: *+300/+400/+500/+600*",
+    icon: "/assets/boons/dionysus/Personal_Loan.webp"
+  },
+  {
+    id: "reckless_abandon",
+    name: "Reckless Abandon",
+    type: "Passive",
+    gods: ["Dionysus"],
+    element: "Water",
+    effect: "Your *Attacks* randomly deal _exactly_ *5*, *55*, *or* *555* damage whenever they hit. \n ▸ Bonus Chance for Max Damage: *5%/7%/9%/11%*",
+    icon: "/assets/boons/dionysus/Reckless_Abandon.webp"
+  },
+  {
+    id: "tipsy_shot",
+    name: "Tipsy Shot",
+    type: "Cast",
+    gods: ["Dionysus"],
+    element: "Water",
+    effect: "Hold *Cast* to lob a large explosion. The binding circle forms there. \n ▸ Blast Damage: *300/450/600/750* \n\n ▸ *Exclusion:* Cannot be combined with *Glowing Coal*, *Lightning Lance*, *Tidal Ring*, *Local Climate*, or *Hostile Environment*",
+    icon: "/assets/boons/dionysus/Tipsy_Shot.webp"
+  },
+  {
+    id: "worry_free",
+    name: "Worry Free",
+    type: "Passive",
+    gods: ["Dionysus"],
+    element: "Water",
+    effect: "Gain a random amount of Max Health, but how much you have becomes a mystery. \n ▸ Max Life: *+50 ~ 80/+70 ~ 100/+90 ~ 120/+110 ~ 140*",
+    icon: "/assets/boons/dionysus/Worry_Free.webp"
   }
 ];
