@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Boon, ElementType, ALL_ELEMENTS, ELEMENT_COLORS } from '../types';
+import { Boon, ElementType, ALL_ELEMENTS } from '../types';
 import { ElementIcon, GodIcon } from './Icons';
 import { BOON_ICON_ROUNDING } from '../constants';
 
@@ -68,8 +68,8 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
             <div key={el} className="group relative flex items-center gap-2 cursor-help">
               <div className={`w-6 h-6 flex items-center justify-center z-20 transition-all duration-300 ${
                 count > 0 
-                  ? `${ELEMENT_COLORS[el]}` 
-                  : 'text-gray-600 opacity-40'
+                  ? '' 
+                  : 'opacity-40'
               }`}>
                 <ElementIcon element={el} className="w-full h-full" />
               </div>
@@ -81,7 +81,7 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
               <div className={`absolute top-full ${tooltipPositionClass} w-64 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50`}>
                 <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
                   <div className="flex items-center gap-2">
-                    <div className={`w-4 h-4 ${ELEMENT_COLORS[el]}`}>
+                    <div className="w-4 h-4">
                       <ElementIcon element={el} className="w-full h-full" />
                     </div>
                     <span className={`text-sm font-bold tracking-widest text-gray-200 ${/\d/.test(el) ? 'font-display' : 'font-sc normal-case'}`}>{el}</span>

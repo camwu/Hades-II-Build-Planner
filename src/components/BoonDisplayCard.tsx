@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
-import { Boon, ELEMENT_COLORS, GOD_SYMBOLS } from '../types';
+import { Boon, GOD_SYMBOLS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedEffectText } from './FormattedEffectText';
@@ -128,7 +128,7 @@ export function BoonDisplayCard({ boon, onRemove, isSorting, shouldGlowWhite }: 
               )}
               {boon.element && boon.type !== 'Infusion' && (
                 <div className={`absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border-2 ${getBoonBorderColor(boon.type)} transition-colors`}>
-                  <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
+                  <ElementIcon element={boon.element} className="w-full h-full" />
                 </div>
               )}
               {/* Rarity Border */}

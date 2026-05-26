@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useDroppable, useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { Plus, X } from 'lucide-react';
-import { Boon, ELEMENT_COLORS, GOD_SYMBOLS } from '../types';
+import { Boon, GOD_SYMBOLS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedEffectText } from './FormattedEffectText';
@@ -95,7 +95,7 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
           )}
           {boon.element && boon.type !== 'Infusion' && (
             <div className={`absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border-2 ${getBoonBorderColor(boon.type)} transition-colors`}>
-              <ElementIcon element={boon.element} className={`w-full h-full ${ELEMENT_COLORS[boon.element]}`} />
+              <ElementIcon element={boon.element} className="w-full h-full" />
             </div>
           )}
           {/* Rarity Border - Tightly matched to frame */}

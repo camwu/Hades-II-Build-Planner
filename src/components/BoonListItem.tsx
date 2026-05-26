@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
 import { Lock, Check, X, Pin } from 'lucide-react';
-import { Boon, BoonPrerequisite, ELEMENT_COLORS, GOD_SYMBOLS } from '../types';
+import { Boon, BoonPrerequisite, GOD_SYMBOLS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedEffectText } from './FormattedEffectText';
@@ -365,7 +365,7 @@ export function StaticBoonListItem({
 
           {boon.element ? (
             <div className="flex items-center gap-1.5">
-              <ElementIcon element={boon.element} className={`w-3 h-3 ${ELEMENT_COLORS[boon.element]}`} />
+              <ElementIcon element={boon.element} className="w-3 h-3" />
               <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
                 {boon.element}
               </span>

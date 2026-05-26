@@ -73,14 +73,6 @@ export const GOD_SYMBOLS: Record<string, string> = {
   Hermes: '/assets/gods/Hermes_symbol.webp',
 };
 
-export const ELEMENT_COLORS: Record<ElementType, string> = {
-  Air: 'text-blue-200',
-  Fire: 'text-red-400',
-  Water: 'text-blue-400',
-  Earth: 'text-emerald-400',
-  Aether: 'text-indigo-400'
-};
-
 export interface WeaponAspect {
   id: string;
   weapon: string; // e.g. "Witch's Staff", "Sister Blades", etc.
