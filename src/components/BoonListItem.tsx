@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { useDraggable } from '@dnd-kit/core';
 import { Lock, Check, X, Pin } from 'lucide-react';
-import { Boon, BoonPrerequisite, ELEMENT_COLORS, GOD_COLORS } from '../types';
+import { Boon, BoonPrerequisite, ELEMENT_COLORS, GOD_COLORS, GOD_SYMBOLS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedEffectText } from './FormattedEffectText';
@@ -320,6 +320,14 @@ export function StaticBoonListItem({
                 alt={boon.name} 
                 className="w-full h-full object-contain" 
                 referrerPolicy="no-referrer" 
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  const primaryGod = boon.gods[0];
+                  const fallback = GOD_SYMBOLS[primaryGod] || '/assets/ui/Icon-Olympian.webp';
+                  if (target.src !== fallback) {
+                    target.src = fallback;
+                  }
+                }}
               />
               <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} ${borderColor} ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
             </div>

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useDroppable, useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { Plus, X } from 'lucide-react';
-import { Boon, ELEMENT_COLORS } from '../types';
+import { Boon, ELEMENT_COLORS, GOD_SYMBOLS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedEffectText } from './FormattedEffectText';
@@ -74,6 +74,14 @@ export function CoreSlotRow({ slot, boon, isActive, onClick, onRemove, draggedBo
               alt={boon.name} 
               className="w-full h-full object-contain relative z-10" 
               referrerPolicy="no-referrer" 
+              onError={(e) => {
+                const target = e.currentTarget;
+                const primaryGod = boon.gods[0];
+                const fallback = GOD_SYMBOLS[primaryGod] || '/assets/ui/Icon-Olympian.webp';
+                if (target.src !== fallback) {
+                  target.src = fallback;
+                }
+              }}
             />
           </div>
           {/* Overlapping Icons */}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
-import { Boon, ELEMENT_COLORS } from '../types';
+import { Boon, ELEMENT_COLORS, GOD_SYMBOLS } from '../types';
 import { GodIcon, ElementIcon } from './Icons';
 import { getBoonColor, getBoonBorderColor } from '../utils/boonUtils';
 import { FormattedEffectText } from './FormattedEffectText';
@@ -108,6 +108,14 @@ export function BoonDisplayCard({ boon, onRemove, isSorting, shouldGlowWhite }: 
                 alt={boon.name} 
                 className="w-full h-full object-contain relative z-10" 
                 referrerPolicy="no-referrer" 
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  const primaryGod = boon.gods[0];
+                  const fallback = GOD_SYMBOLS[primaryGod] || '/assets/ui/Icon-Olympian.webp';
+                  if (target.src !== fallback) {
+                    target.src = fallback;
+                  }
+                }}
               />
               {/* Overlapping icons */}
               <div className={`absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-hades-bg-dark shadow-xl flex items-center justify-center p-1 z-20 border-2 ${getBoonBorderColor(boon.type)} transition-colors`}>
