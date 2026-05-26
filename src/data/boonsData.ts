@@ -3303,5 +3303,14 @@ export const BOONS: Boon[] = [
     element: null,
     effect: "After you take damage, go *Dark* and deal more damage for the duration. \n ▸ Damage While Dark: *+70%*",
     icon: "/assets/boons/hades/Unseen_Ire.webp"
+  },
+  {
+    id: "stalwart_stand",
+    name: "Stalwart Stand",
+    type: "Passive",
+    gods: ["Athena"],
+    element: "Earth",
+    effect: "You gain *+1* *Death Defiance*. \n ▸ Refill Health: *30%*",
+    icon: "/assets/gods/Athena_symbol.webp"
   }
 ];

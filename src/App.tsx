@@ -53,7 +53,7 @@ export default function App() {
   // Check if URL has build parameters
   const hasUrlParams = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.has('c') || params.has('a') || params.has('n') || params.has('p') || params.has('ar');
+    return params.has('c') || params.has('a') || params.has('n') || params.has('p') || params.has('ar') || params.has('ks') || params.has('fa') || params.has('hb');
   }, []);
 
   // Try to load state from localStorage if no URL params
@@ -169,6 +169,30 @@ export default function App() {
       }
     }
     return 30; // default 30
+  });
+
+  const [activeKeepsake, setActiveKeepsake] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ksParam = params.get('ks');
+    if (ksParam) return ksParam;
+    if (savedState && typeof savedState.activeKeepsake === 'string') return savedState.activeKeepsake;
+    return 'none';
+  });
+
+  const [activeFamiliar, setActiveFamiliar] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const faParam = params.get('fa');
+    if (faParam) return faParam;
+    if (savedState && typeof savedState.activeFamiliar === 'string') return savedState.activeFamiliar;
+    return 'none';
+  });
+
+  const [isHeartBondActive, setIsHeartBondActive] = useState<boolean>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const hbParam = params.get('hb');
+    if (hbParam) return hbParam === 'true';
+    if (savedState && typeof savedState.isHeartBondActive === 'boolean') return savedState.isHeartBondActive;
+    return false;
   });
 
   const [activeArcana, setActiveArcana] = useState<number[]>(() => {
@@ -370,6 +394,21 @@ export default function App() {
         params.set('mg', maxGrasp.toString());
       }
 
+      // Keepsake
+      if (activeKeepsake && activeKeepsake !== 'none') {
+        params.set('ks', activeKeepsake);
+      }
+
+      // Familiar
+      if (activeFamiliar && activeFamiliar !== 'none') {
+        params.set('fa', activeFamiliar);
+      }
+
+      // Heart Bond
+      if (isHeartBondActive) {
+        params.set('hb', 'true');
+      }
+
       const newUrl = params.toString() 
         ? `${window.location.pathname}?${params.toString()}`
         : window.location.pathname;
@@ -394,7 +433,10 @@ export default function App() {
           hideAssignedSlots,
           limitToGodPool,
           activeArcana,
-          maxGrasp
+          maxGrasp,
+          activeKeepsake,
+          activeFamiliar,
+          isHeartBondActive
         };
 
         localStorage.setItem(STORAGE_KEYS.BUILD_STATE, JSON.stringify(stateToSave));
@@ -406,7 +448,7 @@ export default function App() {
     return () => {
       clearTimeout(handler);
     };
-  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, hideAssignedSlots, limitToGodPool, pinnedBoonIds, activeArcana, maxGrasp]);
+  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, hideAssignedSlots, limitToGodPool, pinnedBoonIds, activeArcana, maxGrasp, activeKeepsake, activeFamiliar, isHeartBondActive]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -646,6 +688,9 @@ export default function App() {
     });
     setAdditionalBoons([]);
     setActiveArcana([]);
+    setActiveKeepsake('none');
+    setActiveFamiliar('none');
+    setIsHeartBondActive(false);
     setBuildName('Untitled Build');
     setSearchTerm('');
     setActiveSlot(null);
@@ -782,6 +827,10 @@ export default function App() {
             togglePin={togglePin}
             reorderPinnedBoons={reorderPinnedBoons}
             clearAllPins={clearAllPins}
+            activeArcana={activeArcana}
+            activeKeepsake={activeKeepsake}
+            activeFamiliar={activeFamiliar}
+            isHeartBondActive={isHeartBondActive}
           />
 
           {/* Right: Build View */}

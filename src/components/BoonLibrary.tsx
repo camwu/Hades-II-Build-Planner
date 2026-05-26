@@ -36,6 +36,10 @@ interface BoonLibraryProps {
   togglePin: (boonId: string) => void;
   reorderPinnedBoons: (newOrder: string[]) => void;
   clearAllPins: () => void;
+  activeArcana?: number[];
+  activeKeepsake?: string;
+  activeFamiliar?: string;
+  isHeartBondActive?: boolean;
 }
 
 interface SortablePinnedBoonItemProps {
@@ -130,8 +134,24 @@ export function BoonLibrary({
   pinnedBoonIds,
   togglePin,
   reorderPinnedBoons,
-  clearAllPins
+  clearAllPins,
+  activeArcana = [],
+  activeKeepsake = 'none',
+  activeFamiliar = 'none',
+  isHeartBondActive = false
 }: BoonLibraryProps) {
+
+  const isDeathArcanaActive = activeArcana.includes(12);
+  const isLuckierToothActive = activeKeepsake === 'luckier_tooth';
+  const isEngravedPinActive = activeKeepsake === 'engraved_pin';
+  const isToulaHeartBondActive = activeFamiliar === 'toula' && isHeartBondActive;
+  const isStalwartStandActive = selectedBoonIds.has('stalwart_stand');
+
+  const totalDeathDefiance = (isDeathArcanaActive ? 1 : 0) +
+                             (isLuckierToothActive ? 1 : 0) +
+                             (isEngravedPinActive ? 1 : 0) +
+                             (isToulaHeartBondActive ? 1 : 0) +
+                             (isStalwartStandActive ? 1 : 0);
   const pinnedBoons = React.useMemo(() => {
     return pinnedBoonIds
       .map(id => BOONS.find(b => b.id === id))
@@ -677,7 +697,9 @@ export function BoonLibrary({
                       } else {
                         boon.prerequisites.forEach(prereq => {
                           let met = false;
-                          if (prereq.element && prereq.elementCount) {
+                          if (prereq.description === "At least one Death Defiance") {
+                            met = totalDeathDefiance >= 1;
+                          } else if (prereq.element && prereq.elementCount) {
                             const currentCount = elementCounts[prereq.element] || 0;
                             met = currentCount >= prereq.elementCount;
                           } else {
@@ -799,7 +821,9 @@ export function BoonLibrary({
                 } else {
                   boon.prerequisites.forEach(prereq => {
                     let met = false;
-                    if (prereq.element && prereq.elementCount) {
+                    if (prereq.description === "At least one Death Defiance") {
+                      met = totalDeathDefiance >= 1;
+                    } else if (prereq.element && prereq.elementCount) {
                       const currentCount = elementCounts[prereq.element] || 0;
                       met = currentCount >= prereq.elementCount;
                     } else {
