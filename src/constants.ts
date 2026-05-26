@@ -34,13 +34,9 @@ export const SLOT_ABBR: Record<string, string> = {
   Magick: 'ma',
 };
 
-export const SLOT_MAP: Record<string, string> = {
-  at: 'Attack',
-  sp: 'Special',
-  ca: 'Cast',
-  sr: 'Sprint',
-  ma: 'Magick',
-};
+export const SLOT_MAP: Record<string, string> = Object.fromEntries(
+  Object.entries(SLOT_ABBR).map(([key, val]) => [val, key])
+);
 
 export const BOON_KEYWORDS = [
   // Slots
