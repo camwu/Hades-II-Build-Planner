@@ -68,6 +68,7 @@ export const GOD_SYMBOLS: Record<string, string> = {
   Hephaestus: '/assets/gods/Hephaestus_symbol.webp',
   Ares: '/assets/gods/Ares_symbol.webp',
   Artemis: '/assets/gods/Artemis_symbol.webp',
+  Athena: '/assets/gods/Athena_symbol.webp',
   Dionysus: '/assets/gods/Dionysus_symbol.webp',
   Hades: '/assets/gods/Hades_symbol.webp',
   Hermes: '/assets/gods/Hermes_symbol.webp',
