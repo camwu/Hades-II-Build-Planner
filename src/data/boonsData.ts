@@ -3378,5 +3378,77 @@ export const BOONS: Boon[] = [
     element: "Water",
     effect: "Gain a random amount of Max Health, but how much you have becomes a mystery. \n ▸ Max Life: *+50 ~ 80/+70 ~ 100/+90 ~ 120/+110 ~ 140*",
     icon: "/assets/boons/dionysus/Worry_Free.webp"
+  },
+  {
+    id: "divine_dash",
+    name: "Divine Dash",
+    type: "Sprint",
+    gods: ["Athena"],
+    element: "Fire",
+    effect: "Your *Dash* deals damage to foe in your path and can momentarily *Deflect*. \n ▸ Dash Damage: *10/15/20/25* \n\n *Divine Dash* provides *Deflect* for *0.35* seconds per use.",
+    icon: "/assets/boons/athena/Divine_Dash.webp"
+  },
+  {
+    id: "defensive_posture",
+    name: "Defensive Posture",
+    type: "Passive",
+    gods: ["Athena"],
+    element: "Fire",
+    effect: "After you take damage, become *Impervious* for *2 Sec.* \n ▸ Recharge Time Between Uses: *13 Sec./11 Sec./9 Sec./7 Sec.*",
+    icon: "/assets/boons/athena/Defensive_Posture.webp"
+  },
+  {
+    id: "stalwart_stand",
+    name: "Stalwart Stand",
+    type: "Passive",
+    gods: ["Athena"],
+    element: "Fire",
+    effect: "*Stalwart Stand* \n Gain *+1* *Death Defiance* that replenishes in each *Location*, but you *Prime* *Magick*. \n ▸ Magick Primed: *150/125/100/75*",
+    icon: "/assets/boons/athena/Stalwart_Stand.webp"
+  },
+  {
+    id: "renewed_faith",
+    name: "Renewed Faith",
+    type: "Passive",
+    gods: ["Athena"],
+    element: "Fire",
+    effect: "Replenish all spent uses of *Death Defiance* now, and improved their potency. \n ▸ Life Restoration When Used: *+10%/+15%/+20%/+25%*",
+    icon: "/assets/boons/athena/Renewed_Faith.webp"
+  },
+  {
+    id: "phalanx_shot",
+    name: "Phalanx Shot",
+    type: "Special",
+    gods: ["Athena"],
+    element: "Fire",
+    effect: "Your *Specials* also launch a projectile ahead that can *Deflect*, rearming after *2 Sec.* \n ▸ Projectile Damage: *10/15/20/25*",
+    icon: "/assets/boons/athena/Phalanx_Shot.webp"
+  },
+  {
+    id: "mental_block",
+    name: "Mental Block",
+    type: "Cast",
+    gods: ["Athena"],
+    element: "Fire",
+    effect: "Your *Casts* also deal a burst of damage in the area and momentarily make you *Deflect*. \n ▸ Cast Damage: *40/60/80/100* \n\n *Mental Block* provides *Deflect* for *0.5* seconds per use, with a *5* second cooldown.",
+    icon: "/assets/boons/athena/Mental_Block.webp"
+  },
+  {
+    id: "righteous_pike",
+    name: "Righteous Pike",
+    type: "Passive",
+    gods: ["Athena"],
+    element: "Fire",
+    effect: "Whenever you use *90 Magick*, up to *3* foe are stuck by spears from heaven. \n ▸ Spear Damage: *150/200/250/300*",
+    icon: "/assets/boons/athena/Righteous_Pike.webp"
+  },
+  {
+    id: "task_force",
+    name: "Task Force",
+    type: "Passive",
+    gods: ["Athena"],
+    element: "Fire",
+    effect: "If your *Hex* is *Godsent*, that effect may activate multiple times in each *Location*. \n ▸ Bonus Godsent Hex: *+1/+2/+3/+4* \n\n ▸ *Prerequisite:* Requires having a Hex assigned",
+    icon: "/assets/boons/athena/Task_Force.webp"
   }
 ];

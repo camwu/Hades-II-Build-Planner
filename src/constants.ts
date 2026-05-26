@@ -49,9 +49,9 @@ export const BOON_KEYWORDS = [
   'Attack', 'Special', 'Cast', 'Sprint', 'Magick', 'Dash', 'Dash-Strike', 
   'Hex', 'Keepsake', 'Weapon', 'Aspect', 'Nocturnal Arms', 'Animal Familiar',
   // Gods
-  'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Selene', 'Chaos', 'Hermes', 'Hades',
+  'Zeus', 'Poseidon', 'Demeter', 'Apollo', 'Hestia', 'Aphrodite', 'Hera', 'Hephaestus', 'Ares', 'Selene', 'Chaos', 'Hermes', 'Hades', 'Artemis', 'Athena', 'Dionysus',
   // God keywords
-  'Plasma', 'Heartthrob', 'Blade Rift', 'Charm', 'Fine Line', 'Ocean Swell', 'Steam', 'Aether Font', 'Soul Urn', 'Dark', 'Festive Fog', 'Grape Juice',
+  'Plasma', 'Heartthrob', 'Blade Rift', 'Charm', 'Fine Line', 'Ocean Swell', 'Steam', 'Aether Font', 'Soul Urn', 'Dark', 'Festive Fog', 'Grape Juice', 'Deflect', 'Deflection', 'Godsent',
   // Status Curses
   'Weak', 'Daze', 'Wounds', 'Marked', 'Freeze', 'Gust', 'Hangover', 'Glow', 'Hitch', 'Scorch', 'Froth', 'Morph', 'Blitz', 'Scorn', 'Hangover', 
   // Mechanics
