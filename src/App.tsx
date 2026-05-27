@@ -271,6 +271,17 @@ export default function App() {
     return true;
   });
 
+  const [enforceSupportBoonLimit, setEnforceSupportBoonLimit] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('esb')) {
+      return params.get('esb') !== '0';
+    }
+    if (savedState && typeof savedState.enforceSupportBoonLimit === 'boolean') {
+      return savedState.enforceSupportBoonLimit;
+    }
+    return true;
+  });
+
   const [pinnedBoonIds, setPinnedBoonIds] = useState<string[]>(() => {
     const params = new URLSearchParams(window.location.search);
     const pinParam = params.get('p');
@@ -371,6 +382,9 @@ export default function App() {
       if (!limitToGodPool) {
         params.set('lp', '0');
       }
+      if (!enforceSupportBoonLimit) {
+        params.set('esb', '0');
+      }
 
       // Pinned
       if (pinnedBoonIds.length > 0) {
@@ -432,6 +446,7 @@ export default function App() {
           hideAssigned,
           hideAssignedSlots,
           limitToGodPool,
+          enforceSupportBoonLimit,
           activeArcana,
           maxGrasp,
           activeKeepsake,
@@ -448,7 +463,7 @@ export default function App() {
     return () => {
       clearTimeout(handler);
     };
-  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, hideAssignedSlots, limitToGodPool, pinnedBoonIds, activeArcana, maxGrasp, activeKeepsake, activeFamiliar, isHeartBondActive]);
+  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, hideAssignedSlots, limitToGodPool, enforceSupportBoonLimit, pinnedBoonIds, activeArcana, maxGrasp, activeKeepsake, activeFamiliar, isHeartBondActive]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -594,6 +609,34 @@ export default function App() {
   const isSearchActive = searchTerm.trim().length > 0;
 
   const filteredBoons = useMemo(() => {
+    // Calculate counts for support gods
+    const supportGodCounts: Record<string, number> = {
+      Artemis: 0,
+      Athena: 0,
+      Dionysus: 0,
+      Hades: 0,
+      Hermes: 0,
+    };
+
+    Object.values(coreBuild).forEach(b => {
+      const boon = b as Boon | null;
+      if (boon) {
+        boon.gods.forEach(god => {
+          if (god in supportGodCounts) {
+            supportGodCounts[god]++;
+          }
+        });
+      }
+    });
+
+    additionalBoons.forEach(boon => {
+      boon.gods.forEach(god => {
+        if (god in supportGodCounts) {
+          supportGodCounts[god]++;
+        }
+      });
+    });
+
     return BOONS.filter(boon => {
       // Don't show pinned boons in the main list since they are pinned to the top
       if (pinnedBoonIds.includes(boon.id)) {
@@ -621,6 +664,24 @@ export default function App() {
         }
       }
 
+      // Enforce Boon Limit for Support Gods Filter
+      if (enforceSupportBoonLimit) {
+        // Only hide if the boon is NOT currently selected in the active build, allowing swaps/views
+        if (!selectedBoonIds.has(boon.id)) {
+          const isLimitExceeded = boon.gods.some(god => {
+            if (god === 'Hermes') {
+              return (supportGodCounts[god] || 0) >= 3;
+            } else if (['Artemis', 'Athena', 'Dionysus', 'Hades'].includes(god)) {
+              return (supportGodCounts[god] || 0) >= 1;
+            }
+            return false;
+          });
+          if (isLimitExceeded) {
+            return false;
+          }
+        }
+      }
+
       const matchesSearch = boonMatchesQuery(boon, searchQuery);
       const matchesType = (activeSlot ? isValidForSlot(boon, activeSlot) : true);
       
@@ -635,7 +696,7 @@ export default function App() {
       
       return a.name.localeCompare(b.name);
     });
-  }, [searchQuery, activeSlot, hideAssigned, hideAssignedSlots, coreBuild, selectedBoonIds, limitToGodPool, activeStandardOlympians, pinnedBoonIds]);
+  }, [searchQuery, activeSlot, hideAssigned, hideAssignedSlots, coreBuild, selectedBoonIds, limitToGodPool, activeStandardOlympians, pinnedBoonIds, enforceSupportBoonLimit, additionalBoons]);
 
   const selectBoon = (boon: Boon, slotId: string) => {
     if (!isValidForSlot(boon, slotId)) return;
@@ -814,6 +875,8 @@ export default function App() {
             setHideAssignedSlots={setHideAssignedSlots}
             limitToGodPool={limitToGodPool}
             setLimitToGodPool={setLimitToGodPool}
+            enforceSupportBoonLimit={enforceSupportBoonLimit}
+            setEnforceSupportBoonLimit={setEnforceSupportBoonLimit}
             activeStandardOlympians={activeStandardOlympians}
             filteredBoons={filteredBoons}
             activeSlot={activeSlot}

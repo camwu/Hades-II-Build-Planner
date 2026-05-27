@@ -3267,7 +3267,7 @@ export const BOONS: Boon[] = [
     type: "Passive",
     gods: ["Hades"],
     element: null,
-    effect: "Your *Dash* strikes surrounding foes with a punishing sweep that inflicts *Scorn*. \n ▸ Sweep Damage: *50*",
+    effect: "Your *Dash* strikes surrounding foes with a punishing sweep that inflicts *Scorn*. \n ▸ Sweep Damage: *50* \n\n*Scorn* (Curse): Afflicted foes take *+30%* *Attack* and *Special* damage. Lasts *10 Sec.*",
     icon: "/assets/boons/hades/Gigaros_Dash.webp",
     inflictsCurse: "scorn"
   },
@@ -3294,7 +3294,7 @@ export const BOONS: Boon[] = [
     type: "Passive",
     gods: ["Hades"],
     element: null,
-    effect: "Whenever you use *60 Magick*, summon *3 Soul Urns* around you. \n ▸ Soul Urn Damage: *200*",
+    effect: "Whenever you use *60 Magick*, summon *3 Soul Urns* around you. \n ▸ Soul Urn Damage: *200* \n\n*Soul Urn*: Vessels for enraged spirits. Destroy them to damage any foes surrounding them.",
     icon: "/assets/boons/hades/Cinerary_Circle.webp"
   },
   {
@@ -3303,7 +3303,7 @@ export const BOONS: Boon[] = [
     type: "Passive",
     gods: ["Hades"],
     element: null,
-    effect: "After you take damage, go *Dark* and deal more damage for the duration. \n ▸ Damage While Dark: *+70%*",
+    effect: "After you take damage, go *Dark* and deal more damage for the duration. \n ▸ Damage While Dark: *+70%* \n\n*Dark*: You are undetectable and *Impervious* for *5 Sec.* This can recur only after *40 Sec.*",
     icon: "/assets/boons/hades/Unseen_Ire.webp"
   },
   {
@@ -3312,7 +3312,7 @@ export const BOONS: Boon[] = [
     type: "Passive",
     gods: ["Dionysus"],
     element: "Water",
-    effect: "In each *Encounter*, *Grape Juice* appears, in the area and grants *Power* when used. \n ▸ Reappearance Time: *10 Sec./9 Sec./8 Sec./7 Sec.* \n\n *Grape Juice*: Gives your very next move *+100 Power*, then later reappears in a random spot.",
+    effect: "In each *Encounter*, *Grape Juice* appears, in the area and grants *Power* when used. \n ▸ Reappearance Time: *10 Sec./9 Sec./8 Sec./7 Sec.* \n\n*Grape Juice*: Gives your very next move *+100 Power*, then later reappears in a random spot.",
     icon: "/assets/boons/dionysus/Bottomless_Drink.webp"
   },
   {
@@ -3330,7 +3330,7 @@ export const BOONS: Boon[] = [
     type: "Passive",
     gods: ["Dionysus"],
     element: "Water",
-    effect: "Your *Ω Moves* inflict *Hangover* the first time they strike foes. \n ▸ Hangover Damage _(every 0.5 Sec.)_: *50/75/100/125* \n\n *Hangover* (Curse): Afflicted foes take damage continuously. Lasts for *4 Sec.*",
+    effect: "Your *Ω Moves* inflict *Hangover* the first time they strike foes. \n ▸ Hangover Damage _(every 0.5 Sec.)_: *50/75/100/125* \n\n*Hangover* (Curse): Afflicted foes take damage continuously. Lasts for *4 Sec.*",
     icon: "/assets/boons/dionysus/Drunken_Stupor.webp",
     inflictsCurse: "hangover"
   },
@@ -3340,7 +3340,7 @@ export const BOONS: Boon[] = [
     type: "Passive",
     gods: ["Dionysus"],
     element: "Water",
-    effect: "Every *8 Sec.* in each *Encounter*, *Festive Fog* appears, making you stronger while in it. \n ▸ In-Fog Bonus Damage: *+30%/+40%/+50%/+60%* \n\n *Festive Fog*: Emboldening vapors that repeatedly stuns susceptible foes. Lasts *5 Sec.*",
+    effect: "Every *8 Sec.* in each *Encounter*, *Festive Fog* appears, making you stronger while in it. \n ▸ In-Fog Bonus Damage: *+30%/+40%/+50%/+60%* \n\n*Festive Fog*: Emboldening vapors that repeatedly stuns susceptible foes. Lasts *5 Sec.*",
     icon: "/assets/boons/dionysus/Happy_Haze.webp"
   },
   {
@@ -3385,7 +3385,7 @@ export const BOONS: Boon[] = [
     type: "Passive",
     gods: ["Athena"],
     element: "Fire",
-    effect: "Your *Dash* deals damage to foe in your path and can momentarily *Deflect*. \n ▸ Dash Damage: *10/15/20/25* \n\n *Divine Dash* provides *Deflect* for *0.35* seconds per use.",
+    effect: "Your *Dash* deals damage to foe in your path and can momentarily *Deflect*. \n ▸ Dash Damage: *10/15/20/25* \n\n*Divine Dash* provides *Deflect* for *0.35* seconds per use.",
     icon: "/assets/boons/athena/Divine_Dash.webp"
   },
   {
@@ -3430,7 +3430,7 @@ export const BOONS: Boon[] = [
     type: "Passive",
     gods: ["Athena"],
     element: "Fire",
-    effect: "Your *Casts* also deal a burst of damage in the area and momentarily make you *Deflect*. \n ▸ Cast Damage: *40/60/80/100* \n\n *Mental Block* provides *Deflect* for *0.5* seconds per use, with a *5* second cooldown.",
+    effect: "Your *Casts* also deal a burst of damage in the area and momentarily make you *Deflect*. \n ▸ Cast Damage: *40/60/80/100* \n\n*Mental Block* provides *Deflect* for *0.5* seconds per use, with a *5* second cooldown.",
     icon: "/assets/boons/athena/Mental_Block.webp"
   },
   {
@@ -3448,7 +3448,7 @@ export const BOONS: Boon[] = [
     type: "Passive",
     gods: ["Athena"],
     element: "Fire",
-    effect: "If your *Hex* is *Godsent*, that effect may activate multiple times in each *Location*. \n ▸ Bonus Godsent Hex: *+1/+2/+3/+4* \n\n ▸ *Prerequisite:* Requires having a Hex assigned",
+    effect: "If your *Hex* is *Godsent*, that effect may activate multiple times in each *Location*. \n ▸ Bonus Godsent Hex: *+1/+2/+3/+4*",
     icon: "/assets/boons/athena/Task_Force.webp"
   }
 ];

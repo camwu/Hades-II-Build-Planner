@@ -52,17 +52,7 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
         {ALL_ELEMENTS.map((el, index) => {
           const count = counts[el];
           const boons = contributingBoons[el] || [];
-          
-          let tooltipPositionClass = "left-1/2 -translate-x-1/2 mt-2";
-          if (index === 0) {
-            tooltipPositionClass = "left-0 mt-2";
-          } else if (index === ALL_ELEMENTS.length - 1) {
-            tooltipPositionClass = "right-0 mt-2";
-          } else if (index === 1 && ALL_ELEMENTS.length > 3) {
-            tooltipPositionClass = "left-0 mt-2";
-          } else if (index === ALL_ELEMENTS.length - 2 && ALL_ELEMENTS.length > 3) {
-            tooltipPositionClass = "right-0 mt-2";
-          }
+          const tooltipPositionClass = "left-0 mt-2.5 origin-top-left";
           
           return (
             <div key={el} className="group relative flex items-center gap-2 cursor-help">
@@ -78,7 +68,11 @@ export function ElementSummary({ coreBuild, additionalBoons }: ElementSummaryPro
               </span>
 
               {/* Element Tooltip */}
-              <div className={`absolute top-full ${tooltipPositionClass} w-64 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50`}>
+              <div className={`absolute top-full ${tooltipPositionClass} w-64 p-3.5 bg-hades-bg-dark border border-white/15 rounded-xl shadow-2xl opacity-0 scale-95 invisible group-hover:opacity-100 group-hover:scale-100 group-hover:visible transition-all duration-200 z-[100]`}>
+                {/* Connector bridge to make hovering steady */}
+                <div className="absolute left-0 right-0 bottom-full h-2.5" />
+                {/* Triangular pointer pointing up to the center of the element icon */}
+                <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-white/15 rotate-45 z-10" />
                 <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4">

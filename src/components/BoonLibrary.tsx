@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Search, X, Info, ChevronLeft, ChevronRight, Pin, ChevronDown } from 'lucide-react';
+import { Search, X, Info, ChevronLeft, ChevronRight, Pin, ChevronDown, Filter } from 'lucide-react';
 import { Boon, BoonPrerequisite, ElementType } from '../types';
 import { SIDEBAR_WIDTH } from '../constants';
 import { DraggableBoonListItem } from './BoonListItem';
@@ -23,6 +23,8 @@ interface BoonLibraryProps {
   setHideAssignedSlots: (val: boolean) => void;
   limitToGodPool: boolean;
   setLimitToGodPool: (val: boolean) => void;
+  enforceSupportBoonLimit: boolean;
+  setEnforceSupportBoonLimit: (val: boolean) => void;
   activeStandardOlympians: string[];
   filteredBoons: Boon[];
   activeSlot: string | null;
@@ -159,6 +161,8 @@ export function BoonLibrary({
   setHideAssignedSlots,
   limitToGodPool,
   setLimitToGodPool,
+  enforceSupportBoonLimit,
+  setEnforceSupportBoonLimit,
   activeStandardOlympians,
   filteredBoons,
   activeSlot,
@@ -220,6 +224,43 @@ export function BoonLibrary({
   });
 
   const [isResizing, setIsResizing] = React.useState<boolean>(false);
+  const [isFiltersExpanded, setIsFiltersExpanded] = React.useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem('hades_build_planner_filters_expanded');
+      return stored !== null ? JSON.parse(stored) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('hades_build_planner_filters_expanded', JSON.stringify(isFiltersExpanded));
+    } catch {}
+  }, [isFiltersExpanded]);
+
+  const [isLibraryExpanded, setIsLibraryExpanded] = React.useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem('hades_build_planner_library_expanded');
+      return stored !== null ? JSON.parse(stored) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('hades_build_planner_library_expanded', JSON.stringify(isLibraryExpanded));
+    } catch {}
+  }, [isLibraryExpanded]);
+
+  const [isSearchTooltipActive, setIsSearchTooltipActive] = React.useState<boolean>(false);
+
+  const activeFiltersCount = (hideAssigned ? 1 : 0) +
+                             (hideAssignedSlots ? 1 : 0) +
+                             (limitToGodPool ? 1 : 0) +
+                             (enforceSupportBoonLimit ? 1 : 0);
+
   const containerRef = React.useRef<HTMLDivElement>(null);
   const dragStartRef = React.useRef<{ y: number; height: number }>({ y: 0, height: 196 });
   const currentHeightRef = React.useRef<number>(196);
@@ -359,7 +400,20 @@ export function BoonLibrary({
     }
   }, [isPinnedExpanded]);
 
-  const filterHeaderHeight = filterHeaderRef.current ? filterHeaderRef.current.offsetHeight : 180;
+  const [filterHeaderHeight, setFilterHeaderHeight] = React.useState<number>(124);
+
+  React.useEffect(() => {
+    if (!filterHeaderRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setFilterHeaderHeight(entry.target.getBoundingClientRect().height);
+      }
+    });
+    observer.observe(filterHeaderRef.current);
+    setFilterHeaderHeight(filterHeaderRef.current.getBoundingClientRect().height);
+    return () => observer.disconnect();
+  }, [isFiltersExpanded]);
+
   const libraryHeaderHeight = libraryHeaderRef.current ? libraryHeaderRef.current.offsetHeight : 44;
   const pinnedHeaderAndHandleHeight = 70;
   const minLibraryListHeight = 80;
@@ -385,7 +439,7 @@ export function BoonLibrary({
         }}
         onMouseEnter={() => setIsButtonHovered(true)}
         onMouseLeave={() => setIsButtonHovered(false)}
-        className={`absolute top-[44px] z-50 w-6 h-10 flex items-center justify-center transition-all duration-200 group border shadow-2xl ${
+        className={`absolute top-[40px] ${isSearchTooltipActive ? 'z-10' : 'z-50'} w-6 h-10 flex items-center justify-center transition-all duration-200 group border shadow-2xl ${
           isPanelCollapsed 
             ? 'left-4 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]' 
             : '-right-3 rounded bg-hades-bg-dark border-hades-accent/30 hover:border-hades-accent hover:bg-hades-bg-light translate-y-[-50%]'
@@ -406,9 +460,9 @@ export function BoonLibrary({
       >
         <div 
           ref={filterHeaderRef}
-          className={`p-6 border-b border-hades-border-light flex flex-col gap-3 bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}
+          className={`pt-5 px-5 pb-3 border-b border-hades-border-light flex flex-col bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}
         >
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col">
             <div className="relative flex items-center">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-hades-accent/50" />
               <input 
@@ -429,19 +483,19 @@ export function BoonLibrary({
                     <X className="w-3.5 h-3.5" />
                   </button>
                 )}
-                <div className="relative group/info flex items-center justify-center">
-                  <button 
-                    type="button"
-                    className="text-hades-text/30 hover:text-hades-accent transition-colors p-0.5 cursor-help"
-                    aria-label="Search tips"
-                  >
-                    <Info className="w-3.5 h-3.5" />
-                  </button>
+                <div 
+                  className="relative group/tooltip inline-flex items-center"
+                  onMouseEnter={() => setIsSearchTooltipActive(true)}
+                  onMouseLeave={() => setIsSearchTooltipActive(false)}
+                >
+                  <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
                   {/* Tooltip */}
-                  <div className="absolute top-full right-[-8px] mt-2.5 w-80 bg-hades-bg-dark border border-hades-border-light rounded-lg p-3.5 shadow-2xl opacity-0 scale-95 invisible group-hover/info:opacity-100 group-hover/info:scale-100 group-hover/info:visible transition-all duration-200 origin-top-right z-50 pointer-events-none group-hover/info:pointer-events-auto">
+                  <div className="absolute left-[-10px] top-full mt-3.5 w-80 bg-hades-bg-dark border border-hades-border-light rounded-lg p-3.5 shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
                     {/* Connector bridge to make hovering steady */}
-                    <div className="absolute -top-[14px] left-0 right-0 h-[24px] bg-transparent pointer-events-auto" />
-                    <p className="text-[10px] font-semibold text-hades-accent mb-1 uppercase tracking-wider font-display">
+                    <div className="absolute left-0 right-0 bottom-full h-3.5" />
+                    {/* Triangular pointer pointing up */}
+                    <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                    <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
                       Search parameters
                     </p>
                     <p className="text-[11px] font-sans text-hades-text/85 mb-2.5 leading-snug">
@@ -523,147 +577,236 @@ export function BoonLibrary({
                         </tbody>
                       </table>
                     </div>
-                    {/* Triangular pointer pointing up */}
-                    <div className="absolute bottom-[calc(100%-4px)] right-[13px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 mt-1">
-              <div className="flex items-center gap-2 px-1 w-fit">
-                <label className="flex items-center gap-2 cursor-pointer group select-none">
-                  <input 
-                    type="checkbox" 
-                    checked={hideAssigned} 
-                    onChange={(e) => setHideAssigned(e.target.checked)}
-                    className="sr-only"
-                  />
-                  <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                    hideAssigned 
-                      ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                      : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                  }`}>
-                    {hideAssigned && (
-                      <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    )}
-                  </div>
-                  <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
-                    Hide Assigned Boons
-                  </span>
-                </label>
+            <div className="border-t border-hades-border-light/10 mt-2 mb-1.5" />
 
-                <div className="flex items-center gap-1.5 ml-0.5">
-                  {/* Info Button with Stylized Tooltip */}
-                  <div className="relative group/tooltip inline-flex items-center">
-                    <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                    <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50 origin-top-left">
-                      {/* Connector bridge to make hovering steady */}
-                      <div className="absolute left-0 right-0 bottom-full h-2" />
-                      <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
-                        Assigned Boons Filter
-                      </p>
-                      <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
-                        If checked, boons that have already been assigned in your active build will be excluded from the library and will be hidden in search results.
-                      </p>
-                      {/* Triangular pointer pointing up */}
-                      <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
-                    </div>
+            <div className="flex flex-col relative w-full">
+              <div className="flex items-center justify-between select-none">
+                <button
+                  onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+                  className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
+                >
+                  {isFiltersExpanded ? (
+                    <ChevronDown className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
+                  ) : (
+                    <ChevronRight className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
+                  )}
+                  <div className="flex items-center gap-2">
+                    <Filter className="w-4 h-4 text-hades-accent shrink-0" />
+                    <span>Filters ({activeFiltersCount})</span>
                   </div>
-                </div>
+                </button>
               </div>
 
-              <div className="flex items-center gap-2 px-1 w-fit">
-                <label className="flex items-center gap-2 cursor-pointer group select-none">
-                  <input 
-                    type="checkbox" 
-                    checked={hideAssignedSlots} 
-                    onChange={(e) => setHideAssignedSlots(e.target.checked)}
-                    className="sr-only"
-                  />
-                  <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                    hideAssignedSlots 
-                      ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                      : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                  }`}>
-                    {hideAssignedSlots && (
-                      <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    )}
-                  </div>
-                  <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
-                    Hide Replacement Boons for Assigned Core Slots
-                  </span>
-                </label>
-
-                <div className="flex items-center gap-1.5 ml-0.5">
-                  {/* Info Button with Stylized Tooltip */}
-                  <div className="relative group/tooltip inline-flex items-center">
-                    <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                    <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50 origin-top-left">
-                      {/* Connector bridge to make hovering steady */}
-                      <div className="absolute left-0 right-0 bottom-full h-2" />
-                      <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
-                        Assigned Slots Filter
-                      </p>
-                      <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
-                        If checked, boons that would replace a currently assigned core slot will not show up in the library and in search results.
-                        <span className="block mt-1.5 text-hades-text/60 italic">
-                          Example: if Flame Strike has already been assigned and this option is checked, Attack boons will no longer show up.
+              <div
+                style={{ 
+                  gridTemplateRows: isFiltersExpanded ? '1fr' : '0fr',
+                  display: 'grid'
+                }}
+                className="transition-[grid-template-rows,margin-top,opacity] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] mt-0 opacity-0 pointer-events-none data-[expanded=true]:mt-2.5 data-[expanded=true]:opacity-100 data-[expanded=true]:pointer-events-auto"
+                data-expanded={isFiltersExpanded}
+              >
+                <div className={isFiltersExpanded ? "overflow-visible" : "overflow-hidden"}>
+                  <div className="flex flex-col gap-2 mt-1 pb-2.5 pl-3">
+                    <div className="flex items-center gap-2 px-1 w-fit">
+                      <label className="flex items-center gap-2 cursor-pointer group select-none">
+                        <input 
+                          type="checkbox" 
+                          checked={hideAssigned} 
+                          onChange={(e) => setHideAssigned(e.target.checked)}
+                          className="sr-only"
+                        />
+                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                          hideAssigned 
+                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                            : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                        }`}>
+                          {hideAssigned && (
+                            <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
+                          Hide Assigned Boons
                         </span>
-                      </p>
-                      {/* Triangular pointer pointing up */}
-                      <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                      </label>
+
+                      <div className="flex items-center gap-1.5 ml-0.5">
+                        {/* Info Button with Stylized Tooltip */}
+                        <div className="relative group/tooltip inline-flex items-center">
+                          <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                          <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
+                            {/* Connector bridge to make hovering steady */}
+                            <div className="absolute left-0 right-0 bottom-full h-2" />
+                            <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                              Assigned Boons Filter
+                            </p>
+                            <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
+                              If checked, boons that have already been assigned in your active build will be hidden.
+                            </p>
+                            {/* Triangular pointer pointing up */}
+                            <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="flex items-center gap-2 px-1 w-fit">
-                <label className="flex items-center gap-2 cursor-pointer group select-none">
-                  <input 
-                    type="checkbox" 
-                    checked={limitToGodPool} 
-                    onChange={(e) => setLimitToGodPool(e.target.checked)}
-                    className="sr-only"
-                  />
-                  <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                    limitToGodPool 
-                      ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                      : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                  }`}>
-                    {limitToGodPool && (
-                      <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    )}
-                  </div>
-                  <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
-                    Limit Boons To God Pool
-                  </span>
-                </label>
-                
-                <div className="flex items-center gap-1.5 ml-0.5">
-                  <span className={`text-[9px] font-semibold px-1 py-[0.5px] rounded-sm transition-colors ${activeStandardOlympians.length >= 4 ? 'bg-amber-400/15 text-amber-400 border border-amber-400/20' : 'bg-white/5 text-gray-400 border border-white/10'}`}>
-                    {activeStandardOlympians.length}/4
-                  </span>
+                    <div className="flex items-center gap-2 px-1 w-fit">
+                      <label className="flex items-center gap-2 cursor-pointer group select-none">
+                        <input 
+                          type="checkbox" 
+                          checked={hideAssignedSlots} 
+                          onChange={(e) => setHideAssignedSlots(e.target.checked)}
+                          className="sr-only"
+                        />
+                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                          hideAssignedSlots 
+                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                            : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                        }`}>
+                          {hideAssignedSlots && (
+                            <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
+                          Hide Replacement Boons for Assigned Core Slots
+                        </span>
+                      </label>
 
-                  {/* Info Button with Stylized Tooltip */}
-                  <div className="relative group/tooltip inline-flex items-center">
-                    <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                    <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-50 origin-top-left">
-                      {/* Connector bridge to make hovering steady */}
-                      <div className="absolute left-0 right-0 bottom-full h-2" />
-                      <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
-                        God Pool Mechanics
-                      </p>
-                      <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
-                        Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, Hermes, and Hades) are included in the god pool each night. If checked, once you have boons from four gods, all other gods' boons are filtered out.
-                      </p>
-                      {/* Triangular pointer pointing up */}
-                      <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                      <div className="flex items-center gap-1.5 ml-0.5">
+                        {/* Info Button with Stylized Tooltip */}
+                        <div className="relative group/tooltip inline-flex items-center">
+                          <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                          <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
+                            {/* Connector bridge to make hovering steady */}
+                            <div className="absolute left-0 right-0 bottom-full h-2" />
+                            <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                              Assigned Slots Filter
+                            </p>
+                            <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
+                              If checked, boons that would replace a currently assigned core slot will be hidden.
+                              <span className="block mt-1.5 text-hades-text/60 italic">
+                                Example: if Flame Strike has already been assigned and this option is checked, Attack boons will no longer show up.
+                              </span>
+                            </p>
+                            {/* Triangular pointer pointing up */}
+                            <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 px-1 w-fit">
+                      <label className="flex items-center gap-2 cursor-pointer group select-none">
+                        <input 
+                          type="checkbox" 
+                          checked={limitToGodPool} 
+                          onChange={(e) => setLimitToGodPool(e.target.checked)}
+                          className="sr-only"
+                        />
+                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                          limitToGodPool 
+                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                            : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                        }`}>
+                          {limitToGodPool && (
+                            <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
+                          Limit Boons To God Pool
+                        </span>
+                      </label>
+                      
+                      <div className="flex items-center gap-1.5 ml-0.5">
+                        <span className={`text-[9px] font-semibold px-1 py-[0.5px] rounded-sm transition-colors ${activeStandardOlympians.length >= 4 ? 'bg-amber-400/15 text-amber-400 border border-amber-400/20' : 'bg-white/5 text-gray-400 border border-white/10'}`}>
+                          {activeStandardOlympians.length}/4
+                        </span>
+
+                        {/* Info Button with Stylized Tooltip */}
+                        <div className="relative group/tooltip inline-flex items-center">
+                          <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                          <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
+                            {/* Connector bridge to make hovering steady */}
+                            <div className="absolute left-0 right-0 bottom-full h-2" />
+                            <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                              God Pool Filter
+                            </p>
+                            <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
+                              Typically, only <span className="font-bold text-gray-200">four</span> Olympian gods (excluding Artemis, Athena, Dionysus, Hermes, and Hades) are included in the god pool each night.
+                              <br /><br />
+                              If checked, once you have allocated boons from four Olympian gods, all other standard Olympians' boons are filtered out.
+                            </p>
+                            {/* Triangular pointer pointing up */}
+                            <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 px-1 w-fit">
+                      <label className="flex items-center gap-2 cursor-pointer group select-none">
+                        <input 
+                          type="checkbox" 
+                          checked={enforceSupportBoonLimit} 
+                          onChange={(e) => setEnforceSupportBoonLimit(e.target.checked)}
+                          className="sr-only"
+                        />
+                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                          enforceSupportBoonLimit 
+                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                            : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                        }`}>
+                          {enforceSupportBoonLimit && (
+                            <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
+                          Enforce boon limit for support gods
+                        </span>
+                      </label>
+                      
+                      <div className="flex items-center gap-1.5 ml-0.5">
+                        {/* Info Button with Stylized Tooltip */}
+                        <div className="relative group/tooltip inline-flex items-center">
+                          <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                          <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
+                            {/* Connector bridge to make hovering steady */}
+                            <div className="absolute left-0 right-0 bottom-full h-2" />
+                            <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                              Support God Limits
+                            </p>
+                            <div className="font-sans text-[11px] text-hades-text/85 leading-relaxed flex flex-col gap-1.5">
+                              <p>
+                                Under normal circumstances, only one boon can be obtained from each of the following gods per night:
+                              </p>
+                              <ul className="list-disc pl-4 space-y-0.5 text-hades-text/90 font-medium">
+                                <li><span className="font-bold text-gray-200">Artemis</span></li>
+                                <li><span className="font-bold text-gray-200">Athena</span></li>
+                                <li><span className="font-bold text-gray-200">Dionysus</span></li>
+                                <li><span className="font-bold text-gray-200">Hades</span></li>
+                              </ul>
+                              <p>
+                                Additionally, only two to three <span className="font-bold text-gray-200">Hermes</span> boons are naturally attainable each night.
+                                <br /><br />
+                                If checked, once this limit is reached for any of the above gods, the remaining boons from that respective god will be hidden.
+                              </p>
+                            </div>
+                            {/* Triangular pointer pointing up */}
+                            <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -698,21 +841,20 @@ export function BoonLibrary({
               </button>
             </div>
             
-            <motion.div
-              initial={false}
-              animate={{ 
-                height: isPinnedExpanded ? "auto" : 0,
-                opacity: isPinnedExpanded ? 1 : 0,
-                marginTop: isPinnedExpanded ? 8 : 0
+            <div
+              style={{ 
+                gridTemplateRows: isPinnedExpanded ? '1fr' : '0fr',
+                display: 'grid'
               }}
-              transition={{ type: 'spring', damping: 30, stiffness: 350 }}
-              className="overflow-hidden"
+              className="transition-[grid-template-rows,margin-top,opacity] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] mt-0 opacity-0 pointer-events-none data-[expanded=true]:mt-2 data-[expanded=true]:opacity-100 data-[expanded=true]:pointer-events-auto"
+              data-expanded={isPinnedExpanded}
             >
-              <div 
-                ref={containerRef}
-                style={{ maxHeight: `${activePinnedMaxHeight}px` }}
-                className={`space-y-3 overflow-y-auto custom-scrollbar px-5 pt-2 pb-1.5 ${isResizing ? 'select-none pointer-events-none' : 'transition-[max-height] duration-300'}`}
-              >
+              <div className="overflow-hidden">
+                <div 
+                  ref={containerRef}
+                  style={{ maxHeight: `${activePinnedMaxHeight}px` }}
+                  className={`space-y-3 overflow-y-auto custom-scrollbar px-5 pt-2 pb-1.5 ${isResizing ? 'select-none pointer-events-none' : 'transition-[max-height] duration-300'}`}
+                >
                 <SortableContext items={pinnedBoonIds} strategy={verticalListSortingStrategy}>
                   {pinnedBoons.map((boon) => {
                     let isLocked = false;
@@ -799,7 +941,8 @@ export function BoonLibrary({
                   })}
                 </SortableContext>
               </div>
-            </motion.div>
+            </div>
+          </div>
 
             {/* Draggable Divider Handle */}
             {isPinnedExpanded && (
@@ -829,26 +972,45 @@ export function BoonLibrary({
           ref={libraryHeaderRef}
           className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative"
         >
-          <div className="flex items-center justify-between mx-5 px-1 select-none">
-            <div className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center gap-2 select-none text-left">
-              <img 
-                src="/assets/ui/BoonII.webp" 
-                alt="Boon Library Icon" 
-                className="w-4 h-4 object-contain shrink-0" 
-                referrerPolicy="no-referrer"
-              />
-              Boon Library ({filteredBoons.length})
-            </div>
+          <div className="flex items-center justify-between pl-5 pr-5 select-none">
+            <button
+              onClick={() => setIsLibraryExpanded(!isLibraryExpanded)}
+              className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
+            >
+              {isLibraryExpanded ? (
+                <ChevronDown className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
+              ) : (
+                <ChevronRight className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
+              )}
+              <div className="flex items-center gap-2">
+                <img 
+                  src="/assets/ui/BoonII.webp" 
+                  alt="Boon Library Icon" 
+                  className="w-4 h-4 object-contain shrink-0" 
+                  referrerPolicy="no-referrer"
+                />
+                Boon Library ({filteredBoons.length})
+              </div>
+            </button>
           </div>
         </div>
 
         <div 
-          ref={libraryListContainerRef}
-          onScroll={handleSidebarScroll}
-          className={`flex-1 overflow-y-auto custom-scrollbar px-5 transform-gpu ${
-            filteredBoons.length === 0 && libraryHeight < 160 ? 'pt-1 pb-2' : 'pt-3 pb-8'
-          }`}
+          style={{ 
+            gridTemplateRows: isLibraryExpanded ? '1fr' : '0fr',
+            display: 'grid'
+          }}
+          className="transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-0 pointer-events-none data-[expanded=true]:opacity-100 data-[expanded=true]:pointer-events-auto data-[expanded=true]:flex-1 data-[expanded=false]:flex-none min-h-0"
+          data-expanded={isLibraryExpanded}
         >
+          <div className="overflow-hidden flex flex-col h-full min-h-0">
+            <div 
+              ref={libraryListContainerRef}
+              onScroll={handleSidebarScroll}
+              className={`flex-1 overflow-y-auto custom-scrollbar px-5 transform-gpu ${
+                filteredBoons.length === 0 && libraryHeight < 160 ? 'pt-1 pb-2' : 'pt-3 pb-8'
+              }`}
+            >
           <div className="space-y-3 transform-gpu">
 
             {displayedBoons.map(boon => {
@@ -957,6 +1119,8 @@ export function BoonLibrary({
           </div>
         </div>
       </div>
+    </div>
+  </div>
     </motion.aside>
   );
 }
