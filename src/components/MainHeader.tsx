@@ -25,9 +25,9 @@ export function MainHeader({
   showPurgeConfirm
 }: MainHeaderProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 border-b border-hades-border bg-hades-bg-dark/85 backdrop-blur-md z-50 px-6 flex items-center justify-between">
+    <header className="relative w-full flex-shrink-0 h-16 border-b border-hades-border bg-hades-bg-dark/85 backdrop-blur-md z-50 px-6 flex items-center justify-between">
       {/* Left side: Logo & Title */}
-      <div className="flex items-center gap-3 shrink-0 z-10">
+      <div className="h-full flex items-center gap-3 shrink-0 z-10">
         <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-hades-bg-main">
           <img 
             src="/assets/ui/melinoe_icon.webp" 
@@ -70,7 +70,7 @@ export function MainHeader({
       </div>
 
       {/* Right side: Actions */}
-      <div className="flex items-center gap-3 shrink-0 z-10">
+      <div className="h-full flex items-center gap-3 shrink-0 z-10">
         <button 
           onClick={copyBuildLink}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded border transition-all duration-200 uppercase font-display text-[9px] tracking-widest cursor-pointer ${
@@ -80,7 +80,9 @@ export function MainHeader({
           }`}
         >
           <Link className={`w-3 h-3 ${isCopied ? 'scaled' : ''}`} />
-          {isCopied ? 'Link Copied!' : 'Copy Share Link'}
+          <span>
+            {isCopied ? 'Link Copied!' : 'Copy Share Link'}
+          </span>
         </button>
 
         <button 
@@ -92,7 +94,9 @@ export function MainHeader({
           }`}
         >
           <X className="w-3 h-3" />
-          {showPurgeConfirm ? 'Confirm Purge?' : 'Purge Build'}
+          <span>
+            {showPurgeConfirm ? 'Confirm Purge?' : 'Purge Build'}
+          </span>
         </button>
       </div>
     </header>

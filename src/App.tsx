@@ -4,8 +4,8 @@
  */
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { AnimatePresence } from 'motion/react';
-import { Plus } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Plus, Skull } from 'lucide-react';
 import { 
   DndContext, 
   DragOverlay,
@@ -15,7 +15,8 @@ import {
   DragStartEvent,
   DragEndEvent,
   pointerWithin,
-  MeasuringStrategy
+  MeasuringStrategy,
+  useDroppable
 } from '@dnd-kit/core';
 import { 
   SortableContext, 
@@ -33,14 +34,14 @@ import {
   SLOT_MAP,
   SLOT_ABBR
 } from './constants';
-import { isValidForSlot, getIncompatibleBoonInSelection, parseSearchQuery, boonMatchesQuery } from './utils/boonUtils';
+import { isValidForSlot, getIncompatibleBoonInSelection, parseSearchQuery, boonMatchesQuery, getBoonColor } from './utils/boonUtils';
+import { PoolOfPurgingBackdrop, PoolOfPurgingMessage } from './components/PoolOfPurging';
 import { StaticBoonListItem } from './components/BoonListItem';
 import { CoreSlotRow } from './components/CoreSlotRow';
 import { SortableBoonDisplayCard } from './components/BoonDisplayCard';
 import { DroppableSlotCard } from './components/DroppableSlotCard';
 import { ElementSummary } from './components/ElementSummary';
 import { GodSummary } from './components/GodSummary';
-import { PurgePool } from './components/PurgePool';
 import { MainHeader } from './components/MainHeader';
 import { MainFooter } from './components/MainFooter';
 import { BoonLibrary } from './components/BoonLibrary';
@@ -193,6 +194,8 @@ export default function App() {
     if (savedState && typeof savedState.isHeartBondActive === 'boolean') return savedState.isHeartBondActive;
     return false;
   });
+
+  const [activeTab, setActiveTab] = useState<'boons' | 'loadout' | 'arcana'>('boons');
 
   const [activeArcana, setActiveArcana] = useState<number[]>(() => {
     const params = new URLSearchParams(window.location.search);
@@ -473,8 +476,38 @@ export default function App() {
     }
   }, [isEditingName]);
   const [draggedBoon, setDraggedBoon] = useState<Boon | null>(null);
+  const [draggedBoonType, setDraggedBoonType] = useState<string | null>(null);
   const draggedBoonRef = useRef<Boon | null>(null);
   const [dndContextKey, setDndContextKey] = useState(0);
+
+  const folderRef = useRef<HTMLDivElement>(null);
+  const pointerPosRef = useRef({ x: 0, y: 0 });
+
+  const { setNodeRef: setFolderRef } = useDroppable({
+    id: 'FolderCard',
+  });
+
+  const setFolderRefMerged = (node: HTMLDivElement | null) => {
+    folderRef.current = node;
+    setFolderRef(node);
+  };
+
+  useEffect(() => {
+    const handlePointerMove = (e: MouseEvent | TouchEvent) => {
+      if (e instanceof MouseEvent) {
+        pointerPosRef.current = { x: e.clientX, y: e.clientY };
+      } else if (e.touches && e.touches[0]) {
+        pointerPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    };
+
+    window.addEventListener('mousemove', handlePointerMove, { passive: true });
+    window.addEventListener('touchmove', handlePointerMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handlePointerMove);
+      window.removeEventListener('touchmove', handlePointerMove);
+    };
+  }, []);
 
   useEffect(() => {
     draggedBoonRef.current = draggedBoon;
@@ -761,21 +794,33 @@ export default function App() {
 
   const handleDragStart = (event: DragStartEvent) => {
     const boon = BOONS.find(b => b.id === event.active.id);
-    if (boon) setDraggedBoon(boon);
+    if (boon) {
+      setDraggedBoon(boon);
+      setDraggedBoonType(event.active.data.current?.type || null);
+    }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
     setDraggedBoon(null);
+    setDraggedBoonType(null);
 
-    if (!over) return;
+    const folderRect = folderRef.current?.getBoundingClientRect();
+    const { x: px, y: py } = pointerPosRef.current;
+    
+    const isInsideFolder = folderRect 
+      ? (px >= folderRect.left && px <= folderRect.right && py >= folderRect.top && py <= folderRect.bottom)
+      : false;
 
-    // Handle purging
-    if (over.id === 'PurgePool') {
+    const isFolderCard = over?.id === 'FolderCard';
+
+    // If dropped outside of the folder / over nothing, purge it
+    if ((!over && !isInsideFolder) || (isFolderCard && !isInsideFolder)) {
       const activeBoon = active.data.current?.boon || BOONS.find(b => b.id === active.id);
       if (activeBoon) {
-        // If it's a sortable/assigned boon, remove it
-        if (active.data.current?.type === 'sortable' || selectedBoonIds.has(active.id as string)) {
+        const dragType = active.data.current?.type;
+        // Only purge if it was an already assigned boon (core or passive)
+        if (dragType === 'sortable' || dragType === 'core') {
           // Check if it's a core boon
           const coreEntry = Object.entries(coreBuild).find(([_, b]) => (b as Boon)?.id === activeBoon.id);
           if (coreEntry) {
@@ -791,6 +836,13 @@ export default function App() {
       }
       return;
     }
+
+    // Stop if released over the folder background directly, or if inside the folder but not hovering any specific droppable target
+    if (isFolderCard || (isInsideFolder && (!over || over.id === 'FolderCard'))) {
+      return;
+    }
+
+    if (!over) return;
 
     // Handle sorting first
     if (active.data.current?.type === 'sortable' && over.data.current?.type === 'sortable') {
@@ -870,7 +922,7 @@ export default function App() {
         />
 
         {/* Main Content */}
-        <main className="flex-1 mt-16 flex overflow-hidden relative">
+        <main className="flex-1 flex overflow-hidden relative">
           <BoonLibrary
             isPanelCollapsed={isPanelCollapsed}
             setIsPanelCollapsed={setIsPanelCollapsed}
@@ -913,91 +965,159 @@ export default function App() {
 
           {/* Right: Build View */}
           <section className="flex-1 overflow-auto p-6 md:px-8 py-6 custom-scrollbar relative">
-            <div className="max-w-7xl mx-auto">
+            <PoolOfPurgingBackdrop draggedBoon={draggedBoon} draggedBoonType={draggedBoonType} />
 
-              {/* Elemental, God & Status Tracker */}
-              <div className="mb-8 flex flex-wrap items-start gap-5 w-full">
-                <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
-                <GodSummary coreBuild={coreBuild} additionalBoons={additionalBoons} activeArcana={activeArcana} />
+            <div className="max-w-7xl mx-auto relative z-10">
+
+              {/* Folder Navigation Tabs */}
+              <div className="flex items-end gap-1.5 select-none relative z-10 pl-4 -mb-[1px]">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('boons')}
+                  className={`px-6 py-2 rounded-t-xl text-xs font-display uppercase tracking-widest font-bold border transition-all duration-200 cursor-pointer ${
+                    activeTab === 'boons'
+                      ? 'bg-hades-panel border-hades-border border-b-transparent text-hades-accent z-20 relative'
+                      : 'bg-hades-panel/60 hover:bg-hades-panel/80 border-hades-border-light/40 border-b-hades-border text-hades-text/60 hover:text-hades-text/95 z-10'
+                  }`}
+                >
+                  Boons
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('loadout')}
+                  className={`px-6 py-2 rounded-t-xl text-xs font-display uppercase tracking-widest font-bold border transition-all duration-200 cursor-pointer ${
+                    activeTab === 'loadout'
+                      ? 'bg-hades-panel border-hades-border border-b-transparent text-hades-accent z-20 relative'
+                      : 'bg-hades-panel/60 hover:bg-hades-panel/80 border-hades-border-light/40 border-b-hades-border text-hades-text/60 hover:text-hades-text/95 z-10'
+                  }`}
+                >
+                  Loadout
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('arcana')}
+                  className={`px-6 py-2 rounded-t-xl text-xs font-display uppercase tracking-widest font-bold border transition-all duration-200 cursor-pointer ${
+                    activeTab === 'arcana'
+                      ? 'bg-hades-panel border-hades-border border-b-transparent text-hades-accent z-20 relative'
+                      : 'bg-hades-panel/60 hover:bg-hades-panel/80 border-hades-border-light/40 border-b-hades-border text-hades-text/60 hover:text-hades-text/95 z-10'
+                  }`}
+                >
+                  Arcana
+                </button>
               </div>
 
-              {/* Consolidated Build View */}
-              <div className="grid grid-cols-1 lg:grid-cols-[100px_1fr] gap-x-8 gap-y-16 items-start relative">
-                
-                {/* Left Side: Core Boon Slots (Narrow Column) */}
-                <aside className="lg:sticky lg:top-8 flex-shrink-0 z-30 flex flex-col items-center">
-                  <div className="flex flex-col gap-5 w-full items-center">
-                    {CORE_SLOTS.map((slot) => {
-                      const slotBoon = coreBuild[slot.type];
-                      const isGlowingWhite = slotBoon ? (isSearchActive && hideAssigned && boonMatchesQuery(slotBoon, searchQuery)) : false;
-                      return (
-                        <CoreSlotRow 
-                          key={slot.type}
-                          slot={slot}
-                          boon={slotBoon}
-                          isActive={activeSlot === slot.type}
-                          onClick={() => toggleActiveSlot(slot.type)}
-                          onRemove={() => removeBoon(slot.type)}
-                          draggedBoon={draggedBoon}
-                          isValid={draggedBoon ? isValidForSlot(draggedBoon, slot.type) && !selectedBoonIds.has(draggedBoon.id) : true}
-                          shouldGlowWhite={isGlowingWhite}
-                        />
-                      );
-                    })}
+              {/* Folder Contents */}
+              {activeTab === 'boons' ? (
+                <div ref={setFolderRefMerged} className="border border-hades-border rounded-xl p-5 md:p-6 bg-hades-panel shadow-2xl relative min-h-[400px]">
+                  {/* Elemental, God & Status Tracker */}
+                  <div className="mb-5 flex flex-wrap items-start gap-4 w-full border-b border-hades-border-light pb-5">
+                    <ElementSummary coreBuild={coreBuild} additionalBoons={additionalBoons} />
+                    <GodSummary coreBuild={coreBuild} additionalBoons={additionalBoons} activeArcana={activeArcana} />
                   </div>
-                </aside>
 
-                {/* Right Side: Reorganized Sections */}
-                <div className="flex-1 w-full lg:pl-8 lg:border-l lg:border-white/10">
-                  <div className="w-full">
-                    <div className="flex flex-col gap-12">
-                      {/* Unified Boons Grid Area with Purge Pool and Passive Slot */}
-                      <div className="flex items-start gap-16">
-                        <div className="grid grid-flow-col grid-rows-5 gap-x-5 gap-y-5 auto-cols-max items-start">
-                          {/* Selected Boons */}
-                          <SortableContext 
-                            items={additionalBoons.map(b => b.id)} 
-                            strategy={rectSortingStrategy}
-                          >
-                            {additionalBoons.map((boon, idx) => {
-                              const isGlowingWhite = isSearchActive && hideAssigned && boonMatchesQuery(boon, searchQuery);
-                              return (
-                                <SortableBoonDisplayCard 
-                                  key={boon.id}
-                                  boon={boon} 
-                                  onRemove={() => removeAdditionalBoon(boon, idx)}
-                                  shouldGlowWhite={isGlowingWhite}
-                                />
-                              );
-                            })}
-                          </SortableContext>
-                          
-                          {/* Unified Passive Slot */}
-                          <div>
-                            <DroppableSlotCard 
-                              id="Passive"
-                              slot="Passive"
-                              name="Passive Slot"
-                              icon={Plus}
-                              isActive={activeSlot === 'Passive'}
-                              onClick={() => toggleActiveSlot('Passive')}
+                  {/* Consolidated Build View */}
+                  <div className="grid grid-cols-1 lg:grid-cols-[84px_1fr] gap-x-6 gap-y-8 items-start relative">
+                    
+                    {/* Left Side: Core Boon Slots (Narrow Column) */}
+                    <aside className="lg:sticky lg:top-6 flex-shrink-0 z-30 flex flex-col items-start">
+                      <div className="flex flex-col gap-4 w-full items-start">
+                        {CORE_SLOTS.map((slot) => {
+                          const slotBoon = coreBuild[slot.type];
+                          const isGlowingWhite = slotBoon ? (isSearchActive && hideAssigned && boonMatchesQuery(slotBoon, searchQuery)) : false;
+                          return (
+                            <CoreSlotRow 
+                              key={slot.type}
+                              slot={slot}
+                              boon={slotBoon}
+                              isActive={activeSlot === slot.type}
+                              onClick={() => toggleActiveSlot(slot.type)}
+                              onRemove={() => removeBoon(slot.type)}
                               draggedBoon={draggedBoon}
-                              isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Passive') && !selectedBoonIds.has(draggedBoon.id) : true}
+                              isValid={draggedBoon ? isValidForSlot(draggedBoon, slot.type) && !selectedBoonIds.has(draggedBoon.id) : true}
+                              shouldGlowWhite={isGlowingWhite}
                             />
+                          );
+                        })}
+                      </div>
+                    </aside>
+
+                    {/* Right Side: Reorganized Sections */}
+                    <div className="flex-1 w-full lg:pl-6 lg:border-l lg:border-hades-border-light">
+                      <div className="w-full">
+                        <div className="flex flex-col gap-6">
+                          {/* Unified Boons Grid Area with Purge Pool and Passive Slot */}
+                          <div className="flex items-start gap-8">
+                            <div className="grid grid-flow-col grid-rows-5 gap-x-4 gap-y-4 auto-cols-max items-start">
+                              {/* Selected Boons */}
+                              <SortableContext 
+                                items={additionalBoons.map(b => b.id)} 
+                                strategy={rectSortingStrategy}
+                              >
+                                {additionalBoons.map((boon, idx) => {
+                                  const isGlowingWhite = isSearchActive && hideAssigned && boonMatchesQuery(boon, searchQuery);
+                                  return (
+                                    <SortableBoonDisplayCard 
+                                      key={boon.id}
+                                      boon={boon} 
+                                      onRemove={() => removeAdditionalBoon(boon, idx)}
+                                      shouldGlowWhite={isGlowingWhite}
+                                    />
+                                  );
+                                })}
+                              </SortableContext>
+                              
+                              {/* Unified Passive Slot */}
+                              <div>
+                                <DroppableSlotCard 
+                                  id="Passive"
+                                  slot="Passive"
+                                  name="Passive Slot"
+                                  icon={Plus}
+                                  isActive={activeSlot === 'Passive'}
+                                  onClick={() => toggleActiveSlot('Passive')}
+                                  draggedBoon={draggedBoon}
+                                  isValid={draggedBoon ? isValidForSlot(draggedBoon, 'Passive') && !selectedBoonIds.has(draggedBoon.id) : true}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
-
-                        <AnimatePresence>
-                          {draggedBoon && selectedBoonIds.has(draggedBoon.id) && (
-                            <PurgePool />
-                          )}
-                        </AnimatePresence>
                       </div>
                     </div>
+
                   </div>
                 </div>
+              ) : activeTab === 'loadout' ? (
+                <div className="border border-hades-border rounded-xl p-6 md:p-8 bg-hades-panel shadow-2xl relative min-h-[400px] flex flex-col items-center justify-center text-center">
+                  <div className="w-16 h-16 rounded-full bg-hades-bg-main/30 border border-hades-border flex items-center justify-center mb-4 text-hades-accent/40 shadow-inner">
+                    <span className="text-2xl">⚔️</span>
+                  </div>
+                  <h3 className="text-base font-light text-hades-accent uppercase tracking-widest font-display">Weapon & Loadout</h3>
+                  <p className="text-xs text-hades-text/50 max-w-sm mt-2 leading-relaxed">
+                    The armory and gear selection compartments will detail your weapon aspects, keepsakes, and familiar companions in a future update.
+                  </p>
+                  <div className="mt-4 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-hades-accent/5 border border-hades-accent/20 text-[9px] text-hades-accent font-display uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-hades-accent animate-ping" />
+                    Development Preparation
+                  </div>
+                </div>
+              ) : (
+                <div className="border border-hades-border rounded-xl p-6 md:p-8 bg-hades-panel shadow-2xl relative min-h-[400px] flex flex-col items-center justify-center text-center">
+                  <div className="w-16 h-16 rounded-full bg-hades-bg-main/30 border border-hades-border flex items-center justify-center mb-4 text-hades-accent/40 shadow-inner">
+                    <span className="text-2xl">🃏</span>
+                  </div>
+                  <h3 className="text-base font-light text-hades-accent uppercase tracking-widest font-display">Altar of Arcana</h3>
+                  <p className="text-xs text-hades-text/50 max-w-sm mt-2 leading-relaxed">
+                    Your active Arcana card layouts and cumulative grasp costs from the Altar of Ashes will be displayed here in a future update.
+                  </p>
+                  <div className="mt-4 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-hades-accent/5 border border-hades-accent/20 text-[9px] text-hades-accent font-display uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-hades-accent animate-ping" />
+                    Development Preparation
+                  </div>
+                </div>
+              )}
 
-              </div>
+              <PoolOfPurgingMessage draggedBoon={draggedBoon} draggedBoonType={draggedBoonType} />
             </div>
           </section>
 

@@ -89,7 +89,7 @@ export function DroppableSlotCard({ id, name, icon, isActive, onClick, draggedBo
             style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} transition-[background-color,box-shadow,ring] duration-200`}
+            className={`relative flex-shrink-0 flex items-center justify-center ${BOON_ICON_ROUNDING} bg-hades-bg-dark/80 border border-white/10 hover:border-white/20 transition-[background-color,box-shadow,ring,border-color] duration-200`}
           >
             {/* Synchronized green pulse layer */}
             <div
