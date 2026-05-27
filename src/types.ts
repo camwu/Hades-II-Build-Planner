@@ -97,3 +97,19 @@ export interface WeaponHammer {
   notes?: string[];               // General text notes of instructions
 }
 
+export interface AnimalFamiliarSkill {
+  id: string;
+  name: string;
+  type: 'buff' | 'resource' | 'attack';
+  icon: string;
+  description?: string;
+}
+
+export interface AnimalFamiliar {
+  id: string;
+  name: string;
+  icon: string;
+  skills: AnimalFamiliarSkill[];
+}
+
+

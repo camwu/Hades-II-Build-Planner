@@ -62,6 +62,7 @@ export const BOON_KEYWORDS = [
   'Omega Moves', 'Ω Moves', 'Omega Move', 'Ω Move', 'Omega',
   'Location', 'Encounter', 'Guardians', 'Guardian', 'Guardian Encounter', 'Guardian Encounters', 'Location Reward', 'Location Rewards',
   'Grasp', 'Death Defiance', 'Change of Fate', 'Arcana Card', 'Arcana Cards',
+  'Lost Shades', 'Fishing Points', 'Outcroppings', 'Digging Spots', 'Flora',
   'Psychic Leash', 'Lone Shades', 'Parry', 'Riposte', 'Blood Triad', 'Daybreaker ', 'Mortality', 'Berserk', 'Shell', 'Shells', 'Valkyrie', 'Sky Fall', 'Shine', 'Nightspawn', 'Destructive', 
   // Elements
   'Element', 'Elements', 'Essence', 'Essences',

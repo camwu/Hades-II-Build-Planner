@@ -45,7 +45,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
           }
           
           // Ordered to match "Max Health" and "Max Magick" before "Health" and "Magick", and element boons before elements or plasma
-          const regex = /(\bMax\s+Healths?\b|\bHealths?\b|\bMax\s+Magicks?\b|\bmagicks?\b|\bplasmas?\b|\bGrape\s+Juices?\b|\bmystery\s+seeds?\b|\bDaedalus\s+Hammers?\b|\bGold\s+Crowns?\b|\bGold\b|\bHealing\b|\bBones\b|\barmors?\b|\bshells?\b|\brarity?\b|\bDeath\s+Defiances?\b|\bChange\s+of\s+Fates?\b|\bGrasps?\b|\bairs?\s+(?:boons?|essences?|elements?)\b|\bearths?\s+(?:boons?|essences?|elements?)\b|\bfires?\s+(?:boons?|essences?|elements?)\b|\bwaters?\s+(?:boons?|essences?|elements?)\b|\baethers?\s+(?:boons?|essences?|elements?)\b|\bairs?\b|\bearths?\b|\bfires?\b|\bwaters?\b|\baethers?\b(?!\s+Fonts?\b)|\blv\.(?!\w))/gi;
+          const regex = /(\bMax\s+Healths?\b|\bHealths?\b|\bMax\s+Magicks?\b|\bmagicks?\b|\bplasmas?\b|\bGrape\s+Juices?\b|\bmystery\s+seeds?\b|\bDaedalus\s+Hammers?\b|\bGold\s+Crowns?\b|\bGold\b|\bHealing\b|\bBones\b|\barmors?\b|\bshells?\b|\brarity?\b|\bDeath\s+Defiances?\b|\bChange\s+of\s+Fates?\b|\bGrasps?\b|\bLost\s+Shades?\b|\bFishing\s+Points?\b|\bOutcroppings?\b|\bDigging\s+Spots?\b|\bFlora\b|\bairs?\s+(?:boons?|essences?|elements?)\b|\bearths?\s+(?:boons?|essences?|elements?)\b|\bfires?\s+(?:boons?|essences?|elements?)\b|\bwaters?\s+(?:boons?|essences?|elements?)\b|\baethers?\s+(?:boons?|essences?|elements?)\b|\bairs?\b|\bearths?\b|\bfires?\b|\bwaters?\b|\baethers?\b(?!\s+Fonts?\b)|\blv\.(?!\w))/gi;
           const parts = inputText.split(regex);
           
           return (
@@ -220,6 +220,66 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
                       {p}
                     </span>
                   );
+                } else if (lower === 'lost shade' || lower === 'lost shades') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Tablet_of_Peace.webp" 
+                        alt="Lost Shades" 
+                        className="inline-block h-[15px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'fishing point' || lower === 'fishing points') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Rod_of_Fishing.webp" 
+                        alt="Fishing Points" 
+                        className="inline-block h-[15px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'outcropping' || lower === 'outcroppings') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Crescent_Pick.webp" 
+                        alt="Outcroppings" 
+                        className="inline-block h-[15px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'digging spot' || lower === 'digging spots') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Silver_Spade.webp" 
+                        alt="Digging Spots" 
+                        className="inline-block h-[15px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
+                } else if (lower === 'flora') {
+                  return (
+                    <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
+                      <img 
+                        src="/assets/ui/Hand_Gathering.webp" 
+                        alt="Flora" 
+                        className="inline-block h-[15px] w-auto object-contain align-middle relative -top-[1.5px] mr-1" 
+                        referrerPolicy="no-referrer"
+                      />
+                      {p}
+                    </span>
+                  );
                 } else if (lower === 'death defiance' || lower === 'death defiances') {
                   return (
                     <span key={index} className={`inline whitespace-nowrap ${isKeywordStyle ? 'text-hades-text font-bold' : ''}`}>
@@ -348,7 +408,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
 
         // Patterns for text highlighting
         const timePattern = `\\(\\s*(?:every|over|after|Every|Over|After)\\s+[^)]+\\)`;
-        const rangePattern = `[+-]?[\\d.%]+(?:\\s*[A-Za-z.]+)?(?:\\s*/\\s*[+-]?[\\d.%]+(?:\\s*[A-Za-z.]+)?)+`;
+        const rangePattern = `[+-]?(?:\\d+-\\d+|\\d+)[.%]?(?:\\s*[A-Za-z.()]+)?(?:\\s*/\\s*[+-]?(?:\\d+-\\d+|\\d+)[.%]?(?:\\s*[A-Za-z.()]+)?)+`;
         const sortedKeywords = [...BOON_KEYWORDS].sort((a, b) => b.length - a.length);
         const omegaKeywords = sortedKeywords.filter(k => k.includes('Ω'));
         const standardKeywords = sortedKeywords.filter(k => !k.includes('Ω'));
@@ -390,12 +450,16 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
         const renderRange = (part: string, key: string | number) => {
           const rangeParts = part.split(/(\/)/);
           const kwRegex = new RegExp(`(${keywordPattern})`, 'gi');
+          const isToulaHeartDefianceRange = part === '1/2' && text.toLowerCase().includes('toula');
           return (
             <strong key={key} className="font-bold">
               {rangeParts.map((subPart, j) => {
                 if (subPart === '/') return <span key={j}>{subPart}</span>;
                 
-                const rarityIndex = Math.floor(j / 2);
+                let rarityIndex = Math.floor(j / 2);
+                if (isToulaHeartDefianceRange && rarityIndex === 1) {
+                  rarityIndex = 3; // Heroic instead of Rare
+                }
                 const color = rarityColors[rarityIndex];
                 
                 const subParts = subPart.split(kwRegex);
