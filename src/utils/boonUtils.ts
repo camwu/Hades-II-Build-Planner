@@ -5,7 +5,10 @@ export const INCOMPATIBLE_BOON_IDS = [
   "glowing_coal", // Glowing Coal
   "lightning_lance", // Lightning Lance
   "hostile_environment",  // Hostile Environment
-  "howling_soul" // Howling Soul
+  "howling_soul", // Howling Soul
+  "tipsy_shot", // Tipsy Shot
+  "tidal_ring", // Tidal Ring
+  "local_climate" // Local Climate
 ];
 
 export const getIncompatibleBoonInSelection = (

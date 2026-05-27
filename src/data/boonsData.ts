@@ -3364,10 +3364,10 @@ export const BOONS: Boon[] = [
   {
     id: "tipsy_shot",
     name: "Tipsy Shot",
-    type: "Cast",
+    type: "Passive",
     gods: ["Dionysus"],
     element: "Water",
-    effect: "Hold *Cast* to lob a large explosion. The binding circle forms there. \n ▸ Blast Damage: *300/450/600/750* \n\n ▸ *Exclusion:* Cannot be combined with *Glowing Coal*, *Lightning Lance*, *Tidal Ring*, *Local Climate*, or *Hostile Environment*",
+    effect: "Hold *Cast* to lob a large explosion. The binding circle forms there. \n ▸ Blast Damage: *300/450/600/750*",
     icon: "/assets/boons/dionysus/Tipsy_Shot.webp"
   },
   {
@@ -3382,7 +3382,7 @@ export const BOONS: Boon[] = [
   {
     id: "divine_dash",
     name: "Divine Dash",
-    type: "Sprint",
+    type: "Passive",
     gods: ["Athena"],
     element: "Fire",
     effect: "Your *Dash* deals damage to foe in your path and can momentarily *Deflect*. \n ▸ Dash Damage: *10/15/20/25* \n\n *Divine Dash* provides *Deflect* for *0.35* seconds per use.",
@@ -3418,7 +3418,7 @@ export const BOONS: Boon[] = [
   {
     id: "phalanx_shot",
     name: "Phalanx Shot",
-    type: "Special",
+    type: "Passive",
     gods: ["Athena"],
     element: "Fire",
     effect: "Your *Specials* also launch a projectile ahead that can *Deflect*, rearming after *2 Sec.* \n ▸ Projectile Damage: *10/15/20/25*",
@@ -3427,7 +3427,7 @@ export const BOONS: Boon[] = [
   {
     id: "mental_block",
     name: "Mental Block",
-    type: "Cast",
+    type: "Passive",
     gods: ["Athena"],
     element: "Fire",
     effect: "Your *Casts* also deal a burst of damage in the area and momentarily make you *Deflect*. \n ▸ Cast Damage: *40/60/80/100* \n\n *Mental Block* provides *Deflect* for *0.5* seconds per use, with a *5* second cooldown.",

@@ -15,7 +15,7 @@ const EXCLUDED_GODS = ['Artemis', 'Athena', 'Dionysus', 'Hermes', 'Hades'];
 export function GodSummary({ coreBuild, additionalBoons, activeArcana = [] }: GodSummaryProps) {
   const activeOrderRef = useRef<string[]>([]);
 
-  const { godData, poolLimitExceeded, godBoons } = useMemo(() => {
+  const { godData, poolLimitExceeded, godBoons, singleBoonViolations } = useMemo(() => {
     const summary = {} as Record<string, number>;
     const boonsByGod = {} as Record<string, Boon[]>;
     
@@ -74,10 +74,19 @@ export function GodSummary({ coreBuild, additionalBoons, activeArcana = [] }: Go
 
     const olympians = sortedData.filter(([god]) => !EXCLUDED_GODS.includes(god));
     
+    const singleBoonViolations = ['Hades', 'Athena', 'Artemis', 'Dionysus']
+      .filter(god => (summary[god] || 0) > 1)
+      .map(god => ({
+        god,
+        count: summary[god],
+        boons: boonsByGod[god] || []
+      }));
+
     return {
       godData: sortedData,
       poolLimitExceeded: olympians.length > 4,
-      godBoons: boonsByGod
+      godBoons: boonsByGod,
+      singleBoonViolations
     };
   }, [coreBuild, additionalBoons]);
 
@@ -155,33 +164,99 @@ export function GodSummary({ coreBuild, additionalBoons, activeArcana = [] }: Go
         <div className="flex items-center gap-2">
           <img src="/assets/ui/Icon-Olympian.webp" className="w-4 h-4 object-contain filter brightness-125" alt="" referrerPolicy="no-referrer" />
           <span className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold">God Pool</span>
-          {poolLimitExceeded && (
-            <div className="flex items-center gap-2 group relative">
-              <AlertTriangle className="w-3.5 h-3.5 text-hades-red animate-pulse cursor-help" />
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 w-80 p-3 bg-hades-bg-dark border border-hades-red/30 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all pointer-events-none group-hover:pointer-events-auto z-[100] text-[11px] leading-relaxed text-gray-300 translate-x-2 group-hover:translate-x-0">
-                {/* Invisible bridge to keep tooltip open while moving mouse */}
-                <div className="absolute -left-4 top-0 bottom-0 w-4" />
-                
-                <div className="font-bold text-hades-red mb-1 flex items-center gap-1.5 font-display uppercase tracking-tighter">
-                  <AlertTriangle className="w-3.5 h-3.5" />
-                  God Pool Warning
-                </div>
-                <div className="mb-1.5">Standard god pool exceeded!</div>
-                Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, Hermes, and Hades) are included in the god pool each night. See{' '}
-                <a 
-                  href="https://hades.fandom.com/wiki/Boons/Hades_II#God_Pool" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-hades-accent hover:underline pointer-events-auto"
-                >
-                  wiki
-                </a>{' '}
-                for more details.
-              </div>
-            </div>
-          )}
         </div>
         <OriginationTracker coreBuild={coreBuild} additionalBoons={additionalBoons} activeArcana={activeArcana} />
+        {(poolLimitExceeded || singleBoonViolations.length > 0) && (
+          <div className="flex items-center gap-2 group relative">
+            <AlertTriangle className="w-3.5 h-3.5 text-hades-red animate-pulse cursor-help" />
+            <div className="absolute top-full mt-2 right-[-40px] md:left-1/2 md:-translate-x-1/2 md:right-auto w-80 p-3.5 bg-hades-bg-dark border border-hades-red/30 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all pointer-events-none group-hover:pointer-events-auto z-[100] text-[11px] leading-relaxed text-gray-300 translate-y-1 group-hover:translate-y-0 flex flex-col gap-3">
+              {/* Invisible bridge to keep tooltip open while moving mouse */}
+              <div className="absolute -top-3 left-0 right-0 h-3" />
+              
+              <div className="font-bold text-hades-red flex items-center gap-1.5 font-display uppercase tracking-tighter border-b border-white/5 pb-1.5">
+                <AlertTriangle className="w-3.5 h-3.5" />
+                God Pool Warning
+              </div>
+
+              {poolLimitExceeded && (
+                <div className="flex flex-col gap-1">
+                  <div className="font-bold text-gray-200">Standard god pool exceeded!</div>
+                  <div>
+                    Typically, only four Olympian gods (excluding Artemis, Athena, Dionysus, Hermes, and Hades) are included in the god pool each night. See{' '}
+                    <a 
+                      href="https://hades.fandom.com/wiki/Boons/Hades_II#God_Pool" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-hades-accent hover:underline pointer-events-auto"
+                    >
+                      wiki
+                    </a>{' '}
+                    for more details.
+                  </div>
+                </div>
+              )}
+
+              {poolLimitExceeded && singleBoonViolations.length > 0 && (
+                <div className="border-t border-white/5" />
+              )}
+
+              {singleBoonViolations.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <div className="font-bold text-gray-200">Single-boon limit exceeded!</div>
+                  <div className="text-gray-350">
+                    Under normal circumstances, only one boon from each of the following gods can be obtained in a run: <strong className="font-bold text-gray-200">Artemis</strong>, <strong className="font-bold text-gray-200">Athena</strong>, <strong className="font-bold text-gray-200">Dionysus</strong>, <strong className="font-bold text-gray-200">Hades</strong>
+                  </div>
+                  <div className="flex flex-col gap-2 mt-1">
+                    {singleBoonViolations.map((violation) => (
+                      <div key={violation.god} className="bg-white/5 rounded-lg p-2.5 border border-hades-red/20 flex flex-col gap-2">
+                        <div className="flex items-center justify-between border-b border-white/5 pb-1.5">
+                          <div className="flex items-center gap-1.5 font-bold text-hades-red">
+                            <span className="w-4 h-4 flex-shrink-0">
+                              <GodIcon god={violation.god} className="w-full h-full object-contain" />
+                            </span>
+                            <span className="text-[11px] uppercase font-display tracking-widest">
+                              {violation.god}
+                            </span>
+                          </div>
+                          <span className="text-[10px] bg-hades-red/10 text-hades-red px-1.5 py-0.5 rounded font-display font-medium">
+                            {violation.count} Boons
+                          </span>
+                        </div>
+                        
+                        <div className="flex flex-col gap-1.5">
+                          {violation.boons.map((boon) => (
+                            <div key={boon.id} className="flex items-center gap-2 bg-white/2 rounded-md p-1.5 border border-white/5">
+                              <div className="w-6 h-6 rounded flex-shrink-0 overflow-hidden bg-black/40 border border-white/10 flex items-center justify-center">
+                                {boon.icon ? (
+                                  <img 
+                                    src={boon.icon} 
+                                    alt={boon.name} 
+                                    className="w-full h-full object-cover" 
+                                    referrerPolicy="no-referrer"
+                                  />
+                                ) : (
+                                  <GodIcon god={violation.god} className="w-3.5 h-3.5 object-contain" />
+                                )}
+                              </div>
+                              <div className="flex-1 flex items-center justify-between gap-2 min-w-0">
+                                <div className="text-[10.5px] font-bold text-gray-200 truncate font-sans">
+                                  {boon.name}
+                                </div>
+                                <div className="text-[9px] text-gray-400 font-display uppercase tracking-wider flex-shrink-0 text-right">
+                                  {boon.type}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-2 rounded-2xl bg-hades-bg-dark/70 border border-white/15 min-h-[42px] self-start w-fit">
         {godData.length === 0 ? (
