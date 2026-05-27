@@ -43,7 +43,6 @@ import { GodSummary } from './components/GodSummary';
 import { PurgePool } from './components/PurgePool';
 import { MainHeader } from './components/MainHeader';
 import { MainFooter } from './components/MainFooter';
-import { BuildHeader } from './components/BuildHeader';
 import { BoonLibrary } from './components/BoonLibrary';
 import { ArcanaSidebar } from './components/ArcanaSidebar';
 import { ZERO_COST_CARDS, ARCANA_COSTS, resolveAllActiveArcana } from './utils/arcanaUtils';
@@ -858,7 +857,17 @@ export default function App() {
       onDragEnd={handleDragEnd}
     >
       <div className="h-screen bg-hades-bg text-hades-text font-sans overflow-hidden flex flex-col">
-        <MainHeader />
+        <MainHeader 
+          buildName={buildName}
+          setBuildName={setBuildName}
+          isEditingName={isEditingName}
+          setIsEditingName={setIsEditingName}
+          nameInputRef={nameInputRef}
+          copyBuildLink={copyBuildLink}
+          isCopied={isCopied}
+          purgeBuild={purgeBuild}
+          showPurgeConfirm={showPurgeConfirm}
+        />
 
         {/* Main Content */}
         <main className="flex-1 mt-16 flex overflow-hidden relative">
@@ -905,19 +914,6 @@ export default function App() {
           {/* Right: Build View */}
           <section className="flex-1 overflow-auto p-6 md:px-8 py-6 custom-scrollbar relative">
             <div className="max-w-7xl mx-auto">
-              <BuildHeader
-                buildName={buildName}
-                setBuildName={setBuildName}
-                isEditingName={isEditingName}
-                setIsEditingName={setIsEditingName}
-                nameInputRef={nameInputRef}
-                copyBuildLink={copyBuildLink}
-                isCopied={isCopied}
-                purgeBuild={purgeBuild}
-                showPurgeConfirm={showPurgeConfirm}
-              />
-
-
 
               {/* Elemental, God & Status Tracker */}
               <div className="mb-8 flex flex-wrap items-start gap-5 w-full">
