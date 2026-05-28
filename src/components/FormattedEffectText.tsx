@@ -408,7 +408,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
 
         // Patterns for text highlighting
         const timePattern = `\\(\\s*(?:every|over|after|Every|Over|After)\\s+[^)]+\\)`;
-        const rangePattern = `[+-]?(?:\\d+-\\d+|\\d+)[.%]?(?:\\s*[A-Za-z.()]+)?(?:\\s*/\\s*[+-]?(?:\\d+-\\d+|\\d+)[.%]?(?:\\s*[A-Za-z.()]+)?)+`;
+        const rangePattern = `[+-]?(?:\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?|\\d+(?:\\.\\d+)?)[.%]?(?:\\s*[A-Za-z.()]+)?(?:\\s*/\\s*[+-]?(?:\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?|\\d+(?:\\.\\d+)?)[.%]?(?:\\s*[A-Za-z.()]+)?)+`;
         const sortedKeywords = [...BOON_KEYWORDS].sort((a, b) => b.length - a.length);
         const omegaKeywords = sortedKeywords.filter(k => k.includes('Ω'));
         const standardKeywords = sortedKeywords.filter(k => !k.includes('Ω'));

@@ -828,7 +828,7 @@ export function BoonLibrary({
 
         {/* Pinned Boons Section (Frozen context when scrolling) */}
         {pinnedBoons.length > 0 && (
-          <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/50 flex flex-col relative">
+          <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative">
             <div 
               onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
               className="flex items-center justify-between pl-5 pr-5 select-none relative cursor-pointer group"
@@ -986,7 +986,7 @@ export function BoonLibrary({
         {/* Boon Library Section Header (Frozen) */}
         <div 
           ref={libraryHeaderRef}
-          className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/50 flex flex-col relative"
+          className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative"
         >
           <div className="flex items-center justify-between pl-5 pr-5 select-none">
             <button

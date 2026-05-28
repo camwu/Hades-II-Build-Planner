@@ -9,6 +9,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
   {
     id: 'frinos',
     name: 'Frinos',
+    type: 'toad',
     icon: '/assets/familiars/Frinos_Bond.webp',
     skills: [
       {
@@ -37,6 +38,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
   {
     id: 'toula',
     name: 'Toula',
+    type: 'cat',
     icon: '/assets/familiars/Toula_Bond.webp',
     skills: [
       {
@@ -65,6 +67,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
   {
     id: 'raki',
     name: 'Raki',
+    type: 'raven',
     icon: '/assets/familiars/Raki_Bond.webp',
     skills: [
       {
@@ -93,6 +96,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
   {
     id: 'hecuba',
     name: 'Hecuba',
+    type: 'hound',
     icon: '/assets/familiars/Hecuba_Bond.webp',
     skills: [
       {
@@ -121,6 +125,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
   {
     id: 'gale',
     name: 'Gale',
+    type: 'polecat',
     icon: '/assets/familiars/Gale_Bond.webp',
     skills: [
       {

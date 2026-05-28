@@ -126,7 +126,7 @@ export function LoadoutTab({
       <div className="flex items-center justify-between border-b border-hades-border-light/40 pb-4">
         <div>
           <h4 className="text-sm font-semibold text-hades-accent uppercase tracking-widest font-display">Nocturnal Tools & Loadout</h4>
-          <p className="text-xs text-white/40 mt-1">Configure your active weapon aspect, Daedalus hammers, and animal companion skills.</p>
+          <p className="text-xs text-white/40 mt-1">Configure your active weapon aspect, Daedalus hammers, and animal familiar skills.</p>
         </div>
         {activeWeapon && (
           <button 
@@ -339,11 +339,11 @@ export function LoadoutTab({
 
         {/* ROW 2: ANIMAL FAMILIAR */}
         <div className="flex flex-col gap-3 border-t border-hades-border-light/30 pt-8">
-          <span className="text-[10px] font-mono font-medium text-hades-accent/50 uppercase tracking-widest">Row II: Animal Familiar Companion</span>
+          <span className="text-[10px] font-mono font-medium text-hades-accent/50 uppercase tracking-widest">Row II: Animal Familiar</span>
 
           <div className="flex flex-wrap items-center gap-6">
             
-            {/* Core Familiar Companion Slot */}
+            {/* Core Familiar Slot */}
             {activeFamiliarObj ? (
               <div className="group relative w-[84px] h-[84px] cursor-pointer">
                 {/* Hover Container */}
@@ -375,7 +375,7 @@ export function LoadoutTab({
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
                       </div>
-                      {/* Inner Small Companion Indicator inside icon */}
+                      {/* Inner Small Familiar Indicator inside icon */}
                       <div className={`absolute -top-1 -right-1 w-5 h-5 rounded-full bg-hades-accent/20 flex items-center justify-center border border-hades-accent/40 z-20`}>
                         <span className="text-[8px] font-bold text-hades-accent">🐾</span>
                       </div>
@@ -400,9 +400,9 @@ export function LoadoutTab({
                           <X className="w-2.5 h-2.5" />
                         </button>
                       </div>
-                      <span className="text-[8.5px] text-white/30 uppercase tracking-widest font-mono mb-1.5">Animal Companion</span>
+                      <span className="text-[8.5px] text-white/30 uppercase tracking-widest font-mono mb-1.5">Animal Familiar</span>
                       <p className="text-[11px] text-gray-300 leading-normal font-medium whitespace-normal">
-                        Your animal companion is active.
+                        Your animal familiar is active.
                       </p>
                     </div>
                   </motion.div>
@@ -431,7 +431,7 @@ export function LoadoutTab({
                     <span className="text-[10px] text-white/44 font-semibold font-display uppercase tracking-widest">Skills Locked</span>
                   </div>
                   <span className="text-[9px] text-white/30 mt-1 leading-relaxed">
-                    Choose an animal familiar companion in the companion slot to display native skill cards.
+                    Choose an animal familiar in the familiar slot to display native skill cards.
                   </span>
                 </div>
               )}

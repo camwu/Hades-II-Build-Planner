@@ -53,9 +53,50 @@ export function LoadoutLibrary({
   const [isSearchTooltipActive, setIsSearchTooltipActive] = React.useState<boolean>(false);
   
   // Section expand/collapse states (each is top-level sub-group under the header)
-  const [aspectsExpanded, setAspectsExpanded] = React.useState<boolean>(true);
-  const [hammersExpanded, setHammersExpanded] = React.useState<boolean>(true);
-  const [familiarsExpanded, setFamiliarsExpanded] = React.useState<boolean>(true);
+  const [aspectsExpanded, setAspectsExpanded] = React.useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem('hades_build_planner_aspects_expanded');
+      return stored !== null ? JSON.parse(stored) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  const [hammersExpanded, setHammersExpanded] = React.useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem('hades_build_planner_hammers_expanded');
+      return stored !== null ? JSON.parse(stored) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  const [familiarsExpanded, setFamiliarsExpanded] = React.useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem('hades_build_planner_familiars_expanded');
+      return stored !== null ? JSON.parse(stored) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('hades_build_planner_aspects_expanded', JSON.stringify(aspectsExpanded));
+    } catch {}
+  }, [aspectsExpanded]);
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('hades_build_planner_hammers_expanded', JSON.stringify(hammersExpanded));
+    } catch {}
+  }, [hammersExpanded]);
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem('hades_build_planner_familiars_expanded', JSON.stringify(familiarsExpanded));
+    } catch {}
+  }, [familiarsExpanded]);
 
   // Search filtering logic
   const loadoutSearchResults = React.useMemo(() => {
@@ -305,7 +346,7 @@ export function LoadoutLibrary({
             {/* 1. Weapon Aspects Group */}
             {loadoutSearchResults.aspects.length > 0 && (
               <div className="flex flex-col">
-                <div className="border-b border-hades-border-light py-3 bg-hades-bg-dark/50 flex flex-col relative sticky top-0 z-10 backdrop-blur-sm">
+                <div className="border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative sticky top-0 z-10">
                   <div className="flex items-center justify-between pl-5 pr-5 select-none">
                     <button
                       onClick={() => setAspectsExpanded(!aspectsExpanded)}
@@ -411,7 +452,7 @@ export function LoadoutLibrary({
             {/* 2. Daedalus Hammers Group */}
             {loadoutSearchResults.hammers.length > 0 && (
               <div className="flex flex-col border-t border-hades-border-light">
-                <div className="border-b border-hades-border-light py-3 bg-hades-bg-dark/50 flex flex-col relative sticky top-0 z-10 backdrop-blur-sm">
+                <div className="border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative sticky top-0 z-10">
                   <div className="flex items-center justify-between pl-5 pr-5 select-none">
                     <button
                       onClick={() => setHammersExpanded(!hammersExpanded)}
@@ -578,7 +619,7 @@ export function LoadoutLibrary({
             {/* 3. Animal Familiars Group */}
             {loadoutSearchResults.familiars.length > 0 && (
               <div className="flex flex-col border-t border-hades-border-light">
-                <div className="border-b border-hades-border-light py-3 bg-hades-bg-dark/50 flex flex-col relative sticky top-0 z-10 backdrop-blur-sm">
+                <div className="border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative sticky top-0 z-10">
                   <div className="flex items-center justify-between pl-5 pr-5 select-none">
                     <button
                       onClick={() => setFamiliarsExpanded(!familiarsExpanded)}
@@ -641,28 +682,20 @@ export function LoadoutLibrary({
                               </div>
 
                               {/* Content */}
-                              <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
-                                <div className="flex items-center justify-between gap-2">
-                                  <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
-                                    {familiar.name}
-                                  </h4>
-                                  <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
-                                    FAMILIAR
-                                  </span>
-                                </div>
-
-                                <div className="flex flex-wrap items-center gap-x-2.5">
-                                  <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
-                                    ANIMAL COMPANION
-                                  </span>
-                                </div>
+                              <div className="flex-1 min-w-0 h-14 flex items-center justify-between gap-2">
+                                <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
+                                  {familiar.name}, the {familiar.type.charAt(0).toUpperCase() + familiar.type.slice(1)}
+                                </h4>
+                                <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
+                                  FAMILIAR
+                                </span>
                               </div>
                             </div>
 
                             <div className="mt-2.5 pt-2 border-t border-white/5 space-y-2">
                               {familiar.skills.map(skill => (
                                 <div key={skill.id} className="flex items-start gap-3 text-[12px] text-gray-400 leading-normal">
-                                  <div className="w-5.5 h-5.5 rounded-full overflow-hidden border border-white/10 shrink-0 bg-hades-bg-dark">
+                                  <div className={`w-5.5 h-5.5 ${BOON_ICON_ROUNDING} overflow-hidden border border-white/10 shrink-0 bg-hades-bg-dark`}>
                                     <img src={skill.icon} alt={skill.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                                   </div>
                                   <div className="flex-1 min-w-0">
@@ -689,7 +722,7 @@ export function LoadoutLibrary({
              loadoutSearchResults.hammers.length === 0 && 
              loadoutSearchResults.familiars.length === 0 && (
               <div className="text-center text-gray-400 font-display text-xs uppercase tracking-tight py-12 px-5">
-                No matching weapons, upgrades, or companions found
+                No matching weapons, upgrades, or familiars found
               </div>
             )}
           </div>
