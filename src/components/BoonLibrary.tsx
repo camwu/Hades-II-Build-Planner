@@ -1,13 +1,11 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Search, X, Info, ChevronLeft, ChevronRight, Pin, ChevronDown, Filter, Lock } from 'lucide-react';
-import { Boon, BoonPrerequisite, ElementType, WeaponAspect, WeaponHammer } from '../types';
+import { Boon, BoonPrerequisite, ElementType } from '../types';
 import { SIDEBAR_WIDTH, BOON_ICON_ROUNDING, BOON_BORDER_WIDTH } from '../constants';
 import { DraggableBoonListItem } from './BoonListItem';
 import { GodIcon, ElementIcon } from './Icons';
 import { BOONS } from '../data/boonsData';
-import { WEAPON_ASPECTS, WEAPON_NAMES, WEAPON_ICONS, WEAPON_HAMMERS } from '../data/weaponsData';
-import { ANIMAL_FAMILIARS } from '../data/animalFamiliars';
 import { FormattedEffectText } from './FormattedEffectText';
 import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -51,15 +49,6 @@ interface BoonLibraryProps {
   setIsHeartBondActive?: (active: boolean) => void;
   additionalBoons?: Boon[];
   removeAdditionalBoon?: (boon: Boon, index: number) => void;
-  
-  // Context-sensitive loadout props
-  activeTab?: 'boons' | 'loadout' | 'arcana';
-  activeWeapon?: string | null;
-  setActiveWeapon?: (weapon: string | null) => void;
-  activeAspect?: string | null;
-  setActiveAspect?: (aspectId: string | null) => void;
-  selectedHammers?: string[];
-  setSelectedHammers?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 interface SortablePinnedBoonItemProps {
@@ -198,13 +187,6 @@ export function BoonLibrary({
   setIsHeartBondActive,
   additionalBoons = [],
   removeAdditionalBoon,
-  activeTab = 'boons',
-  activeWeapon = null,
-  setActiveWeapon,
-  activeAspect = null,
-  setActiveAspect,
-  selectedHammers = [],
-  setSelectedHammers,
 }: BoonLibraryProps) {
 
   const isDeathArcanaActive = activeArcana.includes(12);
@@ -325,92 +307,6 @@ export function BoonLibrary({
   const displayedBoons = React.useMemo(() => {
     return filteredBoons.slice(0, visibleCount);
   }, [filteredBoons, visibleCount]);
-
-  // Context-specific search filtering for loadout
-  const loadoutSearchResults = React.useMemo(() => {
-    if (activeTab !== 'loadout') return { aspects: [], hammers: [], familiars: [] };
-
-    const query = searchTerm.trim().toLowerCase();
-
-    // 1. Get Matching Aspects
-    let matchedAspects = WEAPON_ASPECTS;
-    if (query) {
-      matchedAspects = WEAPON_ASPECTS.filter(aspect => 
-        aspect.name.toLowerCase().includes(query) ||
-        aspect.weapon.toLowerCase().includes(query) ||
-        aspect.description.toLowerCase().includes(query) ||
-        (aspect.mechanics && aspect.mechanics.toLowerCase().includes(query))
-      );
-    }
-
-    // 2. Get Matching Hammers
-    const allHammers = Object.values(WEAPON_HAMMERS).flat();
-    let matchedHammers = allHammers;
-    if (query) {
-      matchedHammers = allHammers.filter(hammer => 
-        hammer.name.toLowerCase().includes(query) ||
-        hammer.weapon.toLowerCase().includes(query) ||
-        hammer.description.toLowerCase().includes(query)
-      );
-    } else if (activeWeapon) {
-      // If no query, but there is an active weapon, show all hammers matching active weapon
-      matchedHammers = WEAPON_HAMMERS[activeWeapon] || [];
-    } else {
-      // If no query and no active weapon, list all hammers
-      matchedHammers = allHammers;
-    }
-
-    // 3. Get Matching Familiars
-    let matchedFamiliars = ANIMAL_FAMILIARS;
-    if (query) {
-      matchedFamiliars = ANIMAL_FAMILIARS.filter(familiar => 
-        familiar.name.toLowerCase().includes(query) ||
-        familiar.skills.some(skill => 
-          skill.name.toLowerCase().includes(query) ||
-          skill.description.toLowerCase().includes(query)
-        )
-      );
-    }
-
-    return {
-      aspects: matchedAspects,
-      hammers: matchedHammers,
-      familiars: matchedFamiliars,
-    };
-  }, [activeTab, searchTerm, activeWeapon]);
-
-  const getHammerStatus = React.useCallback((hammer: WeaponHammer) => {
-    if (!activeWeapon) {
-      return { isEligible: false, reason: "Requires selecting a weapon." };
-    }
-    if (hammer.weapon !== activeWeapon) {
-      return { isEligible: false, reason: `Requires equipping ${hammer.weapon}.` };
-    }
-    if (hammer.onlyForAspect && hammer.onlyForAspect !== activeAspect) {
-      const aspName = WEAPON_ASPECTS.find(a => a.id === hammer.onlyForAspect)?.name || hammer.onlyForAspect;
-      return { isEligible: false, reason: `Requires Aspect: ${aspName}.` };
-    }
-    if (hammer.incompatibleAspects && activeAspect && hammer.incompatibleAspects.includes(activeAspect)) {
-      const aspName = WEAPON_ASPECTS.find(a => a.id === activeAspect)?.name || activeAspect;
-      return { isEligible: false, reason: `Incompatible with equipped ${aspName}.` };
-    }
-    
-    // Check other selected hammers
-    const allHammersForWeapon = WEAPON_HAMMERS[activeWeapon] || [];
-    const selectedIncompatible = selectedHammers.find(selId => {
-      const selHammer = allHammersForWeapon.find(h => h.id === selId);
-      if (selHammer?.incompatibleHammers?.includes(hammer.id)) return true;
-      if (hammer.incompatibleHammers?.includes(selId)) return true;
-      return false;
-    });
-
-    if (selectedIncompatible) {
-      const incHammerName = allHammersForWeapon.find(h => h.id === selectedIncompatible)?.name || selectedIncompatible;
-      return { isEligible: false, reason: `Incompatible with selected ${incHammerName}.` };
-    }
-
-    return { isEligible: true, reason: "" };
-  }, [activeWeapon, activeAspect, selectedHammers]);
 
   const startResize = React.useCallback((e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
@@ -578,7 +474,7 @@ export function BoonLibrary({
               <input 
                 ref={searchInputRef as React.RefObject<HTMLInputElement>}
                 type="text" 
-                placeholder={activeTab === 'loadout' ? "Press / to search weapons, aspects & upgrades..." : "Press / to search boons..."}
+                placeholder="Press / to search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg py-2.5 pl-10 pr-16 text-sm text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 transition-colors"
@@ -606,12 +502,10 @@ export function BoonLibrary({
                     {/* Triangular pointer pointing up */}
                     <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
                     <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
-                      {activeTab === 'loadout' ? "Armament search info" : "Search parameters"}
+                      Search parameters
                     </p>
                     <p className="text-[11px] font-sans text-hades-text/85 mb-2.5 leading-snug">
-                      {activeTab === 'loadout' 
-                        ? "Filter armaments dynamically by name, description, weapon type, or Daedalus Hammer upgrade effects."
-                        : "Filter boons dynamically by name, description, god, slot (Attack, Special, etc.), or elemental essence."}
+                      Filter boons dynamically by name, description, god, slot (Attack, Special, etc.), or elemental essence.
                     </p>
                     
                     <div className="pt-2 border-t border-hades-border-light/25">
@@ -694,7 +588,7 @@ export function BoonLibrary({
               </div>
             </div>
             
-            {activeTab === 'boons' && (
+            {(
               <>
                 <div className="border-t border-hades-border-light/10 mt-2 mb-1.5" />
 
@@ -933,29 +827,34 @@ export function BoonLibrary({
           </div>
 
         {/* Pinned Boons Section (Frozen context when scrolling) */}
-        {activeTab === 'boons' && pinnedBoons.length > 0 && (
-          <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative">
-            <div className="flex items-center justify-between pl-5 pr-[26px] select-none">
-              <button
-                onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
-                className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
-              >
-                {isPinnedExpanded ? (
-                  <ChevronDown className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
-                ) : (
-                  <ChevronRight className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
-                )}
+        {pinnedBoons.length > 0 && (
+          <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/50 flex flex-col relative">
+            <div 
+              onClick={() => setIsPinnedExpanded(!isPinnedExpanded)}
+              className="flex items-center justify-between pl-5 pr-5 select-none relative cursor-pointer group"
+            >
+              <div className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center select-none text-left w-full justify-between">
                 <div className="flex items-center gap-2">
                   <Pin className="w-4 h-4 text-hades-accent fill-current rotate-45 shrink-0" />
                   <span>Pinned Boons ({pinnedBoons.length})</span>
                 </div>
-              </button>
-              <button
-                onClick={clearAllPins}
-                className="text-[10px] font-display uppercase tracking-wider text-hades-text/45 hover:text-hades-red transition-colors cursor-pointer whitespace-nowrap shrink-0"
-              >
-                Clear All
-              </button>
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      clearAllPins();
+                    }}
+                    className="text-[10px] font-display uppercase tracking-wider text-hades-text/45 hover:text-hades-red transition-colors cursor-pointer whitespace-nowrap shrink-0 z-30"
+                  >
+                    Clear All
+                  </button>
+                  {isPinnedExpanded ? (
+                    <ChevronDown className="w-4 h-4 text-hades-accent shrink-0" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4 text-hades-accent shrink-0" />
+                  )}
+                </div>
+              </div>
             </div>
             
             <div
@@ -1087,18 +986,13 @@ export function BoonLibrary({
         {/* Boon Library Section Header (Frozen) */}
         <div 
           ref={libraryHeaderRef}
-          className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative"
+          className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/50 flex flex-col relative"
         >
           <div className="flex items-center justify-between pl-5 pr-5 select-none">
             <button
               onClick={() => setIsLibraryExpanded(!isLibraryExpanded)}
-              className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
+              className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left w-full justify-between"
             >
-              {isLibraryExpanded ? (
-                <ChevronDown className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
-              ) : (
-                <ChevronRight className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
-              )}
               <div className="flex items-center gap-2">
                 <img 
                   src="/assets/ui/BoonII.webp" 
@@ -1108,6 +1002,11 @@ export function BoonLibrary({
                 />
                 BOON LIBRARY ({filteredBoons.length})
               </div>
+              {isLibraryExpanded ? (
+                <ChevronDown className="w-4 h-4 text-hades-accent shrink-0" />
+              ) : (
+                <ChevronRight className="w-4 h-4 text-hades-accent shrink-0" />
+              )}
             </button>
           </div>
         </div>

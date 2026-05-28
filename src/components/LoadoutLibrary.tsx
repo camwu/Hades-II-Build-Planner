@@ -200,7 +200,7 @@ export function LoadoutLibrary({
               <input 
                 ref={searchInputRef as React.RefObject<HTMLInputElement>}
                 type="text" 
-                placeholder="Press / to search weapons, aspects & upgrades..."
+                placeholder="Press / to search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg py-2.5 pl-10 pr-16 text-sm text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 transition-colors"
