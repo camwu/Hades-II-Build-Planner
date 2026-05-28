@@ -2070,7 +2070,7 @@ export const BOONS: Boon[] = [
     type: "Infusion",
     gods: ["Ares"],
     element: null,
-    effect: "While you have at least *8* Earth Essences, any of your damaging effects from Olympians are stronger. \n ▸ Olympian Bonus Damage: +50%.",
+    effect: "While you have at least *8* Earth Essences, any of your damaging effects from Olympians are stronger. \n ▸ Olympian Bonus Damage: +50%",
     icon: "/assets/boons/ares/Rallying_Cry.webp",
     prerequisites: [
       {
@@ -2841,7 +2841,7 @@ export const BOONS: Boon[] = [
     type: "Special",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Your Specials deal more damage and inflict Wounds. \n ▸ Special Damage: +30%/+40%/+50%/+60%.",
+    effect: "Your Specials deal more damage and inflict Wounds. \n ▸ Special Damage: +30%/+40%/+50%/+60%",
     icon: "/assets/boons/ares/Vicious_Flourish.webp",
     inflictsCurse: "wounds"
   },
@@ -2851,7 +2851,7 @@ export const BOONS: Boon[] = [
     type: "Attack",
     gods: ["Ares"],
     element: "Earth",
-    effect: "Your Attacks deal more damage and inflict Wounds. \n ▸ Attack Damage: +20%/+30%/+40%/+50%.",
+    effect: "Your Attacks deal more damage and inflict Wounds. \n ▸ Attack Damage: +20%/+30%/+40%/+50%",
     icon: "/assets/boons/ares/Vicious_Strike.webp",
     inflictsCurse: "wounds"
   },

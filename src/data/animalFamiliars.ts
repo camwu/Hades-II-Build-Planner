@@ -60,7 +60,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
         name: 'Claw Bond',
         type: 'attack',
         icon: '/assets/familiars/Toula_Claw_Bond.webp',
-        description: 'Toula claws at surrounding foes 6/8/10 time(s) prior to losing interest.'
+        description: 'Toula claws at surrounding foes 6/8/10 times prior to losing interest.'
       }
     ]
   },
