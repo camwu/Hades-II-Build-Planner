@@ -52,7 +52,7 @@ export function LoadoutLibrary({
 
   const [isSearchTooltipActive, setIsSearchTooltipActive] = React.useState<boolean>(false);
   
-  // Section expand/collapse states (each is top-level sub-group under the header)
+  // Section expand/collapse states (only one can be expanded at a time)
   const [aspectsExpanded, setAspectsExpanded] = React.useState<boolean>(() => {
     try {
       const stored = localStorage.getItem('hades_build_planner_aspects_expanded');
@@ -64,19 +64,33 @@ export function LoadoutLibrary({
 
   const [hammersExpanded, setHammersExpanded] = React.useState<boolean>(() => {
     try {
+      // If aspects is expanded, hammer must be collapsed
+      const aspectsStored = localStorage.getItem('hades_build_planner_aspects_expanded');
+      const aspectsActive = aspectsStored !== null ? JSON.parse(aspectsStored) : true;
+      if (aspectsActive) return false;
+
       const stored = localStorage.getItem('hades_build_planner_hammers_expanded');
       return stored !== null ? JSON.parse(stored) : true;
     } catch {
-      return true;
+      return false;
     }
   });
 
   const [familiarsExpanded, setFamiliarsExpanded] = React.useState<boolean>(() => {
     try {
+      // If aspects or hammers is expanded, familiar must be collapsed
+      const aspectsStored = localStorage.getItem('hades_build_planner_aspects_expanded');
+      const aspectsActive = aspectsStored !== null ? JSON.parse(aspectsStored) : true;
+      if (aspectsActive) return false;
+
+      const hammersStored = localStorage.getItem('hades_build_planner_hammers_expanded');
+      const hammersActive = hammersStored !== null ? JSON.parse(hammersStored) : true;
+      if (hammersActive) return false;
+
       const stored = localStorage.getItem('hades_build_planner_familiars_expanded');
       return stored !== null ? JSON.parse(stored) : true;
     } catch {
-      return true;
+      return false;
     }
   });
 
@@ -97,6 +111,39 @@ export function LoadoutLibrary({
       localStorage.setItem('hades_build_planner_familiars_expanded', JSON.stringify(familiarsExpanded));
     } catch {}
   }, [familiarsExpanded]);
+
+  const toggleAspectsExpanded = () => {
+    setAspectsExpanded((prev) => {
+      const next = !prev;
+      if (next) {
+        setHammersExpanded(false);
+        setFamiliarsExpanded(false);
+      }
+      return next;
+    });
+  };
+
+  const toggleHammersExpanded = () => {
+    setHammersExpanded((prev) => {
+      const next = !prev;
+      if (next) {
+        setAspectsExpanded(false);
+        setFamiliarsExpanded(false);
+      }
+      return next;
+    });
+  };
+
+  const toggleFamiliarsExpanded = () => {
+    setFamiliarsExpanded((prev) => {
+      const next = !prev;
+      if (next) {
+        setAspectsExpanded(false);
+        setHammersExpanded(false);
+      }
+      return next;
+    });
+  };
 
   // Search filtering logic
   const loadoutSearchResults = React.useMemo(() => {
@@ -344,13 +391,18 @@ export function LoadoutLibrary({
           <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
             {/* 1. Weapon Aspects Group */}
             {loadoutSearchResults.aspects.length > 0 && (
-              <div className="flex flex-col min-h-0 flex-shrink-0 data-[expanded=true]:flex-1" data-expanded={aspectsExpanded}>
+              <motion.div 
+                layout="position"
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-col min-h-0 flex-shrink-0 data-[expanded=true]:flex-1" 
+                data-expanded={aspectsExpanded}
+              >
                 <div 
                   className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative"
                 >
                   <div className="flex items-center justify-between pl-5 pr-5 select-none">
                     <button
-                      onClick={() => setAspectsExpanded(!aspectsExpanded)}
+                      onClick={toggleAspectsExpanded}
                       className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left w-full justify-between"
                     >
                       <div className="flex items-center gap-2">
@@ -459,18 +511,23 @@ export function LoadoutLibrary({
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* 2. Daedalus Hammers Group */}
             {loadoutSearchResults.hammers.length > 0 && (
-              <div className="flex flex-col min-h-0 flex-shrink-0 data-[expanded=true]:flex-1" data-expanded={hammersExpanded}>
+              <motion.div 
+                layout="position"
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-col min-h-0 flex-shrink-0 data-[expanded=true]:flex-1" 
+                data-expanded={hammersExpanded}
+              >
                 <div 
                   className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative"
                 >
                   <div className="flex items-center justify-between pl-5 pr-5 select-none">
                     <button
-                      onClick={() => setHammersExpanded(!hammersExpanded)}
+                      onClick={toggleHammersExpanded}
                       className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left w-full justify-between"
                     >
                       <div className="flex items-center gap-2">
@@ -640,18 +697,23 @@ export function LoadoutLibrary({
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
             {/* 3. Animal Familiars Group */}
             {loadoutSearchResults.familiars.length > 0 && (
-              <div className="flex flex-col min-h-0 flex-shrink-0 data-[expanded=true]:flex-1" data-expanded={familiarsExpanded}>
+              <motion.div 
+                layout="position"
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-col min-h-0 flex-shrink-0 data-[expanded=true]:flex-1" 
+                data-expanded={familiarsExpanded}
+              >
                 <div 
                   className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative"
                 >
                   <div className="flex items-center justify-between pl-5 pr-5 select-none">
                     <button
-                      onClick={() => setFamiliarsExpanded(!familiarsExpanded)}
+                      onClick={toggleFamiliarsExpanded}
                       className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left w-full justify-between"
                     >
                       <div className="flex items-center gap-2">
@@ -763,7 +825,7 @@ export function LoadoutLibrary({
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
             {loadoutSearchResults.aspects.length === 0 && 
