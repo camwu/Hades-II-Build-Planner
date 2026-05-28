@@ -36,8 +36,8 @@ export function MainHeader({
             referrerPolicy="no-referrer"
           />
         </div>
-        <h1 className="text-xl font-bold text-gray-300 uppercase italic font-display">
-          Hades II <span className="text-hades-accent not-italic ml-2 font-display">Build Planner</span>
+        <h1 className="text-xl font-medium text-gray-300 uppercase italic font-sc tracking-wide">
+          Hades II <span className="text-hades-accent not-italic ml-2 font-sc tracking-wide">Build Planner</span>
         </h1>
       </div>
 
@@ -52,15 +52,15 @@ export function MainHeader({
               onChange={(e) => setBuildName(e.target.value)}
               onBlur={() => setIsEditingName(false)}
               onKeyDown={(e) => e.key === 'Enter' && setIsEditingName(false)}
-              className="text-base font-light bg-hades-bg-main/50 border-b border-hades-accent outline-none text-white w-full uppercase h-8 px-8 font-display text-center tracking-wide leading-none border-t-0 border-x-0"
+              className="text-base font-normal bg-hades-bg-main/50 border-b border-hades-accent outline-none text-white w-full uppercase h-10 px-8 font-sc text-center tracking-wider border-t-0 border-x-0 py-0 m-0 leading-10 focus:ring-0 focus:outline-none"
               autoFocus
             />
           ) : (
             <h2 
               onClick={() => setIsEditingName(true)}
-              className="text-base font-light text-gray-300 w-full text-center uppercase cursor-pointer hover:text-hades-accent transition-colors font-display relative px-8 h-8 flex items-center justify-center border-b border-transparent leading-none"
+              className="text-base font-normal text-gray-300 w-full text-center uppercase cursor-pointer hover:text-hades-accent transition-colors font-sc relative px-8 h-10 flex items-center justify-center border-t-0 border-x-0 border-b border-transparent py-0 m-0"
             >
-              <span className="truncate max-w-[200px] tracking-wide">
+              <span className="block truncate max-w-[200px] tracking-wider py-0 m-0 leading-10">
                 {buildName || 'Untitled Build'}
               </span>
               <Edit2 className="w-3.5 h-3.5 opacity-40 group-hover:opacity-80 transition-opacity text-hades-accent absolute right-2 top-1/2 -translate-y-1/2" />
