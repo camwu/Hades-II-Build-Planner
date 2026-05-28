@@ -1,11 +1,14 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Search, X, Info, ChevronLeft, ChevronRight, Pin, ChevronDown, Filter } from 'lucide-react';
-import { Boon, BoonPrerequisite, ElementType } from '../types';
-import { SIDEBAR_WIDTH } from '../constants';
+import { Search, X, Info, ChevronLeft, ChevronRight, Pin, ChevronDown, Filter, Lock } from 'lucide-react';
+import { Boon, BoonPrerequisite, ElementType, WeaponAspect, WeaponHammer } from '../types';
+import { SIDEBAR_WIDTH, BOON_ICON_ROUNDING, BOON_BORDER_WIDTH } from '../constants';
 import { DraggableBoonListItem } from './BoonListItem';
 import { GodIcon, ElementIcon } from './Icons';
 import { BOONS } from '../data/boonsData';
+import { WEAPON_ASPECTS, WEAPON_NAMES, WEAPON_ICONS, WEAPON_HAMMERS } from '../data/weaponsData';
+import { ANIMAL_FAMILIARS } from '../data/animalFamiliars';
+import { FormattedEffectText } from './FormattedEffectText';
 import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { isValidForSlot, getIncompatibleBoonInSelection } from '../utils/boonUtils';
@@ -48,6 +51,15 @@ interface BoonLibraryProps {
   setIsHeartBondActive?: (active: boolean) => void;
   additionalBoons?: Boon[];
   removeAdditionalBoon?: (boon: Boon, index: number) => void;
+  
+  // Context-sensitive loadout props
+  activeTab?: 'boons' | 'loadout' | 'arcana';
+  activeWeapon?: string | null;
+  setActiveWeapon?: (weapon: string | null) => void;
+  activeAspect?: string | null;
+  setActiveAspect?: (aspectId: string | null) => void;
+  selectedHammers?: string[];
+  setSelectedHammers?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 interface SortablePinnedBoonItemProps {
@@ -185,7 +197,14 @@ export function BoonLibrary({
   setActiveFamiliar,
   setIsHeartBondActive,
   additionalBoons = [],
-  removeAdditionalBoon
+  removeAdditionalBoon,
+  activeTab = 'boons',
+  activeWeapon = null,
+  setActiveWeapon,
+  activeAspect = null,
+  setActiveAspect,
+  selectedHammers = [],
+  setSelectedHammers,
 }: BoonLibraryProps) {
 
   const isDeathArcanaActive = activeArcana.includes(12);
@@ -256,6 +275,11 @@ export function BoonLibrary({
 
   const [isSearchTooltipActive, setIsSearchTooltipActive] = React.useState<boolean>(false);
 
+  // States for expandable armaments, hammers, and familiars sections
+  const [aspectsExpanded, setAspectsExpanded] = React.useState<boolean>(true);
+  const [hammersExpanded, setHammersExpanded] = React.useState<boolean>(true);
+  const [familiarsExpanded, setFamiliarsExpanded] = React.useState<boolean>(true);
+
   const activeFiltersCount = (hideAssigned ? 1 : 0) +
                              (hideAssignedSlots ? 1 : 0) +
                              (limitToGodPool ? 1 : 0) +
@@ -301,6 +325,92 @@ export function BoonLibrary({
   const displayedBoons = React.useMemo(() => {
     return filteredBoons.slice(0, visibleCount);
   }, [filteredBoons, visibleCount]);
+
+  // Context-specific search filtering for loadout
+  const loadoutSearchResults = React.useMemo(() => {
+    if (activeTab !== 'loadout') return { aspects: [], hammers: [], familiars: [] };
+
+    const query = searchTerm.trim().toLowerCase();
+
+    // 1. Get Matching Aspects
+    let matchedAspects = WEAPON_ASPECTS;
+    if (query) {
+      matchedAspects = WEAPON_ASPECTS.filter(aspect => 
+        aspect.name.toLowerCase().includes(query) ||
+        aspect.weapon.toLowerCase().includes(query) ||
+        aspect.description.toLowerCase().includes(query) ||
+        (aspect.mechanics && aspect.mechanics.toLowerCase().includes(query))
+      );
+    }
+
+    // 2. Get Matching Hammers
+    const allHammers = Object.values(WEAPON_HAMMERS).flat();
+    let matchedHammers = allHammers;
+    if (query) {
+      matchedHammers = allHammers.filter(hammer => 
+        hammer.name.toLowerCase().includes(query) ||
+        hammer.weapon.toLowerCase().includes(query) ||
+        hammer.description.toLowerCase().includes(query)
+      );
+    } else if (activeWeapon) {
+      // If no query, but there is an active weapon, show all hammers matching active weapon
+      matchedHammers = WEAPON_HAMMERS[activeWeapon] || [];
+    } else {
+      // If no query and no active weapon, list all hammers
+      matchedHammers = allHammers;
+    }
+
+    // 3. Get Matching Familiars
+    let matchedFamiliars = ANIMAL_FAMILIARS;
+    if (query) {
+      matchedFamiliars = ANIMAL_FAMILIARS.filter(familiar => 
+        familiar.name.toLowerCase().includes(query) ||
+        familiar.skills.some(skill => 
+          skill.name.toLowerCase().includes(query) ||
+          skill.description.toLowerCase().includes(query)
+        )
+      );
+    }
+
+    return {
+      aspects: matchedAspects,
+      hammers: matchedHammers,
+      familiars: matchedFamiliars,
+    };
+  }, [activeTab, searchTerm, activeWeapon]);
+
+  const getHammerStatus = React.useCallback((hammer: WeaponHammer) => {
+    if (!activeWeapon) {
+      return { isEligible: false, reason: "Requires selecting a weapon." };
+    }
+    if (hammer.weapon !== activeWeapon) {
+      return { isEligible: false, reason: `Requires equipping ${hammer.weapon}.` };
+    }
+    if (hammer.onlyForAspect && hammer.onlyForAspect !== activeAspect) {
+      const aspName = WEAPON_ASPECTS.find(a => a.id === hammer.onlyForAspect)?.name || hammer.onlyForAspect;
+      return { isEligible: false, reason: `Requires Aspect: ${aspName}.` };
+    }
+    if (hammer.incompatibleAspects && activeAspect && hammer.incompatibleAspects.includes(activeAspect)) {
+      const aspName = WEAPON_ASPECTS.find(a => a.id === activeAspect)?.name || activeAspect;
+      return { isEligible: false, reason: `Incompatible with equipped ${aspName}.` };
+    }
+    
+    // Check other selected hammers
+    const allHammersForWeapon = WEAPON_HAMMERS[activeWeapon] || [];
+    const selectedIncompatible = selectedHammers.find(selId => {
+      const selHammer = allHammersForWeapon.find(h => h.id === selId);
+      if (selHammer?.incompatibleHammers?.includes(hammer.id)) return true;
+      if (hammer.incompatibleHammers?.includes(selId)) return true;
+      return false;
+    });
+
+    if (selectedIncompatible) {
+      const incHammerName = allHammersForWeapon.find(h => h.id === selectedIncompatible)?.name || selectedIncompatible;
+      return { isEligible: false, reason: `Incompatible with selected ${incHammerName}.` };
+    }
+
+    return { isEligible: true, reason: "" };
+  }, [activeWeapon, activeAspect, selectedHammers]);
 
   const startResize = React.useCallback((e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
@@ -468,7 +578,7 @@ export function BoonLibrary({
               <input 
                 ref={searchInputRef as React.RefObject<HTMLInputElement>}
                 type="text" 
-                placeholder="Press / to search boons..."
+                placeholder={activeTab === 'loadout' ? "Press / to search weapons, aspects & upgrades..." : "Press / to search boons..."}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full bg-hades-bg-main/50 border border-hades-border-light rounded-lg py-2.5 pl-10 pr-16 text-sm text-hades-text placeholder:text-hades-text/30 focus:outline-none focus:border-hades-accent/50 transition-colors"
@@ -496,10 +606,12 @@ export function BoonLibrary({
                     {/* Triangular pointer pointing up */}
                     <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
                     <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
-                      Search parameters
+                      {activeTab === 'loadout' ? "Armament search info" : "Search parameters"}
                     </p>
                     <p className="text-[11px] font-sans text-hades-text/85 mb-2.5 leading-snug">
-                      Filter boons dynamically by name, description, god, slot (Attack, Special, etc.), or elemental essence.
+                      {activeTab === 'loadout' 
+                        ? "Filter armaments dynamically by name, description, weapon type, or Daedalus Hammer upgrade effects."
+                        : "Filter boons dynamically by name, description, god, slot (Attack, Special, etc.), or elemental essence."}
                     </p>
                     
                     <div className="pt-2 border-t border-hades-border-light/25">
@@ -581,242 +693,247 @@ export function BoonLibrary({
                 </div>
               </div>
             </div>
-            <div className="border-t border-hades-border-light/10 mt-2 mb-1.5" />
+            
+            {activeTab === 'boons' && (
+              <>
+                <div className="border-t border-hades-border-light/10 mt-2 mb-1.5" />
 
-            <div className="flex flex-col relative w-full">
-              <div className="flex items-center justify-between select-none">
-                <button
-                  onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-                  className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
-                >
-                  {isFiltersExpanded ? (
-                    <ChevronDown className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
-                  ) : (
-                    <ChevronRight className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
-                  )}
-                  <div className="flex items-center gap-2">
-                    <Filter className="w-4 h-4 text-hades-accent shrink-0" />
-                    <span>Filters ({activeFiltersCount})</span>
+                <div className="flex flex-col relative w-full">
+                  <div className="flex items-center justify-between select-none">
+                    <button
+                      onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+                      className="text-xs font-display uppercase tracking-widest text-hades-accent font-bold flex items-center cursor-pointer hover:text-hades-accent/80 transition-colors select-none text-left"
+                    >
+                      {isFiltersExpanded ? (
+                        <ChevronDown className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
+                      ) : (
+                        <ChevronRight className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
+                      )}
+                      <div className="flex items-center gap-2">
+                        <Filter className="w-4 h-4 text-hades-accent shrink-0" />
+                        <span>Filters ({activeFiltersCount})</span>
+                      </div>
+                    </button>
                   </div>
-                </button>
-              </div>
 
-              <div
-                style={{ 
-                  gridTemplateRows: isFiltersExpanded ? '1fr' : '0fr',
-                  display: 'grid'
-                }}
-                className="transition-[grid-template-rows,margin-top,opacity] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] mt-0 opacity-0 pointer-events-none data-[expanded=true]:mt-2.5 data-[expanded=true]:opacity-100 data-[expanded=true]:pointer-events-auto"
-                data-expanded={isFiltersExpanded}
-              >
-                <div className={isFiltersExpanded ? "overflow-visible" : "overflow-hidden"}>
-                  <div className="flex flex-col gap-2 mt-1 pb-2.5 pl-3">
-                    <div className="flex items-center gap-2 px-1 w-fit">
-                      <label className="flex items-center gap-2 cursor-pointer group select-none">
-                        <input 
-                          type="checkbox" 
-                          checked={hideAssigned} 
-                          onChange={(e) => setHideAssigned(e.target.checked)}
-                          className="sr-only"
-                        />
-                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                          hideAssigned 
-                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                            : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                        }`}>
-                          {hideAssigned && (
-                            <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          )}
-                        </div>
-                        <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
-                          Hide Assigned Boons
-                        </span>
-                      </label>
-
-                      <div className="flex items-center gap-1.5 ml-0.5">
-                        {/* Info Button with Stylized Tooltip */}
-                        <div className="relative group/tooltip inline-flex items-center">
-                          <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                          <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
-                            {/* Connector bridge to make hovering steady */}
-                            <div className="absolute left-0 right-0 bottom-full h-2" />
-                            <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
-                              Assigned Boons Filter
-                            </p>
-                            <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
-                              If checked, boons that have already been assigned in your active build will be hidden.
-                            </p>
-                            {/* Triangular pointer pointing up */}
-                            <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 px-1 w-fit">
-                      <label className="flex items-center gap-2 cursor-pointer group select-none">
-                        <input 
-                          type="checkbox" 
-                          checked={hideAssignedSlots} 
-                          onChange={(e) => setHideAssignedSlots(e.target.checked)}
-                          className="sr-only"
-                        />
-                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                          hideAssignedSlots 
-                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                            : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                        }`}>
-                          {hideAssignedSlots && (
-                            <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          )}
-                        </div>
-                        <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
-                          Hide Replacement Boons for Assigned Core Slots
-                        </span>
-                      </label>
-
-                      <div className="flex items-center gap-1.5 ml-0.5">
-                        {/* Info Button with Stylized Tooltip */}
-                        <div className="relative group/tooltip inline-flex items-center">
-                          <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                          <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
-                            {/* Connector bridge to make hovering steady */}
-                            <div className="absolute left-0 right-0 bottom-full h-2" />
-                            <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
-                              Assigned Slots Filter
-                            </p>
-                            <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
-                              If checked, boons that would replace a currently assigned core slot will be hidden.
-                              <span className="block mt-1.5 text-hades-text/60 italic">
-                                Example: if Flame Strike has already been assigned and this option is checked, Attack boons will no longer show up.
-                              </span>
-                            </p>
-                            {/* Triangular pointer pointing up */}
-                            <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 px-1 w-fit">
-                      <label className="flex items-center gap-2 cursor-pointer group select-none">
-                        <input 
-                          type="checkbox" 
-                          checked={limitToGodPool} 
-                          onChange={(e) => setLimitToGodPool(e.target.checked)}
-                          className="sr-only"
-                        />
-                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                          limitToGodPool 
-                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                            : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                        }`}>
-                          {limitToGodPool && (
-                            <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          )}
-                        </div>
-                        <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
-                          Limit Boons To God Pool
-                        </span>
-                      </label>
-                      
-                      <div className="flex items-center gap-1.5 ml-0.5">
-                        <span className={`text-[9px] font-semibold px-1 py-[0.5px] rounded-sm transition-colors ${activeStandardOlympians.length >= 4 ? 'bg-amber-400/15 text-amber-400 border border-amber-400/20' : 'bg-white/5 text-gray-400 border border-white/10'}`}>
-                          {activeStandardOlympians.length}/4
-                        </span>
-
-                        {/* Info Button with Stylized Tooltip */}
-                        <div className="relative group/tooltip inline-flex items-center">
-                          <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                          <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
-                            {/* Connector bridge to make hovering steady */}
-                            <div className="absolute left-0 right-0 bottom-full h-2" />
-                            <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
-                              God Pool Filter
-                            </p>
-                            <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
-                              Typically, only <span className="font-bold text-gray-200">four</span> Olympian gods (excluding Artemis, Athena, Dionysus, Hermes, and Hades) are included in the god pool each night.
-                              <br /><br />
-                              If checked, once you have allocated boons from four Olympian gods, all other standard Olympians' boons are filtered out.
-                            </p>
-                            {/* Triangular pointer pointing up */}
-                            <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 px-1 w-fit">
-                      <label className="flex items-center gap-2 cursor-pointer group select-none">
-                        <input 
-                          type="checkbox" 
-                          checked={enforceSupportBoonLimit} 
-                          onChange={(e) => setEnforceSupportBoonLimit(e.target.checked)}
-                          className="sr-only"
-                        />
-                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
-                          enforceSupportBoonLimit 
-                            ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
-                            : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
-                        }`}>
-                          {enforceSupportBoonLimit && (
-                            <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          )}
-                        </div>
-                        <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
-                          Enforce boon limit for support gods
-                        </span>
-                      </label>
-                      
-                      <div className="flex items-center gap-1.5 ml-0.5">
-                        {/* Info Button with Stylized Tooltip */}
-                        <div className="relative group/tooltip inline-flex items-center">
-                          <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
-                          <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
-                            {/* Connector bridge to make hovering steady */}
-                            <div className="absolute left-0 right-0 bottom-full h-2" />
-                            <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
-                              Support God Limits
-                            </p>
-                            <div className="font-sans text-[11px] text-hades-text/85 leading-relaxed flex flex-col gap-1.5">
-                              <p>
-                                Under normal circumstances, only one boon can be obtained from each of the following gods per night:
-                              </p>
-                              <ul className="list-disc pl-4 space-y-0.5 text-hades-text/90 font-medium">
-                                <li><span className="font-bold text-gray-200">Artemis</span></li>
-                                <li><span className="font-bold text-gray-200">Athena</span></li>
-                                <li><span className="font-bold text-gray-200">Dionysus</span></li>
-                                <li><span className="font-bold text-gray-200">Hades</span></li>
-                              </ul>
-                              <p>
-                                Additionally, only two to three <span className="font-bold text-gray-200">Hermes</span> boons are naturally attainable each night.
-                                <br /><br />
-                                If checked, once this limit is reached for any of the above gods, the remaining boons from that respective god will be hidden.
-                              </p>
+                  <div
+                    style={{ 
+                      gridTemplateRows: isFiltersExpanded ? '1fr' : '0fr',
+                      display: 'grid'
+                    }}
+                    className="transition-[grid-template-rows,margin-top,opacity] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] mt-0 opacity-0 pointer-events-none data-[expanded=true]:mt-2.5 data-[expanded=true]:opacity-100 data-[expanded=true]:pointer-events-auto"
+                    data-expanded={isFiltersExpanded}
+                  >
+                    <div className={isFiltersExpanded ? "overflow-visible" : "overflow-hidden"}>
+                      <div className="flex flex-col gap-2 mt-1 pb-2.5 pl-3">
+                        <div className="flex items-center gap-2 px-1 w-fit">
+                          <label className="flex items-center gap-2 cursor-pointer group select-none">
+                            <input 
+                              type="checkbox" 
+                              checked={hideAssigned} 
+                              onChange={(e) => setHideAssigned(e.target.checked)}
+                              className="sr-only"
+                            />
+                            <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                              hideAssigned 
+                                ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                                : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                            }`}>
+                              {hideAssigned && (
+                                <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              )}
                             </div>
-                            {/* Triangular pointer pointing up */}
-                            <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                            <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
+                              Hide Assigned Boons
+                            </span>
+                          </label>
+
+                          <div className="flex items-center gap-1.5 ml-0.5">
+                            {/* Info Button with Stylized Tooltip */}
+                            <div className="relative group/tooltip inline-flex items-center">
+                              <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                              <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
+                                {/* Connector bridge to make hovering steady */}
+                                <div className="absolute left-0 right-0 bottom-full h-2" />
+                                <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                                  Assigned Boons Filter
+                                </p>
+                                <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
+                                  If checked, boons that have already been assigned in your active build will be hidden.
+                                </p>
+                                {/* Triangular pointer pointing up */}
+                                <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 px-1 w-fit">
+                          <label className="flex items-center gap-2 cursor-pointer group select-none">
+                            <input 
+                              type="checkbox" 
+                              checked={hideAssignedSlots} 
+                              onChange={(e) => setHideAssignedSlots(e.target.checked)}
+                              className="sr-only"
+                            />
+                            <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                              hideAssignedSlots 
+                                ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                                : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                            }`}>
+                              {hideAssignedSlots && (
+                                <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              )}
+                            </div>
+                            <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors select-none">
+                              Hide Replacement Boons for Assigned Core Slots
+                            </span>
+                          </label>
+
+                          <div className="flex items-center gap-1.5 ml-0.5">
+                            {/* Info Button with Stylized Tooltip */}
+                            <div className="relative group/tooltip inline-flex items-center">
+                              <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                              <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
+                                {/* Connector bridge to make hovering steady */}
+                                <div className="absolute left-0 right-0 bottom-full h-2" />
+                                <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                                  Assigned Slots Filter
+                                </p>
+                                <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
+                                  If checked, boons that would replace a currently assigned core slot will be hidden.
+                                  <span className="block mt-1.5 text-hades-text/60 italic">
+                                    Example: if Flame Strike has already been assigned and this option is checked, Attack boons will no longer show up.
+                                  </span>
+                                </p>
+                                {/* Triangular pointer pointing up */}
+                                <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 px-1 w-fit">
+                          <label className="flex items-center gap-2 cursor-pointer group select-none">
+                            <input 
+                              type="checkbox" 
+                              checked={limitToGodPool} 
+                              onChange={(e) => setLimitToGodPool(e.target.checked)}
+                              className="sr-only"
+                            />
+                            <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                              limitToGodPool 
+                                ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                                : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                            }`}>
+                              {limitToGodPool && (
+                                <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              )}
+                            </div>
+                            <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
+                              Limit Boons To God Pool
+                            </span>
+                          </label>
+                          
+                          <div className="flex items-center gap-1.5 ml-0.5">
+                            <span className={`text-[9px] font-semibold px-1 py-[0.5px] rounded-sm transition-colors ${activeStandardOlympians.length >= 4 ? 'bg-amber-400/15 text-amber-400 border border-amber-400/20' : 'bg-white/5 text-gray-400 border border-white/10'}`}>
+                              {activeStandardOlympians.length}/4
+                            </span>
+
+                            {/* Info Button with Stylized Tooltip */}
+                            <div className="relative group/tooltip inline-flex items-center">
+                              <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                              <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
+                                {/* Connector bridge to make hovering steady */}
+                                <div className="absolute left-0 right-0 bottom-full h-2" />
+                                <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                                  God Pool Filter
+                                </p>
+                                <p className="font-sans text-[11px] text-hades-text/85 leading-relaxed">
+                                  Typically, only <span className="font-bold text-gray-200">four</span> Olympian gods (excluding Artemis, Athena, Dionysus, Hermes, and Hades) are included in the god pool each night.
+                                  <br /><br />
+                                  If checked, once you have allocated boons from four Olympian gods, all other standard Olympians' boons are filtered out.
+                                </p>
+                                {/* Triangular pointer pointing up */}
+                                <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 px-1 w-fit">
+                          <label className="flex items-center gap-2 cursor-pointer group select-none">
+                            <input 
+                              type="checkbox" 
+                              checked={enforceSupportBoonLimit} 
+                              onChange={(e) => setEnforceSupportBoonLimit(e.target.checked)}
+                              className="sr-only"
+                            />
+                            <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                              enforceSupportBoonLimit 
+                                ? 'bg-hades-accent/20 border-hades-accent text-hades-accent' 
+                                : 'border-white/20 group-hover:border-white/45 bg-white/[0.02]'
+                            }`}>
+                              {enforceSupportBoonLimit && (
+                                <svg className="w-2.5 h-2.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              )}
+                            </div>
+                            <span className="text-[10px] font-display uppercase tracking-wider text-hades-text/50 group-hover:text-hades-text/80 transition-colors">
+                              Enforce boon limit for support gods
+                            </span>
+                          </label>
+                          
+                          <div className="flex items-center gap-1.5 ml-0.5">
+                            {/* Info Button with Stylized Tooltip */}
+                            <div className="relative group/tooltip inline-flex items-center">
+                              <Info className="w-3.5 h-3.5 text-hades-text/40 hover:text-hades-accent cursor-help transition-colors" />
+                              <div className="absolute left-[-10px] top-full mt-2 w-64 p-3.5 bg-hades-bg-dark border border-hades-border-light rounded-lg shadow-2xl opacity-0 scale-95 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:scale-100 group-hover/tooltip:visible transition-all duration-200 pointer-events-none group-hover/tooltip:pointer-events-auto z-[100] origin-top-left">
+                                {/* Connector bridge to make hovering steady */}
+                                <div className="absolute left-0 right-0 bottom-full h-2" />
+                                <p className="text-[10px] font-semibold text-hades-accent mb-1.5 uppercase tracking-wider font-display">
+                                  Support God Limits
+                                </p>
+                                <div className="font-sans text-[11px] text-hades-text/85 leading-relaxed flex flex-col gap-1.5">
+                                  <p>
+                                    Under normal circumstances, only one boon can be obtained from each of the following gods per night:
+                                  </p>
+                                  <ul className="list-disc pl-4 space-y-0.5 text-hades-text/90 font-medium">
+                                    <li><span className="font-bold text-gray-200">Artemis</span></li>
+                                    <li><span className="font-bold text-gray-200">Athena</span></li>
+                                    <li><span className="font-bold text-gray-200">Dionysus</span></li>
+                                    <li><span className="font-bold text-gray-200">Hades</span></li>
+                                  </ul>
+                                  <p>
+                                    Additionally, only two to three <span className="font-bold text-gray-200">Hermes</span> boons are naturally attainable each night.
+                                    <br /><br />
+                                    If checked, once this limit is reached for any of the above gods, the remaining boons from that respective god will be hidden.
+                                  </p>
+                                </div>
+                                {/* Triangular pointer pointing up */}
+                                <div className="absolute bottom-[calc(100%-4px)] left-[12px] w-2 h-2 bg-hades-bg-dark border-l border-t border-hades-border-light rotate-45" />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </>
+            )}
             </div>
           </div>
-        </div>
 
         {/* Pinned Boons Section (Frozen context when scrolling) */}
-        {pinnedBoons.length > 0 && (
+        {activeTab === 'boons' && pinnedBoons.length > 0 && (
           <div className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative">
             <div className="flex items-center justify-between pl-5 pr-[26px] select-none">
               <button
@@ -835,7 +952,7 @@ export function BoonLibrary({
               </button>
               <button
                 onClick={clearAllPins}
-                className="text-[9px] font-display uppercase text-hades-text/45 hover:text-hades-red transition-colors cursor-pointer"
+                className="text-[10px] font-display uppercase tracking-wider text-hades-text/45 hover:text-hades-red transition-colors cursor-pointer whitespace-nowrap shrink-0"
               >
                 Clear All
               </button>
@@ -967,7 +1084,7 @@ export function BoonLibrary({
           </div>
         )}
 
-        {/* Boon Library Section Header (Frozen) */}
+        {/* Boon / Loadout Library Section Header (Frozen) */}
         <div 
           ref={libraryHeaderRef}
           className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative"
@@ -983,13 +1100,27 @@ export function BoonLibrary({
                 <ChevronRight className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
               )}
               <div className="flex items-center gap-2">
-                <img 
-                  src="/assets/ui/BoonII.webp" 
-                  alt="Boon Library Icon" 
-                  className="w-4 h-4 object-contain shrink-0" 
-                  referrerPolicy="no-referrer"
-                />
-                Boon Library ({filteredBoons.length})
+                {activeTab === 'boons' ? (
+                  <>
+                    <img 
+                      src="/assets/ui/BoonII.webp" 
+                      alt="Boon Library Icon" 
+                      className="w-4 h-4 object-contain shrink-0" 
+                      referrerPolicy="no-referrer"
+                    />
+                    BOON LIBRARY ({filteredBoons.length})
+                  </>
+                ) : (
+                  <>
+                    <img 
+                      src="/assets/ui/NocturnalArmsIcon.webp" 
+                      alt="Loadout Library Icon" 
+                      className="w-4 h-4 object-contain shrink-0" 
+                      referrerPolicy="no-referrer"
+                    />
+                    LOADOUT LIBRARY ({loadoutSearchResults.aspects.length + loadoutSearchResults.hammers.length + (loadoutSearchResults.familiars ? loadoutSearchResults.familiars.length : 0)})
+                  </>
+                )}
               </div>
             </button>
           </div>
@@ -1007,120 +1138,434 @@ export function BoonLibrary({
             <div 
               ref={libraryListContainerRef}
               onScroll={handleSidebarScroll}
-              className={`flex-1 overflow-y-auto custom-scrollbar px-5 transform-gpu ${
-                filteredBoons.length === 0 && libraryHeight < 160 ? 'pt-1 pb-2' : 'pt-3 pb-8'
-              }`}
+              className={`flex-1 overflow-y-auto custom-scrollbar px-5 transform-gpu pt-3 pb-8`}
             >
-          <div className="space-y-3 transform-gpu">
+              {activeTab === 'boons' ? (
+                <div className="space-y-3 transform-gpu">
+                  {displayedBoons.map(boon => {
+                    let isLocked = false;
+                    const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
+                    if (boon.prerequisites && boon.prerequisites.length > 0) {
+                      const isTallOrder = boon.id === 'tall_order';
+                      if (isTallOrder) {
+                        const metAny = boon.prerequisites.some(prereq => {
+                          if (prereq.element && prereq.elementCount) {
+                            const currentCount = elementCounts[prereq.element] || 0;
+                            return currentCount >= prereq.elementCount;
+                          }
+                          return false;
+                        });
+                        if (!metAny) {
+                          isLocked = true;
+                        }
+                        boon.prerequisites.forEach(prereq => {
+                          if (prereq.element && prereq.elementCount) {
+                            const currentCount = elementCounts[prereq.element] || 0;
+                            const met = currentCount >= prereq.elementCount;
+                            prerequisitesStatus.push({ prereq, met });
+                          }
+                        });
+                      } else {
+                        boon.prerequisites.forEach(prereq => {
+                          let met = false;
+                          if (prereq.type === 'death_defiance_min') {
+                            const minVal = prereq.value ?? 1;
+                            met = totalDeathDefiance >= minVal;
+                          } else if (prereq.description === "At least one Death Defiance") {
+                            met = totalDeathDefiance >= 1;
+                          } else if (prereq.element && prereq.elementCount) {
+                            const currentCount = elementCounts[prereq.element] || 0;
+                            met = currentCount >= prereq.elementCount;
+                          } else {
+                            met = prereq.any
+                              ? prereq.boonIds.some(id => selectedBoonIds.has(id))
+                              : prereq.boonIds.every(id => selectedBoonIds.has(id));
+                          }
+                          if (!met) {
+                            isLocked = true;
+                          }
+                          prerequisitesStatus.push({ prereq, met });
+                        });
+                      }
+                    }
 
-            {displayedBoons.map(boon => {
-              let isLocked = false;
-              const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
-              if (boon.prerequisites && boon.prerequisites.length > 0) {
-                const isTallOrder = boon.id === 'tall_order';
-                if (isTallOrder) {
-                  const metAny = boon.prerequisites.some(prereq => {
-                    if (prereq.element && prereq.elementCount) {
-                      const currentCount = elementCounts[prereq.element] || 0;
-                      return currentCount >= prereq.elementCount;
-                    }
-                    return false;
-                  });
-                  if (!metAny) {
-                    isLocked = true;
-                  }
-                  boon.prerequisites.forEach(prereq => {
-                    if (prereq.element && prereq.elementCount) {
-                      const currentCount = elementCounts[prereq.element] || 0;
-                      const met = currentCount >= prereq.elementCount;
-                      prerequisitesStatus.push({ prereq, met });
-                    }
-                  });
-                } else {
-                  boon.prerequisites.forEach(prereq => {
-                    let met = false;
-                    if (prereq.type === 'death_defiance_min') {
-                      const minVal = prereq.value ?? 1;
-                      met = totalDeathDefiance >= minVal;
-                    } else if (prereq.description === "At least one Death Defiance") {
-                      met = totalDeathDefiance >= 1;
-                    } else if (prereq.element && prereq.elementCount) {
-                      const currentCount = elementCounts[prereq.element] || 0;
-                      met = currentCount >= prereq.elementCount;
-                    } else {
-                      met = prereq.any
-                        ? prereq.boonIds.some(id => selectedBoonIds.has(id))
-                        : prereq.boonIds.every(id => selectedBoonIds.has(id));
-                    }
-                    if (!met) {
+                    const incompatibleBoon = getIncompatibleBoonInSelection(boon.id, selectedBoonIds);
+                    if (incompatibleBoon) {
                       isLocked = true;
+                      prerequisitesStatus.push({
+                        prereq: {
+                          boonIds: [],
+                          description: `Requires removing incompatible ${incompatibleBoon.name}`
+                        },
+                        met: false
+                      });
                     }
-                    prerequisitesStatus.push({ prereq, met });
-                  });
-                }
-              }
 
-              const incompatibleBoon = getIncompatibleBoonInSelection(boon.id, selectedBoonIds);
-              if (incompatibleBoon) {
-                isLocked = true;
-                prerequisitesStatus.push({
-                  prereq: {
-                    boonIds: [],
-                    description: `Requires removing incompatible ${incompatibleBoon.name}`
-                  },
-                  met: false
-                });
-              }
+                    return (
+                      <DraggableBoonListItem 
+                        key={boon.id} 
+                        boon={boon} 
+                        onClick={() => activeSlot && selectBoon(boon, activeSlot)}
+                        isSelectable={!!activeSlot}
+                        isLocked={isLocked}
+                        prerequisitesStatus={prerequisitesStatus}
+                        isPinned={false}
+                        onPinToggle={() => togglePin(boon.id)}
+                        elementCounts={elementCounts}
+                        selectedBoonIds={selectedBoonIds}
+                        activeArcana={activeArcana}
+                        toggleArcana={toggleArcana}
+                        activeKeepsake={activeKeepsake}
+                        setActiveKeepsake={setActiveKeepsake}
+                        activeFamiliar={activeFamiliar}
+                        setActiveFamiliar={setActiveFamiliar}
+                        isHeartBondActive={isHeartBondActive}
+                        setIsHeartBondActive={setIsHeartBondActive}
+                        additionalBoons={additionalBoons}
+                        removeAdditionalBoon={removeAdditionalBoon}
+                        selectBoon={selectBoon}
+                      />
+                    );
+                  })}
 
-              return (
-                <DraggableBoonListItem 
-                  key={boon.id} 
-                  boon={boon} 
-                  onClick={() => activeSlot && selectBoon(boon, activeSlot)}
-                  isSelectable={!!activeSlot}
-                  isLocked={isLocked}
-                  prerequisitesStatus={prerequisitesStatus}
-                  isPinned={false}
-                  onPinToggle={() => togglePin(boon.id)}
-                  elementCounts={elementCounts}
-                  selectedBoonIds={selectedBoonIds}
-                  activeArcana={activeArcana}
-                  toggleArcana={toggleArcana}
-                  activeKeepsake={activeKeepsake}
-                  setActiveKeepsake={setActiveKeepsake}
-                  activeFamiliar={activeFamiliar}
-                  setActiveFamiliar={setActiveFamiliar}
-                  isHeartBondActive={isHeartBondActive}
-                  setIsHeartBondActive={setIsHeartBondActive}
-                  additionalBoons={additionalBoons}
-                  removeAdditionalBoon={removeAdditionalBoon}
-                  selectBoon={selectBoon}
-                />
-              );
-            })}
+                  {filteredBoons.length > visibleCount && (
+                    <div className="pt-2 text-center">
+                      <button
+                        onClick={() => setVisibleCount(prev => prev + 30)}
+                        className="w-full py-2.5 px-4 bg-hades-accent/5 hover:bg-hades-accent/10 border border-hades-accent/20 hover:border-hades-accent/50 rounded-lg text-xs font-display uppercase tracking-wider text-hades-accent/70 hover:text-hades-accent transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                      >
+                        Load More (+{filteredBoons.length - visibleCount} remaining)
+                      </button>
+                    </div>
+                  )}
 
-            {filteredBoons.length > visibleCount && (
-              <div className="pt-2 text-center">
-                <button
-                  onClick={() => setVisibleCount(prev => prev + 30)}
-                  className="w-full py-2.5 px-4 bg-hades-accent/5 hover:bg-hades-accent/10 border border-hades-accent/20 hover:border-hades-accent/50 rounded-lg text-xs font-display uppercase tracking-wider text-hades-accent/70 hover:text-hades-accent transition-all duration-200 cursor-pointer active:scale-[0.98]"
-                >
-                  Load More (+{filteredBoons.length - visibleCount} remaining)
-                </button>
-              </div>
-            )}
-            {filteredBoons.length === 0 && (
-              <div className={`text-center text-gray-400 font-display text-xs uppercase tracking-tight transition-all duration-200 ${
-                libraryHeight < 160 ? 'py-2' : 'py-12'
-              }`}>
-                No matches found
-              </div>
-            )}
+                  {filteredBoons.length === 0 && (
+                    <div className={`text-center text-gray-400 font-display text-xs uppercase tracking-tight py-12`}>
+                      No matches found
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-6 transform-gpu">
+                  {/* Weapons & Aspects Group */}
+                  {loadoutSearchResults.aspects.length > 0 && (
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => setAspectsExpanded(!aspectsExpanded)}
+                        className="w-full flex items-center justify-between py-1.5 font-display uppercase tracking-widest text-hades-accent/70 hover:text-hades-accent font-bold border-b border-hades-border-light text-left text-[10px] select-none transition-colors cursor-pointer"
+                      >
+                        <div className="flex items-center gap-1.5">
+                          {aspectsExpanded ? (
+                            <ChevronDown className="w-3.5 h-3.5 text-hades-accent" />
+                          ) : (
+                            <ChevronRight className="w-3.5 h-3.5 text-hades-accent" />
+                          )}
+                          <img 
+                            src="/assets/ui/NocturnalArmsIcon.webp" 
+                            alt="Weapon Aspects" 
+                            className="w-3.5 h-3.5 object-contain"
+                            referrerPolicy="no-referrer"
+                          />
+                          <span>WEAPON ASPECTS ({loadoutSearchResults.aspects.length})</span>
+                        </div>
+                      </button>
+                      
+                      {aspectsExpanded && (
+                        <div className="space-y-3">
+                          {loadoutSearchResults.aspects.map(aspect => {
+                            const isSelected = activeAspect === aspect.id;
+                            return (
+                              <div
+                                key={aspect.id}
+                                onClick={() => {
+                                  if (setActiveWeapon && setActiveAspect) {
+                                    setActiveWeapon(aspect.weapon);
+                                    setActiveAspect(aspect.id);
+                                  }
+                                }}
+                                className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer flex flex-col relative group overflow-hidden ${
+                                  isSelected
+                                    ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
+                                    : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
+                                }`}
+                              >
+                                <div className="flex items-start gap-4">
+                                  {/* Icon */}
+                                  <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
+                                    <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
+                                      <img
+                                        src={WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
+                                        alt={aspect.name}
+                                        className="w-full h-full object-contain"
+                                        referrerPolicy="no-referrer"
+                                      />
+                                      <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/35 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
+                                    </div>
+                                  </div>
+
+                                  {/* Content */}
+                                  <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
+                                        {aspect.name}
+                                      </h4>
+                                      <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
+                                        ASPECT
+                                      </span>
+                                    </div>
+
+                                    <div className="flex flex-wrap items-center gap-x-2.5">
+                                      <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                                        {WEAPON_NAMES[aspect.weapon] || aspect.weapon}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
+                                  <FormattedEffectText text={aspect.description} />
+                                </p>
+
+                                {aspect.mechanics && (
+                                  <div className="mt-2.5 pt-2 border-t border-white/5 text-[10px] font-mono text-hades-accent/80 leading-relaxed">
+                                    <span className="font-bold uppercase tracking-wider">MECHANICS: </span>
+                                    {aspect.mechanics}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Daedalus Hammers Group */}
+                  {loadoutSearchResults.hammers.length > 0 && (
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => setHammersExpanded(!hammersExpanded)}
+                        className="w-full flex items-center justify-between py-1.5 font-display uppercase tracking-widest text-hades-accent/70 hover:text-hades-accent font-bold border-b border-hades-border-light text-left text-[10px] select-none transition-colors cursor-pointer"
+                      >
+                        <div className="flex items-center gap-1.5">
+                          {hammersExpanded ? (
+                            <ChevronDown className="w-3.5 h-3.5 text-hades-accent" />
+                          ) : (
+                            <ChevronRight className="w-3.5 h-3.5 text-hades-accent" />
+                          )}
+                          <img 
+                            src="/assets/ui/Anvil.webp" 
+                            alt="Daedalus Hammers" 
+                            className="w-3.5 h-3.5 object-contain animate-pulse"
+                            referrerPolicy="no-referrer"
+                          />
+                          <span>DAEDALUS HAMMERS ({loadoutSearchResults.hammers.length})</span>
+                        </div>
+                      </button>
+
+                      {hammersExpanded && (
+                        <div className="space-y-3">
+                          {loadoutSearchResults.hammers.map(hammer => {
+                            const isSelected = selectedHammers ? selectedHammers.includes(hammer.id) : false;
+                            const status = getHammerStatus(hammer);
+                            const isEligible = status.isEligible;
+
+                            return (
+                              <div
+                                key={hammer.id}
+                                onClick={() => {
+                                  if (!isEligible) return;
+                                  if (setSelectedHammers) {
+                                    if (isSelected) {
+                                      setSelectedHammers(prev => prev.filter(id => id !== hammer.id));
+                                    } else {
+                                      setSelectedHammers(prev => [...prev, hammer.id]);
+                                    }
+                                  }
+                                }}
+                                className={`p-3 rounded-xl border text-left transition-all duration-150 flex flex-col relative group overflow-hidden ${
+                                  !isEligible
+                                    ? 'opacity-40 bg-hades-bg-dark/60 border-red-950/45 cursor-not-allowed select-none'
+                                    : isSelected
+                                      ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30 cursor-pointer'
+                                      : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95 cursor-pointer'
+                                }`}
+                              >
+                                <div className="flex items-start gap-4">
+                                  {/* Icon */}
+                                  <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
+                                    <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
+                                      <img
+                                        src="/assets/ui/Anvil.webp"
+                                        alt="Daedalus Hammer"
+                                        className="w-full h-full object-contain"
+                                        referrerPolicy="no-referrer"
+                                        onError={(e) => {
+                                          (e.target as HTMLImageElement).src = "/assets/ui/BoonII.webp";
+                                        }}
+                                      />
+                                      <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/35 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
+                                    </div>
+                                  </div>
+
+                                  {/* Content */}
+                                  <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
+                                        {hammer.name}
+                                      </h4>
+                                      <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
+                                        HAMMER
+                                      </span>
+                                    </div>
+
+                                    <div className="flex flex-wrap items-center gap-x-2.5">
+                                      <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                                        {WEAPON_NAMES[hammer.weapon] || hammer.weapon}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
+                                  <FormattedEffectText text={hammer.description} />
+                                </p>
+
+                                {!isEligible && (
+                                  <div className="mt-2.5 pt-2 border-t border-red-950/45 flex items-center gap-1.5 text-[9.5px] font-mono uppercase font-bold text-hades-red">
+                                    <Lock className="w-3 h-3 text-hades-red shrink-0" />
+                                    <span>{status.reason}</span>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Animal Familiars Group */}
+                  {loadoutSearchResults.familiars && loadoutSearchResults.familiars.length > 0 && (
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => setFamiliarsExpanded(!familiarsExpanded)}
+                        className="w-full flex items-center justify-between py-1.5 font-display uppercase tracking-widest text-hades-accent/70 hover:text-hades-accent font-bold border-b border-hades-border-light text-left text-[10px] select-none transition-colors cursor-pointer"
+                      >
+                        <div className="flex items-center gap-1.5">
+                          {familiarsExpanded ? (
+                            <ChevronDown className="w-3.5 h-3.5 text-hades-accent" />
+                          ) : (
+                            <ChevronRight className="w-3.5 h-3.5 text-hades-accent" />
+                          )}
+                          <img 
+                            src="/assets/ui/Icon-Familiars.webp" 
+                            alt="Animal Familiars" 
+                            className="w-4 h-4 object-contain"
+                            referrerPolicy="no-referrer"
+                          />
+                          <span>ANIMAL FAMILIARS ({loadoutSearchResults.familiars.length})</span>
+                        </div>
+                      </button>
+
+                      {familiarsExpanded && (
+                        <div className="space-y-3">
+                          {loadoutSearchResults.familiars.map(familiar => {
+                            const isSelected = activeFamiliar === familiar.id;
+                            return (
+                              <div
+                                key={familiar.id}
+                                onClick={() => {
+                                  if (setActiveFamiliar) {
+                                    if (isSelected) {
+                                      setActiveFamiliar('none');
+                                    } else {
+                                      setActiveFamiliar(familiar.id);
+                                    }
+                                  }
+                                }}
+                                className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer flex flex-col relative group overflow-hidden ${
+                                  isSelected
+                                    ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
+                                    : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
+                                }`}
+                              >
+                                <div className="flex items-start gap-4">
+                                  {/* Icon */}
+                                  <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
+                                    <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
+                                      <img
+                                        src={familiar.icon || "/assets/ui/BoonII.webp"}
+                                        alt={familiar.name}
+                                        className="w-full h-full object-cover"
+                                        referrerPolicy="no-referrer"
+                                        onError={(e) => {
+                                          (e.target as HTMLImageElement).src = "/assets/ui/BoonII.webp";
+                                        }}
+                                      />
+                                      <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/35 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
+                                    </div>
+                                  </div>
+
+                                  {/* Content */}
+                                  <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
+                                        {familiar.name}
+                                      </h4>
+                                      <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
+                                        FAMILIAR
+                                      </span>
+                                    </div>
+
+                                    <div className="flex flex-wrap items-center gap-x-2.5">
+                                      <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                                        ANIMAL COMPANION
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+
+                                <div className="mt-2.5 pt-2 border-t border-white/5 space-y-1.5">
+                                  {familiar.skills.map(skill => (
+                                    <div key={skill.id} className="flex items-start gap-2 text-[10px] text-gray-400 leading-normal">
+                                      <div className="w-4 h-4 rounded-full overflow-hidden border border-white/10 shrink-0 bg-hades-bg-dark">
+                                        <img src={skill.icon} alt={skill.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <span className="text-hades-accent/90 font-bold uppercase tracking-wider text-[9px] block leading-tight">
+                                          {skill.name}
+                                        </span>
+                                        <span className="text-gray-400 text-[10px] leading-relaxed">
+                                          {skill.description}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {loadoutSearchResults.aspects.length === 0 && 
+                   loadoutSearchResults.hammers.length === 0 && 
+                   (!loadoutSearchResults.familiars || loadoutSearchResults.familiars.length === 0) && (
+                    <div className="text-center text-gray-400 font-display text-xs uppercase tracking-tight py-12">
+                      No matching weapons, upgrades, or companions found
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
     </motion.aside>
   );
 }

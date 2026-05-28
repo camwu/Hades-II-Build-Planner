@@ -46,6 +46,7 @@ import { MainHeader } from './components/MainHeader';
 import { MainFooter } from './components/MainFooter';
 import { BoonLibrary } from './components/BoonLibrary';
 import { ArcanaSidebar } from './components/ArcanaSidebar';
+import { LoadoutTab } from './components/LoadoutTab';
 import { ZERO_COST_CARDS, ARCANA_COSTS, resolveAllActiveArcana } from './utils/arcanaUtils';
 
 
@@ -194,6 +195,31 @@ export default function App() {
     if (savedState && typeof savedState.isHeartBondActive === 'boolean') return savedState.isHeartBondActive;
     return false;
   });
+
+  const [activeWeapon, setActiveWeapon] = useState<string | null>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const wpParam = params.get('wp');
+    if (wpParam) return wpParam;
+    if (savedState && typeof savedState.activeWeapon === 'string') return savedState.activeWeapon;
+    return null;
+  });
+
+  const [activeAspect, setActiveAspect] = useState<string | null>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const asParam = params.get('as');
+    if (asParam) return asParam;
+    if (savedState && typeof savedState.activeAspect === 'string') return savedState.activeAspect;
+    return null;
+  });
+
+  const [selectedHammers, setSelectedHammers] = useState<string[]>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const shParam = params.get('sh');
+    if (shParam) return shParam.split(',').filter(Boolean);
+    if (savedState && Array.isArray(savedState.selectedHammers)) return savedState.selectedHammers;
+    return [];
+  });
+
 
   const [activeTab, setActiveTab] = useState<'boons' | 'loadout' | 'arcana'>('boons');
 
@@ -425,6 +451,22 @@ export default function App() {
         params.set('hb', 'true');
       }
 
+      // Weapon
+      if (activeWeapon) {
+        params.set('wp', activeWeapon);
+      }
+
+      // Aspect
+      if (activeAspect) {
+        params.set('as', activeAspect);
+      }
+
+      // Hammers
+      if (selectedHammers.length > 0) {
+        params.set('sh', selectedHammers.join(','));
+      }
+
+
       const newUrl = params.toString() 
         ? `${window.location.pathname}?${params.toString()}`
         : window.location.pathname;
@@ -453,7 +495,10 @@ export default function App() {
           maxGrasp,
           activeKeepsake,
           activeFamiliar,
-          isHeartBondActive
+          isHeartBondActive,
+          activeWeapon,
+          activeAspect,
+          selectedHammers
         };
 
         localStorage.setItem(STORAGE_KEYS.BUILD_STATE, JSON.stringify(stateToSave));
@@ -465,7 +510,7 @@ export default function App() {
     return () => {
       clearTimeout(handler);
     };
-  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, hideAssignedSlots, limitToGodPool, enforceSupportBoonLimit, pinnedBoonIds, activeArcana, maxGrasp, activeKeepsake, activeFamiliar, isHeartBondActive]);
+  }, [coreBuild, additionalBoons, buildName, searchTerm, hideAssigned, hideAssignedSlots, limitToGodPool, enforceSupportBoonLimit, pinnedBoonIds, activeArcana, maxGrasp, activeKeepsake, activeFamiliar, isHeartBondActive, activeWeapon, activeAspect, selectedHammers]);
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -961,6 +1006,13 @@ export default function App() {
             setIsHeartBondActive={setIsHeartBondActive}
             additionalBoons={additionalBoons}
             removeAdditionalBoon={removeAdditionalBoon}
+            activeTab={activeTab}
+            activeWeapon={activeWeapon}
+            setActiveWeapon={setActiveWeapon}
+            activeAspect={activeAspect}
+            setActiveAspect={setActiveAspect}
+            selectedHammers={selectedHammers}
+            setSelectedHammers={setSelectedHammers}
           />
 
           {/* Right: Build View */}
@@ -1088,19 +1140,16 @@ export default function App() {
                   </div>
                 </div>
               ) : activeTab === 'loadout' ? (
-                <div className="border border-hades-border rounded-xl p-6 md:p-8 bg-hades-panel shadow-2xl relative min-h-[400px] flex flex-col items-center justify-center text-center">
-                  <div className="w-16 h-16 rounded-full bg-hades-bg-main/30 border border-hades-border flex items-center justify-center mb-4 text-hades-accent/40 shadow-inner">
-                    <span className="text-2xl">⚔️</span>
-                  </div>
-                  <h3 className="text-base font-light text-hades-accent uppercase tracking-widest font-display">Weapon & Loadout</h3>
-                  <p className="text-xs text-hades-text/50 max-w-sm mt-2 leading-relaxed">
-                    The armory and gear selection compartments will detail your weapon aspects, keepsakes, and familiar companions in a future update.
-                  </p>
-                  <div className="mt-4 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-hades-accent/5 border border-hades-accent/20 text-[9px] text-hades-accent font-display uppercase tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-hades-accent animate-ping" />
-                    Development Preparation
-                  </div>
-                </div>
+                <LoadoutTab 
+                  activeWeapon={activeWeapon}
+                  setActiveWeapon={setActiveWeapon}
+                  activeAspect={activeAspect}
+                  setActiveAspect={setActiveAspect}
+                  selectedHammers={selectedHammers}
+                  setSelectedHammers={setSelectedHammers}
+                  activeFamiliar={activeFamiliar}
+                  setActiveFamiliar={setActiveFamiliar}
+                />
               ) : (
                 <div className="border border-hades-border rounded-xl p-6 md:p-8 bg-hades-panel shadow-2xl relative min-h-[400px] flex flex-col items-center justify-center text-center">
                   <div className="w-16 h-16 rounded-full bg-hades-bg-main/30 border border-hades-border flex items-center justify-center mb-4 text-hades-accent/40 shadow-inner">
