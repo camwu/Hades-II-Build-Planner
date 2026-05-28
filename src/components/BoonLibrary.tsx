@@ -1084,7 +1084,7 @@ export function BoonLibrary({
           </div>
         )}
 
-        {/* Boon / Loadout Library Section Header (Frozen) */}
+        {/* Boon Library Section Header (Frozen) */}
         <div 
           ref={libraryHeaderRef}
           className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-bg-dark/15 flex flex-col relative"
@@ -1100,27 +1100,13 @@ export function BoonLibrary({
                 <ChevronRight className="w-3 h-3 text-hades-accent shrink-0 mr-1" />
               )}
               <div className="flex items-center gap-2">
-                {activeTab === 'boons' ? (
-                  <>
-                    <img 
-                      src="/assets/ui/BoonII.webp" 
-                      alt="Boon Library Icon" 
-                      className="w-4 h-4 object-contain shrink-0" 
-                      referrerPolicy="no-referrer"
-                    />
-                    BOON LIBRARY ({filteredBoons.length})
-                  </>
-                ) : (
-                  <>
-                    <img 
-                      src="/assets/ui/NocturnalArmsIcon.webp" 
-                      alt="Loadout Library Icon" 
-                      className="w-4 h-4 object-contain shrink-0" 
-                      referrerPolicy="no-referrer"
-                    />
-                    LOADOUT LIBRARY ({loadoutSearchResults.aspects.length + loadoutSearchResults.hammers.length + (loadoutSearchResults.familiars ? loadoutSearchResults.familiars.length : 0)})
-                  </>
-                )}
+                <img 
+                  src="/assets/ui/BoonII.webp" 
+                  alt="Boon Library Icon" 
+                  className="w-4 h-4 object-contain shrink-0" 
+                  referrerPolicy="no-referrer"
+                />
+                BOON LIBRARY ({filteredBoons.length})
               </div>
             </button>
           </div>
@@ -1140,428 +1126,110 @@ export function BoonLibrary({
               onScroll={handleSidebarScroll}
               className={`flex-1 overflow-y-auto custom-scrollbar px-5 transform-gpu pt-3 pb-8`}
             >
-              {activeTab === 'boons' ? (
-                <div className="space-y-3 transform-gpu">
-                  {displayedBoons.map(boon => {
-                    let isLocked = false;
-                    const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
-                    if (boon.prerequisites && boon.prerequisites.length > 0) {
-                      const isTallOrder = boon.id === 'tall_order';
-                      if (isTallOrder) {
-                        const metAny = boon.prerequisites.some(prereq => {
-                          if (prereq.element && prereq.elementCount) {
-                            const currentCount = elementCounts[prereq.element] || 0;
-                            return currentCount >= prereq.elementCount;
-                          }
-                          return false;
-                        });
-                        if (!metAny) {
+              <div className="space-y-3 transform-gpu">
+                {displayedBoons.map(boon => {
+                  let isLocked = false;
+                  const prerequisitesStatus: { prereq: BoonPrerequisite; met: boolean }[] = [];
+                  if (boon.prerequisites && boon.prerequisites.length > 0) {
+                    const isTallOrder = boon.id === 'tall_order';
+                    if (isTallOrder) {
+                      const metAny = boon.prerequisites.some(prereq => {
+                        if (prereq.element && prereq.elementCount) {
+                          const currentCount = elementCounts[prereq.element] || 0;
+                          return currentCount >= prereq.elementCount;
+                        }
+                        return false;
+                      });
+                      if (!metAny) {
+                        isLocked = true;
+                      }
+                      boon.prerequisites.forEach(prereq => {
+                        if (prereq.element && prereq.elementCount) {
+                          const currentCount = elementCounts[prereq.element] || 0;
+                          const met = currentCount >= prereq.elementCount;
+                          prerequisitesStatus.push({ prereq, met });
+                        }
+                      });
+                    } else {
+                      boon.prerequisites.forEach(prereq => {
+                        let met = false;
+                        if (prereq.type === 'death_defiance_min') {
+                          const minVal = prereq.value ?? 1;
+                          met = totalDeathDefiance >= minVal;
+                        } else if (prereq.description === "At least one Death Defiance") {
+                          met = totalDeathDefiance >= 1;
+                        } else if (prereq.element && prereq.elementCount) {
+                          const currentCount = elementCounts[prereq.element] || 0;
+                          met = currentCount >= prereq.elementCount;
+                        } else {
+                          met = prereq.any
+                            ? prereq.boonIds.some(id => selectedBoonIds.has(id))
+                            : prereq.boonIds.every(id => selectedBoonIds.has(id));
+                        }
+                        if (!met) {
                           isLocked = true;
                         }
-                        boon.prerequisites.forEach(prereq => {
-                          if (prereq.element && prereq.elementCount) {
-                            const currentCount = elementCounts[prereq.element] || 0;
-                            const met = currentCount >= prereq.elementCount;
-                            prerequisitesStatus.push({ prereq, met });
-                          }
-                        });
-                      } else {
-                        boon.prerequisites.forEach(prereq => {
-                          let met = false;
-                          if (prereq.type === 'death_defiance_min') {
-                            const minVal = prereq.value ?? 1;
-                            met = totalDeathDefiance >= minVal;
-                          } else if (prereq.description === "At least one Death Defiance") {
-                            met = totalDeathDefiance >= 1;
-                          } else if (prereq.element && prereq.elementCount) {
-                            const currentCount = elementCounts[prereq.element] || 0;
-                            met = currentCount >= prereq.elementCount;
-                          } else {
-                            met = prereq.any
-                              ? prereq.boonIds.some(id => selectedBoonIds.has(id))
-                              : prereq.boonIds.every(id => selectedBoonIds.has(id));
-                          }
-                          if (!met) {
-                            isLocked = true;
-                          }
-                          prerequisitesStatus.push({ prereq, met });
-                        });
-                      }
-                    }
-
-                    const incompatibleBoon = getIncompatibleBoonInSelection(boon.id, selectedBoonIds);
-                    if (incompatibleBoon) {
-                      isLocked = true;
-                      prerequisitesStatus.push({
-                        prereq: {
-                          boonIds: [],
-                          description: `Requires removing incompatible ${incompatibleBoon.name}`
-                        },
-                        met: false
+                        prerequisitesStatus.push({ prereq, met });
                       });
                     }
+                  }
 
-                    return (
-                      <DraggableBoonListItem 
-                        key={boon.id} 
-                        boon={boon} 
-                        onClick={() => activeSlot && selectBoon(boon, activeSlot)}
-                        isSelectable={!!activeSlot}
-                        isLocked={isLocked}
-                        prerequisitesStatus={prerequisitesStatus}
-                        isPinned={false}
-                        onPinToggle={() => togglePin(boon.id)}
-                        elementCounts={elementCounts}
-                        selectedBoonIds={selectedBoonIds}
-                        activeArcana={activeArcana}
-                        toggleArcana={toggleArcana}
-                        activeKeepsake={activeKeepsake}
-                        setActiveKeepsake={setActiveKeepsake}
-                        activeFamiliar={activeFamiliar}
-                        setActiveFamiliar={setActiveFamiliar}
-                        isHeartBondActive={isHeartBondActive}
-                        setIsHeartBondActive={setIsHeartBondActive}
-                        additionalBoons={additionalBoons}
-                        removeAdditionalBoon={removeAdditionalBoon}
-                        selectBoon={selectBoon}
-                      />
-                    );
-                  })}
+                  const incompatibleBoon = getIncompatibleBoonInSelection(boon.id, selectedBoonIds);
+                  if (incompatibleBoon) {
+                    isLocked = true;
+                    prerequisitesStatus.push({
+                      prereq: {
+                        boonIds: [],
+                        description: `Requires removing incompatible ${incompatibleBoon.name}`
+                      },
+                      met: false
+                    });
+                  }
 
-                  {filteredBoons.length > visibleCount && (
-                    <div className="pt-2 text-center">
-                      <button
-                        onClick={() => setVisibleCount(prev => prev + 30)}
-                        className="w-full py-2.5 px-4 bg-hades-accent/5 hover:bg-hades-accent/10 border border-hades-accent/20 hover:border-hades-accent/50 rounded-lg text-xs font-display uppercase tracking-wider text-hades-accent/70 hover:text-hades-accent transition-all duration-200 cursor-pointer active:scale-[0.98]"
-                      >
-                        Load More (+{filteredBoons.length - visibleCount} remaining)
-                      </button>
-                    </div>
-                  )}
+                  return (
+                    <DraggableBoonListItem 
+                      key={boon.id} 
+                      boon={boon} 
+                      onClick={() => activeSlot && selectBoon(boon, activeSlot)}
+                      isSelectable={!!activeSlot}
+                      isLocked={isLocked}
+                      prerequisitesStatus={prerequisitesStatus}
+                      isPinned={false}
+                      onPinToggle={() => togglePin(boon.id)}
+                      elementCounts={elementCounts}
+                      selectedBoonIds={selectedBoonIds}
+                      activeArcana={activeArcana}
+                      toggleArcana={toggleArcana}
+                      activeKeepsake={activeKeepsake}
+                      setActiveKeepsake={setActiveKeepsake}
+                      activeFamiliar={activeFamiliar}
+                      setActiveFamiliar={setActiveFamiliar}
+                      isHeartBondActive={isHeartBondActive}
+                      setIsHeartBondActive={setIsHeartBondActive}
+                      additionalBoons={additionalBoons}
+                      removeAdditionalBoon={removeAdditionalBoon}
+                      selectBoon={selectBoon}
+                    />
+                  );
+                })}
 
-                  {filteredBoons.length === 0 && (
-                    <div className={`text-center text-gray-400 font-display text-xs uppercase tracking-tight py-12`}>
-                      No matches found
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="space-y-6 transform-gpu">
-                  {/* Weapons & Aspects Group */}
-                  {loadoutSearchResults.aspects.length > 0 && (
-                    <div className="space-y-2">
-                      <button
-                        onClick={() => setAspectsExpanded(!aspectsExpanded)}
-                        className="w-full flex items-center justify-between py-1.5 font-display uppercase tracking-widest text-hades-accent/70 hover:text-hades-accent font-bold border-b border-hades-border-light text-left text-[10px] select-none transition-colors cursor-pointer"
-                      >
-                        <div className="flex items-center gap-1.5">
-                          {aspectsExpanded ? (
-                            <ChevronDown className="w-3.5 h-3.5 text-hades-accent" />
-                          ) : (
-                            <ChevronRight className="w-3.5 h-3.5 text-hades-accent" />
-                          )}
-                          <img 
-                            src="/assets/ui/NocturnalArmsIcon.webp" 
-                            alt="Weapon Aspects" 
-                            className="w-3.5 h-3.5 object-contain"
-                            referrerPolicy="no-referrer"
-                          />
-                          <span>WEAPON ASPECTS ({loadoutSearchResults.aspects.length})</span>
-                        </div>
-                      </button>
-                      
-                      {aspectsExpanded && (
-                        <div className="space-y-3">
-                          {loadoutSearchResults.aspects.map(aspect => {
-                            const isSelected = activeAspect === aspect.id;
-                            return (
-                              <div
-                                key={aspect.id}
-                                onClick={() => {
-                                  if (setActiveWeapon && setActiveAspect) {
-                                    setActiveWeapon(aspect.weapon);
-                                    setActiveAspect(aspect.id);
-                                  }
-                                }}
-                                className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer flex flex-col relative group overflow-hidden ${
-                                  isSelected
-                                    ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
-                                    : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
-                                }`}
-                              >
-                                <div className="flex items-start gap-4">
-                                  {/* Icon */}
-                                  <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
-                                    <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
-                                      <img
-                                        src={WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
-                                        alt={aspect.name}
-                                        className="w-full h-full object-contain"
-                                        referrerPolicy="no-referrer"
-                                      />
-                                      <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/35 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                                    </div>
-                                  </div>
+                {filteredBoons.length > visibleCount && (
+                  <div className="pt-2 text-center">
+                    <button
+                      onClick={() => setVisibleCount(prev => prev + 30)}
+                      className="w-full py-2.5 px-4 bg-hades-accent/5 hover:bg-hades-accent/10 border border-hades-accent/20 hover:border-hades-accent/50 rounded-lg text-xs font-display uppercase tracking-wider text-hades-accent/70 hover:text-hades-accent transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                    >
+                      Load More (+{filteredBoons.length - visibleCount} remaining)
+                    </button>
+                  </div>
+                )}
 
-                                  {/* Content */}
-                                  <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
-                                    <div className="flex items-center justify-between gap-2">
-                                      <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
-                                        {aspect.name}
-                                      </h4>
-                                      <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
-                                        ASPECT
-                                      </span>
-                                    </div>
-
-                                    <div className="flex flex-wrap items-center gap-x-2.5">
-                                      <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
-                                        {WEAPON_NAMES[aspect.weapon] || aspect.weapon}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
-                                  <FormattedEffectText text={aspect.description} />
-                                </p>
-
-                                {aspect.mechanics && (
-                                  <div className="mt-2.5 pt-2 border-t border-white/5 text-[10px] font-mono text-hades-accent/80 leading-relaxed">
-                                    <span className="font-bold uppercase tracking-wider">MECHANICS: </span>
-                                    {aspect.mechanics}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Daedalus Hammers Group */}
-                  {loadoutSearchResults.hammers.length > 0 && (
-                    <div className="space-y-2">
-                      <button
-                        onClick={() => setHammersExpanded(!hammersExpanded)}
-                        className="w-full flex items-center justify-between py-1.5 font-display uppercase tracking-widest text-hades-accent/70 hover:text-hades-accent font-bold border-b border-hades-border-light text-left text-[10px] select-none transition-colors cursor-pointer"
-                      >
-                        <div className="flex items-center gap-1.5">
-                          {hammersExpanded ? (
-                            <ChevronDown className="w-3.5 h-3.5 text-hades-accent" />
-                          ) : (
-                            <ChevronRight className="w-3.5 h-3.5 text-hades-accent" />
-                          )}
-                          <img 
-                            src="/assets/ui/Anvil.webp" 
-                            alt="Daedalus Hammers" 
-                            className="w-3.5 h-3.5 object-contain animate-pulse"
-                            referrerPolicy="no-referrer"
-                          />
-                          <span>DAEDALUS HAMMERS ({loadoutSearchResults.hammers.length})</span>
-                        </div>
-                      </button>
-
-                      {hammersExpanded && (
-                        <div className="space-y-3">
-                          {loadoutSearchResults.hammers.map(hammer => {
-                            const isSelected = selectedHammers ? selectedHammers.includes(hammer.id) : false;
-                            const status = getHammerStatus(hammer);
-                            const isEligible = status.isEligible;
-
-                            return (
-                              <div
-                                key={hammer.id}
-                                onClick={() => {
-                                  if (!isEligible) return;
-                                  if (setSelectedHammers) {
-                                    if (isSelected) {
-                                      setSelectedHammers(prev => prev.filter(id => id !== hammer.id));
-                                    } else {
-                                      setSelectedHammers(prev => [...prev, hammer.id]);
-                                    }
-                                  }
-                                }}
-                                className={`p-3 rounded-xl border text-left transition-all duration-150 flex flex-col relative group overflow-hidden ${
-                                  !isEligible
-                                    ? 'opacity-40 bg-hades-bg-dark/60 border-red-950/45 cursor-not-allowed select-none'
-                                    : isSelected
-                                      ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30 cursor-pointer'
-                                      : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95 cursor-pointer'
-                                }`}
-                              >
-                                <div className="flex items-start gap-4">
-                                  {/* Icon */}
-                                  <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
-                                    <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
-                                      <img
-                                        src="/assets/ui/Anvil.webp"
-                                        alt="Daedalus Hammer"
-                                        className="w-full h-full object-contain"
-                                        referrerPolicy="no-referrer"
-                                        onError={(e) => {
-                                          (e.target as HTMLImageElement).src = "/assets/ui/BoonII.webp";
-                                        }}
-                                      />
-                                      <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/35 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                                    </div>
-                                  </div>
-
-                                  {/* Content */}
-                                  <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
-                                    <div className="flex items-center justify-between gap-2">
-                                      <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
-                                        {hammer.name}
-                                      </h4>
-                                      <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
-                                        HAMMER
-                                      </span>
-                                    </div>
-
-                                    <div className="flex flex-wrap items-center gap-x-2.5">
-                                      <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
-                                        {WEAPON_NAMES[hammer.weapon] || hammer.weapon}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
-                                  <FormattedEffectText text={hammer.description} />
-                                </p>
-
-                                {!isEligible && (
-                                  <div className="mt-2.5 pt-2 border-t border-red-950/45 flex items-center gap-1.5 text-[9.5px] font-mono uppercase font-bold text-hades-red">
-                                    <Lock className="w-3 h-3 text-hades-red shrink-0" />
-                                    <span>{status.reason}</span>
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Animal Familiars Group */}
-                  {loadoutSearchResults.familiars && loadoutSearchResults.familiars.length > 0 && (
-                    <div className="space-y-2">
-                      <button
-                        onClick={() => setFamiliarsExpanded(!familiarsExpanded)}
-                        className="w-full flex items-center justify-between py-1.5 font-display uppercase tracking-widest text-hades-accent/70 hover:text-hades-accent font-bold border-b border-hades-border-light text-left text-[10px] select-none transition-colors cursor-pointer"
-                      >
-                        <div className="flex items-center gap-1.5">
-                          {familiarsExpanded ? (
-                            <ChevronDown className="w-3.5 h-3.5 text-hades-accent" />
-                          ) : (
-                            <ChevronRight className="w-3.5 h-3.5 text-hades-accent" />
-                          )}
-                          <img 
-                            src="/assets/ui/Icon-Familiars.webp" 
-                            alt="Animal Familiars" 
-                            className="w-4 h-4 object-contain"
-                            referrerPolicy="no-referrer"
-                          />
-                          <span>ANIMAL FAMILIARS ({loadoutSearchResults.familiars.length})</span>
-                        </div>
-                      </button>
-
-                      {familiarsExpanded && (
-                        <div className="space-y-3">
-                          {loadoutSearchResults.familiars.map(familiar => {
-                            const isSelected = activeFamiliar === familiar.id;
-                            return (
-                              <div
-                                key={familiar.id}
-                                onClick={() => {
-                                  if (setActiveFamiliar) {
-                                    if (isSelected) {
-                                      setActiveFamiliar('none');
-                                    } else {
-                                      setActiveFamiliar(familiar.id);
-                                    }
-                                  }
-                                }}
-                                className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer flex flex-col relative group overflow-hidden ${
-                                  isSelected
-                                    ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
-                                    : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
-                                }`}
-                              >
-                                <div className="flex items-start gap-4">
-                                  {/* Icon */}
-                                  <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
-                                    <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
-                                      <img
-                                        src={familiar.icon || "/assets/ui/BoonII.webp"}
-                                        alt={familiar.name}
-                                        className="w-full h-full object-cover"
-                                        referrerPolicy="no-referrer"
-                                        onError={(e) => {
-                                          (e.target as HTMLImageElement).src = "/assets/ui/BoonII.webp";
-                                        }}
-                                      />
-                                      <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/35 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                                    </div>
-                                  </div>
-
-                                  {/* Content */}
-                                  <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
-                                    <div className="flex items-center justify-between gap-2">
-                                      <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
-                                        {familiar.name}
-                                      </h4>
-                                      <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
-                                        FAMILIAR
-                                      </span>
-                                    </div>
-
-                                    <div className="flex flex-wrap items-center gap-x-2.5">
-                                      <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
-                                        ANIMAL COMPANION
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-
-
-
-                                <div className="mt-2.5 pt-2 border-t border-white/5 space-y-1.5">
-                                  {familiar.skills.map(skill => (
-                                    <div key={skill.id} className="flex items-start gap-2 text-[10px] text-gray-400 leading-normal">
-                                      <div className="w-4 h-4 rounded-full overflow-hidden border border-white/10 shrink-0 bg-hades-bg-dark">
-                                        <img src={skill.icon} alt={skill.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <span className="text-hades-accent/90 font-bold uppercase tracking-wider text-[9px] block leading-tight">
-                                          {skill.name}
-                                        </span>
-                                        <span className="text-gray-400 text-[10px] leading-relaxed">
-                                          {skill.description}
-                                        </span>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {loadoutSearchResults.aspects.length === 0 && 
-                   loadoutSearchResults.hammers.length === 0 && 
-                   (!loadoutSearchResults.familiars || loadoutSearchResults.familiars.length === 0) && (
-                    <div className="text-center text-gray-400 font-display text-xs uppercase tracking-tight py-12">
-                      No matching weapons, upgrades, or companions found
-                    </div>
-                  )}
-                </div>
-              )}
+                {filteredBoons.length === 0 && (
+                  <div className={`text-center text-gray-400 font-display text-xs uppercase tracking-tight py-12`}>
+                    No matches found
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

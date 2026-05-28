@@ -47,6 +47,7 @@ import { MainFooter } from './components/MainFooter';
 import { BoonLibrary } from './components/BoonLibrary';
 import { ArcanaSidebar } from './components/ArcanaSidebar';
 import { LoadoutTab } from './components/LoadoutTab';
+import { LoadoutLibrary } from './components/LoadoutLibrary';
 import { ZERO_COST_CARDS, ARCANA_COSTS, resolveAllActiveArcana } from './utils/arcanaUtils';
 
 
@@ -968,52 +969,67 @@ export default function App() {
 
         {/* Main Content */}
         <main className="flex-1 flex overflow-hidden relative">
-          <BoonLibrary
-            isPanelCollapsed={isPanelCollapsed}
-            setIsPanelCollapsed={setIsPanelCollapsed}
-            isButtonHovered={isButtonHovered}
-            setIsButtonHovered={setIsButtonHovered}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            hideAssigned={hideAssigned}
-            setHideAssigned={setHideAssigned}
-            hideAssignedSlots={hideAssignedSlots}
-            setHideAssignedSlots={setHideAssignedSlots}
-            limitToGodPool={limitToGodPool}
-            setLimitToGodPool={setLimitToGodPool}
-            enforceSupportBoonLimit={enforceSupportBoonLimit}
-            setEnforceSupportBoonLimit={setEnforceSupportBoonLimit}
-            activeStandardOlympians={activeStandardOlympians}
-            filteredBoons={filteredBoons}
-            activeSlot={activeSlot}
-            selectBoon={selectBoon}
-            isScrolled={isScrolled}
-            handleSidebarScroll={handleSidebarScroll}
-            searchInputRef={searchInputRef}
-            selectedBoonIds={selectedBoonIds}
-            elementCounts={elementCounts}
-            pinnedBoonIds={pinnedBoonIds}
-            togglePin={togglePin}
-            reorderPinnedBoons={reorderPinnedBoons}
-            clearAllPins={clearAllPins}
-            activeArcana={activeArcana}
-            activeKeepsake={activeKeepsake}
-            activeFamiliar={activeFamiliar}
-            isHeartBondActive={isHeartBondActive}
-            toggleArcana={toggleArcana}
-            setActiveKeepsake={setActiveKeepsake}
-            setActiveFamiliar={setActiveFamiliar}
-            setIsHeartBondActive={setIsHeartBondActive}
-            additionalBoons={additionalBoons}
-            removeAdditionalBoon={removeAdditionalBoon}
-            activeTab={activeTab}
-            activeWeapon={activeWeapon}
-            setActiveWeapon={setActiveWeapon}
-            activeAspect={activeAspect}
-            setActiveAspect={setActiveAspect}
-            selectedHammers={selectedHammers}
-            setSelectedHammers={setSelectedHammers}
-          />
+          {activeTab === 'boons' ? (
+            <BoonLibrary
+              isPanelCollapsed={isPanelCollapsed}
+              setIsPanelCollapsed={setIsPanelCollapsed}
+              isButtonHovered={isButtonHovered}
+              setIsButtonHovered={setIsButtonHovered}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              hideAssigned={hideAssigned}
+              setHideAssigned={setHideAssigned}
+              hideAssignedSlots={hideAssignedSlots}
+              setHideAssignedSlots={setHideAssignedSlots}
+              limitToGodPool={limitToGodPool}
+              setLimitToGodPool={setLimitToGodPool}
+              enforceSupportBoonLimit={enforceSupportBoonLimit}
+              setEnforceSupportBoonLimit={setEnforceSupportBoonLimit}
+              activeStandardOlympians={activeStandardOlympians}
+              filteredBoons={filteredBoons}
+              activeSlot={activeSlot}
+              selectBoon={selectBoon}
+              isScrolled={isScrolled}
+              handleSidebarScroll={handleSidebarScroll}
+              searchInputRef={searchInputRef}
+              selectedBoonIds={selectedBoonIds}
+              elementCounts={elementCounts}
+              pinnedBoonIds={pinnedBoonIds}
+              togglePin={togglePin}
+              reorderPinnedBoons={reorderPinnedBoons}
+              clearAllPins={clearAllPins}
+              activeArcana={activeArcana}
+              activeKeepsake={activeKeepsake}
+              activeFamiliar={activeFamiliar}
+              isHeartBondActive={isHeartBondActive}
+              toggleArcana={toggleArcana}
+              setActiveKeepsake={setActiveKeepsake}
+              setActiveFamiliar={setActiveFamiliar}
+              setIsHeartBondActive={setIsHeartBondActive}
+              additionalBoons={additionalBoons}
+              removeAdditionalBoon={removeAdditionalBoon}
+            />
+          ) : activeTab === 'loadout' ? (
+            <LoadoutLibrary
+              isPanelCollapsed={isPanelCollapsed}
+              setIsPanelCollapsed={setIsPanelCollapsed}
+              isButtonHovered={isButtonHovered}
+              setIsButtonHovered={setIsButtonHovered}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              activeWeapon={activeWeapon}
+              setActiveWeapon={setActiveWeapon}
+              activeAspect={activeAspect}
+              setActiveAspect={setActiveAspect}
+              selectedHammers={selectedHammers}
+              setSelectedHammers={setSelectedHammers}
+              activeFamiliar={activeFamiliar}
+              setActiveFamiliar={setActiveFamiliar}
+              isScrolled={isScrolled}
+              handleSidebarScroll={handleSidebarScroll}
+              searchInputRef={searchInputRef}
+            />
+          ) : null}
 
           {/* Right: Build View */}
           <section className="flex-1 overflow-auto p-6 md:px-8 py-6 custom-scrollbar relative">
