@@ -233,7 +233,7 @@ export function LoadoutLibrary({
         {/* Search Header Container (Frozen) */}
         <div 
           ref={filterHeaderRef}
-          className={`pt-5 px-5 pb-3 border-b border-hades-border-light flex flex-col bg-hades-panel z-20 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}
+          className={`pt-5 px-5 pb-3 border-b border-hades-border-light flex flex-col bg-hades-panel z-30 relative transition-[shadow,background-color] duration-200 ${isScrolled ? 'shadow-[0_4px_30px_rgba(0,0,0,0.4)]' : ''}`}
         >
           <div className="flex flex-col">
             <div className="relative flex items-center">
@@ -336,17 +336,18 @@ export function LoadoutLibrary({
           </div>
         </div>
 
-        {/* Scrollable container for the categories directly under the search header */}
+        {/* Content container for categories under the search header */}
         <div 
           ref={libraryListContainerRef}
-          onScroll={handleSidebarScroll}
-          className="flex-1 overflow-y-auto custom-scrollbar bg-hades-bg-dark/15"
+          className="flex-1 min-h-0 flex flex-col overflow-hidden bg-hades-bg-dark/20"
         >
-          <div className="flex flex-col transform-gpu">
+          <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
             {/* 1. Weapon Aspects Group */}
             {loadoutSearchResults.aspects.length > 0 && (
-              <div className="flex flex-col">
-                <div className="border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative sticky top-0 z-10">
+              <div className="flex flex-col min-h-0 flex-shrink-0 data-[expanded=true]:flex-1" data-expanded={aspectsExpanded}>
+                <div 
+                  className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative"
+                >
                   <div className="flex items-center justify-between pl-5 pr-5 select-none">
                     <button
                       onClick={() => setAspectsExpanded(!aspectsExpanded)}
@@ -370,89 +371,103 @@ export function LoadoutLibrary({
                   </div>
                 </div>
 
-                <div className={`transition-all duration-200 px-5 ${aspectsExpanded ? 'pt-3 pb-5' : 'py-0 h-0 overflow-hidden'}`}>
-                  {aspectsExpanded && (
-                    <div className="space-y-3">
-                      {loadoutSearchResults.aspects.map(aspect => {
-                        const isSelected = activeAspect === aspect.id;
-                        return (
-                          <div
-                            key={aspect.id}
-                            onClick={() => {
-                              setActiveWeapon(aspect.weapon);
-                              setActiveAspect(aspect.id);
-                            }}
-                            className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer flex flex-col relative group overflow-hidden ${
-                              isSelected
-                                ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
-                                : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
-                            }`}
-                          >
-                            <div className="flex items-start gap-4">
-                              {/* Icon */}
-                              <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
-                                <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
-                                  <img
-                                    src={aspect.icon || WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
-                                    alt={aspect.name}
-                                    className="w-full h-full object-contain"
-                                    referrerPolicy="no-referrer"
-                                    onError={(e) => {
-                                      (e.target as HTMLImageElement).src = WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp";
-                                    }}
-                                  />
-                                  <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-white/10 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                                </div>
-                              </div>
-
-                              {/* Content */}
-                              <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
-                                <div className="flex items-center justify-between gap-2">
-                                  <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
-                                    {aspect.name}
-                                  </h4>
-                                  <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
-                                    ASPECT
-                                  </span>
-                                </div>
-
-                                <div className="flex flex-wrap items-center gap-x-2.5">
-                                  <div className="flex items-center gap-1.5">
-                                    <img 
-                                      src={WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
-                                      alt={aspect.weapon}
-                                      className="w-3.5 h-3.5 object-contain shrink-0"
+                <div 
+                  style={{ 
+                    gridTemplateRows: aspectsExpanded ? '1fr' : '0fr',
+                    display: 'grid'
+                  }}
+                  className="transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-0 pointer-events-none data-[expanded=true]:opacity-100 data-[expanded=true]:pointer-events-auto data-[expanded=true]:flex-1 data-[expanded=false]:flex-none min-h-0"
+                  data-expanded={aspectsExpanded}
+                >
+                  <div className="overflow-hidden flex flex-col h-full min-h-0">
+                    <div 
+                      onScroll={handleSidebarScroll}
+                      className="flex-1 overflow-y-auto custom-scrollbar px-5 pt-3 pb-5"
+                    >
+                      <div className="space-y-3">
+                        {loadoutSearchResults.aspects.map(aspect => {
+                          const isSelected = activeAspect === aspect.id;
+                          return (
+                            <div
+                              key={aspect.id}
+                              onClick={() => {
+                                setActiveWeapon(aspect.weapon);
+                                setActiveAspect(aspect.id);
+                              }}
+                              className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer flex flex-col relative group overflow-hidden ${
+                                isSelected
+                                  ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
+                                  : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
+                              }`}
+                            >
+                              <div className="flex items-start gap-4">
+                                {/* Icon */}
+                                <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
+                                  <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
+                                    <img
+                                      src={aspect.icon || WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
+                                      alt={aspect.name}
+                                      className="w-full h-full object-contain"
                                       referrerPolicy="no-referrer"
                                       onError={(e) => {
-                                        (e.target as HTMLImageElement).src = "/assets/ui/BoonII.webp";
+                                        (e.target as HTMLImageElement).src = WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp";
                                       }}
                                     />
-                                    <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
-                                      {WEAPON_NAMES[aspect.weapon as any] || aspect.weapon}
-                                    </span>
+                                    <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-white/10 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
                                   </div>
                                 </div>
 
-                                <div className="h-3.5" />
-                              </div>
-                            </div>
+                                {/* Content */}
+                                <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
+                                      {aspect.name}
+                                    </h4>
+                                    <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
+                                      ASPECT
+                                    </span>
+                                  </div>
 
-                            <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
-                              <FormattedEffectText text={aspect.mechanics ? `${aspect.description}\n\n${aspect.mechanics}` : aspect.description} />
-                            </p>
-                          </div>
-                        );
-                      })}
+                                  <div className="flex flex-wrap items-center gap-x-2.5">
+                                    <div className="flex items-center gap-1.5">
+                                      <img 
+                                        src={WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
+                                        alt={aspect.weapon}
+                                        className="w-3.5 h-3.5 object-contain shrink-0"
+                                        referrerPolicy="no-referrer"
+                                        onError={(e) => {
+                                          (e.target as HTMLImageElement).src = "/assets/ui/BoonII.webp";
+                                        }}
+                                      />
+                                      <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                                        {WEAPON_NAMES[aspect.weapon as any] || aspect.weapon}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div className="h-3.5" />
+                                </div>
+                              </div>
+
+                              <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
+                                <FormattedEffectText text={aspect.mechanics ? `${aspect.description}\n\n${aspect.mechanics}` : aspect.description} />
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
             )}
 
             {/* 2. Daedalus Hammers Group */}
             {loadoutSearchResults.hammers.length > 0 && (
-              <div className="flex flex-col border-t border-hades-border-light">
-                <div className="border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative sticky top-0 z-10">
+              <div className="flex flex-col min-h-0 flex-shrink-0 data-[expanded=true]:flex-1" data-expanded={hammersExpanded}>
+                <div 
+                  className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative"
+                >
                   <div className="flex items-center justify-between pl-5 pr-5 select-none">
                     <button
                       onClick={() => setHammersExpanded(!hammersExpanded)}
@@ -476,9 +491,20 @@ export function LoadoutLibrary({
                   </div>
                 </div>
 
-                <div className={`transition-all duration-200 px-5 ${hammersExpanded ? 'pt-3 pb-5' : 'py-0 h-0 overflow-hidden'}`}>
-                  {hammersExpanded && (
-                    <div className="space-y-3">
+                <div 
+                  style={{ 
+                    gridTemplateRows: hammersExpanded ? '1fr' : '0fr',
+                    display: 'grid'
+                  }}
+                  className="transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-0 pointer-events-none data-[expanded=true]:opacity-100 data-[expanded=true]:pointer-events-auto data-[expanded=true]:flex-1 data-[expanded=false]:flex-none min-h-0"
+                  data-expanded={hammersExpanded}
+                >
+                  <div className="overflow-hidden flex flex-col h-full min-h-0">
+                    <div 
+                      onScroll={handleSidebarScroll}
+                      className="flex-1 overflow-y-auto custom-scrollbar px-5 pt-3 pb-5"
+                    >
+                      <div className="space-y-3">
                       {loadoutSearchResults.hammers.map(hammer => {
                         const isSelected = selectedHammers.includes(hammer.id);
                         const status = getHammerStatus(hammer);
@@ -611,15 +637,18 @@ export function LoadoutLibrary({
                         );
                       })}
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
             {/* 3. Animal Familiars Group */}
             {loadoutSearchResults.familiars.length > 0 && (
-              <div className="flex flex-col border-t border-hades-border-light">
-                <div className="border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative sticky top-0 z-10">
+              <div className="flex flex-col min-h-0 flex-shrink-0 data-[expanded=true]:flex-1" data-expanded={familiarsExpanded}>
+                <div 
+                  className="flex-shrink-0 border-b border-hades-border-light py-3 bg-hades-panel flex flex-col relative"
+                >
                   <div className="flex items-center justify-between pl-5 pr-5 select-none">
                     <button
                       onClick={() => setFamiliarsExpanded(!familiarsExpanded)}
@@ -643,9 +672,20 @@ export function LoadoutLibrary({
                   </div>
                 </div>
 
-                <div className={`transition-all duration-200 px-5 ${familiarsExpanded ? 'pt-3 pb-5' : 'py-0 h-0 overflow-hidden'}`}>
-                  {familiarsExpanded && (
-                    <div className="space-y-3">
+                <div 
+                  style={{ 
+                    gridTemplateRows: familiarsExpanded ? '1fr' : '0fr',
+                    display: 'grid'
+                  }}
+                  className="transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-0 pointer-events-none data-[expanded=true]:opacity-100 data-[expanded=true]:pointer-events-auto data-[expanded=true]:flex-1 data-[expanded=false]:flex-none min-h-0"
+                  data-expanded={familiarsExpanded}
+                >
+                  <div className="overflow-hidden flex flex-col h-full min-h-0">
+                    <div 
+                      onScroll={handleSidebarScroll}
+                      className="flex-1 overflow-y-auto custom-scrollbar px-5 pt-3 pb-5"
+                    >
+                      <div className="space-y-3">
                       {loadoutSearchResults.familiars.map(familiar => {
                         const isSelected = activeFamiliar === familiar.id;
                         return (
@@ -713,10 +753,11 @@ export function LoadoutLibrary({
                         );
                       })}
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
             {loadoutSearchResults.aspects.length === 0 && 
              loadoutSearchResults.hammers.length === 0 && 
