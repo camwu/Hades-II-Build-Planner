@@ -354,7 +354,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
                   );
                 } else if (lower.startsWith('fire')) {
                   // We require any Fire-related keyword/element to start with capital 'F' to represent the element
-                  if (!p.startsWith('F')) {
+                  if (!p.startsWith('F') || lower === 'fires') {
                     return p;
                   }
                   // If it's used as a verb (e.g., "fire 2 times", "fires 2 times", "fire twice", "fire gales")
@@ -460,7 +460,18 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
                 if (isToulaHeartDefianceRange && rarityIndex === 1) {
                   rarityIndex = 3; // Heroic instead of Rare
                 }
-                const color = rarityColors[rarityIndex];
+                let color = rarityColors[rarityIndex];
+                if (!isToulaHeartDefianceRange) {
+                  const totalValues = (rangeParts.length + 1) / 2;
+                  const valIndex = Math.floor(j / 2);
+                  if (totalValues >= 5) {
+                    if (valIndex === totalValues - 1) {
+                      color = '#C5F24D'; // Duo
+                    } else if (valIndex === totalValues - 2) {
+                      color = '#FD8D00'; // Legendary gold
+                    }
+                  }
+                }
                 
                 const subParts = subPart.split(kwRegex);
                 
@@ -476,7 +487,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
                           if (kw === 'Rare' && sTrimmed === 'rare') {
                             return false;
                           }
-                          if (kw === 'Fire' && !/^[F]/.test(sTrimmed)) {
+                          if (kw === 'Fire' && (!/^[F]/.test(sTrimmed) || sTrimmed.toLowerCase() === 'fires')) {
                             return false;
                           }
                           const sLower = sp.toLowerCase().trim();
@@ -525,9 +536,9 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
             part.toLowerCase().includes('over') ||
             part.toLowerCase().includes('after')
           );
-          const isFireVerb = !skipIcons && (part.toLowerCase() === 'fire' || part.toLowerCase() === 'fires') && parts[i + 1] && (
+          const isFireVerb = !skipIcons && (part.toLowerCase() === 'fires' || (part.toLowerCase() === 'fire' && parts[i + 1] && (
             /^\s+(2\s+times|twice|gales)\b/i.test(parts[i + 1])
-          );
+          )));
           const isKeyword = !skipIcons && !isFireVerb && (
             part === 'Ω' || 
             /^[Ωω]\s*Moves?$/i.test(part) ||
@@ -536,7 +547,7 @@ export function FormattedEffectText({ text, className }: FormattedEffectTextProp
               if (k === 'Rare' && pTrimmed === 'rare') {
                 return false;
               }
-              if (k === 'Fire' && !/^[F]/.test(pTrimmed)) {
+              if (k === 'Fire' && (!/^[F]/.test(pTrimmed) || pTrimmed.toLowerCase() === 'fires')) {
                 return false;
               }
               const pLower = part.toLowerCase().trim();

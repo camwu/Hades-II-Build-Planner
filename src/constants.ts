@@ -63,7 +63,8 @@ export const BOON_KEYWORDS = [
   'Location', 'Encounter', 'Guardians', 'Guardian', 'Guardian Encounter', 'Guardian Encounters', 'Location Reward', 'Location Rewards',
   'Grasp', 'Death Defiance', 'Change of Fate', 'Arcana Card', 'Arcana Cards',
   'Lost Shades', 'Fishing Points', 'Outcroppings', 'Digging Spots', 'Flora',
-  'Psychic Leash', 'Lone Shades', 'Parry', 'Riposte', 'Blood Triad', 'Daybreaker ', 'Mortality', 'Berserk', 'Shell', 'Shells', 'Valkyrie', 'Sky Fall', 'Shine', 'Nightspawn', 'Destructive', 
+  'Psychic Leash', 'Lone Shades', 'Parry', 'Riposte', 'Blood Triad', 'Daybreaker', 'Mortality', 'Berserk', 'Shell', 'Shells', 'Valkyrie', 'Sky Fall', 'Shine', 'Nightspawn', 'Destructive', 
+  'Ankh Scepter', 'Crow Cutters', 'Devil Sparks', 'Rock Lion Mace', 'Frost Mane', 'Purifying Grace', 'Sprouted',
   // Elements
   'Element', 'Elements', 'Essence', 'Essences',
   'Air', 'Earth', 'Fire', 'Water', 'Aether',

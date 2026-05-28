@@ -59,27 +59,35 @@ export function LoadoutLibrary({
 
   // Search filtering logic
   const loadoutSearchResults = React.useMemo(() => {
-    const query = searchTerm.trim().toLowerCase();
+    const normalizeText = (str: string): string => {
+      return str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    };
+
+    const query = searchTerm.trim();
+    const NormalizedQuery = normalizeText(query);
 
     // 1. Get Matching Aspects
     let matchedAspects = WEAPON_ASPECTS;
-    if (query) {
+    if (NormalizedQuery) {
       matchedAspects = WEAPON_ASPECTS.filter(aspect => 
-        aspect.name.toLowerCase().includes(query) ||
-        aspect.weapon.toLowerCase().includes(query) ||
-        aspect.description.toLowerCase().includes(query) ||
-        (aspect.mechanics && aspect.mechanics.toLowerCase().includes(query))
+        normalizeText(aspect.name).includes(NormalizedQuery) ||
+        normalizeText(aspect.weapon).includes(NormalizedQuery) ||
+        normalizeText(aspect.description).includes(NormalizedQuery) ||
+        (aspect.mechanics && normalizeText(aspect.mechanics).includes(NormalizedQuery))
       );
     }
 
     // 2. Get Matching Hammers
     const allHammers = Object.values(WEAPON_HAMMERS).flat();
     let matchedHammers = allHammers;
-    if (query) {
+    if (NormalizedQuery) {
       matchedHammers = allHammers.filter(hammer => 
-        hammer.name.toLowerCase().includes(query) ||
-        hammer.weapon.toLowerCase().includes(query) ||
-        hammer.description.toLowerCase().includes(query)
+        normalizeText(hammer.name).includes(NormalizedQuery) ||
+        normalizeText(hammer.weapon).includes(NormalizedQuery) ||
+        normalizeText(hammer.description).includes(NormalizedQuery)
       );
     } else if (activeWeapon) {
       // If no query, but there is an active weapon, show all hammers matching active weapon
@@ -90,12 +98,12 @@ export function LoadoutLibrary({
 
     // 3. Get Matching Familiars
     let matchedFamiliars = ANIMAL_FAMILIARS;
-    if (query) {
+    if (NormalizedQuery) {
       matchedFamiliars = ANIMAL_FAMILIARS.filter(familiar => 
-        familiar.name.toLowerCase().includes(query) ||
+        normalizeText(familiar.name).includes(NormalizedQuery) ||
         familiar.skills.some(skill => 
-          skill.name.toLowerCase().includes(query) ||
-          skill.description.toLowerCase().includes(query)
+          normalizeText(skill.name).includes(NormalizedQuery) ||
+          normalizeText(skill.description).includes(NormalizedQuery)
         )
       );
     }
@@ -368,10 +376,23 @@ export function LoadoutLibrary({
                                 </div>
 
                                 <div className="flex flex-wrap items-center gap-x-2.5">
-                                  <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
-                                    {WEAPON_NAMES[aspect.weapon] || aspect.weapon}
-                                  </span>
+                                  <div className="flex items-center gap-1.5">
+                                    <img 
+                                      src={WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
+                                      alt={aspect.weapon}
+                                      className="w-3.5 h-3.5 object-contain shrink-0"
+                                      referrerPolicy="no-referrer"
+                                      onError={(e) => {
+                                        (e.target as HTMLImageElement).src = "/assets/ui/BoonII.webp";
+                                      }}
+                                    />
+                                    <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                                      {WEAPON_NAMES[aspect.weapon as any] || aspect.weapon}
+                                    </span>
+                                  </div>
                                 </div>
+
+                                <div className="h-3.5" />
                               </div>
                             </div>
 
@@ -421,6 +442,9 @@ export function LoadoutLibrary({
                         const isSelected = selectedHammers.includes(hammer.id);
                         const status = getHammerStatus(hammer);
                         const isEligible = status.isEligible;
+                        const aspectRestriction = hammer.onlyForAspect
+                          ? WEAPON_ASPECTS.find(a => a.id === hammer.onlyForAspect)
+                          : null;
 
                         return (
                           <div
@@ -435,13 +459,13 @@ export function LoadoutLibrary({
                             }}
                             className={`p-3 rounded-xl border text-left transition-all duration-150 flex flex-col relative group overflow-hidden ${
                               !isEligible
-                                ? 'opacity-40 bg-hades-bg-dark/60 border-red-950/45 cursor-not-allowed select-none'
+                                ? 'bg-hades-bg-dark/60 border-red-950/45 cursor-not-allowed select-none'
                                 : isSelected
                                   ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30 cursor-pointer'
                                   : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95 cursor-pointer'
                             }`}
                           >
-                            <div className="flex items-start gap-4">
+                            <div className={`flex items-start gap-4 transition-opacity duration-150 ${!isEligible ? 'opacity-50' : ''}`}>
                               {/* Icon */}
                               <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
                                 <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
@@ -464,27 +488,82 @@ export function LoadoutLibrary({
                                   <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
                                     {hammer.name}
                                   </h4>
-                                  <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
+                                  <span className={`text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${
+                                    !isEligible
+                                      ? 'bg-red-950/25 border-red-900/20 text-red-100/50'
+                                      : 'bg-hades-accent/10 border-hades-accent/20 text-hades-accent/80'
+                                  }`}>
                                     HAMMER
                                   </span>
                                 </div>
 
                                 <div className="flex flex-wrap items-center gap-x-2.5">
-                                  <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
-                                    {WEAPON_NAMES[hammer.weapon] || hammer.weapon}
-                                  </span>
+                                  <div className="flex items-center gap-1.5">
+                                    <img 
+                                      src={WEAPON_ICONS[hammer.weapon] || "/assets/ui/Daedalus_Hammer.webp"}
+                                      alt={hammer.weapon}
+                                      className="w-3.5 h-3.5 object-contain shrink-0"
+                                      referrerPolicy="no-referrer"
+                                      onError={(e) => {
+                                        (e.target as HTMLImageElement).src = "/assets/ui/Daedalus_Hammer.webp";
+                                      }}
+                                    />
+                                    <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                                      {WEAPON_NAMES[hammer.weapon as any] || hammer.weapon}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-1.5">
+                                  {aspectRestriction ? (
+                                    <>
+                                      <img 
+                                        src={aspectRestriction.icon || WEAPON_ICONS[hammer.weapon] || "/assets/ui/BoonII.webp"}
+                                        alt={aspectRestriction.name}
+                                        className="w-3.5 h-3.5 object-contain shrink-0 rounded"
+                                        referrerPolicy="no-referrer"
+                                        onError={(e) => {
+                                          (e.target as HTMLImageElement).src = WEAPON_ICONS[hammer.weapon] || "/assets/ui/BoonII.webp";
+                                        }}
+                                      />
+                                      <span className="text-[10px] font-display uppercase tracking-wider leading-none text-hades-accent font-semibold truncate max-w-[180px]">
+                                        Requires: {aspectRestriction.name}
+                                      </span>
+                                    </>
+                                  ) : (
+                                    <div className="opacity-40 flex items-center gap-1.5">
+                                      <span className="text-[10px] font-display text-gray-500 uppercase tracking-wider leading-none">
+                                        Any Aspect
+                                      </span>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
 
-                            <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
+                            <p className={`text-[12px] text-gray-400 leading-normal font-medium mt-2 transition-opacity duration-150 ${!isEligible ? 'opacity-50' : ''}`}>
                               <FormattedEffectText text={hammer.description} />
                             </p>
 
                             {!isEligible && (
-                              <div className="mt-2.5 pt-2 border-t border-red-950/45 flex items-center gap-1.5 text-[9.5px] font-mono uppercase font-bold text-hades-red">
-                                <Lock className="w-3 h-3 text-hades-red shrink-0" />
-                                <span>{status.reason}</span>
+                              <div className="mt-2.5 pt-2 border-t border-red-950/45 text-xs font-sans text-gray-400">
+                                <div className="flex flex-col gap-2 p-1">
+                                  <div className="flex items-start gap-2">
+                                    <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
+                                    <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Requirements:</span>
+                                  </div>
+                                  <div className="text-gray-400 text-xs mb-1 font-medium leading-relaxed normal-case pl-5 -mt-1">
+                                    Requires the following condition:
+                                  </div>
+                                  <div className="flex flex-col gap-1.5 select-none pl-5">
+                                    <div className="flex items-start gap-2.5 px-2.5 py-1.5 rounded-lg border transition-all duration-150 bg-zinc-950/45 border-zinc-900/60 text-gray-500/95">
+                                      <X className="w-3.5 h-3.5 text-red-500/50 flex-shrink-0 mt-[2px]" />
+                                      <span className="text-[11px] font-semibold leading-[18px] text-gray-400">
+                                        {status.reason}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             )}
                           </div>
