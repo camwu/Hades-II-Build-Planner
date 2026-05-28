@@ -11,6 +11,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
     name: 'Frinos',
     type: 'toad',
     icon: '/assets/familiars/Frinos_Bond.webp',
+    summary: 'Blocks enemy projectiles',
     skills: [
       {
         id: 'frinos_life',
@@ -40,6 +41,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
     name: 'Toula',
     type: 'cat',
     icon: '/assets/familiars/Toula_Bond.webp',
+    summary: 'Grants an additional Death Defiance. Strikes deal 99 damage.',
     skills: [
       {
         id: 'toula_heart',
@@ -69,6 +71,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
     name: 'Raki',
     type: 'raven',
     icon: '/assets/familiars/Raki_Bond.webp',
+    summary: 'Grants additional Critical chance and occasionally leaves foes Marked (does not contribute toward Origination)',
     skills: [
       {
         id: 'raki_vision',
@@ -98,6 +101,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
     name: 'Hecuba',
     type: 'hound',
     icon: '/assets/familiars/Hecuba_Bond.webp',
+    summary: 'Digs up Healing or Magick in a pinch (12-16 sec. cooldown)',
     skills: [
       {
         id: 'hecuba_spirit',
@@ -127,6 +131,7 @@ export const ANIMAL_FAMILIARS: AnimalFamiliar[] = [
     name: 'Gale',
     type: 'polecat',
     icon: '/assets/familiars/Gale_Bond.webp',
+    summary: 'Blocks hits up to 3 times per Region (30 sec. cooldown)',
     skills: [
       {
         id: 'gale_veil',

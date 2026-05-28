@@ -402,7 +402,7 @@ export function LoadoutTab({
                       </div>
                       <span className="text-[8.5px] text-white/30 uppercase tracking-widest font-mono mb-1.5">Animal Familiar</span>
                       <p className="text-[11px] text-gray-300 leading-normal font-medium whitespace-normal">
-                        Your animal familiar is active.
+                        {activeFamiliarObj.summary ? `${activeFamiliarObj.summary}.` : "Your animal familiar is active."}
                       </p>
                     </div>
                   </motion.div>

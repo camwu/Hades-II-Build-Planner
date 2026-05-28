@@ -722,13 +722,20 @@ export function LoadoutLibrary({
                               </div>
 
                               {/* Content */}
-                              <div className="flex-1 min-w-0 h-14 flex items-center justify-between gap-2">
-                                <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
-                                  {familiar.name}, the {familiar.type.charAt(0).toUpperCase() + familiar.type.slice(1)}
-                                </h4>
-                                <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
-                                  FAMILIAR
-                                </span>
+                              <div className="flex-1 min-w-0 flex flex-col justify-center py-0.5 gap-1.5">
+                                <div className="flex items-center justify-between gap-2">
+                                  <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
+                                    {familiar.name}, the {familiar.type.charAt(0).toUpperCase() + familiar.type.slice(1)}
+                                  </h4>
+                                  <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
+                                    FAMILIAR
+                                  </span>
+                                </div>
+                                {familiar.summary && (
+                                  <p className="text-[11.5px] text-white/50 font-medium leading-relaxed font-sans">
+                                    {familiar.summary}
+                                  </p>
+                                )}
                               </div>
                             </div>
 

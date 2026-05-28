@@ -110,6 +110,7 @@ export interface AnimalFamiliar {
   name: string;
   type: string;
   icon: string;
+  summary?: string;
   skills: AnimalFamiliarSkill[];
 }
 
