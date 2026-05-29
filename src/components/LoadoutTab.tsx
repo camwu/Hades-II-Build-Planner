@@ -1,11 +1,339 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plus, X, Lock, Sparkles, ChevronRight, RefreshCw, ChevronUp } from 'lucide-react';
+import { useDroppable } from '@dnd-kit/core';
 import { WEAPON_ASPECTS, WEAPON_NAMES, WEAPON_ICONS, WEAPON_HAMMERS } from '../data/weaponsData';
 import { ANIMAL_FAMILIARS } from '../data/animalFamiliars';
 import { WeaponAspect, WeaponHammer, AnimalFamiliar, AnimalFamiliarSkill } from '../types';
 import { FormattedEffectText } from './FormattedEffectText';
-import { BOON_ICON_ROUNDING, BOON_BORDER_WIDTH } from '../constants';
+import { 
+  BOON_ICON_ROUNDING, 
+  BOON_BORDER_WIDTH,
+  SLOT_COLLAPSED_WIDTH,
+  SLOT_EXPANDED_WIDTH 
+} from '../constants';
+
+interface ActiveAspectCardProps {
+  aspect: WeaponAspect;
+  setActiveWeapon: (weapon: string | null) => void;
+  setActiveAspect: (aspectId: string | null) => void;
+  setSelectedHammers: React.Dispatch<React.SetStateAction<string[]>>;
+  isActive: boolean;
+}
+
+export function ActiveAspectCard({
+  aspect,
+  setActiveWeapon,
+  setActiveAspect,
+  setSelectedHammers,
+  isActive
+}: ActiveAspectCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div className="relative" style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}>
+      <div 
+        className="group absolute top-0 left-0 transition-opacity duration-200"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{ zIndex: isHovered ? 50 : 10 }}
+      >
+        <motion.div 
+          initial={false}
+          animate={{ 
+            width: isHovered ? SLOT_EXPANDED_WIDTH : SLOT_COLLAPSED_WIDTH,
+            height: isHovered ? 'auto' : SLOT_COLLAPSED_WIDTH
+          }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className={`relative flex items-start gap-4 transition-[background-color,border-radius] duration-200 ${
+            isHovered ? 'bg-hades-bg-dark/40 rounded-2xl' : 'pointer-events-auto'
+          }`}
+        >
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5 shadow-2x" 
+              />
+            )}
+          </AnimatePresence>
+
+          <div 
+            style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
+            className="relative flex-shrink-0 flex items-center justify-center p-0"
+          >
+            {/* Always mounted synchronized pulse layers */}
+            <div
+              className={`absolute inset-0 rounded-[28%] bg-emerald-950/30 ring-[3px] ring-emerald-500 shadow-[0_0_24px_rgba(16,185,129,0.8)] animate-ring-pulse z-20 pointer-events-none transition-opacity duration-200 ${
+                isActive ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden bg-hades-bg-main p-2 z-10`}>
+              <img 
+                src={aspect.icon} 
+                alt={aspect.name} 
+                className="w-full h-full object-contain relative z-10" 
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  const wIcon = WEAPON_ICONS[aspect.weapon] || '/assets/ui/Icon-Olympian.webp';
+                  e.currentTarget.src = wIcon;
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+              <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/40 ${BOON_ICON_ROUNDING} pointer-events-none z-20`} />
+            </div>
+          </div>
+
+          <div className={`flex-1 ${isHovered ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+            <div className="w-[340px] flex flex-col justify-center pr-4 py-3 min-h-[84px]">
+              <motion.div 
+                initial={false}
+                animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -10 }}
+                className="relative"
+              >
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <h4 className="text-base font-bold text-hades-accent tracking-wide leading-tight font-sc uppercase">
+                    {aspect.name}
+                  </h4>
+                  <button 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      setActiveWeapon(null);
+                      setActiveAspect(null);
+                      setSelectedHammers([]);
+                    }}
+                    className="text-hades-red/70 hover:text-hades-red bg-hades-red/5 hover:bg-hades-red/15 rounded border border-hades-red/10 hover:border-hades-red/20 transition-all flex items-center justify-center h-[17px] w-[17px] flex-shrink-0 cursor-pointer animate-fade-in"
+                    title="Clear Weapon Aspect"
+                  >
+                    <X className="w-2.5 h-2.5" />
+                  </button>
+                </div>
+                <span className="text-[9px] text-white/30 uppercase tracking-widest font-mono mb-1.5">{aspect.weapon}</span>
+                <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal">
+                  <FormattedEffectText text={aspect.description} />
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+interface ActiveHammerCardProps {
+  hammer: WeaponHammer;
+  onRemove: () => void;
+  isActive: boolean;
+}
+
+export function ActiveHammerCard({
+  hammer,
+  onRemove,
+  isActive
+}: ActiveHammerCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div className="relative" style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}>
+      <div 
+        className="group absolute top-0 left-0 transition-opacity duration-200"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{ zIndex: isHovered ? 50 : 10 }}
+      >
+        <motion.div 
+          initial={false}
+          animate={{ 
+            width: isHovered ? SLOT_EXPANDED_WIDTH : SLOT_COLLAPSED_WIDTH,
+            height: isHovered ? 'auto' : SLOT_COLLAPSED_WIDTH
+          }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className={`relative flex items-start gap-4 transition-[background-color,border-radius] duration-200 ${
+            isHovered ? 'bg-hades-bg-dark/40 rounded-2xl' : 'pointer-events-auto'
+          }`}
+        >
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5 shadow-2xl" 
+              />
+            )}
+          </AnimatePresence>
+
+          <div 
+            style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
+            className="relative flex-shrink-0 flex items-center justify-center p-0"
+          >
+            {/* Always mounted synchronized pulse layers */}
+            <div
+              className={`absolute inset-0 rounded-[28%] bg-emerald-950/30 ring-[3px] ring-emerald-500 shadow-[0_0_24px_rgba(16,185,129,0.8)] animate-ring-pulse z-20 pointer-events-none transition-opacity duration-200 ${
+                isActive ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden bg-hades-bg-main p-2 z-10`}>
+              <img 
+                src={hammer.icon} 
+                alt={hammer.name} 
+                className="w-full h-full object-contain relative z-10" 
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = '/assets/ui/Icon-Olympian.webp';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+              <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/40 ${BOON_ICON_ROUNDING} pointer-events-none z-20`} />
+            </div>
+          </div>
+
+          <div className={`flex-1 ${isHovered ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+            <div className="w-[340px] flex flex-col justify-center pr-4 py-3 min-h-[84px]">
+              <motion.div 
+                initial={false}
+                animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -10 }}
+                className="relative"
+              >
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <h4 className="text-base font-bold text-hades-accent tracking-wide leading-tight font-sc uppercase">
+                    {hammer.name}
+                  </h4>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); onRemove(); }}
+                    className="text-hades-red/70 hover:text-hades-red bg-hades-red/5 hover:bg-hades-red/15 rounded border border-hades-red/10 hover:border-hades-red/20 transition-all flex items-center justify-center h-[17px] w-[17px] flex-shrink-0 cursor-pointer animate-fade-in"
+                    title="Remove Hammer Upgrade"
+                  >
+                    <X className="w-2.5 h-2.5" />
+                  </button>
+                </div>
+                <span className="text-[9px] text-white/30 uppercase tracking-widest font-mono mb-1.5">Daedalus Hammer Upgrade</span>
+                <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal font-sans">
+                  <FormattedEffectText text={hammer.description} />
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+interface ActiveFamiliarCardProps {
+  familiar: AnimalFamiliar;
+  setActiveFamiliar: (familiarId: string) => void;
+  isActive: boolean;
+  isOver: boolean;
+}
+
+export function ActiveFamiliarCard({
+  familiar,
+  setActiveFamiliar,
+  isActive,
+  isOver
+}: ActiveFamiliarCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const showPulse = isActive || isOver;
+
+  return (
+    <div className="relative" style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}>
+      <div 
+        className="group absolute top-0 left-0 transition-opacity duration-200"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{ zIndex: isHovered ? 50 : 10 }}
+      >
+        <motion.div 
+          initial={false}
+          animate={{ 
+            width: isHovered ? SLOT_EXPANDED_WIDTH : SLOT_COLLAPSED_WIDTH,
+            height: isHovered ? 'auto' : SLOT_COLLAPSED_WIDTH
+          }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className={`relative flex items-start gap-4 transition-[background-color,border-radius] duration-200 ${
+            isHovered ? 'bg-hades-bg-dark/40 rounded-2xl' : 'pointer-events-auto'
+          }`}
+        >
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0 bg-hades-bg-dark/95 backdrop-blur-md rounded-2xl z-[-1] border border-white/5 shadow-2xl" 
+              />
+            )}
+          </AnimatePresence>
+
+          <div 
+            style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
+            className="relative flex-shrink-0 flex items-center justify-center p-0"
+          >
+            {/* Always mounted synchronized pulse layers */}
+            <div
+              className={`absolute inset-0 rounded-[28%] bg-emerald-950/30 ring-[3px] ring-emerald-500 shadow-[0_0_24px_rgba(16,185,129,0.8)] animate-ring-pulse z-20 pointer-events-none transition-opacity duration-200 ${
+                showPulse ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+            <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden bg-hades-bg-main z-10`}>
+              <div className={`absolute inset-0 ${BOON_ICON_ROUNDING} overflow-hidden`}>
+                <img 
+                  src={familiar.icon} 
+                  alt={familiar.name} 
+                  className="w-full h-full object-cover relative z-10" 
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = '/assets/ui/Icon-Olympian.webp';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+              </div>
+              <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-emerald-500/50 ${BOON_ICON_ROUNDING} pointer-events-none z-20`} />
+            </div>
+          </div>
+
+          <div className={`flex-1 ${isHovered ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+            <div className="w-[340px] flex flex-col justify-center pr-4 py-3 min-h-[84px]">
+              <motion.div 
+                initial={false}
+                animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -10 }}
+                className="relative"
+              >
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <h4 className="text-base font-bold text-hades-accent tracking-wide leading-tight font-sc uppercase">
+                    {familiar.name}
+                  </h4>
+                  <button 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      setActiveFamiliar('none');
+                    }}
+                    className="text-hades-red/70 hover:text-hades-red bg-hades-red/5 hover:bg-hades-red/15 rounded border border-hades-red/10 hover:border-hades-red/20 transition-all flex items-center justify-center h-[17px] w-[17px] flex-shrink-0 cursor-pointer animate-fade-in"
+                    title="Dismiss Familiar"
+                  >
+                    <X className="w-2.5 h-2.5" />
+                  </button>
+                </div>
+                <span className="text-[9px] text-white/30 uppercase tracking-widest font-mono mb-1.5">Animal Familiar</span>
+                <p className="text-[12px] text-gray-400 leading-normal font-medium whitespace-normal font-sans">
+                  {familiar.summary ? `${familiar.summary}.` : "Your animal familiar is active."}
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
 
 interface LoadoutTabProps {
   activeWeapon: string | null;
@@ -16,6 +344,8 @@ interface LoadoutTabProps {
   setSelectedHammers: React.Dispatch<React.SetStateAction<string[]>>;
   activeFamiliar: string;
   setActiveFamiliar: (familiarId: string) => void;
+  activeSlot: string | null;
+  toggleActiveSlot: (slotId: string) => void;
 }
 
 export function LoadoutTab({
@@ -27,7 +357,20 @@ export function LoadoutTab({
   setSelectedHammers,
   activeFamiliar,
   setActiveFamiliar,
+  activeSlot,
+  toggleActiveSlot,
 }: LoadoutTabProps) {
+  const { setNodeRef: setAspectDropRef, isOver: isAspectOver } = useDroppable({
+    id: 'loadout-slot-Aspect',
+  });
+
+  const { setNodeRef: setHammerDropRef, isOver: isHammerOver } = useDroppable({
+    id: 'loadout-slot-Hammer',
+  });
+
+  const { setNodeRef: setFamiliarDropRef, isOver: isFamiliarOver } = useDroppable({
+    id: 'loadout-slot-Familiar',
+  });
   
   // Find active aspect object
   const activeAspectObj = useMemo(() => {
@@ -153,78 +496,44 @@ export function LoadoutTab({
             
             {/* Core Weapon Aspect Slot */}
             {activeAspectObj ? (
-              <div className="group relative w-[84px] h-[84px] cursor-pointer">
-                {/* Hover Container */}
-                <div className="absolute top-0 left-0 transition-opacity duration-200 z-10 group-hover:z-50">
-                  <motion.div 
-                    initial={false}
-                    animate={{ 
-                      width: '84px',
-                      height: '84px'
-                    }}
-                    whileHover={{ 
-                      width: '420px', 
-                      height: 'auto'
-                    }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="relative flex items-start gap-4 transition-[background-color,border-radius] duration-200 hover:bg-hades-bg-dark/95 hover:backdrop-blur-md rounded-2xl bg-hades-bg-dark/50 border border-hades-border-light/50 p-0 hover:p-4 overflow-hidden shadow-xl hover:border-hades-accent/80"
-                  >
-                    {/* Weapon Icon inside collapsed box */}
-                    <div className="w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center relative rounded-xl overflow-hidden p-[3px]">
-                      <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden border border-hades-accent/20 bg-hades-bg-main p-1.5`}>
-                        <img 
-                          src={activeAspectObj.icon} 
-                          alt={activeAspectObj.name} 
-                          className="w-full h-full object-contain relative z-10" 
-                          referrerPolicy="no-referrer"
-                          onError={(e) => {
-                            const wIcon = WEAPON_ICONS[activeAspectObj.weapon] || '/assets/ui/Icon-Olympian.webp';
-                            e.currentTarget.src = wIcon;
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-                      </div>
-                      {/* Inner Small Aspect Indicator inside icon */}
-                      <div className={`absolute -top-1 -right-1 w-5 h-5 rounded-full bg-hades-accent/20 flex items-center justify-center border border-hades-accent/40 z-20`}>
-                        <span className="text-[8px] font-bold text-hades-accent">⚔️</span>
-                      </div>
-                      {/* Custom border styling */}
-                      <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/40 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                    </div>
-
-                    {/* Uncurled / Hovered Full Description Content */}
-                    <div className="flex-1 hidden group-hover:flex flex-col justify-center pr-4 py-2 min-h-[50px] animate-fade-in w-[310px]">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <h4 className="text-sm font-bold text-hades-accent tracking-wide leading-tight font-sc uppercase">
-                          {activeAspectObj.name}
-                        </h4>
-                        <button 
-                          onClick={(e) => { 
-                            e.stopPropagation(); 
-                            setActiveWeapon(null);
-                            setActiveAspect(null);
-                            setSelectedHammers([]);
-                          }}
-                          className="text-hades-red/70 hover:text-hades-red bg-hades-red/5 hover:bg-hades-red/15 rounded border border-hades-red/10 hover:border-hades-red/20 transition-all flex items-center justify-center h-[18px] w-[18px] flex-shrink-0 cursor-pointer"
-                          title="Clear Weapon Aspect"
-                        >
-                          <X className="w-2.5 h-2.5" />
-                        </button>
-                      </div>
-                      <span className="text-[8.5px] text-white/30 uppercase tracking-widest font-mono mb-1.5">{activeAspectObj.weapon}</span>
-                      <p className="text-[11px] text-gray-300 leading-normal font-medium whitespace-normal">
-                        <FormattedEffectText text={activeAspectObj.description} />
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
+              <div 
+                ref={setAspectDropRef}
+                onClick={() => toggleActiveSlot('Aspect')}
+                className="relative"
+                style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
+              >
+                <ActiveAspectCard 
+                  aspect={activeAspectObj} 
+                  setActiveWeapon={setActiveWeapon}
+                  setActiveAspect={setActiveAspect}
+                  setSelectedHammers={setSelectedHammers}
+                  isActive={activeSlot === 'Aspect' || isAspectOver}
+                />
               </div>
             ) : (
               <div 
-                className="w-[84px] h-[84px] bg-hades-bg-dark/40 border border-dashed border-hades-border-light text-white/20 rounded-[28%] flex flex-col items-center justify-center gap-1 shadow-sm shrink-0 select-none cursor-default"
+                ref={setAspectDropRef}
+                onClick={() => toggleActiveSlot('Aspect')}
+                className={`w-[84px] h-[84px] bg-hades-bg-dark/80 border rounded-[28%] flex flex-col items-center justify-center gap-1 shadow-md shrink-0 select-none cursor-pointer group transition-all duration-200 relative ${
+                  activeSlot === 'Aspect' || isAspectOver
+                    ? 'border-emerald-500 ring-2 ring-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.25)] bg-emerald-950/10'
+                    : 'border-white/10 hover:border-hades-accent/40'
+                }`}
               >
-                <Plus className="w-5 h-5 text-white/20" />
-                <span className="text-[8px] font-display uppercase tracking-widest text-[#9898a0]/40">Aspect</span>
+                {/* Synchronized green pulse layer */}
+                <div
+                  className={`absolute inset-0 rounded-[inherit] bg-emerald-950/20 ring-2 ring-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)] z-20 pointer-events-none transition-opacity duration-200 ${
+                    activeSlot === 'Aspect' || isAspectOver ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+                <div className="absolute inset-1 flex flex-col items-center justify-center border border-white/5 rounded-[inherit] z-30">
+                  <Plus className={`w-5 h-5 transition-colors duration-200 group-hover:scale-110 ${
+                    activeSlot === 'Aspect' || isAspectOver ? 'text-emerald-400' : 'text-hades-accent'
+                  }`} />
+                  <span className={`text-[8.5px] font-display uppercase tracking-widest font-bold mt-0.5 ${
+                    activeSlot === 'Aspect' || isAspectOver ? 'text-emerald-400' : 'text-hades-accent/80'
+                  }`}>Aspect</span>
+                </div>
               </div>
             )}
 
@@ -242,66 +551,14 @@ export function LoadoutTab({
                 return (
                   <div 
                     key={hammerId}
-                    className="group relative w-[84px] h-[84px] cursor-pointer"
+                    className="relative"
+                    style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
                   >
-                    {/* Hover Container */}
-                    <div className="absolute top-0 left-0 transition-opacity duration-200 z-10 group-hover:z-50">
-                      <motion.div 
-                        initial={false}
-                        animate={{ 
-                          width: '84px',
-                          height: '84px'
-                        }}
-                        whileHover={{ 
-                          width: '420px', 
-                          height: 'auto'
-                        }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="relative flex items-start gap-4 transition-[background-color,border-radius] duration-200 hover:bg-hades-bg-dark/95 hover:backdrop-blur-md rounded-2xl bg-hades-bg-dark/50 border border-hades-border-light/50 p-0 hover:p-4 overflow-hidden shadow-xl hover:border-hades-accent/80"
-                      >
-                        {/* Hammer Icon inside collapsed box */}
-                        <div className="w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center relative rounded-xl overflow-hidden p-[3px]">
-                          <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden border border-hades-accent/20 bg-hades-bg-main p-1.5`}>
-                            <img 
-                              src={hammer.icon} 
-                              alt={hammer.name} 
-                              className="w-full h-full object-contain relative z-10" 
-                              referrerPolicy="no-referrer"
-                              onError={(e) => {
-                                e.currentTarget.src = '/assets/ui/Icon-Olympian.webp';
-                              }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-                          </div>
-                          {/* Inner Small Aspect Indicator inside icon */}
-                          <div className={`absolute -top-1 -right-1 w-5 h-5 rounded-full bg-hades-accent/20 flex items-center justify-center border border-hades-accent/40 z-20`}>
-                            <span className="text-[8px] font-bold text-hades-accent">🔨</span>
-                          </div>
-                          {/* Sledge hammer custom border styling */}
-                          <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/40 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                        </div>
-
-                        {/* Uncurled / Hovered Full Description Content */}
-                        <div className="flex-1 hidden group-hover:flex flex-col justify-center pr-4 py-2 min-h-[50px] animate-fade-in w-[310px]">
-                          <div className="flex items-center justify-between gap-2 mb-1">
-                            <h4 className="text-sm font-bold text-hades-accent tracking-wide leading-tight font-sc uppercase">
-                              {hammer.name}
-                            </h4>
-                            <button 
-                              onClick={(e) => { e.stopPropagation(); handleRemoveHammer(hammerId); }}
-                              className="text-hades-red/70 hover:text-hades-red bg-hades-red/5 hover:bg-hades-red/15 rounded border border-hades-red/10 hover:border-hades-red/20 transition-all flex items-center justify-center h-[18px] w-[18px] flex-shrink-0 cursor-pointer"
-                              title="Remove Hammer"
-                            >
-                              <X className="w-2.5 h-2.5" />
-                            </button>
-                          </div>
-                          <span className="text-[8.5px] text-white/30 uppercase tracking-widest font-mono mb-1.5">Daedalus Hammer Upgrade</span>
-                          <p className="text-[11px] text-gray-300 leading-normal font-medium whitespace-normal">
-                            <FormattedEffectText text={hammer.description} />
-                          </p>
-                        </div>
-                      </motion.div>
-                    </div>
+                    <ActiveHammerCard 
+                      hammer={hammer}
+                      onRemove={() => handleRemoveHammer(hammerId)}
+                      isActive={activeSlot === 'Hammer' || isHammerOver}
+                    />
                   </div>
                 );
               })}
@@ -310,10 +567,28 @@ export function LoadoutTab({
               {activeWeapon ? (
                 eligibleHammers.length > 0 ? (
                   <div 
-                    className="w-[84px] h-[84px] bg-hades-bg-dark/40 border border-dashed border-hades-border-light text-white/20 rounded-[28%] flex flex-col items-center justify-center gap-1 shadow-sm shrink-0 select-none cursor-default"
+                    ref={setHammerDropRef}
+                    onClick={() => toggleActiveSlot('Hammer')}
+                    className={`w-[84px] h-[84px] bg-hades-bg-dark/80 border rounded-[28%] flex flex-col items-center justify-center gap-1 shadow-md shrink-0 select-none cursor-pointer group transition-all duration-200 relative ${
+                      activeSlot === 'Hammer' || isHammerOver
+                        ? 'border-emerald-500 ring-2 ring-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.25)] bg-emerald-950/10'
+                        : 'border-white/10 hover:border-hades-accent/40'
+                    }`}
                   >
-                    <Plus className="w-5 h-5 text-white/20" />
-                    <span className="text-[8px] font-display uppercase tracking-widest text-[#9898a0]/40">Hammer</span>
+                    {/* Synchronized green pulse layer */}
+                    <div
+                      className={`absolute inset-0 rounded-[inherit] bg-emerald-950/20 ring-2 ring-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)] z-20 pointer-events-none transition-opacity duration-200 ${
+                        activeSlot === 'Hammer' || isHammerOver ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
+                    <div className="absolute inset-1 flex flex-col items-center justify-center border border-white/5 rounded-[inherit] z-30">
+                      <Plus className={`w-5 h-5 transition-colors duration-200 group-hover:scale-110 ${
+                        activeSlot === 'Hammer' || isHammerOver ? 'text-emerald-400' : 'text-hades-accent'
+                      }`} />
+                      <span className={`text-[8.5px] font-display uppercase tracking-widest font-bold mt-0.5 ${
+                        activeSlot === 'Hammer' || isHammerOver ? 'text-emerald-400' : 'text-hades-accent/80'
+                      }`}>Hammer</span>
+                    </div>
                   </div>
                 ) : (
                   <div className="px-4 py-3 bg-hades-bg-dark/20 border border-hades-border-light/20 rounded-xl text-center flex flex-col max-w-xs shrink-0 select-none">
@@ -345,75 +620,43 @@ export function LoadoutTab({
             
             {/* Core Familiar Slot */}
             {activeFamiliarObj ? (
-              <div className="group relative w-[84px] h-[84px] cursor-pointer">
-                {/* Hover Container */}
-                <div className="absolute top-0 left-0 transition-opacity duration-200 z-10 group-hover:z-50">
-                  <motion.div 
-                    initial={false}
-                    animate={{ 
-                      width: '84px',
-                      height: '84px'
-                    }}
-                    whileHover={{ 
-                      width: '420px', 
-                      height: 'auto'
-                    }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="relative flex items-start gap-4 transition-[background-color,border-radius] duration-200 hover:bg-hades-bg-dark/95 hover:backdrop-blur-md rounded-2xl bg-hades-bg-dark/50 border border-hades-border-light/50 p-0 hover:p-4 overflow-hidden shadow-xl hover:border-hades-accent/80"
-                  >
-                    {/* Familiar Icon inside collapsed box */}
-                    <div className="w-[84px] h-[84px] flex-shrink-0 flex items-center justify-center relative rounded-xl overflow-hidden p-[3px]">
-                      <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden border border-hades-accent/20 bg-hades-bg-main p-1.5`}>
-                        <img 
-                          src={activeFamiliarObj.icon} 
-                          alt={activeFamiliarObj.name} 
-                          className="w-full h-full object-cover relative z-10" 
-                          referrerPolicy="no-referrer"
-                          onError={(e) => {
-                            e.currentTarget.src = '/assets/ui/Icon-Olympian.webp';
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-                      </div>
-                      {/* Inner Small Familiar Indicator inside icon */}
-                      <div className={`absolute -top-1 -right-1 w-5 h-5 rounded-full bg-hades-accent/20 flex items-center justify-center border border-hades-accent/40 z-20`}>
-                        <span className="text-[8px] font-bold text-hades-accent">🐾</span>
-                      </div>
-                      {/* Custom border styling */}
-                      <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-hades-accent/40 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                    </div>
-
-                    {/* Uncurled / Hovered Full Description Content */}
-                    <div className="flex-1 hidden group-hover:flex flex-col justify-center pr-4 py-2 min-h-[50px] animate-fade-in w-[310px]">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <h4 className="text-sm font-bold text-hades-accent tracking-wide leading-tight font-sc uppercase">
-                          {activeFamiliarObj.name}
-                        </h4>
-                        <button 
-                          onClick={(e) => { 
-                            e.stopPropagation(); 
-                            setActiveFamiliar('none');
-                          }}
-                          className="text-hades-red/70 hover:text-hades-red bg-hades-red/5 hover:bg-hades-red/15 rounded border border-hades-red/10 hover:border-hades-red/20 transition-all flex items-center justify-center h-[18px] w-[18px] flex-shrink-0 cursor-pointer"
-                          title="Dismiss Familiar"
-                        >
-                          <X className="w-2.5 h-2.5" />
-                        </button>
-                      </div>
-                      <span className="text-[8.5px] text-white/30 uppercase tracking-widest font-mono mb-1.5">Animal Familiar</span>
-                      <p className="text-[11px] text-gray-300 leading-normal font-medium whitespace-normal">
-                        {activeFamiliarObj.summary ? `${activeFamiliarObj.summary}.` : "Your animal familiar is active."}
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
+              <div 
+                ref={setFamiliarDropRef}
+                onClick={() => toggleActiveSlot('Familiar')}
+                className="relative"
+                style={{ width: SLOT_COLLAPSED_WIDTH, height: SLOT_COLLAPSED_WIDTH }}
+              >
+                <ActiveFamiliarCard 
+                  familiar={activeFamiliarObj} 
+                  setActiveFamiliar={setActiveFamiliar}
+                  isActive={activeSlot === 'Familiar'}
+                  isOver={isFamiliarOver}
+                />
               </div>
             ) : (
               <div 
-                className="w-[84px] h-[84px] bg-hades-bg-dark/40 border border-dashed border-hades-border-light text-white/20 rounded-[28%] flex flex-col items-center justify-center gap-1 shadow-sm shrink-0 select-none cursor-default"
+                ref={setFamiliarDropRef}
+                onClick={() => toggleActiveSlot('Familiar')}
+                className={`w-[84px] h-[84px] bg-hades-bg-dark/80 border rounded-[28%] flex flex-col items-center justify-center gap-1 shadow-md shrink-0 select-none cursor-pointer group transition-all duration-200 relative ${
+                  activeSlot === 'Familiar' || isFamiliarOver
+                    ? 'border-emerald-500 ring-2 ring-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.25)] bg-emerald-950/10'
+                    : 'border-white/10 hover:border-hades-accent/40'
+                }`}
               >
-                <Plus className="w-5 h-5 text-white/20" />
-                <span className="text-[8px] font-display uppercase tracking-widest text-[#9898a0]/40">Familiar</span>
+                {/* Synchronized green pulse layer */}
+                <div
+                  className={`absolute inset-0 rounded-[inherit] bg-emerald-950/20 ring-2 ring-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)] z-20 pointer-events-none transition-opacity duration-200 ${
+                    activeSlot === 'Familiar' || isFamiliarOver ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+                <div className="absolute inset-1 flex flex-col items-center justify-center border border-white/5 rounded-[inherit] z-30">
+                  <Plus className={`w-5 h-5 transition-colors duration-200 group-hover:scale-110 ${
+                    activeSlot === 'Familiar' || isFamiliarOver ? 'text-emerald-400' : 'text-hades-accent'
+                  }`} />
+                  <span className={`text-[8.5px] font-display uppercase tracking-widest font-bold mt-0.5 ${
+                    activeSlot === 'Familiar' || isFamiliarOver ? 'text-emerald-400' : 'text-hades-accent/80'
+                  }`}>Familiar</span>
+                </div>
               </div>
             )}
 

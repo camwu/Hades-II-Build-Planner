@@ -1,11 +1,376 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Search, X, ChevronDown, ChevronRight, ChevronLeft, Lock, Info } from 'lucide-react';
-import { WeaponAspect, WeaponHammer } from '../types';
+import { useDraggable } from '@dnd-kit/core';
+import { WeaponAspect, WeaponHammer, AnimalFamiliar } from '../types';
 import { SIDEBAR_WIDTH, BOON_ICON_ROUNDING, BOON_BORDER_WIDTH } from '../constants';
 import { WEAPON_ASPECTS, WEAPON_NAMES, WEAPON_ICONS, WEAPON_HAMMERS } from '../data/weaponsData';
 import { ANIMAL_FAMILIARS } from '../data/animalFamiliars';
 import { FormattedEffectText } from './FormattedEffectText';
+
+interface DraggableAspectCardProps {
+  aspect: WeaponAspect;
+  isSelected: boolean;
+  onClick: () => void;
+  activeSlot: string | null;
+  key?: any;
+}
+
+export function DraggableAspectCard({
+  aspect,
+  isSelected,
+  onClick,
+  activeSlot,
+}: DraggableAspectCardProps) {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: aspect.id,
+    data: {
+      type: 'loadout',
+      loadoutType: 'Aspect',
+      item: aspect,
+    },
+  });
+
+  const isSelectable = activeSlot === 'Aspect';
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      onClick={onClick}
+      className={`p-3 rounded-xl border text-left transition-all duration-155 cursor-pointer flex flex-col relative group overflow-hidden touch-none ${
+        isDragging
+          ? 'opacity-20 pointer-events-none'
+          : isSelected
+            ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
+            : isSelectable
+              ? 'bg-hades-bg-dark border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.1)] hover:border-emerald-500 hover:bg-hades-bg-dark/95'
+              : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
+      }`}
+    >
+      <div className="flex items-start gap-4">
+        {/* Icon */}
+        <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
+          <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
+            <img
+              src={aspect.icon || WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
+              alt={aspect.name}
+              className="w-full h-full object-contain"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp";
+              }}
+            />
+            <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-white/10 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
+          <div className="flex items-center justify-between gap-2">
+            <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
+              {aspect.name}
+            </h4>
+            <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
+              ASPECT
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-2.5">
+            <div className="flex items-center gap-1.5">
+              <img 
+                src={WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
+                alt={aspect.weapon}
+                className="w-3.5 h-3.5 object-contain shrink-0"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "/assets/ui/BoonII.webp";
+                }}
+              />
+              <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                {WEAPON_NAMES[aspect.weapon as any] || aspect.weapon}
+              </span>
+            </div>
+          </div>
+
+          <div className="h-3.5" />
+        </div>
+      </div>
+
+      <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
+        <FormattedEffectText text={aspect.mechanics ? `${aspect.description}\n\n${aspect.mechanics}` : aspect.description} />
+      </p>
+
+      {/* Selectability Overlay Border */}
+      {isSelectable && !isSelected && (
+        <div className="absolute inset-0 rounded-xl border-2 border-emerald-500/45 group-hover:border-emerald-400 pointer-events-none transition-colors duration-75 animate-pulse" />
+      )}
+    </div>
+  );
+}
+
+interface DraggableHammerCardProps {
+  hammer: WeaponHammer;
+  isSelected: boolean;
+  isEligible: boolean;
+  status: { isEligible: boolean; reason: string };
+  aspectRestriction: any;
+  onClick: () => void;
+  activeSlot: string | null;
+  key?: any;
+}
+
+export function DraggableHammerCard({
+  hammer,
+  isSelected,
+  isEligible,
+  status,
+  aspectRestriction,
+  onClick,
+  activeSlot,
+}: DraggableHammerCardProps) {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: hammer.id,
+    disabled: !isEligible,
+    data: {
+      type: 'loadout',
+      loadoutType: 'Hammer',
+      item: hammer,
+    },
+  });
+
+  const isSelectable = activeSlot === 'Hammer' && isEligible;
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      onClick={isEligible ? onClick : undefined}
+      className={`p-3 rounded-xl border text-left transition-all duration-155 flex flex-col relative group overflow-hidden touch-none ${
+        isDragging
+          ? 'opacity-20 pointer-events-none'
+          : !isEligible
+            ? 'bg-hades-bg-dark/60 border-red-950/45 cursor-not-allowed select-none'
+            : isSelected
+              ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30 cursor-pointer'
+              : isSelectable
+                ? 'bg-hades-bg-dark border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.1)] hover:border-emerald-500 hover:bg-hades-bg-dark/95 cursor-pointer'
+                : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95 cursor-pointer'
+      }`}
+    >
+      <div className={`flex items-start gap-4 transition-opacity duration-150 ${!isEligible ? 'opacity-50' : ''}`}>
+        {/* Icon */}
+        <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
+          <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
+            <img
+              src={hammer.icon || "/assets/ui/Daedalus_Hammer.webp"}
+              alt={hammer.name}
+              className="w-full h-full object-contain"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "/assets/ui/Daedalus_Hammer.webp";
+              }}
+            />
+            <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-white/10 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
+          <div className="flex items-center justify-between gap-2">
+            <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
+              {hammer.name}
+            </h4>
+            <span className={`text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${
+              !isEligible
+                ? 'bg-red-950/25 border-red-900/20 text-red-100/50'
+                : 'bg-hades-accent/10 border-hades-accent/20 text-hades-accent/80'
+            }`}>
+              HAMMER
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-2.5">
+            <div className="flex items-center gap-1.5">
+              <img 
+                src={WEAPON_ICONS[hammer.weapon] || "/assets/ui/Daedalus_Hammer.webp"}
+                alt={hammer.weapon}
+                className="w-3.5 h-3.5 object-contain shrink-0"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "/assets/ui/Daedalus_Hammer.webp";
+                }}
+              />
+              <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
+                {WEAPON_NAMES[hammer.weapon as any] || hammer.weapon}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            {aspectRestriction ? (
+              <>
+                <img 
+                  src={aspectRestriction.icon || WEAPON_ICONS[hammer.weapon] || "/assets/ui/BoonII.webp"}
+                  alt={aspectRestriction.name}
+                  className="w-3.5 h-3.5 object-contain shrink-0 rounded"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = WEAPON_ICONS[hammer.weapon] || "/assets/ui/BoonII.webp";
+                  }}
+                />
+                <span className="text-[10px] font-display uppercase tracking-wider leading-none text-hades-accent font-semibold truncate max-w-[180px]">
+                  Requires: {aspectRestriction.name}
+                </span>
+              </>
+            ) : (
+              <div className="opacity-40 flex items-center gap-1.5">
+                <span className="text-[10px] font-display text-gray-500 uppercase tracking-wider leading-none">
+                  Any Aspect
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <p className={`text-[12px] text-gray-400 leading-normal font-medium mt-2 transition-opacity duration-150 ${!isEligible ? 'opacity-50' : ''}`}>
+        <FormattedEffectText text={hammer.description} />
+      </p>
+
+      {!isEligible && (
+        <div className="mt-2.5 pt-2 border-t border-red-950/45 text-xs font-sans text-gray-400">
+          <div className="flex flex-col gap-2 p-1">
+            <div className="flex items-start gap-2">
+              <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
+              <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Requirements:</span>
+            </div>
+            <div className="text-gray-400 text-xs mb-1 font-medium leading-relaxed normal-case pl-5 -mt-1">
+              Requires the following condition:
+            </div>
+            <div className="flex flex-col gap-1.5 select-none pl-5">
+              <div className="flex items-start gap-2.5 px-2.5 py-1.5 rounded-lg border transition-all duration-150 bg-zinc-950/45 border-zinc-900/60 text-gray-400/80">
+                <X className="w-3.5 h-3.5 text-red-500/50 flex-shrink-0 mt-[2px]" />
+                <span className="text-[11px] font-semibold leading-[18px]">
+                  {status.reason}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Selectability Overlay Border */}
+      {isSelectable && !isSelected && (
+        <div className="absolute inset-0 rounded-xl border-2 border-emerald-500/45 group-hover:border-emerald-400 pointer-events-none transition-colors duration-75 animate-pulse" />
+      )}
+    </div>
+  );
+}
+
+interface DraggableFamiliarCardProps {
+  familiar: AnimalFamiliar;
+  isSelected: boolean;
+  onClick: () => void;
+  activeSlot: string | null;
+  key?: any;
+}
+
+export function DraggableFamiliarCard({
+  familiar,
+  isSelected,
+  onClick,
+  activeSlot,
+}: DraggableFamiliarCardProps) {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: familiar.id,
+    data: {
+      type: 'loadout',
+      loadoutType: 'Familiar',
+      item: familiar,
+    },
+  });
+
+  const isSelectable = activeSlot === 'Familiar';
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      onClick={onClick}
+      className={`p-3 rounded-xl border text-left transition-all duration-155 cursor-pointer flex flex-col relative group overflow-hidden touch-none ${
+        isDragging
+          ? 'opacity-20 pointer-events-none'
+          : isSelected
+            ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
+            : isSelectable
+              ? 'bg-hades-bg-dark border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.1)] hover:border-emerald-500 hover:bg-hades-bg-dark/95'
+              : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
+      }`}
+    >
+      <div className="flex items-start gap-4">
+        {/* Icon */}
+        <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
+          <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
+            <img
+              src={familiar.icon || "/assets/ui/Icon-Familiars.webp"}
+              alt={familiar.name}
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "/assets/ui/Icon-Familiars.webp";
+              }}
+            />
+            <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-white/10 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center py-0.5 gap-1.5">
+          <div className="flex items-center justify-between gap-2">
+            <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
+              {familiar.name}, the {familiar.type.charAt(0).toUpperCase() + familiar.type.slice(1)}
+            </h4>
+            <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
+              FAMILIAR
+            </span>
+          </div>
+          {familiar.summary && (
+            <p className="text-[11.5px] text-white/50 font-medium leading-relaxed font-sans">
+              {familiar.summary}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-2.5 pt-2 border-t border-white/5 space-y-2">
+        {familiar.skills.map(skill => (
+          <div key={skill.id} className="flex items-start gap-3 text-[12px] text-gray-400 leading-normal">
+            <div className={`w-5.5 h-5.5 ${BOON_ICON_ROUNDING} overflow-hidden border border-white/10 shrink-0 bg-hades-bg-dark`}>
+              <img src={skill.icon} alt={skill.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <span className="text-hades-accent font-bold uppercase tracking-wider text-[11px] block leading-normal mb-0.5">
+                {skill.name}
+              </span>
+              <span className="text-gray-400 text-[12px] leading-normal font-medium">
+                <FormattedEffectText text={skill.description} />
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Selectability Overlay Border */}
+      {isSelectable && !isSelected && (
+        <div className="absolute inset-0 rounded-xl border-2 border-emerald-500/45 group-hover:border-emerald-400 pointer-events-none transition-colors duration-75 animate-pulse" />
+      )}
+    </div>
+  );
+}
 
 interface LoadoutLibraryProps {
   isPanelCollapsed: boolean;
@@ -25,6 +390,7 @@ interface LoadoutLibraryProps {
   isScrolled: boolean;
   handleSidebarScroll: (e: React.UIEvent<HTMLDivElement>) => void;
   searchInputRef: React.RefObject<HTMLInputElement | null>;
+  activeSlot: string | null;
 }
 
 export function LoadoutLibrary({
@@ -45,6 +411,7 @@ export function LoadoutLibrary({
   isScrolled,
   handleSidebarScroll,
   searchInputRef,
+  activeSlot,
 }: LoadoutLibraryProps) {
   const sidebarRef = React.useRef<HTMLDivElement>(null);
   const filterHeaderRef = React.useRef<HTMLDivElement>(null);
@@ -111,6 +478,22 @@ export function LoadoutLibrary({
       localStorage.setItem('hades_build_planner_familiars_expanded', JSON.stringify(familiarsExpanded));
     } catch {}
   }, [familiarsExpanded]);
+
+  React.useEffect(() => {
+    if (activeSlot === 'Aspect') {
+      setAspectsExpanded(true);
+      setHammersExpanded(false);
+      setFamiliarsExpanded(false);
+    } else if (activeSlot === 'Hammer') {
+      setHammersExpanded(true);
+      setAspectsExpanded(false);
+      setFamiliarsExpanded(false);
+    } else if (activeSlot === 'Familiar') {
+      setFamiliarsExpanded(true);
+      setAspectsExpanded(false);
+      setHammersExpanded(false);
+    }
+  }, [activeSlot]);
 
   const toggleAspectsExpanded = () => {
     setAspectsExpanded((prev) => {
@@ -440,71 +823,16 @@ export function LoadoutLibrary({
                         {loadoutSearchResults.aspects.map(aspect => {
                           const isSelected = activeAspect === aspect.id;
                           return (
-                            <div
+                            <DraggableAspectCard
                               key={aspect.id}
+                              aspect={aspect}
+                              isSelected={isSelected}
+                              activeSlot={activeSlot}
                               onClick={() => {
                                 setActiveWeapon(aspect.weapon);
                                 setActiveAspect(aspect.id);
                               }}
-                              className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer flex flex-col relative group overflow-hidden ${
-                                isSelected
-                                  ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
-                                  : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
-                              }`}
-                            >
-                              <div className="flex items-start gap-4">
-                                {/* Icon */}
-                                <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
-                                  <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
-                                    <img
-                                      src={aspect.icon || WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
-                                      alt={aspect.name}
-                                      className="w-full h-full object-contain"
-                                      referrerPolicy="no-referrer"
-                                      onError={(e) => {
-                                        (e.target as HTMLImageElement).src = WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp";
-                                      }}
-                                    />
-                                    <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-white/10 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                                  </div>
-                                </div>
-
-                                {/* Content */}
-                                <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
-                                  <div className="flex items-center justify-between gap-2">
-                                    <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
-                                      {aspect.name}
-                                    </h4>
-                                    <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
-                                      ASPECT
-                                    </span>
-                                  </div>
-
-                                  <div className="flex flex-wrap items-center gap-x-2.5">
-                                    <div className="flex items-center gap-1.5">
-                                      <img 
-                                        src={WEAPON_ICONS[aspect.weapon] || "/assets/ui/BoonII.webp"}
-                                        alt={aspect.weapon}
-                                        className="w-3.5 h-3.5 object-contain shrink-0"
-                                        referrerPolicy="no-referrer"
-                                        onError={(e) => {
-                                          (e.target as HTMLImageElement).src = "/assets/ui/BoonII.webp";
-                                        }}
-                                      />
-                                      <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
-                                        {WEAPON_NAMES[aspect.weapon as any] || aspect.weapon}
-                                      </span>
-                                    </div>
-                                  </div>
-
-                                  <div className="h-3.5" />
-                                </div>
-                              </div>
-
-                              <p className="text-[12px] text-gray-400 leading-normal font-medium mt-2">
-                                <FormattedEffectText text={aspect.mechanics ? `${aspect.description}\n\n${aspect.mechanics}` : aspect.description} />
-                              </p>
-                            </div>
+                            />
                           );
                         })}
                       </div>
@@ -571,133 +899,29 @@ export function LoadoutLibrary({
                           : null;
 
                         return (
-                          <div
+                          <DraggableHammerCard
                             key={hammer.id}
+                            hammer={hammer}
+                            isSelected={isSelected}
+                            isEligible={isEligible}
+                            status={status}
+                            aspectRestriction={aspectRestriction}
+                            activeSlot={activeSlot}
                             onClick={() => {
-                              if (!isEligible) return;
                               if (isSelected) {
                                 setSelectedHammers(prev => prev.filter(id => id !== hammer.id));
                               } else {
                                 setSelectedHammers(prev => [...prev, hammer.id]);
                               }
                             }}
-                            className={`p-3 rounded-xl border text-left transition-all duration-150 flex flex-col relative group overflow-hidden ${
-                              !isEligible
-                                ? 'bg-hades-bg-dark/60 border-red-950/45 cursor-not-allowed select-none'
-                                : isSelected
-                                  ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30 cursor-pointer'
-                                  : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95 cursor-pointer'
-                            }`}
-                          >
-                            <div className={`flex items-start gap-4 transition-opacity duration-150 ${!isEligible ? 'opacity-50' : ''}`}>
-                              {/* Icon */}
-                              <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
-                                <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
-                                  <img
-                                    src={hammer.icon || "/assets/ui/Daedalus_Hammer.webp"}
-                                    alt={hammer.name}
-                                    className="w-full h-full object-contain"
-                                    referrerPolicy="no-referrer"
-                                    onError={(e) => {
-                                      (e.target as HTMLImageElement).src = "/assets/ui/Daedalus_Hammer.webp";
-                                    }}
-                                  />
-                                  <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-white/10 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                                </div>
-                              </div>
-
-                              {/* Content */}
-                              <div className="flex-1 min-w-0 h-14 flex flex-col justify-between py-0.5">
-                                <div className="flex items-center justify-between gap-2">
-                                  <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
-                                    {hammer.name}
-                                  </h4>
-                                  <span className={`text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${
-                                    !isEligible
-                                      ? 'bg-red-950/25 border-red-900/20 text-red-100/50'
-                                      : 'bg-hades-accent/10 border-hades-accent/20 text-hades-accent/80'
-                                  }`}>
-                                    HAMMER
-                                  </span>
-                                </div>
-
-                                <div className="flex flex-wrap items-center gap-x-2.5">
-                                  <div className="flex items-center gap-1.5">
-                                    <img 
-                                      src={WEAPON_ICONS[hammer.weapon] || "/assets/ui/Daedalus_Hammer.webp"}
-                                      alt={hammer.weapon}
-                                      className="w-3.5 h-3.5 object-contain shrink-0"
-                                      referrerPolicy="no-referrer"
-                                      onError={(e) => {
-                                        (e.target as HTMLImageElement).src = "/assets/ui/Daedalus_Hammer.webp";
-                                      }}
-                                    />
-                                    <span className="text-[10px] font-display text-hades-text/70 uppercase tracking-wider leading-none">
-                                      {WEAPON_NAMES[hammer.weapon as any] || hammer.weapon}
-                                    </span>
-                                  </div>
-                                </div>
-
-                                <div className="flex items-center gap-1.5">
-                                  {aspectRestriction ? (
-                                    <>
-                                      <img 
-                                        src={aspectRestriction.icon || WEAPON_ICONS[hammer.weapon] || "/assets/ui/BoonII.webp"}
-                                        alt={aspectRestriction.name}
-                                        className="w-3.5 h-3.5 object-contain shrink-0 rounded"
-                                        referrerPolicy="no-referrer"
-                                        onError={(e) => {
-                                          (e.target as HTMLImageElement).src = WEAPON_ICONS[hammer.weapon] || "/assets/ui/BoonII.webp";
-                                        }}
-                                      />
-                                      <span className="text-[10px] font-display uppercase tracking-wider leading-none text-hades-accent font-semibold truncate max-w-[180px]">
-                                        Requires: {aspectRestriction.name}
-                                      </span>
-                                    </>
-                                  ) : (
-                                    <div className="opacity-40 flex items-center gap-1.5">
-                                      <span className="text-[10px] font-display text-gray-500 uppercase tracking-wider leading-none">
-                                        Any Aspect
-                                      </span>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-
-                            <p className={`text-[12px] text-gray-400 leading-normal font-medium mt-2 transition-opacity duration-150 ${!isEligible ? 'opacity-50' : ''}`}>
-                              <FormattedEffectText text={hammer.description} />
-                            </p>
-
-                            {!isEligible && (
-                              <div className="mt-2.5 pt-2 border-t border-red-950/45 text-xs font-sans text-gray-400">
-                                <div className="flex flex-col gap-2 p-1">
-                                  <div className="flex items-start gap-2">
-                                    <Lock className="w-3.5 h-3.5 text-red-500/60 flex-shrink-0 mt-0.5" />
-                                    <span className="font-semibold text-red-400/80 flex-shrink-0 mt-[1px]">Locked Requirements:</span>
-                                  </div>
-                                  <div className="text-gray-400 text-xs mb-1 font-medium leading-relaxed normal-case pl-5 -mt-1">
-                                    Requires the following condition:
-                                  </div>
-                                  <div className="flex flex-col gap-1.5 select-none pl-5">
-                                    <div className="flex items-start gap-2.5 px-2.5 py-1.5 rounded-lg border transition-all duration-150 bg-zinc-950/45 border-zinc-900/60 text-gray-500/95">
-                                      <X className="w-3.5 h-3.5 text-red-500/50 flex-shrink-0 mt-[2px]" />
-                                      <span className="text-[11px] font-semibold leading-[18px] text-gray-400">
-                                        {status.reason}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
+                          />
                         );
                       })}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
           )}
 
             {/* 3. Animal Familiars Group */}
@@ -751,8 +975,11 @@ export function LoadoutLibrary({
                       {loadoutSearchResults.familiars.map(familiar => {
                         const isSelected = activeFamiliar === familiar.id;
                         return (
-                          <div
+                          <DraggableFamiliarCard
                             key={familiar.id}
+                            familiar={familiar}
+                            isSelected={isSelected}
+                            activeSlot={activeSlot}
                             onClick={() => {
                               if (isSelected) {
                                   setActiveFamiliar('none');
@@ -760,65 +987,7 @@ export function LoadoutLibrary({
                                   setActiveFamiliar(familiar.id);
                               }
                             }}
-                            className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer flex flex-col relative group overflow-hidden ${
-                              isSelected
-                                ? 'bg-hades-bg-dark border-hades-accent shadow-[0_0_15px_rgba(224,180,94,0.15)] ring-1 ring-hades-accent/30'
-                                : 'bg-hades-bg-dark/80 border-white/10 hover:border-white/20 hover:bg-hades-bg-dark/95'
-                            }`}
-                          >
-                            <div className="flex items-start gap-4">
-                              {/* Icon */}
-                              <div className={`relative w-14 h-14 flex-shrink-0 transition-all duration-100 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
-                                <div className={`w-full h-full relative ${BOON_ICON_ROUNDING}`}>
-                                  <img
-                                    src={familiar.icon || "/assets/ui/Icon-Familiars.webp"}
-                                    alt={familiar.name}
-                                    className="w-full h-full object-cover"
-                                    referrerPolicy="no-referrer"
-                                    onError={(e) => {
-                                      (e.target as HTMLImageElement).src = "/assets/ui/Icon-Familiars.webp";
-                                    }}
-                                  />
-                                  <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-white/10 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
-                                </div>
-                              </div>
-
-                              {/* Content */}
-                              <div className="flex-1 min-w-0 flex flex-col justify-center py-0.5 gap-1.5">
-                                <div className="flex items-center justify-between gap-2">
-                                  <h4 className={`text-base font-bold normal-case tracking-wide truncate font-sc leading-tight ${isSelected ? 'text-hades-accent' : 'text-hades-text'}`}>
-                                    {familiar.name}, the {familiar.type.charAt(0).toUpperCase() + familiar.type.slice(1)}
-                                  </h4>
-                                  <span className="text-[9px] font-display uppercase leading-none font-bold px-1.5 py-0.5 rounded border border-hades-accent/20 text-hades-accent/80 bg-hades-accent/10 flex-shrink-0">
-                                    FAMILIAR
-                                  </span>
-                                </div>
-                                {familiar.summary && (
-                                  <p className="text-[11.5px] text-white/50 font-medium leading-relaxed font-sans">
-                                    {familiar.summary}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="mt-2.5 pt-2 border-t border-white/5 space-y-2">
-                              {familiar.skills.map(skill => (
-                                <div key={skill.id} className="flex items-start gap-3 text-[12px] text-gray-400 leading-normal">
-                                  <div className={`w-5.5 h-5.5 ${BOON_ICON_ROUNDING} overflow-hidden border border-white/10 shrink-0 bg-hades-bg-dark`}>
-                                    <img src={skill.icon} alt={skill.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <span className="text-hades-accent font-bold uppercase tracking-wider text-[11px] block leading-normal mb-0.5">
-                                      {skill.name}
-                                    </span>
-                                    <span className="text-gray-400 text-[12px] leading-normal font-medium">
-                                      <FormattedEffectText text={skill.description} />
-                                    </span>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
+                          />
                         );
                       })}
                     </div>

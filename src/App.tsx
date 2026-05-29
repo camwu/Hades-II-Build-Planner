@@ -32,8 +32,11 @@ import {
   EXCLUDED_GODS,
   STORAGE_KEYS,
   SLOT_MAP,
-  SLOT_ABBR
+  SLOT_ABBR,
+  BOON_ICON_ROUNDING,
+  BOON_BORDER_WIDTH
 } from './constants';
+import { WEAPON_ICONS } from './data/weaponsData';
 import { isValidForSlot, getIncompatibleBoonInSelection, parseSearchQuery, boonMatchesQuery, getBoonColor } from './utils/boonUtils';
 import { PoolOfPurgingBackdrop, PoolOfPurgingMessage } from './components/PoolOfPurging';
 import { StaticBoonListItem } from './components/BoonListItem';
@@ -523,6 +526,8 @@ export default function App() {
   }, [isEditingName]);
   const [draggedBoon, setDraggedBoon] = useState<Boon | null>(null);
   const [draggedBoonType, setDraggedBoonType] = useState<string | null>(null);
+  const [draggedLoadout, setDraggedLoadout] = useState<any | null>(null);
+  const [draggedLoadoutType, setDraggedLoadoutType] = useState<string | null>(null);
   const draggedBoonRef = useRef<Boon | null>(null);
   const [dndContextKey, setDndContextKey] = useState(0);
 
@@ -839,6 +844,11 @@ export default function App() {
   };
 
   const handleDragStart = (event: DragStartEvent) => {
+    if (event.active.data.current?.type === 'loadout') {
+      setDraggedLoadout(event.active.data.current.item);
+      setDraggedLoadoutType(event.active.data.current.loadoutType);
+      return;
+    }
     const boon = BOONS.find(b => b.id === event.active.id);
     if (boon) {
       setDraggedBoon(boon);
@@ -850,6 +860,27 @@ export default function App() {
     const { over, active } = event;
     setDraggedBoon(null);
     setDraggedBoonType(null);
+    setDraggedLoadout(null);
+    setDraggedLoadoutType(null);
+
+    // Loadout integration for dragging and dropping aspect, hammer, or familiar
+    if (active.data.current?.type === 'loadout') {
+      const { loadoutType, item } = active.data.current;
+      const dropTargetId = over?.id as string;
+      if (dropTargetId === `loadout-slot-${loadoutType}`) {
+        if (loadoutType === 'Aspect') {
+          setActiveWeapon(item.weapon);
+          setActiveAspect(item.id);
+        } else if (loadoutType === 'Hammer') {
+          if (!selectedHammers.includes(item.id)) {
+            setSelectedHammers(prev => [...prev, item.id]);
+          }
+        } else if (loadoutType === 'Familiar') {
+          setActiveFamiliar(item.id);
+        }
+      }
+      return;
+    }
 
     const folderRect = folderRef.current?.getBoundingClientRect();
     const { x: px, y: py } = pointerPosRef.current;
@@ -1028,6 +1059,7 @@ export default function App() {
               isScrolled={isScrolled}
               handleSidebarScroll={handleSidebarScroll}
               searchInputRef={searchInputRef}
+              activeSlot={activeSlot}
             />
           ) : null}
 
@@ -1165,6 +1197,8 @@ export default function App() {
                   setSelectedHammers={setSelectedHammers}
                   activeFamiliar={activeFamiliar}
                   setActiveFamiliar={setActiveFamiliar}
+                  activeSlot={activeSlot}
+                  toggleActiveSlot={toggleActiveSlot}
                 />
               ) : (
                 <div className="border border-hades-border rounded-xl p-6 md:p-8 bg-hades-panel shadow-2xl relative min-h-[400px] flex flex-col items-center justify-center text-center">
@@ -1204,6 +1238,28 @@ export default function App() {
           {draggedBoon ? (
             <div style={{ width: SLOT_EXPANDED_WIDTH }} className="pointer-events-none opacity-90 backdrop-blur-sm cursor-grabbing">
               <StaticBoonListItem boon={draggedBoon} isOverlay elementCounts={elementCounts} />
+            </div>
+          ) : draggedLoadout ? (
+            <div className="pointer-events-none opacity-95 backdrop-blur-sm cursor-grabbing w-[300px] p-3 rounded-xl border border-hades-accent bg-hades-bg-dark shadow-[0_0_15px_rgba(224,180,94,0.3)] flex items-center gap-3">
+              <div className={`relative w-12 h-12 flex-shrink-0 bg-hades-bg-dark ${BOON_ICON_ROUNDING}`}>
+                <div className={`w-full h-full relative ${BOON_ICON_ROUNDING} overflow-hidden`}>
+                  <img
+                    src={draggedLoadout.icon || (draggedLoadoutType === 'Aspect' ? WEAPON_ICONS[draggedLoadout.weapon] : draggedLoadoutType === 'Familiar' ? "/assets/ui/Icon-Familiars.webp" : "/assets/ui/BoonII.webp")}
+                    alt={draggedLoadout.name}
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className={`absolute inset-0 ${BOON_BORDER_WIDTH} border-white/10 ${BOON_ICON_ROUNDING} pointer-events-none z-10`} />
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="text-base font-bold text-hades-accent truncate font-sc leading-tight">
+                  {draggedLoadout.name}
+                </h4>
+                <span className="text-[9px] font-display uppercase tracking-widest text-white/50">
+                  {draggedLoadoutType}
+                </span>
+              </div>
             </div>
           ) : null}
         </DragOverlay>
